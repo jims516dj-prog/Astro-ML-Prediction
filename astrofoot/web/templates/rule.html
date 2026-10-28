@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block title %}Rule · Emergent Codex{% endblock %}
+{% block body %}
+<p class="crumbs"><a href="/codex">Emergent Codex</a> › rule</p>
+<h1 class="h-rule">{{ r.statement }}</h1>
+<p class="meta"><span class="badge {{ 'ok' if r.status=='provisional' else 'muted' }}">{{ r.status }}</span> · {{ r.family }} · {{ r.structure or "structure-free" }} · frame {{ r.frame }} · key <code>{{ r.rule_key }}</code></p>
+<section class="two">
+<div class="card"><h2>Evidence</h2><table class="data">
+<tr><td>Effect vs market</td><td class="num">{{ fmt_num(r.effect_pp,2) }} pp ({{ fmt_num(r.ci_low_pp,1) }} … {{ fmt_num(r.ci_high_pp,1) }})</td></tr>
+<tr><td>Matches where active</td><td class="num">{{ "{:,}".format(r.n_active) }}</td></tr>
+<tr><td>Score z / BH q</td><td class="num">{{ fmt_num(r.z,2) }} / {{ "%.4f"|format(r.q_value) }}</td></tr>
+<tr><td>Placebo-calibrated z</td><td class="num">{{ fmt_num(r.z_placebo_calibrated,2) if r.z_placebo_calibrated is not none else "—" }}</td></tr>
+<tr><td>Early vs late period β</td><td class="num">{{ fmt_num(r.early_beta,3) }} / {{ fmt_num(r.late_beta,3) }} (late p {{ "%.3f"|format(r.late_p) }})</td></tr>
+<tr><td>Leagues agreeing</td><td class="num">{{ r.leagues_consistent }} of {{ r.leagues_tested }}</td></tr>
+<tr><td>Vault β</td><td class="num">{{ fmt_num(r.vault_beta,3) if r.vault_beta is not none else "—" }}</td></tr>
+</table></div>
+<div class="card"><h2>Promotion checks</h2><ul class="checks">{% for k, ok in r.checks.items() %}<li class="{{ 'ok' if ok else 'no' }}">{{ "✓" if ok else "✗" }} {{ k }}</li>{% endfor %}</ul></div>
+</section>
+{% if orb %}<h2>Learned orb</h2><figure class="fig">{{ orb|safe }}<figcaption>Average edge for team1 beyond market odds, by distance from the exact configuration. A real effect should fade smoothly with distance.</figcaption></figure>{% endif %}
+{% endblock %}

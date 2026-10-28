@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}Astro Football Lab{% endblock %}</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="banner" role="note">
+  <strong>⚠ For astrological research and educational purposes only.</strong>
+  Dr Ravi Rao's <em>Sports Astrology</em> states: “I would go so far as to say that the method will not work for persons
+  involved in betting. I would like to call it astrology's curse.” This application does not facilitate gambling and must
+  not be used for that purpose. Predictions are probabilistic estimates, not guarantees; the traditional 70/30 doctrine holds
+  that astrologers are at best 70% accurate. Engine 4 is a research instrument whose measured performance against market
+  odds and placebo skies is shown openly — including when it shows no edge.
+</div>
+<header class="top">
+  <a class="brand" href="/">Astro Football Lab</a>
+  <nav>
+    <a href="/" class="{{ 'on' if page=='home' }}">Overview</a>
+    <a href="/analyze" class="{{ 'on' if page=='analyze' }}">Analyze</a>
+    <a href="/dataset" class="{{ 'on' if page=='dataset' }}">Dataset</a>
+    <a href="/codex" class="{{ 'on' if page=='codex' }}">Emergent Codex</a>
+    <a href="/ml" class="{{ 'on' if page=='ml' }}">ML dashboard</a>
+  </nav>
+</header>
+<main>{% block body %}{% endblock %}</main>
+<footer>Data: football-data.co.uk via xgabora/Club-Football-Match-Data-2000-2025 · stadium coordinates: jokecamp/FootballData ·
+cities: dr5hn/countries-states-cities-database (ODbL) · ephemeris: Swiss Ephemeris (Moshier).</footer>
+</body>
+</html>

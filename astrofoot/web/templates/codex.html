@@ -1,0 +1,60 @@
+{% extends "base.html" %}{% from "_badge.html" import gate_badge %}
+{% block title %}Emergent Codex · Astro Football Lab{% endblock %}
+{% block body %}
+<h1>The Emergent Codex</h1>
+<p class="lede">A rulebook learned from data. A rule is shown here only with its evidence, and rises from <em>candidate</em> to
+<em>provisional</em> only if it survives every filter: stability across resamples, false-discovery control, out-of-time
+replication, agreement across leagues and a placebo-sky percentile ≥ 95. <em>Established</em> also requires the vault and a
+season of pre-registered predictions.</p>
+{% if not cx %}<p class="callout">No Codex yet. Run <code>python scripts/research.py all</code>.</p>{% else %}
+<section class="tiles">
+  <div class="tile"><div class="k">Codex version</div><div class="v sm">{{ cx.version }} {{ gate_badge(cx) }}</div><div class="s">{{ cx.generated_at }} · lattice {{ cx.lattice_version }}</div></div>
+  <div class="tile"><div class="k">Rules (provisional / candidate)</div><div class="v">{{ cx.rules|selectattr("status","equalto","provisional")|list|length }} / {{ cx.rules|selectattr("status","equalto","candidate")|list|length }}</div><div class="s">final model frame: {{ cx.final.frame }}</div></div>
+  <div class="tile"><div class="k">Placebo percentile</div><div class="v mono">{% if cx.placebo %}{{ "%.0f"|format(cx.placebo.percentile) }}%{% else %}—{% endif %}</div><div class="s">{% if cx.placebo %}of {{ cx.placebo.n }} placebo skies beaten by the real sky{% else %}placebo runs pending{% endif %}</div></div>
+  <div class="tile"><div class="k">Vault (2025/26 →, one-shot)</div><div class="v mono">{% if cx.vault %}{{ fmt_num(cx.vault.delta_rps_vs_m0.delta,5) }}{% else %}—{% endif %}</div><div class="s">{% if cx.vault %}ΔRPS, n={{ "{:,}".format(cx.vault.n) }}, accessed {{ cx.vault.accessed_at }}{% endif %}</div></div>
+</section>
+{% if cx.null_statement %}<section class="callout"><h2>Null result</h2><p>{{ cx.null_statement }}</p></section>{% endif %}
+{% if not cx.gate.engine4_in_synthesis %}<p class="note">Gate closed: {{ cx.gate.reasons|join("; ") }}.</p>{% endif %}
+
+<h2>Rules</h2>
+<div class="scroll"><table class="data">
+<thead><tr><th>Status</th><th>Rule</th><th class="num">Effect (pp)</th><th class="num">95% CI</th><th class="num">n</th><th class="num">q</th><th class="num">Stability</th><th class="num">Leagues</th><th class="num">Placebo pct</th></tr></thead>
+<tbody>{% for r in cx.rules %}
+<tr><td><span class="badge {{ 'ok' if r.status=='provisional' else 'muted' }}">{{ r.status }}</span></td>
+<td><a href="/codex/rule/{{ r.rule_key }}">{{ r.statement }}</a><div class="small">{{ r.family }}{% if r.structure %} · {{ r.structure }}{% endif %}</div></td>
+<td class="num">{{ fmt_num(r.effect_pp,2) }}</td><td class="num">{{ fmt_num(r.ci_low_pp,1) }} … {{ fmt_num(r.ci_high_pp,1) }}</td>
+<td class="num">{{ "{:,}".format(r.n_active) }}</td><td class="num">{{ "%.3f"|format(r.q_value) }}</td><td class="num">{{ "%.1f"|format(r.stability) }}</td>
+<td class="num">{{ r.leagues_consistent }}/{{ r.leagues_tested }}</td><td class="num">{{ "%.0f"|format(r.placebo_percentile) if r.placebo_percentile is not none else "—" }}</td></tr>
+{% else %}<tr><td colspan="9">The final model kept no astrological primitive: on held-out validation nothing beat the market.</td></tr>{% endfor %}
+</tbody></table></div>
+
+{% if ev and ev.structures %}
+<h2>Structural declarations — which zodiac and house system does the data prefer?</h2>
+<p class="note">Each row is a full walk-forward run restricted to that structure's primitives. Negative ΔRPS = better than the market model. Overlapping intervals that straddle zero mean <strong>no preference is demonstrated</strong>.</p>
+<table class="data"><thead><tr><th>Structure</th><th class="num">Primitives</th><th class="num">ΔRPS</th><th class="num">95% CI</th><th>Frames chosen per fold</th></tr></thead><tbody>
+{% for k, s in ev.structures.items() %}<tr><td>{{ k }}</td><td class="num">{{ s.n_features }}</td><td class="num">{{ fmt_num(s.delta_rps_vs_m0.delta,5) }}</td>
+<td class="num">{{ fmt_num(s.delta_rps_vs_m0.ci95[0],5) }} … {{ fmt_num(s.delta_rps_vs_m0.ci95[1],5) }}</td><td class="small">{{ s.frames|join(", ") }}</td></tr>{% endfor %}
+<tr><td>Team frame — negative control (coin-flip Lagna)</td><td class="num">all</td><td class="num">{{ fmt_num(ev.coin_control.delta_rps_vs_m0.delta,5) }}</td><td class="num">{{ fmt_num(ev.coin_control.delta_rps_vs_m0.ci95[0],5) }} … {{ fmt_num(ev.coin_control.delta_rps_vs_m0.ci95[1],5) }}</td><td></td></tr>
+</tbody></table>
+{% endif %}
+
+{% if placebo_svg %}<h2>Real sky vs placebo skies</h2><figure class="fig">{{ placebo_svg|safe }}<figcaption>Every placebo sky re-casts all {{ "{:,}".format(ev.n_matches) }} charts at a shifted time, date or place and re-runs the identical pipeline.</figcaption></figure>{% endif %}
+
+<h2>Doctrine Tribunal — the three books on trial</h2>
+<p class="note">Each classical testimony is a pre-registered hypothesis tested against market odds on {{ "{:,}".format(ev.engine4.engine4.n if ev else 0) }}+ pre-vault matches (Holm-corrected). “Hit rate” is how often the team the doctrine pointed to won; “market expected” is what the odds implied for those same matches.</p>
+<div class="scroll"><table class="data small">
+<thead><tr><th>Doctrine</th><th>Verdict</th><th class="num">Matches</th><th class="num">Hit rate</th><th class="num">Market expected</th><th class="num">Effect (pp)</th><th class="num">p (Holm)</th><th class="num">Vault β</th></tr></thead>
+<tbody>{% for t in trib %}
+<tr><td>{{ t.doctrine }}</td><td><span class="badge {{ 'ok' if t.verdict=='supported' else 'warn' if t.verdict=='reversed' else 'muted' }}">{{ t.verdict }}</span></td>
+<td class="num">{{ "{:,}".format(t.n_active) }}</td><td class="num">{{ fmt_pct(t.hit_rate) }}</td><td class="num">{{ fmt_pct(t.market_expected) }}</td>
+<td class="num">{{ fmt_num(t.effect_pp,2) }}</td><td class="num">{{ "%.3f"|format(t.p_holm) }}</td><td class="num">{{ fmt_num(t.vault_beta,3) if t.vault_beta is not none else "—" }}</td></tr>
+{% endfor %}</tbody></table></div>
+
+<h2>Strongest single primitives (exploratory)</h2>
+<table class="data small"><thead><tr><th>Primitive</th><th>Family</th><th class="num">z</th><th class="num">BH q</th><th class="num">Placebo sd of z</th><th class="num">Placebo pct</th></tr></thead><tbody>
+{% for t in cx.top_univariate %}<tr><td>{{ t.desc }}</td><td>{{ t.family }}</td><td class="num">{{ fmt_num(t.z,2) }}</td><td class="num">{{ "%.3f"|format(t.q_value) }}</td>
+<td class="num">{{ "%.2f"|format(t.placebo_sd) if t.placebo_sd is not none else "—" }}</td><td class="num">{{ "%.0f"|format(t.placebo_percentile) if t.placebo_percentile is not none else "—" }}</td></tr>{% endfor %}
+</tbody></table>
+<p class="note">These are the 25 largest |z| out of {{ "{:,}".format(ev.n_features) }} primitives, so some will look striking by chance alone: the largest of ~2,500 null z-scores is typically around 3.5. The <strong>BH q</strong> column corrects for that and is the number to trust. The placebo percentile is inflated by the same selection, because a primitive chosen for its extreme real z will usually beat its own placebo values. A placebo sd of z well above 1 means the primitive tracks the calendar (season, era or kickoff slot) rather than the sky.</p>
+{% endif %}
+{% endblock %}

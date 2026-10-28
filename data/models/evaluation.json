@@ -1,0 +1,396 @@
+{
+ "generated_at": "2026-10-27T19:21:06",
+ "lattice_version": "L-2026.1",
+ "n_matches": 107263,
+ "n_features": 2463,
+ "engine4": {
+  "market": {
+   "rps": 0.20421228323169313,
+   "logloss": 1.002851094091787,
+   "brier": 0.5997528008661407,
+   "accuracy": 0.5020147520830488,
+   "n": 58568
+  },
+  "m0": {
+   "rps": 0.20466566403449976,
+   "logloss": 1.0049428694336329,
+   "brier": 0.6010693802209544,
+   "accuracy": 0.5005805217866411,
+   "n": 58568
+  },
+  "engine4": {
+   "rps": 0.20466716243454539,
+   "logloss": 1.004948008513351,
+   "brier": 0.6010724672636667,
+   "accuracy": 0.5004780767654692,
+   "n": 58568
+  },
+  "delta_rps_vs_m0": {
+   "delta": 1.498400045624467e-06,
+   "ci95": [
+    -5.798398120518838e-07,
+    3.656777854911866e-06
+   ],
+   "p_model_better": 0.076
+  },
+  "delta_logloss_vs_m0": {
+   "delta": 5.139079718414123e-06,
+   "ci95": [
+    -1.3801696276201598e-06,
+    1.1529981084088673e-05
+   ],
+   "p_model_better": 0.053
+  },
+  "ece_engine4": 0.002893537292974923,
+  "ece_m0": 0.0027200879170642444,
+  "folds": [
+   {
+    "season": "2020/21",
+    "frame": "HOME",
+    "n_active": 1,
+    "frac": 0.9
+   },
+   {
+    "season": "2021/22",
+    "frame": "FAV",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2022/23",
+    "frame": "FAV",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2023/24",
+    "frame": "FAV",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2024/25",
+    "frame": "FAV",
+    "n_active": 0,
+    "frac": NaN
+   }
+  ]
+ },
+ "coin_control": {
+  "market": {
+   "rps": 0.20421228323169313,
+   "logloss": 1.002851094091787,
+   "brier": 0.5997528008661407,
+   "accuracy": 0.502134271274416,
+   "n": 58568
+  },
+  "m0": {
+   "rps": 0.20471184544087587,
+   "logloss": 1.0050620610477214,
+   "brier": 0.6011983790271117,
+   "accuracy": 0.5005122251058599,
+   "n": 58568
+  },
+  "engine4": {
+   "rps": 0.20471184544087587,
+   "logloss": 1.0050620610477214,
+   "brier": 0.6011983790271117,
+   "accuracy": 0.5005122251058599,
+   "n": 58568
+  },
+  "delta_rps_vs_m0": {
+   "delta": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "p_model_better": 0.0
+  },
+  "delta_logloss_vs_m0": {
+   "delta": 0.0,
+   "ci95": [
+    0.0,
+    0.0
+   ],
+   "p_model_better": 0.0
+  },
+  "ece_engine4": 0.002841099412649871,
+  "ece_m0": 0.002841099412649871,
+  "folds": [
+   {
+    "season": "2020/21",
+    "frame": "COIN",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2021/22",
+    "frame": "COIN",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2022/23",
+    "frame": "COIN",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2023/24",
+    "frame": "COIN",
+    "n_active": 0,
+    "frac": NaN
+   },
+   {
+    "season": "2024/25",
+    "frame": "COIN",
+    "n_active": 0,
+    "frac": NaN
+   }
+  ]
+ },
+ "classical_m1": {
+  "market": {
+   "rps": 0.20421228323169313,
+   "logloss": 1.002851094091787,
+   "brier": 0.5997528008661407,
+   "accuracy": 0.5019976779128534,
+   "n": 58568
+  },
+  "m0": {
+   "rps": 0.20458254659636635,
+   "logloss": 1.0046317912986678,
+   "brier": 0.6009013854456451,
+   "accuracy": 0.5005634476164459,
+   "n": 58568
+  },
+  "engine4": {
+   "rps": 0.20460360564011792,
+   "logloss": 1.004734044606986,
+   "brier": 0.6009645443118143,
+   "accuracy": 0.5003585575741019,
+   "n": 58568
+  },
+  "delta_rps_vs_m0": {
+   "delta": 2.1059043751567232e-05,
+   "ci95": [
+    -2.4957636424152887e-06,
+    4.592354232796391e-05
+   ],
+   "p_model_better": 0.046
+  },
+  "delta_logloss_vs_m0": {
+   "delta": 0.00010225330831809741,
+   "ci95": [
+    -2.8073687722541997e-05,
+    0.00022964886479052564
+   ],
+   "p_model_better": 0.07
+  },
+  "ece_engine4": 0.003772349150423175,
+  "ece_m0": 0.003920508692753826,
+  "folds": [
+   {
+    "season": "2020/21",
+    "frame": "FAV",
+    "n_active": 11,
+    "frac": NaN
+   },
+   {
+    "season": "2021/22",
+    "frame": "FAV",
+    "n_active": 11,
+    "frac": NaN
+   },
+   {
+    "season": "2022/23",
+    "frame": "FAV",
+    "n_active": 11,
+    "frac": NaN
+   },
+   {
+    "season": "2023/24",
+    "frame": "FAV",
+    "n_active": 11,
+    "frac": NaN
+   },
+   {
+    "season": "2024/25",
+    "frame": "FAV",
+    "n_active": 11,
+    "frac": NaN
+   }
+  ]
+ },
+ "engine_accuracy": {
+  "Rao": {
+   "accuracy": 0.3295276584996211,
+   "n": 98975,
+   "picks_favourite": 0.3369133619600909,
+   "picks_draw": 0.20574892649659005
+  },
+  "Chokoisky": {
+   "accuracy": 0.32898206617832787,
+   "n": 98975,
+   "picks_favourite": 0.3362768375852488,
+   "picks_draw": 0.16966910836069715
+  },
+  "Frawley": {
+   "accuracy": 0.3843269013418819,
+   "n": 97326,
+   "picks_favourite": 0.549524279226517,
+   "picks_draw": 0.052637527484947495
+  },
+  "Always favourite": {
+   "accuracy": 0.5030361202323819,
+   "n": 98975,
+   "picks_favourite": 1.0,
+   "picks_draw": 0.0
+  },
+  "Market (most likely outcome)": {
+   "accuracy": 0.5031371558474362,
+   "n": 98975,
+   "picks_favourite": 0.9986461227582722,
+   "picks_draw": 0.001353877241727709
+  }
+ },
+ "tribunal_summary": {
+  "chokoisky": {
+   "not supported": 38
+  },
+  "frawley": {
+   "not supported": 30
+  },
+  "rao": {
+   "not supported": 6
+  }
+ },
+ "structures": {
+  "zodiac:tropical": {
+   "n_features": 1753,
+   "delta_rps_vs_m0": {
+    "delta": 9.723593882011475e-06,
+    "ci95": [
+     -2.9168850299083537e-06,
+     2.205616957352921e-05
+    ],
+    "p_model_better": 0.079
+   },
+   "frames": [
+    "HOME",
+    "HOME",
+    "FAV",
+    "HOME",
+    "FAV"
+   ]
+  },
+  "zodiac:lahiri": {
+   "n_features": 1778,
+   "delta_rps_vs_m0": {
+    "delta": 2.119245122331738e-05,
+    "ci95": [
+     -1.8130535265541767e-05,
+     6.0489122229042605e-05
+    ],
+    "p_model_better": 0.16
+   },
+   "frames": [
+    "FAV",
+    "FAV",
+    "FAV",
+    "FAV",
+    "FAV"
+   ]
+  },
+  "houses:placidus": {
+   "n_features": 1076,
+   "delta_rps_vs_m0": {
+    "delta": 1.4287983981705282e-05,
+    "ci95": [
+     -6.008083665281739e-06,
+     3.334454389895054e-05
+    ],
+    "p_model_better": 0.072
+   },
+   "frames": [
+    "HOME",
+    "HOME",
+    "FAV",
+    "FAV",
+    "FAV"
+   ]
+  },
+  "houses:equal": {
+   "n_features": 1078,
+   "delta_rps_vs_m0": {
+    "delta": 2.7820707177505344e-05,
+    "ci95": [
+     3.4062544893978835e-07,
+     5.388619702461337e-05
+    ],
+    "p_model_better": 0.024
+   },
+   "frames": [
+    "HOME",
+    "HOME",
+    "FAV",
+    "FAV",
+    "FAV"
+   ]
+  },
+  "houses:regiomontanus": {
+   "n_features": 1078,
+   "delta_rps_vs_m0": {
+    "delta": 1.4704604943977233e-06,
+    "ci95": [
+     -8.918526758190314e-07,
+     3.906933733310042e-06
+    ],
+    "p_model_better": 0.121
+   },
+   "frames": [
+    "HOME",
+    "HOME",
+    "FAV",
+    "FAV",
+    "FAV"
+   ]
+  },
+  "houses:campanus": {
+   "n_features": 1078,
+   "delta_rps_vs_m0": {
+    "delta": 1.6222912457776432e-05,
+    "ci95": [
+     -1.447028935623079e-05,
+     4.795276164362256e-05
+    ],
+    "p_model_better": 0.161
+   },
+   "frames": [
+    "FAV",
+    "HOME",
+    "FAV",
+    "FAV",
+    "FAV"
+   ]
+  },
+  "houses:whole_sign": {
+   "n_features": 1221,
+   "delta_rps_vs_m0": {
+    "delta": 5.563182978173881e-06,
+    "ci95": [
+     -8.349253580216439e-06,
+     1.765261679845227e-05
+    ],
+    "p_model_better": 0.241
+   },
+   "frames": [
+    "FAV",
+    "HOME",
+    "FAV",
+    "FAV",
+    "FAV"
+   ]
+  }
+ }
+}

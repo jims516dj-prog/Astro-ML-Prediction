@@ -1,0 +1,15 @@
+[
+ {
+  "version": "v1",
+  "trained_at": "2026-10-27T20:54:03",
+  "delta_rps": 1.498400045624467e-06,
+  "ci95": [
+   -5.798398120518838e-07,
+   3.656777854911866e-06
+  ],
+  "placebo_percentile": 76.19047619047619,
+  "gate_open": false,
+  "n_rules": 0,
+  "n_provisional": 0
+ }
+]

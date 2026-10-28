@@ -1,0 +1,5 @@
+{% macro gate_badge(cx) -%}
+{% if not cx %}<span class="badge muted">Not trained yet</span>
+{% elif cx.gate.engine4_in_synthesis %}<span class="badge ok">Provisional edge</span>
+{% else %}<span class="badge warn">No demonstrated edge</span>{% endif %}
+{%- endmacro %}

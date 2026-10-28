@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}Analyze · Astro Football Lab{% endblock %}
+{% block body %}
+<h1>{{ "Add a historical match" if historical else "Analyze a match" }}</h1>
+<form method="post" action="/analyze" class="form" id="f">
+  <input type="hidden" name="mode" value="{{ 'historical' if historical else 'pending' }}">
+  <fieldset><legend>Core match</legend>
+    <div class="grid2">
+      <label>Team A<input name="team_a" required placeholder="Manchester United"></label>
+      <label>Team B<input name="team_b" required placeholder="Bayern Munich"></label>
+      <label>Kickoff (GMT/UTC)<input type="datetime-local" name="kickoff_utc" required value="{{ now }}"></label>
+      <label>Kickoff precision
+        <select name="time_precision"><option value="T1_actual">Actual (±2 min)</option><option value="T2_scheduled" selected>Scheduled</option></select></label>
+      <label>Match context
+        <select name="context"><option value="league">League (draw possible)</option><option value="friendly">Friendly</option><option value="knockout">Knockout</option><option value="final">Final</option></select></label>
+      <label>Home side
+        <select name="home_side"><option value="A">Team A</option><option value="B">Team B</option><option value="neutral">Neutral venue</option></select></label>
+    </div>
+  </fieldset>
+  <fieldset><legend>Venue</legend>
+    <div class="row"><input name="venue" id="venue" placeholder="Stadium or city, e.g. Camp Nou"><button type="button" class="btn ghost" id="lookup">Look up</button></div>
+    <div class="grid2">
+      <label>Latitude<input name="lat" id="lat" inputmode="decimal"></label>
+      <label>Longitude<input name="lon" id="lon" inputmode="decimal"></label>
+    </div>
+    <input type="hidden" name="loc_source" id="loc_source">
+    <p class="note" id="vnote">Lookup order: saved venues → Wikipedia → OpenStreetMap → offline stadium/city tables. Editing the fields marks a manual override.</p>
+  </fieldset>
+  <fieldset><legend>Betting odds (decimal) — determine favourite and market baseline</legend>
+    <div class="grid3">
+      <label>Team A<input name="odds_a" required inputmode="decimal" placeholder="1.85"></label>
+      <label>Draw<input name="odds_d" inputmode="decimal" placeholder="3.60"></label>
+      <label>Team B<input name="odds_b" required inputmode="decimal" placeholder="4.20"></label>
+      <label>Odds source<input name="odds_source" placeholder="bookmaker / exchange"></label>
+      <label>Odds type<select name="odds_type"><option value="closing">Closing</option><option value="opening">Opening</option><option value="other" selected>Other</option></select></label>
+    </div>
+    <p class="note">Equal odds (within ±0.05) disable Frawley's engine. Engine 4 needs draw odds.</p>
+  </fieldset>
+  <details class="fs"><summary>Team founding charts (Rao's Nations' Charts step)</summary>
+    <div class="grid3">
+      <label>Team A founded (UTC)<input type="datetime-local" name="found_a_dt"></label>
+      <label>Lat<input name="found_a_lat"></label><label>Lon<input name="found_a_lon"></label>
+      <label>Team B founded (UTC)<input type="datetime-local" name="found_b_dt"></label>
+      <label>Lat<input name="found_b_lat"></label><label>Lon<input name="found_b_lon"></label>
+    </div>
+  </details>
+  <details class="fs"><summary><label class="inline"><input type="checkbox" name="use_captain" value="1"> Include captains &amp; jersey configuration</label></summary>
+    <p class="note">Usually unavailable until shortly before kickoff. Without it Rao runs without the Planetary Influence layer.</p>
+    <div class="grid2">
+      <label>Captain A jersey #<input name="a_jersey" inputmode="numeric"></label>
+      <label>Captain B jersey #<input name="b_jersey" inputmode="numeric"></label>
+      <label>Team A jersey colour<select name="a_color"><option></option>{% for c in JERSEY_COLORS %}<option>{{ c }}</option>{% endfor %}</select></label>
+      <label>Team B jersey colour<select name="b_color"><option></option>{% for c in JERSEY_COLORS %}<option>{{ c }}</option>{% endfor %}</select></label>
+    </div>
+  </details>
+  {% if historical %}
+  <fieldset><legend>Final score (90 minutes)</legend>
+    <div class="grid3">
+      <label>Team A<input name="score_a" required inputmode="numeric"></label>
+      <label>Team B<input name="score_b" required inputmode="numeric"></label>
+      <label>Status<select name="status"><option value="completed">Completed</option><option value="abandoned">Abandoned</option><option value="walkover">Walkover</option></select></label>
+    </div>
+    <label>Notes<input name="notes" placeholder="Red card 65', rain delay…"></label>
+    <p class="note">Post-hoc analysis: the result is known, so this record is tagged <code>post_hoc</code> and down-weighted in training.</p>
+  </fieldset>
+  {% endif %}
+  <button class="btn" type="submit">{{ "Analyze as historical (with scoreline)" if historical else "Analyze & save as pending" }}</button>
+</form>
+<script>
+const $ = id => document.getElementById(id);
+$("lookup").onclick = async () => {
+  $("vnote").textContent = "Looking up…";
+  const r = await fetch("/api/venue?q=" + encodeURIComponent($("venue").value)).then(r => r.json());
+  if (r.lat !== null) { $("lat").value = r.lat.toFixed(5); $("lon").value = r.lon.toFixed(5); $("loc_source").value = r.source; }
+  $("vnote").textContent = (r.lat !== null ? `From ${r.source}: ${r.label}. ` : "") + r.notes.join(" · ");
+};
+["lat","lon"].forEach(id => $(id).addEventListener("input", () => { $("loc_source").value = "manual"; $("vnote").textContent = "Manual override."; }));
+</script>
+{% endblock %}

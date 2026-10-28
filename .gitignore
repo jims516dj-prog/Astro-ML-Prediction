@@ -1,0 +1,10 @@
+.venv/
+__pycache__/
+.pytest_cache/
+# Re-downloadable source data (./fetch_data.sh)
+data/raw/
+# Regenerable intermediates (scripts/research.py prepare / evaluate)
+data/work/skies/
+data/work/oof_*.pkl
+# Local user database (matches you enter, prediction ledger)
+data/app.sqlite3

@@ -1,0 +1,50 @@
+{% extends "base.html" %}{% from "_badge.html" import gate_badge %}
+{% block title %}ML dashboard · Astro Football Lab{% endblock %}
+{% block body %}
+<h1>ML dashboard</h1>
+{% if not ev %}<p class="callout">No evaluation yet. Run <code>python scripts/research.py all</code> (or the buttons below).</p>{% else %}
+<section class="tiles">
+  <div class="tile"><div class="k">Out-of-sample matches</div><div class="v">{{ "{:,}".format(ev.engine4.engine4.n) }}</div><div class="s">walk-forward 2020/21–2024/25 · {{ "{:,}".format(ev.n_features) }} primitives</div></div>
+  <div class="tile"><div class="k">Engine 4 gate</div><div class="v sm">{{ gate_badge(cx) }}</div><div class="s">{% if cx %}{{ cx.gate.reasons|join("; ") or "all criteria met" }}{% endif %}</div></div>
+  <div class="tile"><div class="k">Calibration error (ECE)</div><div class="v mono">{{ "%.4f"|format(ev.engine4.ece_engine4) }}</div><div class="s">market model {{ "%.4f"|format(ev.engine4.ece_m0) }}</div></div>
+  <div class="tile"><div class="k">Live ledger record</div><div class="v">{{ track.get("synthesis", {}).get("n", 0) }}</div><div class="s">completed matches predicted before kickoff</div></div>
+</section>
+
+<h2>Walk-forward scores (lower RPS / log loss is better)</h2>
+<table class="data"><thead><tr><th>Model</th><th class="num">RPS</th><th class="num">Log loss</th><th class="num">Brier</th><th class="num">Accuracy</th><th class="num">ΔRPS vs M0</th><th class="num">95% CI</th></tr></thead><tbody>
+<tr><td>Raw market odds (de-vigged)</td><td class="num">{{ "%.5f"|format(ev.engine4.market.rps) }}</td><td class="num">{{ "%.5f"|format(ev.engine4.market.logloss) }}</td><td class="num">{{ "%.5f"|format(ev.engine4.market.brier) }}</td><td class="num">{{ fmt_pct(ev.engine4.market.accuracy,2) }}</td><td></td><td></td></tr>
+<tr><td>M0 market + controls</td><td class="num">{{ "%.5f"|format(ev.engine4.m0.rps) }}</td><td class="num">{{ "%.5f"|format(ev.engine4.m0.logloss) }}</td><td class="num">{{ "%.5f"|format(ev.engine4.m0.brier) }}</td><td class="num">{{ fmt_pct(ev.engine4.m0.accuracy,2) }}</td><td class="num">0</td><td></td></tr>
+{% for label, s in [("M1 classical engines re-weighted", ev.classical_m1), ("Engine 4 (Emergent Codex)", ev.engine4), ("Engine 4, coin-flip frame (negative control)", ev.coin_control)] %}
+<tr><td>{{ label }}</td><td class="num">{{ "%.5f"|format(s.engine4.rps) }}</td><td class="num">{{ "%.5f"|format(s.engine4.logloss) }}</td><td class="num">{{ "%.5f"|format(s.engine4.brier) }}</td><td class="num">{{ fmt_pct(s.engine4.accuracy,2) }}</td>
+<td class="num">{{ fmt_num(s.delta_rps_vs_m0.delta,6) }}</td><td class="num">{{ fmt_num(s.delta_rps_vs_m0.ci95[0],6) }} … {{ fmt_num(s.delta_rps_vs_m0.ci95[1],6) }}</td></tr>
+{% endfor %}
+</tbody></table>
+
+<h2>Per-fold selections (inner validation chooses frame and L1 strength)</h2>
+<table class="data small"><thead><tr><th>Test season</th><th>Frame</th><th class="num">Active primitives</th><th class="num">λ / λmax</th></tr></thead><tbody>
+{% for f in ev.engine4.folds %}<tr><td>{{ f.season }}</td><td>{{ f.frame }}</td><td class="num">{{ f.n_active }}</td><td class="num">{{ f.frac if f.frac == f.frac and f.frac is not none else "null model" }}</td></tr>{% endfor %}</tbody></table>
+
+<section class="two rel">
+{% for k, label in [("engine4","Engine 4"),("m1","M1 classical")] %}{% if rel[k] %}
+<figure class="fig">{{ rel[k]|safe }}<figcaption>Reliability — {{ label }}: predicted probability of the chosen outcome vs observed frequency</figcaption></figure>
+{% endif %}{% endfor %}
+</section>
+
+<h2>Prospective ledger (pre-kickoff predictions, completed matches)</h2>
+{% if track %}<table class="data"><thead><tr><th>Engine</th><th class="num">n</th><th class="num">Accuracy</th><th class="num">Log loss</th></tr></thead><tbody>
+{% for e, t in track.items() %}<tr><td>{{ e }}</td><td class="num">{{ t.n }}</td><td class="num">{{ fmt_pct(t.accuracy) }}</td><td class="num">{{ "%.3f"|format(t.logloss) if t.logloss is not none else "—" }}</td></tr>{% endfor %}
+</tbody></table>{% else %}<p class="note">No completed matches with pre-kickoff predictions yet. Analyze upcoming matches, then enter their results.</p>{% endif %}
+
+<h2>Model history</h2>
+<table class="data small"><thead><tr><th>Version</th><th>Trained</th><th class="num">ΔRPS</th><th class="num">Placebo pct</th><th>Gate</th><th class="num">Rules (provisional)</th></tr></thead><tbody>
+{% for h in hist|reverse %}<tr><td>{{ h.version }}</td><td>{{ h.trained_at }}</td><td class="num">{{ fmt_num(h.delta_rps,6) }}</td><td class="num">{{ "%.0f"|format(h.placebo_percentile) if h.placebo_percentile is not none else "—" }}</td><td>{{ "open" if h.gate_open else "closed" }}</td><td class="num">{{ h.n_rules }} ({{ h.n_provisional }})</td></tr>{% endfor %}
+</tbody></table>
+{% endif %}
+<h2>Training controls</h2>
+<form method="post" action="/ml/retrain" class="row">
+  <button class="btn" name="stage" value="codex">Refit Codex &amp; gate (minutes)</button>
+  <button class="btn ghost" name="stage" value="evaluate">Re-run walk-forward evaluation (~30 min)</button>
+</form>
+<p class="note">Placebo skies: <code>python scripts/research.py placebo --k 10</code> (≈3 min per sky). The vault is evaluated once per lattice version and never re-run.</p>
+{% if log %}<details><summary>Research log (tail)</summary><pre class="log">{{ log }}</pre></details>{% endif %}
+{% endblock %}

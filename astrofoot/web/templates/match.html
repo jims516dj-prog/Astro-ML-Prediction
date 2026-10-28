@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+{% block title %}{{ r.team_a }} v {{ r.team_b }} · Astro Football Lab{% endblock %}
+{% set S = a.synthesis %}{% set E4 = a.engine4 %}
+{% set name = {"fav": a.fav, "dog": a.dog, "draw": "Draw", "disabled": "— disabled —"} %}
+{% block body %}
+<p class="crumbs"><a href="/dataset">Dataset</a> › match record</p>
+<h1>{{ r.team_a }} <span class="v">v</span> {{ r.team_b }}</h1>
+<p class="meta">{{ r.kickoff_utc[:16].replace("T"," ") }} UTC · UK {{ a.kickoff_local_uk }} · {{ r.venue or "venue" }} ({{ "%.3f"|format(r.lat) }}, {{ "%.3f"|format(r.lon) }}, {{ r.loc_source }})
+· favourite: <strong>{{ a.fav }}</strong> · status: <span class="badge {{ 'ok' if r.status=='completed' else 'muted' }}">{{ r.status }}</span>
+{% if r.score_a is not none %} · result <strong>{{ r.score_a }}–{{ r.score_b }}</strong>{% endif %}
+{% if r.post_hoc %} · <span class="badge warn">post-hoc</span>{% endif %}{% if r.stale_analysis %} · <span class="badge warn">stale analysis</span>{% endif %}</p>
+
+{% if r.post_hoc %}<p class="callout small">Post-hoc analysis: the result was already known when this record was created. Inputs may be biased by that knowledge; the record is down-weighted in training.</p>{% endif %}
+
+<section class="outlook">
+  <h2>Overall outlook</h2>
+  <div class="outlook-grid">
+    <div>
+      <div class="k">Most likely (probability source: {{ S.probability_source }})</div>
+      <div class="big">{{ S.most_likely }} <span class="mono">{{ fmt_pct(S.most_likely_p) }}</span></div>
+      <div class="probbar" aria-label="probabilities">
+        <span class="pf" style="width:{{ 100*S.probabilities.fav }}%">{{ a.fav }} {{ fmt_pct(S.probabilities.fav,0) }}</span>
+        <span class="pd" style="width:{{ 100*S.probabilities.draw }}%">D {{ fmt_pct(S.probabilities.draw,0) }}</span>
+        <span class="pg" style="width:{{ 100*S.probabilities.dog }}%">{{ a.dog }} {{ fmt_pct(S.probabilities.dog,0) }}</span>
+      </div>
+    </div>
+    <div>
+      <div class="k">Classical consensus</div><div>{{ S.consensus }}</div>
+      <div class="k">Classical consensus strength (heuristic, not a probability)</div><div class="mono">{{ S.classical_strength }}/100</div>
+      {% if S.goal_range %}<div class="k">Goal range across engines</div><div>{{ S.goal_range }}</div>{% endif %}
+      {% if S.late_goal %}<div class="k">Frawley late-goal indicator</div><div>Moon's final aspect completes late in its range</div>{% endif %}
+    </div>
+  </div>
+
+  <div class="scroll"><table class="data cmp">
+    <thead><tr><th>Methodology</th><th>Predicted</th><th>Score (fav–dog)</th><th>Confidence</th><th>Key testimonies</th></tr></thead>
+    <tbody>
+      <tr><td><span class="dot mk"></span>Market (de-vigged odds)</td><td>{{ a.fav }} {{ fmt_pct(a.market.p_fav,0) }} · D {{ fmt_pct(a.market.p_draw,0) }} · {{ a.dog }} {{ fmt_pct(a.market.p_dog,0) }}</td><td>—</td><td>—</td><td>Baseline every learned model must beat</td></tr>
+      {% for k, label, cls in [("rao","Rao — Inclusive Methodology","rao"),("chokoisky","Chokoisky — Gambler's Dharma","cho"),("frawley","Frawley — Event Chart","fra")] %}
+      {% set v = a.verdicts[k] %}
+      <tr><td><span class="dot {{ cls }}"></span>{{ label }}</td><td>{{ name[v.winner] }}</td>
+        <td class="mono">{% if v.goals_fav is not none %}{{ v.goals_fav }}–{{ v.goals_dog }}{% else %}—{% endif %}</td>
+        <td>{{ v.confidence }}</td>
+        <td class="small">{% for t in (v.testimonies|sort(attribute="points", reverse=True))[:3] %}{{ t.text }}{% if not loop.last %}; {% endif %}{% endfor %}</td></tr>
+      {% endfor %}
+      <tr><td><span class="dot e4"></span>Engine 4 — Emergent Codex</td>
+        {% if E4 %}<td>{{ a.fav }} {{ fmt_pct(E4.p_fav,0) }} · D {{ fmt_pct(E4.p_draw,0) }} · {{ a.dog }} {{ fmt_pct(E4.p_dog,0) }}</td><td>—</td>
+        <td>{% if E4.gate.engine4_in_synthesis %}<span class="badge ok">gate open</span>{% else %}<span class="badge warn">no demonstrated edge</span>{% endif %}</td>
+        <td class="small">frame {{ E4.frame }}; Δ vs market model: {{ fmt_num(100*(E4.p_fav-E4.m0_fav),2) }} pp favourite</td>
+        {% else %}<td colspan="4" class="small">Not available (needs a trained model and draw odds)</td>{% endif %}</tr>
+    </tbody>
+  </table></div>
+  {% if a.guardrails %}<div class="cautions"><h3>Cautions</h3><ul>{% for g in a.guardrails %}<li>{{ g }}</li>{% endfor %}
+    {% for k,v in a.verdicts.items() %}{% for c in v.caveats %}<li>{{ k|capitalize }}: {{ c }}</li>{% endfor %}{% endfor %}</ul></div>
+  {% else %}<div class="cautions"><h3>Cautions</h3><ul>{% for k,v in a.verdicts.items() %}{% for c in v.caveats %}<li>{{ k|capitalize }}: {{ c }}</li>{% endfor %}{% endfor %}</ul></div>{% endif %}
+</section>
+
+{% if E4 %}
+<section class="card e4">
+  <h2>Engine 4 · Emergent Codex <span class="small">{{ E4.version }}</span></h2>
+  {% if not E4.gate.engine4_in_synthesis %}
+  <p class="callout small">The gate is closed: {{ E4.gate.reasons|join("; ") }}. Engine 4's probabilities are shown for research but carry no weight in the synthesis.</p>
+  {% endif %}
+  {% if E4.contributions %}
+  <table class="data"><thead><tr><th>Primitive active in this chart</th><th class="num">Shift (team1 log-odds)</th></tr></thead><tbody>
+  {% for c in E4.contributions %}<tr><td>{{ c.desc }}</td><td class="num">{{ fmt_num(c.team1_logodds,3) }}</td></tr>{% endfor %}
+  </tbody></table>
+  {% else %}<p>No learned primitive is active for this chart: Engine 4 equals the market-based control model.</p>{% endif %}
+</section>
+{% endif %}
+
+<section class="engines">
+{% for k, label, book, cls in [("rao","Engine 1 · Rao","Sports Astrology: The Inclusive Methodology (2017) — sidereal Lahiri, whole-sign, favourite as Lagna","rao"),
+  ("chokoisky","Engine 2 · Chokoisky","Gambler's Dharma (2017) — sidereal Lahiri, Placidus, D1 + D9, KP sublords","cho"),
+  ("frawley","Engine 3 · Frawley","Sports Astrology (2007) — tropical, Placidus, Lords 1/10 v 7/4","fra")] %}
+{% set v = a.verdicts[k] %}
+<details class="card {{ cls }}" {% if loop.first %}open{% endif %}>
+  <summary><strong>{{ label }}</strong> — {{ name[v.winner] }} <span class="small">(net {{ v.net }})</span></summary>
+  <p class="small">{{ book }}</p>
+  {% if v.table and k=="rao" %}
+  <table class="data"><thead><tr><th>Parameter</th><th class="num">{{ a.fav }}</th><th class="num">{{ a.dog }}</th><th>Notes</th></tr></thead><tbody>
+  {% for t in v.table %}<tr><td>{{ t.parameter }}</td><td class="num">{{ t.fav if t.fav is not none else "skipped" }}</td><td class="num">{{ t.dog if t.dog is not none else "skipped" }}</td><td class="small">{{ t.notes or "" }}</td></tr>{% endfor %}
+  <tr class="tot"><td>Total</td><td class="num">{{ v.score_fav }}</td><td class="num">{{ v.score_dog }}</td><td></td></tr>
+  </tbody></table>
+  {% else %}
+  <table class="data"><thead><tr><th>Testimony</th><th>For</th><th class="num">Points</th></tr></thead><tbody>
+  {% for t in v.testimonies %}<tr><td>{{ t.text }}</td><td>{{ name[t.side] }}</td><td class="num">{{ t.points }}</td></tr>{% else %}<tr><td colspan="3">No testimonies.</td></tr>{% endfor %}
+  <tr class="tot"><td>Net (favourite − underdog)</td><td></td><td class="num">{{ v.net }}</td></tr>
+  </tbody></table>
+  {% endif %}
+</details>
+{% endfor %}
+</section>
+
+<section class="wheels">
+  <figure>{{ wheels.tropical|safe }}<figcaption>Tropical · Placidus (Frawley) — Asc {{ a.chart.tropical.asc }}, MC {{ a.chart.tropical.mc }}</figcaption></figure>
+  <figure>{{ wheels.lahiri|safe }}<figcaption>Sidereal Lahiri · Whole Sign (Rao) — Asc {{ a.chart.lahiri.asc }}</figcaption></figure>
+</section>
+
+<section class="two">
+  <div class="card">
+    <h2>{{ "Enter result" if r.status == "pending" else "Result" }}</h2>
+    {% if r.status == "pending" %}
+    <form method="post" action="/match/{{ r.id }}/result" class="form">
+      <div class="grid3"><label>{{ r.team_a }}<input name="score_a" required inputmode="numeric"></label>
+      <label>{{ r.team_b }}<input name="score_b" required inputmode="numeric"></label>
+      <label>Status<select name="status"><option value="completed">Completed</option><option value="abandoned">Abandoned</option><option value="walkover">Walkover</option></select></label></div>
+      <label>Notes<input name="notes"></label><button class="btn">Save result</button></form>
+    {% else %}<p>{{ r.score_a }}–{{ r.score_b }} ({{ r.status }}). Completed records are locked; corrections need an admin reason below.</p>{% endif %}
+  </div>
+  <div class="card">
+    <h2>Edit inputs</h2>
+    <form method="post" action="/match/{{ r.id }}/edit" class="form">
+      <div class="grid2">
+        <label>Kickoff UTC<input type="datetime-local" name="kickoff_utc" value="{{ r.kickoff_utc[:16] }}"></label>
+        <label>Venue<input name="venue" value="{{ r.venue or '' }}"></label>
+        <label>Lat<input name="lat" value="{{ r.lat }}"></label><label>Lon<input name="lon" value="{{ r.lon }}"></label>
+        <label>Odds A<input name="odds_a" value="{{ r.odds_a }}"></label><label>Odds B<input name="odds_b" value="{{ r.odds_b }}"></label>
+        <label>Draw odds<input name="odds_d" value="{{ r.odds_d or '' }}"></label><label>Notes<input name="notes" value="{{ r.notes or '' }}"></label>
+        {% if r.status != "pending" %}<label>Score A<input name="score_a" value="{{ r.score_a }}"></label><label>Score B<input name="score_b" value="{{ r.score_b }}"></label>
+        <label class="span2">Admin correction reason (required to change a completed scoreline)<input name="admin_reason"></label>{% endif %}
+      </div>
+      <p class="note">Chart inputs changed? Re-run keeps the old analysis as a version; saving without re-run marks the analysis stale.</p>
+      <div class="row"><button class="btn" name="action" value="rerun">Save &amp; re-run engines</button><button class="btn ghost" name="action" value="save">Save without re-run</button></div>
+    </form>
+    <form method="post" action="/match/{{ r.id }}/delete" onsubmit="return confirm('Soft-delete this record? It stays in the audit trail.')"><button class="btn danger small">Soft delete</button></form>
+  </div>
+</section>
+
+<section class="two">
+  <div class="card"><h2>Prediction ledger</h2>
+    <table class="data small"><thead><tr><th>Engine</th><th>Committed (UTC)</th><th>Before kickoff</th><th>SHA-256</th></tr></thead><tbody>
+    {% for p in preds %}<tr><td>{{ p.engine }}</td><td class="mono">{{ p.created_at[:19] }}</td><td>{{ "yes" if p.committed_before_kickoff else "no" }}</td><td class="mono" title="{{ p.payload_json }}">{{ p.sha256[:16] }}…</td></tr>{% endfor %}
+    </tbody></table></div>
+  <div class="card"><h2>Edit timeline</h2>
+    {% if audit %}<table class="data small"><thead><tr><th>When</th><th>Field</th><th>Old</th><th>New</th></tr></thead><tbody>
+    {% for e in audit %}<tr><td class="mono">{{ e.edited_at[:19] }}</td><td>{{ e.field }}</td><td>{{ e.old_value }}</td><td>{{ e.new_value }}</td></tr>{% endfor %}
+    </tbody></table>{% else %}<p class="note">No edits yet.</p>{% endif %}
+    {% if versions %}<p class="note">{{ versions|length }} earlier analysis version(s) preserved.</p>{% endif %}
+  </div>
+</section>
+{% endblock %}

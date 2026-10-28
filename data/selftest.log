@@ -1,0 +1,4 @@
+[signal effect=0.4] ΔRPS -0.000059 CI -0.000085..-0.000036; recovered=True; kept 1: ['Z.lahiri.Ma.sign.0']
+[signal] PASS
+[null effect=0] ΔRPS +0.000006 CI -0.000015..+0.000028; recovered=False; kept 0: []
+[null] PASS

@@ -1,0 +1,40 @@
+{% extends "base.html" %}{% from "_badge.html" import gate_badge %}
+{% block body %}
+<section class="hero">
+  <h1>A research instrument for sports astrology</h1>
+  <p class="lede">Three classical methods — Rao, Chokoisky, Frawley — run side by side. A fourth system, the
+  <em>Emergent Codex</em>, is learned from {{ "{:,}".format(stats.imported) }} real matches and is only allowed to speak when it beats
+  market odds out of sample <em>and</em> beats charts cast for the wrong moment (placebo skies).</p>
+  <div class="cta"><a class="btn" href="/analyze">Analyze a match</a><a class="btn ghost" href="/analyze?historical=1">Add a historical match</a></div>
+</section>
+
+<section class="tiles">
+  <div class="tile"><div class="k">Matches in research corpus</div><div class="v">{{ "{:,}".format(stats.imported) }}</div><div class="s">{{ stats.leagues }} leagues · {{ stats.seasons }}</div></div>
+  <div class="tile"><div class="k">Engine 4 status</div><div class="v sm">{{ gate_badge(cx) }}</div>
+    <div class="s">{% if cx %}{{ cx.version }} · lattice {{ cx.lattice_version }}{% else %}run scripts/research.py{% endif %}</div></div>
+  <div class="tile"><div class="k">Walk-forward ΔRPS vs market model</div>
+    <div class="v mono">{% if ev %}{{ fmt_num(ev.engine4.delta_rps_vs_m0.delta, 5) }}{% else %}—{% endif %}</div>
+    <div class="s">{% if ev %}95% CI {{ fmt_num(ev.engine4.delta_rps_vs_m0.ci95[0],5) }} to {{ fmt_num(ev.engine4.delta_rps_vs_m0.ci95[1],5) }} · negative = better{% endif %}</div></div>
+  <div class="tile"><div class="k">Your matches / prospective ledger</div><div class="v">{{ stats.user }} / {{ stats.ledger }}</div><div class="s">{{ stats.pending }} pending result</div></div>
+</section>
+
+{% if cx and cx.null_statement %}
+<section class="callout"><h2>Current finding</h2><p>{{ cx.null_statement }}</p></section>
+{% endif %}
+
+{% if ev %}
+<section>
+  <h2>How the systems compare (pre-vault seasons, favourite frame)</h2>
+  <table class="data">
+    <thead><tr><th>System</th><th class="num">Accuracy</th><th class="num">Picks favourite</th><th class="num">Picks draw</th><th class="num">n</th></tr></thead>
+    <tbody>
+    {% for name, r in ev.engine_accuracy.items() %}
+      <tr><td>{{ name }}</td><td class="num">{{ fmt_pct(r.accuracy) }}</td><td class="num">{{ fmt_pct(r.picks_favourite) }}</td><td class="num">{{ fmt_pct(r.picks_draw) }}</td><td class="num">{{ "{:,}".format(r.n) }}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <p class="note">Accuracy alone is a weak test: always backing the favourite already gets about half right. The Codex and
+  ML pages judge every system by what it adds <em>beyond</em> market odds.</p>
+</section>
+{% endif %}
+{% endblock %}
