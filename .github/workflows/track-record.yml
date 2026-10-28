@@ -17,10 +17,10 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.13"
+          python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
-      - run: ./fetch_data.sh live
+      - run: python scripts/fetch_data.py --live
       - run: python scripts/live.py cycle
       - name: Push ledger
         run: |

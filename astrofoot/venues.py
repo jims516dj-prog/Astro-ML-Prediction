@@ -44,11 +44,15 @@ def nominatim(name: str):
 
 
 def offline(name: str):
+    if not (RAW / "stadiums.csv").exists():      # tables not downloaded: python scripts/fetch_data.py --live
+        return None
     s = pd.read_csv(RAW / "stadiums.csv", encoding="latin-1")
     key = geo.norm(name)
     for r in s.itertuples():
         if key in (geo.norm(r.Stadium), geo.norm(r.Team), geo.norm(str(r.FDCOUK))):
             return float(r.Latitude), float(r.Longitude), f"{str(r.Stadium).strip()} ({str(r.City).strip()})"
+    if not (RAW / "csv-cities.csv.gz").exists():
+        return None
     c = geo.cities()
     hit = c[c.key == key]
     if len(hit):

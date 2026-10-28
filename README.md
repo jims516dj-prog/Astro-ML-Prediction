@@ -7,22 +7,59 @@ charts cast for the wrong moment (placebo skies).
 
 > For astrological research and educational purposes only. Not a betting tool. See the banner in the app.
 
-## Quick start
+## Install and run the app (Windows, macOS, Linux)
+
+The trained model and results are already in the repository, so you only need to install and start the
+app. Retraining is optional (see *Rebuild the research* below).
+
+**1. Install Python 3.11.** Use 3.11: the astronomy library (pyswisseph) ships ready-made installers only
+up to 3.11, so newer Pythons would need a C compiler.
+- Windows: download "Python 3.11" from https://www.python.org/downloads/windows/ and tick
+  **"Add python.exe to PATH"** on the first installer screen.
+- macOS: download "Python 3.11" from https://www.python.org/downloads/macos/.
+
+**2. Get the code.** The repository is private, so sign in to GitHub first. Then either
+- click **Code → Download ZIP** on the repository page and unzip it, or
+- `git clone https://github.com/jims516dj-prog/Astro-ML-Prediction.git` (asks you to sign in).
+
+**3. Open a terminal in the project folder.** On Windows, open the unzipped folder in File Explorer,
+click the address bar, type `cmd` and press Enter. On macOS, open Terminal, type `cd ` and drag the folder in.
+
+**4. Install, one time (2–5 minutes):**
+
+| Windows (Command Prompt) | macOS / Linux |
+|---|---|
+| `py -3.11 -m venv .venv` | `python3.11 -m venv .venv` |
+| `.venv\Scripts\pip install -r requirements.txt` | `.venv/bin/pip install -r requirements.txt` |
+| `.venv\Scripts\python scripts\fetch_data.py --live` | `.venv/bin/python scripts/fetch_data.py --live` |
+
+**5. Start the app, every time:**
+
+| Windows | macOS / Linux |
+|---|---|
+| `.venv\Scripts\python -m uvicorn astrofoot.web.app:app` | `.venv/bin/python -m uvicorn astrofoot.web.app:app` |
+
+Open **http://localhost:8000**. Leave the terminal window open while you use the app, and press Ctrl+C to stop it.
+
+**Troubleshooting**
+- *"py is not recognized"* or *"python3.11: command not found"*: Python 3.11 isn't installed, or wasn't added to PATH. Re-run the installer.
+- *pip tries to compile pyswisseph / "Microsoft Visual C++ required"*: the venv uses a Python newer than 3.11.
+  Delete the `.venv` folder and repeat step 4 with 3.11.
+- *Port 8000 already in use*: add `--port 8001` and open http://localhost:8001.
+- *Venue lookup finds nothing*: type the latitude and longitude yourself (any map site shows them).
+
+## Rebuild the research (optional, hours)
 
 ```sh
-python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-./fetch_data.sh                                   # ~65 MB of public source data -> data/raw
-.venv/bin/python scripts/research.py prepare      # dataset, real sky, classical engines   (~2 min)
-.venv/bin/python scripts/research.py evaluate     # walk-forward, controls, Tribunal, structures (~25 min)
-.venv/bin/python scripts/research.py placebo --k 10   # 30 placebo skies, identical pipeline (~1.5 h)
-.venv/bin/python scripts/research.py codex        # final fit, Codex, one-shot vault, gate, model artifact
-.venv/bin/uvicorn astrofoot.web.app:app --port 8000
+python scripts/fetch_data.py                      # ~65 MB of public source data -> data/raw
+python scripts/research.py prepare                # dataset, real sky, classical engines   (~2 min)
+python scripts/research.py evaluate               # walk-forward, controls, Tribunal, structures (~25 min)
+python scripts/research.py placebo --k 10         # 30 placebo skies, identical pipeline (~1.5 h)
+python scripts/research.py codex                  # final fit, Codex, one-shot vault, gate, model artifact
 ```
 
-Then open http://localhost:8000.
-
-Tests: `.venv/bin/python -m pytest tests` (fast unit tests) and
-`.venv/bin/python scripts/ml_selftest.py both` (planted-signal recovery and null test on the real lattice, ~10 min).
+(Use the venv's python, as in step 5.) Tests: `python -m pytest tests` (fast unit tests) and
+`python scripts/ml_selftest.py both` (planted-signal recovery and null test on the real lattice, ~10 min).
 
 ## What is in the box
 
@@ -60,7 +97,7 @@ The backtest can only show that nothing *was* predictable. A live record shows w
 forecasts for real upcoming matches, committed before kickoff and scored afterwards.
 
 ```sh
-./fetch_data.sh live                 # venue tables only, if data/raw is missing
+python scripts/fetch_data.py --live  # venue tables only, if data/raw is missing
 python scripts/live.py cycle         # settle finished matches, forecast the next 4 days, rebuild the report
 git add ledger && git commit -m "ledger" && git push     # before the earliest kickoff
 python scripts/live.py verify        # re-check every record's SHA-256

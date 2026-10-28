@@ -8,7 +8,7 @@ from astrofoot import live
 from astrofoot.config import RAW
 
 needs_venues = pytest.mark.skipif(not (RAW / "stadiums.csv").exists(),
-                                  reason="venue tables missing: run ./fetch_data.sh live")
+                                  reason="venue tables missing: run python scripts/fetch_data.py --live")
 
 CSV = (b"\xef\xbb\xbfDiv,Date,Time,HomeTeam,AwayTeam,B365H,B365D,B365A,B365>2.5,B365<2.5\n"
        b"E0,08/11/2026,15:00,Arsenal,Chelsea,1.80,3.80,4.40,1.70,2.20\n"
