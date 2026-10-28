@@ -2,8 +2,13 @@ import json
 from datetime import datetime, timezone
 
 import pandas as pd
+import pytest
 
 from astrofoot import live
+from astrofoot.config import RAW
+
+needs_venues = pytest.mark.skipif(not (RAW / "stadiums.csv").exists(),
+                                  reason="venue tables missing: run ./fetch_data.sh live")
 
 CSV = (b"\xef\xbb\xbfDiv,Date,Time,HomeTeam,AwayTeam,B365H,B365D,B365A,B365>2.5,B365<2.5\n"
        b"E0,08/11/2026,15:00,Arsenal,Chelsea,1.80,3.80,4.40,1.70,2.20\n"
@@ -33,6 +38,7 @@ def test_seal_detects_tampering():
     assert not live.verify(rec)
 
 
+@needs_venues
 def test_commit_settle_report_roundtrip(tmp_path):
     fx = live.parse_fixtures(live.read_csv_bytes(CSV))
     now = datetime(2026, 11, 6, 12, tzinfo=timezone.utc)
@@ -46,6 +52,7 @@ def test_commit_settle_report_roundtrip(tmp_path):
     assert rep["engines"]["market"]["n"] == 1
 
 
+@needs_venues
 def test_late_predictions_do_not_count(tmp_path):
     fx = live.parse_fixtures(live.read_csv_bytes(CSV))
     rec = live.predict_fixture(fx[0], datetime(2026, 11, 6, tzinfo=timezone.utc))
