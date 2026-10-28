@@ -17,7 +17,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, service, venues
+from .. import db, live, service, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..tables import JERSEY_COLOR_PLANET
 from .svg import chart_wheel, orb_svg, placebo_svg, reliability_svg
@@ -347,6 +347,21 @@ def retrain(stage: str = Form("codex")):
     with open(DATA / "research.log", "a") as fh:
         subprocess.Popen(cmd, stdout=fh, stderr=subprocess.STDOUT, cwd=ROOT)
     return RedirectResponse("/ml", status_code=303)
+
+
+@app.get("/live", response_class=HTMLResponse)
+def live_page(request: Request):
+    preds, results = live.read_predictions(), live.read_results()
+    rep = live.report() if preds else None
+    rows = []
+    for r in sorted(preds, key=lambda r: r["kickoff_utc"], reverse=True):
+        res = results.get(r["match_key"])
+        out = None
+        if res:
+            out = ["fav", "draw", "dog"][live._outcome(r, res)]
+        rows.append({**r, "result": res, "outcome": out, "verified": live.verify(r),
+                     "pre_kickoff": r["committed_at"] < r["kickoff_utc"]})
+    return T.TemplateResponse(request, "live.html", {"rows": rows, "rep": rep, "page": "live"})
 
 
 @app.get("/api/venue")

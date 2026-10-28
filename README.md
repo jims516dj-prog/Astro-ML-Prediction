@@ -54,6 +54,28 @@ Tests: `.venv/bin/python -m pytest tests` (fast unit tests) and
 - **Tables to verify against the books** (marked `VERIFY` in `tables.py`): Rao's node friendships and the
   108-syllable table (standard Avakahada chakra is used).
 
+## Live track record
+
+The backtest can only show that nothing *was* predictable. A live record shows whether anything *is*:
+forecasts for real upcoming matches, committed before kickoff and scored afterwards.
+
+```sh
+./fetch_data.sh live                 # venue tables only, if data/raw is missing
+python scripts/live.py cycle         # settle finished matches, forecast the next 4 days, rebuild the report
+git add ledger && git commit -m "ledger" && git push     # before the earliest kickoff
+python scripts/live.py verify        # re-check every record's SHA-256
+```
+
+- Source: football-data.co.uk `fixtures.csv` (Bet365 odds first, the same bookmaker as the training data)
+  and its season results files. The host must be reachable from wherever this runs.
+- `ledger/predictions/*.jsonl` and `ledger/results.jsonl` are append-only. Each record is sealed with a
+  SHA-256 of its contents, and anything committed after kickoff is excluded from scoring.
+- `ledger/TRACK_RECORD.md` scores Engine 4 and the synthesis against the market (RPS, log loss, CI once n ≥ 30),
+  and each classical engine's hit rate against what the odds implied for the same picks.
+- `.github/workflows/track-record.yml` runs the cycle twice a day and pushes the ledger. GitHub schedules
+  workflows only on a repository's default branch, so it activates once the project has its own repo.
+- The app's **Live record** page shows the same ledger (`ASTRO_LEDGER=path` points it elsewhere).
+
 ## Findings (lattice L-2026.1, model v1)
 
 - **No astrological edge.** Across 58,568 out-of-sample matches, Engine 4 did not improve on the market-based

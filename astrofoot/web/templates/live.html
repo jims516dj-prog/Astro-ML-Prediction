@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Live record · Astro Football Lab{% endblock %}
+{% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
+{% block body %}
+<h1>Live track record</h1>
+<p class="lede">Forecasts for real upcoming matches, committed to the git ledger <em>before kickoff</em> and sealed with a
+SHA-256. Unlike the historical backtest, these are a test the model cannot have been tuned on.</p>
+{% if not rep %}
+<p class="callout">The ledger is empty. Run <code>python scripts/live.py cycle</code> (needs access to www.football-data.co.uk),
+then commit and push <code>ledger/</code> before the earliest kickoff.</p>
+{% else %}
+<section class="tiles">
+  <div class="tile"><div class="k">Settled / pending</div><div class="v">{{ rep.settled }} / {{ rep.pending }}</div><div class="s">only pre-kickoff forecasts count</div></div>
+  <div class="tile"><div class="k">Integrity</div><div class="v sm">{{ rep.integrity.hash_ok }}/{{ rep.integrity.records }} sealed records verify</div><div class="s">{{ rep.integrity.late }} excluded as late</div></div>
+  {% set e4 = rep.engines.get("engine4") %}{% set mk = rep.engines.get("market") %}
+  <div class="tile"><div class="k">RPS: Engine 4 vs market</div><div class="v mono">{% if e4 and mk %}{{ "%.4f"|format(e4.rps) }} / {{ "%.4f"|format(mk.rps) }}{% else %}—{% endif %}</div>
+    <div class="s">{% if e4 and e4.delta_rps_vs_market %}ΔRPS {{ fmt_num(e4.delta_rps_vs_market.delta,5) }} [{{ fmt_num(e4.delta_rps_vs_market.ci95[0],5) }}, {{ fmt_num(e4.delta_rps_vs_market.ci95[1],5) }}]{% else %}CI shown from 30 settled matches{% endif %}</div></div>
+</section>
+{% if rep.settled %}
+<h2>Classical verdicts vs the market</h2>
+<table class="data"><thead><tr><th>Engine</th><th class="num">n</th><th class="num">Hit rate</th><th class="num">Market expected</th><th class="num">Lift (pp) ± 1 SE</th></tr></thead><tbody>
+{% for k in ["rao","chokoisky","frawley"] %}{% set e = rep.engines.get(k) %}{% if e and e.n %}
+<tr><td>{{ k|capitalize }}</td><td class="num">{{ e.n }}</td><td class="num">{{ fmt_pct(e.accuracy) }}</td><td class="num">{{ fmt_pct(e.market_expected) }}</td><td class="num">{{ fmt_num(e.lift_pp,1) }} ± {{ "%.1f"|format(e.lift_se_pp) }}</td></tr>
+{% endif %}{% endfor %}</tbody></table>
+<p class="note">Lift compares each engine's hit rate with what the odds implied for the very same picks. With small samples, ±1 SE is wide; read nothing into it until n is in the hundreds.</p>
+{% endif %}
+{% endif %}
+
+<h2>Forecasts</h2>
+<div class="scroll"><table class="data small">
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Favourite</th><th class="num">Market F/D/U</th><th class="num">Engine 4 F/D/U</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th>Result</th><th>Seal</th></tr></thead>
+<tbody>{% for r in rows %}{% set p = r.predictions %}
+<tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td>{{ r.division }}</td><td>{{ r.home }} v {{ r.away }}</td><td>{{ r.favourite }}</td>
+<td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td>
+<td class="num">{% if p.engine4 %}{{ fmt_pct(p.engine4.fav,0) }}/{{ fmt_pct(p.engine4.draw,0) }}/{{ fmt_pct(p.engine4.dog,0) }}{% else %}—{% endif %}</td>
+{% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ W[p[k].winner] }}</td>{% endfor %}
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ W[r.outcome] }}){% else %}pending{% endif %}</td>
+<td class="mono" title="committed {{ r.committed_at }} · sha256 {{ r.sha256 }}">{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}</td></tr>
+{% else %}<tr><td colspan="11">No forecasts yet.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

@@ -89,9 +89,10 @@ def engine4(art, jd, lat, lon, frame_inputs: dict) -> dict | None:
             "contributions": contrib[:8], "gate": art["gate"], "version": art["version"]}
 
 
-def _controls(odds, t1_home: bool, kickoff: datetime, p_over25=None) -> dict:
+def _controls(odds, t1_home: bool, kickoff: datetime, p_over25=None, division=None) -> dict:
     p = devig(np.array([odds]))[0]
-    return {"lp1": np.log(p[0]), "lpd": np.log(p[1]), "lp2": np.log(p[2]),
+    league = {f"lg_{division}": 1.0} if division else {}
+    return {**league, "lp1": np.log(p[0]), "lpd": np.log(p[1]), "lp2": np.log(p[2]),
             "over25": p_over25 if p_over25 else 0.53, "over25_missing": 0.0 if p_over25 else 1.0,
             "overround": float((1 / np.array(odds)).sum() - 1), "t1_home": float(t1_home), "elo_diff": 0.0,
             "form_diff": 0.0, "year": (kickoff.year - 2020) / 5, f"mon_{kickoff.month}": 1.0,
@@ -150,7 +151,8 @@ def analyse(inp: dict) -> dict:
             t1_is_a = fav_is_a if fr == "FAV" else (home_a if home_known else True)
             odds = [oa, float(od), ob] if t1_is_a else [ob, float(od), oa]
             t1_home = (t1_is_a == home_a) and home_known
-            frame_inputs[fr] = {"controls": _controls(odds, t1_home, ko), "t1_is_fav": t1_is_a == fav_is_a}
+            frame_inputs[fr] = {"controls": _controls(odds, t1_home, ko, inp.get("p_over25"), inp.get("division")),
+                                "t1_is_fav": t1_is_a == fav_is_a}
         e4 = engine4(art, jd, inp["lat"], inp["lon"], frame_inputs)
 
     v_trop, v_sid = View(rc, "tropical", "placidus"), View(rc, "lahiri", "whole_sign")

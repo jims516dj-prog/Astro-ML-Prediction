@@ -119,3 +119,4 @@ code { font-family: var(--mono); font-size: .88em; background: var(--muted-bg); 
   h1 { font-size: 1.35rem; }
 }
 .two.rel .fig svg { max-width: 300px; margin: 0 auto; }
+.ok-txt { color: var(--ok); font-weight: 600; }
