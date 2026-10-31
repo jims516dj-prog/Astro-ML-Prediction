@@ -8,7 +8,8 @@
     <div class="grid2">
       <label>Team A<input name="team_a" required placeholder="Manchester United"></label>
       <label>Team B<input name="team_b" required placeholder="Bayern Munich"></label>
-      <label>Kickoff (GMT/UTC)<input type="datetime-local" name="kickoff_utc" required value="{{ now }}"></label>
+      <label>Kickoff (GMT/UTC)<input type="datetime-local" name="kickoff_utc" id="ko" required value="{{ now }}">
+        <span class="note" id="kolocal">Enter the venue to see the local kickoff time.</span></label>
       <label>Kickoff precision
         <select name="time_precision"><option value="T1_actual">Actual (±2 min)</option><option value="T2_scheduled" selected>Scheduled</option></select></label>
       <label>Match context
@@ -73,7 +74,17 @@ $("lookup").onclick = async () => {
   const r = await fetch("/api/venue?q=" + encodeURIComponent($("venue").value)).then(r => r.json());
   if (r.lat !== null) { $("lat").value = r.lat.toFixed(5); $("lon").value = r.lon.toFixed(5); $("loc_source").value = r.source; }
   $("vnote").textContent = (r.lat !== null ? `From ${r.source}: ${r.label}. ` : "") + r.notes.join(" · ");
+  localPreview();
 };
 ["lat","lon"].forEach(id => $(id).addEventListener("input", () => { $("loc_source").value = "manual"; $("vnote").textContent = "Manual override."; }));
+async function localPreview() {
+  const lat = $("lat").value, lon = $("lon").value, utc = $("ko").value;
+  if (!lat || !lon || !utc) return;
+  const r = await fetch(`/api/localtime?lat=${lat}&lon=${lon}&utc=${encodeURIComponent(utc)}`).then(r => r.ok ? r.json() : null);
+  $("kolocal").textContent = r && r.local ? `Local at venue: ${r.local} (${r.timezone}, UTC${r.utc_offset.slice(0,3)}:${r.utc_offset.slice(3)})`
+                                         : "Local time unavailable (venue tables not downloaded).";
+}
+["lat","lon","ko"].forEach(id => $(id).addEventListener("change", localPreview));
+
 </script>
 {% endblock %}

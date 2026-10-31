@@ -364,6 +364,22 @@ def live_page(request: Request):
     return T.TemplateResponse(request, "live.html", {"rows": rows, "rep": rep, "page": "live"})
 
 
+@app.get("/api/localtime")
+def api_localtime(lat: float, lon: float, utc: str):
+    """Live preview for the Analyze form: kickoff in the venue's local time."""
+    from zoneinfo import ZoneInfo
+    from .. import geo
+    tz = geo.timezone_at(lat, lon)
+    try:
+        ko = datetime.fromisoformat(utc).replace(tzinfo=timezone.utc)
+    except ValueError:
+        raise HTTPException(400, "utc must be YYYY-MM-DDTHH:MM")
+    if tz is None:
+        return {"timezone": None, "local": None}
+    loc = ko.astimezone(ZoneInfo(tz))
+    return {"timezone": tz, "local": loc.strftime("%a %d %b %Y, %H:%M"), "utc_offset": loc.strftime("%z")}
+
+
 @app.get("/api/venue")
 def api_venue(q: str):
     return venues.lookup(q, con())

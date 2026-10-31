@@ -5,7 +5,7 @@
 {% block body %}
 <p class="crumbs"><a href="/dataset">Dataset</a> › match record</p>
 <h1>{{ r.team_a }} <span class="v">v</span> {{ r.team_b }}</h1>
-<p class="meta">{{ r.kickoff_utc[:16].replace("T"," ") }} UTC · UK {{ a.kickoff_local_uk }} · {{ r.venue or "venue" }} ({{ "%.3f"|format(r.lat) }}, {{ "%.3f"|format(r.lon) }}, {{ r.loc_source }})
+<p class="meta">{{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %} · UK {{ a.kickoff_local_uk }} · {{ r.venue or "venue" }} ({{ "%.3f"|format(r.lat) }}, {{ "%.3f"|format(r.lon) }}, {{ r.loc_source }})
 · favourite: <strong>{{ a.fav }}</strong> · status: <span class="badge {{ 'ok' if r.status=='completed' else 'muted' }}">{{ r.status }}</span>
 {% if r.score_a is not none %} · result <strong>{{ r.score_a }}–{{ r.score_b }}</strong>{% endif %}
 {% if r.post_hoc %} · <span class="badge warn">post-hoc</span>{% endif %}{% if r.stale_analysis %} · <span class="badge warn">stale analysis</span>{% endif %}</p>

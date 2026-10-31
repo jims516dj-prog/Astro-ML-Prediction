@@ -4,6 +4,7 @@ import numpy as np
 import pytest
 
 from astrofoot import db, ephem, models
+from astrofoot.config import RAW as RAW_DIR
 from astrofoot.dataset import devig
 from astrofoot.engines import chokoisky, frawley, rao
 from astrofoot.engines.common import View, within_after, within_before
@@ -129,3 +130,18 @@ def test_screening_ignores_barely_seen_primitives():
     lp = np.log(np.tile([0.45, 0.27, 0.28], (n, 1)))
     y = rng.integers(0, 3, n)
     assert models.score_vector(X, y, lp)[1] == 0.0
+
+
+@pytest.mark.skipif(not (RAW_DIR / "csv-cities.csv.gz").exists(), reason="run python scripts/fetch_data.py --live")
+def test_rao_numerology_uses_the_venue_local_date():
+    # 00:30 UTC on Sunday 1 Nov 2026 is 21:30 on Saturday 31 Oct in Sao Paulo (UTC-3).
+    from astrofoot import service
+    a = service.analyse({"team_a": "Corinthians", "team_b": "Santos", "kickoff_utc": "2026-11-01T00:30:00+00:00",
+                         "lat": -23.545, "lon": -46.474, "odds_a": 1.9, "odds_d": 3.4, "odds_b": 4.2,
+                         "home_side": "A", "context": "league",
+                         "captain": {"a_jersey": 7, "b_jersey": 9, "a_color": "white", "b_color": "black"}})
+    assert a["venue_timezone"] == "America/Sao_Paulo"
+    assert a["kickoff_local_venue"] == "Sat 2026-10-31 21:30"
+    notes = next(r["notes"] for r in a["verdicts"]["rao"]["table"] if r["parameter"] == "Planetary influence")
+    assert "day Sa" in notes and "day Su" not in notes     # Saturday's lord (local), not Sunday's (UTC)
+    assert "date Ra" in notes and "date Su" not in notes   # day 31 -> 3+1 = 4 -> Rahu; UTC day 1 -> Sun

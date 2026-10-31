@@ -2,12 +2,13 @@
 from __future__ import annotations
 
 from datetime import datetime, timezone
+from zoneinfo import ZoneInfo
 
 import joblib
 import numpy as np
 import pandas as pd
 
-from . import ephem, lattice, models
+from . import ephem, geo, lattice, models
 from . import sky as skymod
 from .config import MODELS
 from .dataset import devig
@@ -101,7 +102,6 @@ def _controls(odds, t1_home: bool, kickoff: datetime, p_over25=None, division=No
 
 
 def _uk():
-    from zoneinfo import ZoneInfo
     return ZoneInfo("Europe/London")
 
 
@@ -137,7 +137,15 @@ def analyse(inp: dict) -> dict:
                "dog_jersey": cap.get("b_jersey") if fav_is_a else cap.get("a_jersey"),
                "fav_color": cap.get("a_color") if fav_is_a else cap.get("b_color"),
                "dog_color": cap.get("b_color") if fav_is_a else cap.get("a_color")}
-    v_rao = rao.analyse(rc, draw_possible=draw_possible, when=ko, natal_fav=nat_fav, natal_dog=nat_dog, captain=cap)
+    # Rao's numerology reads the match's calendar date and weekday *at the venue*, which can differ from
+    # the UTC date (evening games in the Americas, morning games in Asia). The chart itself needs no
+    # conversion: it is cast from the UTC instant and the venue's coordinates.
+    tz = geo.timezone_at(inp["lat"], inp["lon"])
+    ko_local = ko.astimezone(ZoneInfo(tz)) if tz else ko
+    v_rao = rao.analyse(rc, draw_possible=draw_possible, when=ko_local, natal_fav=nat_fav, natal_dog=nat_dog,
+                        captain=cap)
+    if cap and not tz:
+        v_rao.caveats.append("Venue timezone unknown (run scripts/fetch_data.py --live): numerology used the UTC date.")
     v_cho = chokoisky.analyse(rc, fav, dog, draw_possible=draw_possible)
     v_fra = frawley.analyse(rc, draw_possible=draw_possible, extra_time=not draw_possible, equal_odds=equal_odds)
 
@@ -162,6 +170,8 @@ def analyse(inp: dict) -> dict:
         "draw_possible": draw_possible, "equal_odds": equal_odds, "market": market, "verdicts": verdicts,
         "engine4": e4, "guardrails": _guardrails(rc, v_trop, v_sid), "chart": _chart_summary(rc),
         "kickoff_local_uk": ko.astimezone(_uk()).strftime("%Y-%m-%d %H:%M"),
+        "venue_timezone": tz,
+        "kickoff_local_venue": ko_local.strftime("%a %Y-%m-%d %H:%M") if tz else None,
     }
     out["synthesis"] = synthesise(out)
     return out

@@ -14,6 +14,7 @@ import re
 import unicodedata
 from functools import lru_cache
 
+import numpy as np
 import pandas as pd
 
 from .config import RAW, REF
@@ -106,3 +107,26 @@ def resolve(team: str, division: str):
         if ll:
             return (*ll, "city")
     return None
+
+
+@lru_cache(maxsize=1)
+def _tz_index():
+    c = cities()
+    c = c[c.timezone.notna()]
+    lat, lon = np.radians(c.latitude.to_numpy(float)), np.radians(c.longitude.to_numpy(float))
+    return np.column_stack([np.cos(lat) * np.cos(lon), np.cos(lat) * np.sin(lon), np.sin(lat)]), c.timezone.to_numpy()
+
+
+def timezone_at(lat: float, lon: float) -> str | None:
+    """IANA timezone of the nearest known city (None if the cities table is not downloaded).
+
+    Nearest-city is exact away from borders and good to within a few km of them, which
+    is ample for a stadium: it is used for the local date/weekday and display, never for
+    the chart itself (the chart is cast from the UTC instant and the coordinates).
+    """
+    if not (RAW / "csv-cities.csv.gz").exists():
+        return None
+    xyz, tz = _tz_index()
+    la, lo = np.radians(lat), np.radians(lon)
+    p = np.array([np.cos(la) * np.cos(lo), np.cos(la) * np.sin(lo), np.sin(la)])
+    return str(tz[int(np.argmax(xyz @ p))])
