@@ -1,11 +1,11 @@
-# Live track record: twice a day, settle finished matches, commit forecasts for matches in the
+# Live track record: three times a day, settle finished matches, commit forecasts for matches in the
 # next 4 days, rebuild ledger/TRACK_RECORD.md, and push the ledger. Pushing *before kickoff* is
 # what makes each forecast verifiable. GitHub runs scheduled workflows only on the repository's
 # default branch.
 name: live-track-record
 on:
   schedule:
-    - cron: "17 5,11 * * *"
+    - cron: "17 5,11,17 * * *"   # GitHub may delay or drop scheduled runs under load; three slots keep a margin
   workflow_dispatch: {}
 permissions:
   contents: write
