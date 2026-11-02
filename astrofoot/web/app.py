@@ -379,8 +379,7 @@ def api_teams(q: str):
     for c in cands:
         ok, why = foundings.usable(c)
         c["usable"], c["why_not"] = ok, why
-    return {"candidates": cands, "auto": next((c for c in cands if c["match"] in ("exact", "alias")), None),
-            "table_loaded": len(foundings.table()) > 0}
+    return {"candidates": cands, "auto": foundings.best(q, con()), "table_loaded": len(foundings.table()) > 0}
 
 
 @app.get("/api/localtime")

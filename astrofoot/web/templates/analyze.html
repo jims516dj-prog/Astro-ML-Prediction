@@ -152,7 +152,8 @@ async function lookupTeam(side) {
   found[side].cands = r.candidates;
   pick.innerHTML = "";
   const none = document.createElement("option");
-  none.value = ""; none.textContent = r.candidates.length ? "— none (leave empty / enter manually) —"
+  none.value = ""; none.textContent = r.candidates.length
+    ? (r.auto ? "— none (leave empty / enter manually) —" : `— ${r.candidates.length} possible matches: pick the right team —`)
     : (r.table_loaded ? "no match found: enter manually" : "founding table not downloaded: enter manually");
   pick.appendChild(none);
   r.candidates.forEach((c, i) => {

@@ -41,10 +41,19 @@ def test_build_rows_places_aliases_and_nation():
     assert mu["aliases"] == "Man United" and mu["country"] == "United Kingdom" and mu["founded_time"] == ""
     nt = rows[("Brazil national football team", "national_team")]
     assert nt["place"] == "Rio de Janeiro" and nt["country"] == "Brazil"
-    na = rows[("Brazil national football team", "nation")]
+    na = rows[("Brazil", "nation")]                       # findable by the country's own name
     assert (na["founded_date"], na["place"], na["source"]) == ("1822-09-07", "Brasília", "wikidata:Q155")
+    assert "Brazil national football team" in na["aliases"].split("|")
 
 
 def test_precision_mapping():
     assert ff.date_of("+1900-00-00T00:00:00Z", "9") == ("1900-00-00", "year")
     assert ff.date_of("1878-03-05T00:00:00Z", "11") == ("1878-03-05", "day")
+
+
+def test_infobox_founded_formats():
+    assert ff.infobox_founded("| founded = {{Start date and age|1878|3|5|df=y}}, as Newton Heath") == (1878, 3, 5)
+    assert ff.infobox_founded("|founded= 1 December 1886; as Dial Square") == (1886, 12, 1)
+    assert ff.infobox_founded("| founded = March 10, 1905") == (1905, 3, 10)
+    assert ff.infobox_founded("| founded = 1892") is None
+    assert ff.infobox_founded("no infobox here") is None

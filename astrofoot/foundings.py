@@ -27,7 +27,8 @@ _STRIP = {"fc", "cf", "afc", "sc", "ac", "the", "club", "football", "futbol", "f
 
 
 def _key(s: str) -> str:
-    return " ".join(t for t in geo.norm(s).split() if t not in _STRIP)
+    # "Liverpool F.C." -> "liverpool"; dots removed first so F.C./A.F.C. become fc/afc and are dropped
+    return " ".join(t for t in geo.norm(str(s).replace(".", "")).split() if t not in _STRIP)
 
 
 @lru_cache(maxsize=1)
@@ -45,7 +46,8 @@ def _from_table(r) -> dict:
             "founded_date": r.founded_date, "date_precision": r.date_precision,
             "founded_time": r.founded_time or None, "place": r.place,
             "lat": float(r.lat) if r.lat else None, "lon": float(r.lon) if r.lon else None,
-            "country": r.country, "source": r.source}
+            "country": r.country, "source": r.source, "sitelinks": int(r.sitelinks or 0) if hasattr(r, "sitelinks") else 0,
+            "date_source": getattr(r, "date_source", "") or "wikidata"}
 
 
 def search(q: str, con=None, limit: int = 8) -> list[dict]:
@@ -77,16 +79,27 @@ def search(q: str, con=None, limit: int = 8) -> list[dict]:
                 if (r.team, r.kind) not in seen:
                     out.append({**_from_table(r), "match": "close"})
                     seen.add((r.team, r.kind))
-    order = {"manual": 0, "club": 1, "nation": 2, "national_team": 3}
-    rank = {"exact": 0, "alias": 1, "close": 2}
-    out.sort(key=lambda o: (rank[o["match"]], order.get(o["kind"], 9)))
+    # Your saved charts first; then name matches (exact and alias alike) by prominence = number of
+    # Wikipedia language editions, so "Arsenal" finds Arsenal F.C. before Arsenal of Maseru.
+    tier = {"manual": 0}
+    rank = {"exact": 1, "alias": 1, "close": 2}
+    out.sort(key=lambda o: (tier.get(o["kind"], rank[o["match"]]), -int(o.get("sitelinks") or 0),
+                            {"nation": 0, "club": 1, "national_team": 2}.get(o["kind"], 3)))
     return out[:limit]
 
 
+DOMINANCE = 3.0   # auto-fill only if the top name match has this many times the next one's prominence
+
+
 def best(q: str, con=None) -> dict | None:
-    """The record to auto-fill, or None when nothing matches confidently."""
-    c = search(q, con, limit=3)
-    return c[0] if c and c[0]["match"] in ("exact", "alias") else None
+    """The record to auto-fill, or None when the name is ambiguous (the form then offers a dropdown)."""
+    c = [x for x in search(q, con, limit=5) if x["match"] in ("exact", "alias")]
+    if not c:
+        return None
+    if c[0]["kind"] == "manual" or len(c) == 1:
+        return c[0]
+    top, nxt = int(c[0].get("sitelinks") or 0), int(c[1].get("sitelinks") or 0)
+    return c[0] if top >= DOMINANCE * max(nxt, 1) else None
 
 
 def usable(rec: dict) -> tuple[bool, str]:

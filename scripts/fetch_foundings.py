@@ -33,7 +33,11 @@ UA = "astro-football-research/1.0 (https://github.com/jims516dj-prog/Astro-ML-Pr
 PRECISION = {9: "year", 10: "month", 11: "day"}
 PLACE_PROPS = ("P740", "P159", "P115", "P131")
 FIELDS = ["team", "kind", "founded_date", "date_precision", "founded_time", "place", "lat", "lon",
-          "country", "aliases", "source"]
+          "country", "aliases", "sitelinks", "source", "date_source"]
+WIKI = "https://en.wikipedia.org/w/api.php"
+ENRICH_TOP = 8000          # clubs (by sitelinks) whose year/month-only date we try to refine from Wikipedia
+MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
+                                       "september", "october", "november", "december"], 1)}
 
 CLUBS = """SELECT ?item ?inc ?pr WHERE {
   ?item wdt:P31 wd:Q476028 ; p:P571/psv:P571 ?tv .
@@ -74,7 +78,7 @@ def qid(uri: str) -> str:
     return uri.rsplit("/", 1)[-1] if uri else ""
 
 
-def entities(ids: set[str], props: str = "labels|aliases|claims") -> dict[str, dict]:
+def entities(ids: set[str], props: str = "labels|aliases|claims|sitelinks") -> dict[str, dict]:
     out, ids = {}, sorted(i for i in ids if i)
     for k in range(0, len(ids), 50):
         batch = ids[k:k + 50]
@@ -85,6 +89,14 @@ def entities(ids: set[str], props: str = "labels|aliases|claims") -> dict[str, d
             print(f"  entities {k}/{len(ids)}", flush=True)
         time.sleep(0.2)
     return out
+
+
+def sitelinks(e: dict) -> int:
+    return len(e.get("sitelinks", {}))
+
+
+def enwiki(e: dict) -> str:
+    return (e.get("sitelinks", {}).get("enwiki") or {}).get("title", "")
 
 
 def label(e: dict | None) -> str:
@@ -137,6 +149,7 @@ def build_rows(clubs: list[dict], national: list[dict], fetch=entities) -> list[
         return "", "", ""
 
     rows, seen = [], set()
+    nations: dict[str, dict] = {}
     for r, kind in [(r, "club") for r in clubs] + [(r, "national_team") for r in national]:
         i = qid(r["item"])
         e = ents.get(i, {})
@@ -148,17 +161,71 @@ def build_rows(clubs: list[dict], national: list[dict], fetch=entities) -> list[
             seen.add((i, kind))
             pl, lat, lon = place_of(e)
             rows.append(dict(zip(FIELDS, [label(e) or i, kind, d, p, "", pl, lat, lon, country, aliases(e),
-                                          f"wikidata:{i}"])))
+                                          sitelinks(e), f"wikidata:{i}", "wikidata"])))
+            rows[-1]["_enwiki"] = enwiki(e)
         n = qid(r.get("nation", ""))
         nd, npr = date_of(r.get("ninc", ""), r.get("npr", ""))
-        if kind == "national_team" and n and nd and npr and (i, "nation") not in seen:
-            seen.add((i, "nation"))
-            cap = next(iter(claim_ids(ents.get(n, {}), "P36")), "")
-            lat, lon = coord(ents.get(cap))
-            rows.append(dict(zip(FIELDS, [label(e) or i, "nation", nd, npr, "", label(ents.get(cap)), lat, lon,
-                                          label(ents.get(n)), aliases(e), f"wikidata:{n}"])))
+        if kind == "national_team" and n and nd and npr:
+            # one "nation" chart per country, findable by the country's name and by its teams' names
+            rec = nations.setdefault(n, {"date": (nd, npr), "names": set()})
+            rec["names"] |= {label(e), *[a for a in aliases(e).split("|") if a]}
+    for n, rec in nations.items():
+        en = ents.get(n, {})
+        cap = next(iter(claim_ids(en, "P36")), "")
+        lat, lon = coord(ents.get(cap))
+        name = label(en) or n
+        als = "|".join(sorted(x for x in rec["names"] if x and x != name))
+        rows.append(dict(zip(FIELDS, [name, "nation", rec["date"][0], rec["date"][1], "", label(ents.get(cap)),
+                                      lat, lon, name, als, sitelinks(en), f"wikidata:{n}", "wikidata"])))
     rows.sort(key=lambda r: (r["team"].lower(), r["kind"]))
     return rows
+
+
+def infobox_founded(wikitext: str) -> tuple[int, int, int] | None:
+    """Exact founding date from an infobox `founded =` field: {{Start date|Y|M|D}} or 'D Month YYYY' / 'Month D, YYYY'."""
+    import re
+    m = re.search(r"^\s*\|\s*(?:founded|formation|established)\s*=(.*)$", wikitext, re.I | re.M)
+    if not m:
+        return None
+    v = m.group(1)
+    t = re.search(r"\{\{\s*(?:start date|start date and age|founded date)[^|}]*\|\s*(\d{4})\s*\|\s*(\d{1,2})\s*\|\s*(\d{1,2})", v, re.I)
+    if t:
+        return int(t.group(1)), int(t.group(2)), int(t.group(3))
+    t = re.search(r"(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", v)
+    if t and t.group(2).lower() in MONTHS:
+        return int(t.group(3)), MONTHS[t.group(2).lower()], int(t.group(1))
+    t = re.search(r"([A-Za-z]+)\s+(\d{1,2}),?\s+(\d{4})", v)
+    if t and t.group(1).lower() in MONTHS:
+        return int(t.group(3)), MONTHS[t.group(1).lower()], int(t.group(2))
+    return None
+
+
+def enrich_from_wikipedia(rows: list[dict], top: int = ENRICH_TOP) -> int:
+    """Refine year/month-only club dates from English Wikipedia infoboxes; keep only if the year agrees."""
+    cand = sorted((r for r in rows if r["kind"] == "club" and r["date_precision"] != "day" and r.get("_enwiki")),
+                  key=lambda r: -int(r["sitelinks"]))[:top]
+    by_title = {r["_enwiki"]: r for r in cand}
+    titles, fixed = list(by_title), 0
+    for k in range(0, len(titles), 50):
+        batch = titles[k:k + 50]
+        url = WIKI + "?" + urllib.parse.urlencode({"action": "query", "prop": "revisions", "rvprop": "content",
+                                                   "rvslots": "main", "titles": "|".join(batch),
+                                                   "redirects": 1, "format": "json", "formatversion": 2})
+        pages = _retry(lambda: _get(url), f"wikipedia {k}/{len(titles)}").get("query", {})
+        redirect = {r["to"]: r["from"] for r in pages.get("redirects", [])}
+        for pg in pages.get("pages", []):
+            revs = pg.get("revisions") or []
+            if not revs:
+                continue
+            r = by_title.get(redirect.get(pg["title"], pg["title"]))
+            got = infobox_founded(revs[0]["slots"]["main"]["content"])
+            if r and got and str(got[0]) == r["founded_date"][:4] and 1 <= got[1] <= 12 and 1 <= got[2] <= 31:
+                r["founded_date"] = f"{got[0]:04d}-{got[1]:02d}-{got[2]:02d}"
+                r["date_precision"] = "day"
+                r["date_source"] = f"en.wikipedia infobox ({pg['title']})"
+                fixed += 1
+        time.sleep(0.5)
+    return fixed
 
 
 def main():
@@ -171,13 +238,18 @@ def main():
     national = sparql(NATIONAL)
     print(f"national teams: {len(national)}; fetching names, aliases and places ...", flush=True)
     rows = build_rows(clubs, national)
+    print(f"refining year-only dates of the {ENRICH_TOP} most prominent clubs from Wikipedia ...", flush=True)
+    print(f"  exact dates recovered: {enrich_from_wikipedia(rows)}", flush=True)
+    for r in rows:
+        r.pop("_enwiki", None)
     OUT.parent.mkdir(parents=True, exist_ok=True)
     with OUT.open("w", newline="", encoding="utf-8") as fh:
         w = csv.DictWriter(fh, fieldnames=FIELDS)
         w.writeheader()
         w.writerows(rows)
     kinds = {k: sum(r["kind"] == k for r in rows) for k in ("club", "national_team", "nation")}
-    print(f"wrote {len(rows)} rows to {OUT.relative_to(ROOT)}: {kinds}; "
+    days = sum(r["date_precision"] == "day" for r in rows)
+    print(f"wrote {len(rows)} rows to {OUT.relative_to(ROOT)}: {kinds}; exact dates: {days}; "
           f"with coordinates: {sum(bool(r['lat']) for r in rows)}")
 
 

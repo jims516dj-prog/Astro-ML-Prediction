@@ -40,6 +40,22 @@ def test_alias_and_short_names_autofill(table):
     assert any(c["match"] == "close" for c in foundings.search("Manchester Utd"))
 
 
+def test_ambiguous_names_are_ranked_by_prominence(tmp_path, monkeypatch):
+    rows = [dict(ROWS[0], team="Arsenal", aliases="", sitelinks="3", source="wikidata:Q2"),
+            dict(ROWS[0], team="Arsenal F.C.", aliases="Arsenal|The Gunners", sitelinks="95", source="wikidata:Q9617"),
+            dict(ROWS[0], team="Celtic", aliases="", sitelinks="40", source="wikidata:Q3"),
+            dict(ROWS[0], team="Celtic F.C.", aliases="Celtic", sitelinks="60", source="wikidata:Q19593")]
+    p = tmp_path / "t.csv"
+    with p.open("w", newline="") as fh:
+        w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
+    monkeypatch.setattr(foundings, "TABLE", p)
+    foundings.table.cache_clear()
+    assert foundings.best("Arsenal")["source"] == "wikidata:Q9617"     # 95 vs 3: clear, auto-fill
+    assert foundings.best("Celtic") is None                           # 60 vs 40: ambiguous, ask
+    assert foundings.search("Celtic")[0]["source"] == "wikidata:Q19593"
+    foundings.table.cache_clear()
+
+
 def test_nation_offered_alongside_national_team(table):
     kinds = [c["kind"] for c in foundings.search("Brazil")]
     assert kinds[:2] == ["nation", "national_team"]                              # Rao's nation chart first
