@@ -39,10 +39,15 @@ ENRICH_TOP = 8000          # clubs (by sitelinks) whose year/month-only date we 
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
                                        "september", "october", "november", "december"], 1)}
 
-# p:P31/ps:P31 (any rank), not wdt:P31: a club whose *preferred* class is e.g. "multi-sport club"
-# (FC Barcelona) is otherwise missed. Deprecated inception statements are skipped.
-CLUBS = """SELECT ?item ?inc ?pr WHERE {
-  ?item p:P31/ps:P31 wd:Q476028 ; p:P571 ?st .
+# Wikidata files clubs under several classes (verified with --probe): "association football club"
+# (Q476028; Man United, AC Milan), "men's association football team" (Q103229495; Chelsea, FC Barcelona)
+# and plain "sports club" (Q847017; Boca Juniors), the last only when its sport (P641) is association
+# football (Q2736). Any statement rank counts (p:P31), so a different *preferred* class does not hide a club.
+# Deprecated inception statements are skipped.
+CLUBS = """SELECT DISTINCT ?item ?inc ?pr WHERE {
+  { VALUES ?cls { wd:Q476028 wd:Q103229495 } ?item p:P31/ps:P31 ?cls . }
+  UNION { ?item p:P31/ps:P31 wd:Q847017 ; wdt:P641 wd:Q2736 . }
+  ?item p:P571 ?st .
   ?st psv:P571 ?tv ; wikibase:rank ?rk . FILTER(?rk != wikibase:DeprecatedRank)
   ?tv wikibase:timeValue ?inc ; wikibase:timePrecision ?pr .
   FILTER(?inc >= "%d-01-01T00:00:00Z"^^xsd:dateTime && ?inc < "%d-01-01T00:00:00Z"^^xsd:dateTime)
