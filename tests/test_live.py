@@ -69,3 +69,26 @@ def test_results_url_by_league():
     assert live.results_url("E0", ko).endswith("/mmz4281/2627/E0.csv")
     assert live.results_url("BRA", ko).endswith("/new/BRA.csv")
     assert live.season_code(datetime(2027, 3, 1, tzinfo=timezone.utc)) == "2627"
+
+
+def _rec(day, home, p_fav, outcome=None, committed="2026-11-01T00:00:00+00:00"):
+    r = {"kickoff_utc": f"{day}T15:00:00+00:00", "committed_at": committed, "home": home, "away": "X",
+         "predictions": {"market": {"fav": p_fav, "draw": (1 - p_fav) / 2, "dog": (1 - p_fav) / 2},
+                         "rao": {"winner": "fav"}, "chokoisky": {"winner": "dog"}, "frawley": {"winner": "fav"}}}
+    return {**r, "pre_kickoff": committed < r["kickoff_utc"], "pick": "fav", "pick_p": p_fav, "classical_agree": 2,
+            "outcome": outcome, "pick_hit": None if outcome is None else outcome == "fav"}
+
+
+def test_top_picks_are_capped_per_day_and_ranked_by_probability():
+    recs = [_rec("2026-11-02", f"T{i}", 0.30 + i / 100) for i in range(15)] + [_rec("2026-11-03", "Solo", 0.5)]
+    tp = live.top_picks(recs, per_day=10)
+    assert len(tp["2026-11-02"]) == 10 and len(tp["2026-11-03"]) == 1
+    probs = [r["pick_p"] for r in tp["2026-11-02"]]
+    assert probs == sorted(probs, reverse=True) and probs[0] == 0.44
+
+
+def test_top_picks_ignore_late_records_and_score_honestly():
+    late = _rec("2026-11-02", "Late", 0.99, committed="2026-11-02T16:00:00+00:00")
+    assert live.top_picks([late]) == {}                  # committed after kickoff: never a pick
+    s = live.score_picks([_rec("d", "A", 0.8, "fav"), _rec("d", "B", 0.6, "dog"), _rec("d", "C", 0.7)])
+    assert s["n"] == 2 and s["hits"] == 1 and abs(s["expected"] - 0.7) < 1e-9

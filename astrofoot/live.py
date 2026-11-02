@@ -332,3 +332,52 @@ def write_report(rep: dict, ledger: Path = LEDGER) -> None:
     else:
         L.append("No settled matches yet.")
     (ledger / "TRACK_RECORD.md").write_text("\n".join(L) + "\n")
+
+
+# ----------------------------------------------------------------------------- browsing / top picks
+OUTCOMES = ("fav", "draw", "dog")
+
+
+def records(ledger: Path = LEDGER) -> list[dict]:
+    """Every sealed forecast joined with its result (if settled), newest kickoff first."""
+    results = read_results(ledger)
+    out = []
+    for r in read_predictions(ledger):
+        res = results.get(r["match_key"])
+        outcome = OUTCOMES[_outcome(r, res)] if res else None
+        p = r["predictions"]
+        probs = p.get("synthesis") or p["market"]
+        pick = max(OUTCOMES, key=lambda k: probs[k])
+        agree = sum(1 for e in ("rao", "chokoisky", "frawley") if p.get(e, {}).get("winner") == pick)
+        out.append({**r, "result": res, "outcome": outcome, "verified": verify(r),
+                    "pre_kickoff": r["committed_at"] < r["kickoff_utc"], "status": "settled" if res else "pending",
+                    "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
+                    "pick_hit": (outcome == pick) if res else None})
+    out.sort(key=lambda r: r["kickoff_utc"], reverse=True)
+    return out
+
+
+def top_picks(recs: list[dict], per_day: int = 10) -> dict[str, list[dict]]:
+    """Per kickoff date (UTC): the matches whose predicted result is most probable, at most `per_day`.
+
+    The rule uses only the sealed, pre-kickoff probabilities (the synthesis, which equals the market
+    while Engine 4's gate is closed), so it can be scored honestly afterwards.
+    """
+    days: dict[str, list[dict]] = {}
+    for r in recs:
+        if r["pre_kickoff"]:
+            days.setdefault(r["kickoff_utc"][:10], []).append(r)
+    return {d: sorted(rs, key=lambda r: (-r["pick_p"], -r["classical_agree"]))[:per_day]
+            for d, rs in sorted(days.items(), reverse=True)}
+
+
+def score_picks(picks: list[dict]) -> dict:
+    """Hit rate of settled picks vs the hit rate their probabilities implied."""
+    s = [p for p in picks if p["pick_hit"] is not None]
+    if not s:
+        return {"n": 0}
+    hits = sum(p["pick_hit"] for p in s)
+    exp = sum(p["pick_p"] for p in s)
+    var = sum(p["pick_p"] * (1 - p["pick_p"]) for p in s)
+    return {"n": len(s), "hits": hits, "hit_rate": hits / len(s), "expected": exp / len(s),
+            "se": var ** 0.5 / len(s)}

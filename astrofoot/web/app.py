@@ -5,6 +5,7 @@ import io
 import json
 import math
 import subprocess
+import urllib.parse
 import sys
 from datetime import datetime, timezone
 from functools import lru_cache
@@ -264,7 +265,13 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     rows = q.iloc[(page - 1) * per: page * per]
     leagues = sorted(m.division.unique()) if len(m) else []
     seasons = sorted(m.season.unique(), reverse=True) if len(m) else []
+    live_done = [r for r in live.records() if r["status"] == "settled"]
+    if league:
+        live_done = [r for r in live_done if r["division"] == league]
+    if team:
+        live_done = [r for r in live_done if team.lower() in r["home"].lower() or team.lower() in r["away"].lower()]
     return T.TemplateResponse(request, "dataset.html", {
+        "live_done": live_done[:50], "live_done_n": len(live_done),
         "user": user, "rows": rows.to_dict("records"), "n": len(q), "page_no": page, "pages": pages,
         "league": league, "season": season, "team": team, "leagues": leagues, "seasons": seasons,
         "status": status, "page": "dataset"})
@@ -357,19 +364,106 @@ def retrain(stage: str = Form("codex")):
     return RedirectResponse("/ml", status_code=303)
 
 
+def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit=""):
+    out = []
+    t = team.lower().strip()
+    for r in recs:
+        d = r["kickoff_utc"][:10]
+        if (date_from and d < date_from) or (date_to and d > date_to):
+            continue
+        if status and r["status"] != status:
+            continue
+        if league and r["division"] != league:
+            continue
+        if t and t not in r["home"].lower() and t not in r["away"].lower():
+            continue
+        if hit and engine and r["outcome"]:
+            p = r["predictions"].get(engine, {})
+            pick = p.get("winner") or (max(live.OUTCOMES, key=lambda k: p[k]) if "fav" in p else None)
+            if (hit == "hit") != (pick == r["outcome"]):
+                continue
+        elif hit and engine and not r["outcome"]:
+            continue
+        out.append(r)
+    return out
+
+
 @app.get("/live", response_class=HTMLResponse)
-def live_page(request: Request):
-    preds, results = live.read_predictions(), live.read_results()
-    rep = live.report() if preds else None
-    rows = []
-    for r in sorted(preds, key=lambda r: r["kickoff_utc"], reverse=True):
-        res = results.get(r["match_key"])
-        out = None
-        if res:
-            out = ["fav", "draw", "dog"][live._outcome(r, res)]
-        rows.append({**r, "result": res, "outcome": out, "verified": live.verify(r),
-                     "pre_kickoff": r["committed_at"] < r["kickoff_utc"]})
-    return T.TemplateResponse(request, "live.html", {"rows": rows, "rep": rep, "page": "live"})
+def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
+              team: str = "", engine: str = "", hit: str = "", page_no: int = 1, msg: str = ""):
+    recs = live.records()
+    rep = live.report() if recs else None
+    rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit)
+    per = 50
+    pages = max(1, math.ceil(len(rows) / per))
+    page_no = min(max(page_no, 1), pages)
+    q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
+         "engine": engine, "hit": hit}
+    return T.TemplateResponse(request, "live.html", {
+        "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages,
+        "q": q, "qs": "&".join(f"{k}={v}" for k, v in q.items() if v),
+        "leagues": sorted({r["division"] for r in recs}), "rep": rep, "msg": msg, "page": "live"})
+
+
+@app.get("/live/match/{key}", response_class=HTMLResponse)
+def live_match(request: Request, key: str):
+    rec = next((r for r in live.records() if r["match_key"] == key), None)
+    if rec is None:
+        raise HTTPException(404)
+    o = rec["odds"]
+    inp = {"team_a": rec["home"], "team_b": rec["away"], "kickoff_utc": rec["kickoff_utc"],
+           "lat": rec["venue_lat"], "lon": rec["venue_lon"], "odds_a": o["home"], "odds_d": o["draw"],
+           "odds_b": o["away"], "home_side": "A", "context": "league", "division": rec["division"],
+           "p_over25": rec.get("p_over25")}
+    a = service.analyse(inp)
+    # The sealed forecast is the record; the full analysis is recomputed from the same inputs and
+    # flagged if today's code would decide differently (e.g. after a method fix).
+    diffs = [k for k in ("rao", "chokoisky", "frawley")
+             if a["verdicts"][k]["winner"] != rec["predictions"].get(k, {}).get("winner")]
+    wheels = {z: chart_wheel(a["chart"][z], z) for z in ("tropical", "lahiri")}
+    return T.TemplateResponse(request, "live_match.html", {"r": rec, "a": a, "wheels": wheels, "diffs": diffs,
+                                                           "team_a": rec["home"], "team_b": rec["away"],
+                                                           "page": "live"})
+
+
+@app.post("/live/refresh")
+def live_refresh():
+    """Bring in results (and new forecasts) that the scheduled GitHub job has pushed: git pull."""
+    if not (ROOT / ".git").exists():
+        return RedirectResponse("/live?msg=" + "This folder is not a git clone: download the project again "
+                                "(Code → Download ZIP) to get new results.", status_code=303)
+    before = live.records()
+    n_res, n_fc = sum(r["status"] == "settled" for r in before), len(before)
+    try:
+        r = subprocess.run(["git", "pull", "--ff-only"], cwd=ROOT, capture_output=True, text=True, timeout=120)
+        out = (r.stdout + r.stderr).strip().splitlines()
+        if r.returncode != 0:
+            msg = "Update failed: " + (out[-1] if out else "git error") + " — run `git pull` in Git Bash to see details."
+        else:
+            after = live.records()
+            new_res = sum(x["status"] == "settled" for x in after) - n_res
+            new_fc = len(after) - n_fc
+            code = any(line.strip().startswith(("astrofoot/", "scripts/")) for line in out)
+            msg = (f"Up to date: {new_res} new result(s), {new_fc} new forecast(s)."
+                   + (" The app's code was also updated: restart the app to use it." if code else ""))
+    except (OSError, subprocess.TimeoutExpired) as e:
+        msg = f"Update failed: {type(e).__name__} (is Git installed?)"
+    imported.cache_clear()
+    return RedirectResponse("/live?" + urllib.parse.urlencode({"msg": msg}), status_code=303)
+
+
+@app.get("/top", response_class=HTMLResponse)
+def top_page(request: Request, day: str = ""):
+    recs = live.records()
+    tp = live.top_picks(recs, per_day=10)
+    days = list(tp)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if not day:
+        day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
+    all_picks = [p for ps in tp.values() for p in ps]
+    return T.TemplateResponse(request, "top.html", {
+        "day": day, "days": days, "picks": tp.get(day, []), "score_all": live.score_picks(all_picks),
+        "score_day": live.score_picks(tp.get(day, [])), "page": "top"})
 
 
 @app.get("/api/teams")

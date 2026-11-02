@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}{{ r.home }} v {{ r.away }} · Live record{% endblock %}
+{% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
+{% block body %}
+<p class="crumbs"><a href="/live">Live record</a> › forecast</p>
+<h1>{{ r.home }} <span class="v">v</span> {{ r.away }}</h1>
+<p class="meta">{{ r.league }} · {{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %}
+· favourite: <strong>{{ r.favourite }}</strong> · odds {{ r.odds.home }} / {{ r.odds.draw }} / {{ r.odds.away }} ({{ r.odds_source }})
+· {% if r.result %}<span class="badge ok">completed</span> result <strong>{{ r.result.goals_home }}–{{ r.result.goals_away }}</strong>{% else %}<span class="badge muted">pending</span>{% endif %}</p>
+
+<section class="card">
+  <h2>Sealed forecast</h2>
+  <p class="small">Committed {{ r.committed_at }} UTC, {{ "before" if r.pre_kickoff else "AFTER" }} kickoff ·
+  SHA-256 <code>{{ r.sha256[:16] }}…</code> {{ "verifies ✓" if r.verified else "does NOT verify ✗" }} · model {{ r.model_version or "—" }}</p>
+  <table class="data">
+    <thead><tr><th>Forecast</th><th>Call</th><th class="num">{{ r.favourite }}</th><th class="num">Draw</th><th class="num">{{ r.underdog }}</th><th>Result</th></tr></thead>
+    <tbody>
+    {% for k, label in [("market","Market (de-vigged odds)"),("engine4","Engine 4"),("synthesis","Synthesis")] %}{% set p = r.predictions.get(k) %}{% if p %}
+    <tr><td>{{ label }}</td><td>{% set best = (p.fav >= p.draw and p.fav >= p.dog) and "fav" or (p.draw >= p.dog and "draw" or "dog") %}{{ W[best] }}</td>
+      <td class="num">{{ fmt_pct(p.fav) }}</td><td class="num">{{ fmt_pct(p.draw) }}</td><td class="num">{{ fmt_pct(p.dog) }}</td>
+      <td>{% if r.outcome %}{{ "✓" if best == r.outcome else "✗" }}{% endif %}</td></tr>
+    {% endif %}{% endfor %}
+    {% for k, label in [("rao","Rao"),("chokoisky","Chokoisky"),("frawley","Frawley")] %}{% set p = r.predictions.get(k) %}
+    <tr><td>{{ label }}</td><td>{{ W[p.winner] }}{% if p.goals_fav is not none %} <span class="small">({{ p.goals_fav }}–{{ p.goals_dog }} fav first)</span>{% endif %}</td>
+      <td colspan="3" class="small">confidence {{ p.confidence }} · net {{ p.net }}</td>
+      <td>{% if r.outcome %}{{ "✓" if p.winner == r.outcome else "✗" }}{% endif %}</td></tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  {% if diffs %}<p class="callout small">Note: today's code would call this differently for {{ diffs|join(", ") }} (a method fix since the forecast
+  was sealed). The sealed forecast above is what counts in the track record; the analysis below is today's.</p>{% endif %}
+</section>
+
+<h2>Full analysis</h2>
+<p class="note">Recomputed from the same inputs as the sealed forecast (kickoff, venue, odds). Founding charts are not used in live forecasts.</p>
+{% include "_analysis.html" %}
+{% endblock %}

@@ -22,6 +22,20 @@
 {% else %}<tr><td colspan="10">No matches yet. <a href="/analyze">Analyze one</a>.</td></tr>{% endfor %}
 </tbody></table></div>
 
+<h2>Live forecasts — completed <span class="small">({{ "{:,}".format(live_done_n) }} matches)</span></h2>
+<p class="note">Matches from the live track record whose results have come in (use <strong>Get latest results</strong> on the
+<a href="/live">Live record</a> page). Newest 50 shown; <a href="/live?status=settled">see all with filters</a>.</p>
+<div class="scroll"><table class="data small">
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num">Score</th><th>Favourite</th><th>Result</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Market F/D/U</th></tr></thead>
+<tbody>{% for r in live_done %}{% set p = r.predictions %}
+<tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td>{{ r.division }}</td>
+<td><a href="/live/match/{{ r.match_key }}">{{ r.home }} v {{ r.away }}</a></td>
+<td class="num">{{ r.result.goals_home }}–{{ r.result.goals_away }}</td><td>{{ r.favourite }}</td><td>{{ r.outcome }}</td>
+{% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if p[k].winner == r.outcome }}">{{ p[k].winner }}</td>{% endfor %}
+<td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td></tr>
+{% else %}<tr><td colspan="10">No completed live matches yet{% if league or team %} for these filters{% endif %}.</td></tr>{% endfor %}
+</tbody></table></div>
+
 <h2>Research corpus <span class="small">({{ "{:,}".format(n) }} matches)</span></h2>
 <form class="row" method="get">
   <select name="league"><option value="">All leagues</option>{% for l in leagues %}<option {{ "selected" if l==league }}>{{ l }}</option>{% endfor %}</select>
