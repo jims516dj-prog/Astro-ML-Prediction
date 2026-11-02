@@ -23,7 +23,13 @@ from .config import REF
 TABLE = REF / "team_foundings.csv"
 KIND_LABEL = {"club": "club founding", "national_team": "national team founding",
               "nation": "nation (state) founding", "manual": "your saved chart"}
-_STRIP = {"fc", "cf", "afc", "sc", "ac", "the", "club", "football", "futbol", "fk", "sk", "bk", "if", "cd"}
+_STRIP = {"fc", "cf", "afc", "sc", "ac", "as", "ss", "ssc", "sl", "sv", "vfb", "vfl", "tsg", "rcd", "rc", "ud",
+          "sd", "ca", "cr", "us", "the", "club", "football", "futbol", "fk", "sk", "bk", "if", "cd"}
+# Short forms used by football-data.co.uk and in everyday writing; each yields extra query variants
+# ("Ath" is Atletico for Madrid but Athletic for Bilbao, so both are tried).
+_ABBREV = {"man": ["manchester"], "utd": ["united"], "nottm": ["nottingham"], "ath": ["atletico", "athletic"],
+           "sp": ["sporting"], "psg": ["paris saint germain"], "sg": ["saint germain"], "st": ["saint"],
+           "qpr": ["queens park rangers"], "spurs": ["tottenham hotspur"]}
 
 
 def _key(s: str) -> str:
@@ -50,29 +56,38 @@ def _from_table(r) -> dict:
             "date_source": getattr(r, "date_source", "") or "wikidata"}
 
 
+def _variants(k: str) -> list[str]:
+    out = [k]
+    for i, tok in enumerate(k.split()):
+        for exp in _ABBREV.get(tok, []):
+            out += [" ".join(v.split()[:i] + [exp] + v.split()[i + 1:]) for v in list(out)]
+    return list(dict.fromkeys(out))
+
+
 def search(q: str, con=None, limit: int = 8) -> list[dict]:
     """Candidates for a typed team name, best first. Each has a `match` of exact / alias / close."""
-    k = _key(q)
+    k = _key(str(q).replace("'", ""))
     if not k:
         return []
+    variants = _variants(k)
     out = []
     if con is not None:
         from . import db
         for r in db.team_charts(con):
-            if _key(r["team"]) == k:
+            if _key(r["team"]) in variants:
                 out.append({**dict(r), "kind": "manual", "kind_label": KIND_LABEL["manual"],
                             "source": "manual", "match": "exact"})
     t = table()
     if len(t):
-        exact = t[[k == _key(team) for team in t.team]]
-        alias = t[[k in keys and k != _key(team) for keys, team in zip(t["keys"], t.team)]]
+        exact = t[[_key(team) in variants for team in t.team]]
+        alias = t[[bool(keys & set(variants)) and _key(team) not in variants for keys, team in zip(t["keys"], t.team)]]
         for df, how in ((exact, "exact"), (alias, "alias")):
             out += [{**_from_table(r), "match": how} for r in df.itertuples()]
         if len(out) < limit:
             # close spellings: "Man United" -> "Manchester United", "Inter" -> "Inter Milan", ...
             pool = {key: i for i, keys in zip(t.index, t["keys"]) for key in keys}
-            close = difflib.get_close_matches(k, list(pool), n=limit * 2, cutoff=0.75)
-            close += [key for key in pool if key.startswith(k + " ") or (" " + k) in key][:limit]
+            close = [m for v in variants for m in difflib.get_close_matches(v, list(pool), n=limit, cutoff=0.75)]
+            close += [key for v in variants for key in pool if key.startswith(v + " ") or (" " + v) in key][:limit * 2]
             seen = {(o["team"], o["kind"]) for o in out}
             for key in close:
                 r = t.loc[pool[key]]
@@ -104,11 +119,15 @@ def best(q: str, con=None) -> dict | None:
     same_name = [int(x.get("sitelinks") or 0) for x in c[1:]]
     if same_name and top < DOMINANCE * max(max(same_name), 1):
         return None
-    # ... and no merely similar name may be more prominent than the exact match: "Boca Juniors" the
-    # Gibraltar club vs Club Atlético Boca Juniors. Less prominent look-alikes (Armenia for "Argentina",
-    # AJ Auxerre for "Ajax") do not block.
-    if any(int(x.get("sitelinks") or 0) > top for x in allc if x["match"] == "close"):
-        return None
+    # ... and no longer name that contains every word typed may be more prominent: "Boca Juniors" the
+    # Gibraltar club vs Club Atlético Boca Juniors. Teams that merely share a word (Manchester United for
+    # "Man City", Real Madrid for "Ath Madrid") or look alike (Armenia for "Argentina") do not block.
+    words = [set(v.split()) for v in _variants(_key(str(q).replace("'", "")))]
+    for x in allc:
+        if x["match"] == "close" and int(x.get("sitelinks") or 0) > top:
+            names = {_key(x["team"])} | {_key(a) for a in str(x.get("aliases", "")).split("|") if a}
+            if any(w <= set(n.split()) for w in words for n in names):
+                return None
     return c[0]
 
 

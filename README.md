@@ -51,8 +51,11 @@ Open **http://localhost:8000**. Leave the terminal window open while you use the
 ## Team founding charts (auto-filled)
 
 Typing a team name on **Analyze** fills in its founding chart for Rao's Nations' Charts step, from
-`data/ref/team_foundings.csv`, a table of founding dates built from **Wikidata** (open data, CC0) for
-football clubs, national teams and the nations they represent. Short names work ("Man United").
+`data/ref/team_foundings.csv`: about 33,000 founding records for football clubs and the nations national
+teams represent, from **Wikidata** (open data, CC0). Where Wikidata has only the year, exact dates are taken
+from the club's English Wikipedia infobox when the year agrees (about 6,300 records have exact dates).
+Short names work ("Man United", "Ath Madrid", "Paris SG"). When a name is ambiguous ("Wolves": Wolverhampton
+or Wolfsburg), nothing is filled in and you pick from the list; well-known clubs are listed first.
 Every field stays editable, other candidates (e.g. *nation* vs *national team* charts) are in the
 **Chart** dropdown, and **Save as my default for this team** stores your version, which then takes
 priority (in `data/app.sqlite3`, on your computer only).

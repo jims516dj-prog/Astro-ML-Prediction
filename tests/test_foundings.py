@@ -36,8 +36,9 @@ def table(tmp_path, monkeypatch):
 def test_alias_and_short_names_autofill(table):
     assert foundings.best("Man United")["source"] == "wikidata:Q18656"          # football-data short name
     assert foundings.best("manchester united fc")["founded_date"] == "1878-03-05"
-    assert foundings.best("Manchester Utd") is None                             # close only -> suggest, don't auto-fill
-    assert any(c["match"] == "close" for c in foundings.search("Manchester Utd"))
+    assert foundings.best("Manchester Utd")["source"] == "wikidata:Q18656"      # Utd -> United
+    assert foundings.best("Manchestr Unitd") is None                            # typo: suggest, don't auto-fill
+    assert any(c["match"] == "close" for c in foundings.search("Manchestr Unitd"))
 
 
 def test_ambiguous_names_are_ranked_by_prominence(tmp_path, monkeypatch):
