@@ -91,8 +91,51 @@ def build() -> pd.DataFrame:
         "goals_away": d.FTAway.astype(int), "result": d.result.astype(int),
         "data_source": "football-data.co.uk via xgabora/Club-Football-Match-Data-2000-2025",
     }).sort_values("kickoff_utc").reset_index(drop=True)
+    out = combine_with_live(out)
     out.to_parquet(WORK / "matches.parquet", index=False)
     return out
+
+
+def live_settled() -> pd.DataFrame:
+    """Settled live-ledger matches in the training-table layout (the living engine's daily new data).
+
+    Elo/form are not available for live fixtures; the models no longer use them (see control_matrix).
+    """
+    from . import live
+    rows = []
+    for r in live.records():
+        if r["status"] != "settled" or not r["pre_kickoff"]:
+            continue
+        ko = pd.Timestamp(r["kickoff_utc"])
+        o = r["odds"]
+        p = devig(np.array([[o["home"], o["draw"], o["away"]]]))[0]
+        gh, ga = r["result"]["goals_home"], r["result"]["goals_away"]
+        rows.append({
+            "match_id": r["match_key"], "division": r["division"], "league": LEAGUE_NAMES.get(r["division"], r["division"]),
+            "kickoff_utc": ko, "local_time_uk": ko.tz_convert(TIMEZONE_OF_SOURCE_TIMES).strftime("%H:%M"),
+            "home": r["home"], "away": r["away"], "lat": r["venue_lat"], "lon": r["venue_lon"],
+            "loc_source": r.get("venue_source"), "odds_home": o["home"], "odds_draw": o["draw"], "odds_away": o["away"],
+            "p_home": p[0], "p_draw": p[1], "p_away": p[2], "overround": float((1 / np.array(list(o.values()))).sum() - 1),
+            "p_over25": r.get("p_over25"), "fav_is_home": o["home"] <= o["away"],
+            "equal_odds": abs(o["home"] - o["away"]) <= 0.05, "elo_home": np.nan, "elo_away": np.nan,
+            "form5_home": np.nan, "form5_away": np.nan, "goals_home": gh, "goals_away": ga,
+            "result": 0 if gh > ga else 1 if gh == ga else 2, "data_source": "live ledger (football-data.co.uk)"})
+    if not rows:
+        return pd.DataFrame()
+    df = pd.DataFrame(rows)
+    df["kickoff_utc"] = pd.to_datetime(df.kickoff_utc, utc=True)
+    df["season"] = season_of(df.kickoff_utc)
+    return df
+
+
+def combine_with_live(hist: pd.DataFrame) -> pd.DataFrame:
+    """Historical table + settled live matches; a match present in both keeps the historical row."""
+    lv = live_settled()
+    if not len(lv):
+        return hist
+    lv = lv[~lv.match_id.isin(set(hist.match_id))]
+    out = pd.concat([hist, lv[hist.columns]], ignore_index=True)
+    return out.sort_values("kickoff_utc").reset_index(drop=True)
 
 
 def frame_view(m: pd.DataFrame, frame: str, seed: int = 7) -> pd.DataFrame:

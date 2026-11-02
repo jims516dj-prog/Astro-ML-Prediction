@@ -15,10 +15,12 @@ import pandas as pd
 
 from . import dataset, lattice, models
 from . import sky as skymod
-from .config import LATTICE_VERSION, MODELS, VAULT_START, WORK
+from .config import FIRST_TEST_SEASON, LATTICE_VERSION, LIVING, MODELS, VAULT_START, WORK
 
-TEST_SEASONS = ["2020/21", "2021/22", "2022/23", "2023/24", "2024/25"]
-FRAMES = ["FAV", "HOME"]
+TEST_SEASONS = ["2020/21", "2021/22", "2022/23", "2023/24", "2024/25"]     # L-2026.1 (pre-vault) evaluation
+# The books put the favourite in the 1st house, and their testimonies (block C) are defined that way;
+# L-2026.1 found no advantage for the HOME frame, so the living engine uses FAV only.
+FRAMES = ["FAV"] if LIVING else ["FAV", "HOME"]
 SCREEN_K = 300
 LAMBDA_GRID = [0.9, 0.6, 0.4, 0.25, 0.15, 0.1]
 L2 = 1e-4
@@ -35,19 +37,38 @@ class Data:
     vault: np.ndarray
     season: np.ndarray
     day: np.ndarray
+    test_seasons: list
 
 
-def load(X: pd.DataFrame | None = None, sky_kind="real", seed=0) -> Data:
+def load(X: pd.DataFrame | None = None, sky_kind="real", seed=0, E: pd.DataFrame | None = None,
+         classical: bool = True) -> Data:
+    """Matches + feature matrix. X: sky lattice (built if None). E: Engines 1-3 output for the same sky
+    (the real sky's cached run if None); with `classical`, the books' testimonies join the features."""
+    from . import classical_batch
     m = pd.read_parquet(WORK / "matches.parquet")
     if X is None:
         X = lattice.build(skymod.compute_sky(m, sky_kind, seed))
+    if classical:
+        if E is None:
+            E = pd.read_parquet(WORK / "engines_real.parquet")
+        if len(E) != len(m):
+            raise SystemExit("engines_real.parquet is out of date: run scripts/research.py prepare")
+        X = pd.concat([X.reset_index(drop=True), classical_batch.features(E).reset_index(drop=True)], axis=1)
     keep = X.std().to_numpy() > 1e-6
     cols = list(X.columns[keep])
+    Xn = X.to_numpy(np.float32)[:, keep]
+    del X
     frames = {f: dataset.frame_view(m, f) for f in FRAMES + ["COIN"]}
     controls = {f: models.control_matrix(m, frames[f]) for f in frames}
-    vault = (m.kickoff_utc >= pd.Timestamp(VAULT_START, tz="UTC")).to_numpy()
-    return Data(m, X.to_numpy(np.float32)[:, keep], cols, frames, controls, vault,
-                m.season.to_numpy(), m.kickoff_utc.dt.strftime("%Y-%m-%d").to_numpy())
+    if LIVING:
+        vault = np.zeros(len(m), bool)
+        counts = m.season.value_counts()
+        tests = sorted(s for s in counts.index if s >= FIRST_TEST_SEASON and counts[s] >= 300)
+    else:
+        vault = (m.kickoff_utc >= pd.Timestamp(VAULT_START, tz="UTC")).to_numpy()
+        tests = TEST_SEASONS
+    return Data(m, Xn, cols, frames, controls, vault, m.season.to_numpy(),
+                m.kickoff_utc.dt.strftime("%Y-%m-%d").to_numpy(), tests)
 
 
 def _m0(d: Data, frame: str, tr: np.ndarray):
@@ -125,7 +146,7 @@ def select_and_fit(d: Data, X: np.ndarray, tr: np.ndarray, frames=FRAMES):
 def walk_forward(d: Data, X: np.ndarray | None = None, frames=FRAMES, label="engine4") -> pd.DataFrame:
     X = d.X if X is None else X
     rows = []
-    for s in TEST_SEASONS:
+    for s in d.test_seasons:
         tr = (d.season < s) & ~d.vault
         te = (d.season == s) & ~d.vault
         fit = select_and_fit(d, X, tr, frames)
@@ -206,7 +227,7 @@ def classical_walk_forward(d: Data, E: pd.DataFrame) -> pd.DataFrame:
         "chok_d9": E.chok_d9, "fraw_late": E.fraw_late_goal,
     }).astype(np.float32).to_numpy()
     rows = []
-    for s in TEST_SEASONS:
+    for s in d.test_seasons:
         tr = (d.season < s) & ~d.vault
         te = (d.season == s) & ~d.vault
         m0, lp, y = _m0(d, "FAV", tr)

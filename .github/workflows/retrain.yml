@@ -1,0 +1,32 @@
+# Living Engine 4: every week, rebuild the training data (history + every settled live forecast),
+# re-run Engines 1-3 on every chart, walk-forward evaluate, refit, and publish a new model version.
+# Live forecasts pick up the new version on their next cycle; the ledger records which version made
+# each forecast, so every version is scored separately.
+name: retrain-engine4
+on:
+  schedule:
+    - cron: "37 2 * * 1"      # Mondays 02:37 UTC
+  workflow_dispatch: {}
+permissions:
+  contents: write
+concurrency: research
+jobs:
+  retrain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 240
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python scripts/fetch_data.py
+      - run: python scripts/research.py living
+      - run: python scripts/findings.py
+      - name: Publish new model version
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          git add data/models/*.json data/models/*.joblib data/work/tribunal.parquet FINDINGS.md
+          git diff --cached --quiet || { git commit -m "engine4: weekly retrain $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }

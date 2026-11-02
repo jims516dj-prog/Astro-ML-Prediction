@@ -1,0 +1,37 @@
+# Monthly: re-run the placebo skies for the current pipeline (charts cast at the wrong time, date or
+# place, with Engines 1-3 re-run on them too) and refit, so the gate compares like with like.
+name: placebo-skies
+on:
+  schedule:
+    - cron: "13 1 2 * *"      # 2nd of each month, 01:13 UTC
+  workflow_dispatch:
+    inputs:
+      k:
+        description: "placebo skies per kind (time, date, place shift)"
+        required: false
+        default: "3"
+permissions:
+  contents: write
+concurrency: research
+jobs:
+  placebo:
+    runs-on: ubuntu-latest
+    timeout-minutes: 350
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python scripts/fetch_data.py
+      - run: python scripts/research.py prepare
+      - run: python scripts/research.py placebo --fresh --k ${{ inputs.k || '3' }}
+      - run: python scripts/research.py evaluate && python scripts/research.py codex
+      - run: python scripts/findings.py
+      - name: Publish
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          git add data/models FINDINGS.md data/work/tribunal.parquet
+          git diff --cached --quiet || { git commit -m "engine4: placebo skies + refit $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }

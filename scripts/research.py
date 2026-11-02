@@ -22,9 +22,10 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from astrofoot import classical_batch, codex, dataset, lattice, models, pipeline  # noqa: E402
 from astrofoot import sky as skymod  # noqa: E402
-from astrofoot.config import LATTICE_VERSION, MODELS, WORK  # noqa: E402
+from astrofoot.config import LATTICE_VERSION, LIVING, MODELS, WORK  # noqa: E402
 
-PLACEBO_DIR = MODELS / "placebo"
+# Placebo results are only comparable within one lattice version (same features, same pipeline).
+PLACEBO_DIR = MODELS / "placebo" / LATTICE_VERSION
 PLACEBO_DIR.mkdir(exist_ok=True, parents=True)
 
 
@@ -39,7 +40,7 @@ def load_json(name, default=None):
 
 def prepare():
     m = dataset.build()
-    log("matches", len(m))
+    log("matches", len(m), "of which settled live forecasts:", int((m.data_source == "live ledger (football-data.co.uk)").sum()))
     s = skymod.compute_sky(m, "real")
     log("real sky ready")
     classical_batch.run(m, s)
@@ -68,6 +69,11 @@ def evaluate():
     trib = pipeline.tribunal(d, E)
     trib.to_parquet(WORK / "tribunal.parquet")
     rep["tribunal_summary"] = trib.groupby(["book", "verdict"]).size().unstack(fill_value=0).to_dict("index")
+    if LIVING:      # zodiac / house-system comparisons were settled under L-2026.1; not repeated weekly
+        rep["structures"] = (load_json("evaluation.json") or {}).get("structures", {})
+        pipeline.save_json(rep, "evaluation.json")
+        log("evaluation saved")
+        return
     log("structural comparisons")
     meta = lattice.meta_frame().reindex(d.cols)
     struct = {}
@@ -94,7 +100,10 @@ def _struct_run(d, sel, name):
             "frames": [f["frame"] for f in s["folds"]]}
 
 
-def placebo(k: int, kinds=("time_shift", "date_shift", "place_shift")):
+def placebo(k: int, kinds=("time_shift", "date_shift", "place_shift"), fresh: bool = False):
+    if fresh:   # the data has grown since the last placebo run: recompute them all against it
+        for p in PLACEBO_DIR.glob("*.npz"):
+            p.unlink()
     m = pd.read_parquet(WORK / "matches.parquet")
     for seed in range(1, k + 1):
         for kind in kinds:
@@ -104,7 +113,10 @@ def placebo(k: int, kinds=("time_shift", "date_shift", "place_shift")):
             t = time.time()
             s = skymod.compute_sky(m, kind, seed)
             X = lattice.build(s)
-            d = pipeline.load(X)
+            # the books' engines are re-run on the placebo charts too, so their testimonies are
+            # scrambled exactly like the sky primitives
+            E = classical_batch.run(m, s, out_path=False)
+            d = pipeline.load(X, E=E)
             oof = pipeline.walk_forward(d)
             summ = pipeline.summarise(oof)
             pre = ~d.vault
@@ -135,7 +147,7 @@ def make_codex():
         raise SystemExit("run `evaluate` first")
     d = pipeline.load()
     pre = ~d.vault
-    log("final fit on all pre-vault seasons")
+    log("final fit on all " + ("data (living engine)" if LIVING else "pre-vault seasons"))
     final = pipeline.select_and_fit(d, d.X, pre)
     final["y_all"] = final["y"]
     m0s = {fr: pipeline._m0(d, fr, pre)[0] for fr in pipeline.FRAMES}
@@ -149,9 +161,12 @@ def make_codex():
                    "real_delta": real_delta,
                    "percentile": float((deltas > real_delta).mean() * 100)}
 
-    # Vault: evaluated once per lattice version, then frozen in vault.json
+    # Vault: evaluated once (for L-2026.1), then frozen in vault.json. The living engine trains on the
+    # vault seasons too, so it is not re-run; the prospective ledger is the out-of-sample check now.
     vault = load_json("vault.json", {})
-    if vault.get("lattice_version") != LATTICE_VERSION:
+    if LIVING:
+        log("living engine: vault spent (", vault.get("lattice_version"), vault.get("accessed_at"), ") — not re-run")
+    elif vault.get("lattice_version") != LATTICE_VERSION:
         log("VAULT evaluation (one-shot for this lattice version)")
         y = final["y"][d.vault]
         lp = final["logP0"][d.vault]
@@ -190,7 +205,9 @@ def make_codex():
     version = f"v{len(versions) + 1}"
     art = {"version": version, "trained_at": pipeline.now(), "lattice_version": LATTICE_VERSION,
            "frame": final["frame"], "frac": final["frac"], "model": final["model"],
-           "cols": [d.cols[j] for j in final["cols"]], "m0": m0s, "gate": gate}
+           "cols": [d.cols[j] for j in final["cols"]], "m0": m0s, "gate": gate,
+           "classical": any(c.startswith("C.") for c in d.cols), "n_matches": int(len(d.m)),
+           "n_live": int((d.m.data_source == "live ledger (football-data.co.uk)").sum())}
     joblib.dump(art, MODELS / f"engine4_{version}.joblib")
     joblib.dump(art, MODELS / "engine4_current.joblib")
     report = {
@@ -206,21 +223,24 @@ def make_codex():
     hist.append({"version": version, "trained_at": report["generated_at"], "delta_rps": wf["delta"],
                  "ci95": wf["ci95"], "placebo_percentile": placebo["percentile"] if placebo else None,
                  "gate_open": gate["engine4_in_synthesis"], "n_rules": len(report["rules"]),
-                 "n_provisional": n_prov})
+                 "n_provisional": n_prov, "lattice_version": LATTICE_VERSION, "n_matches": art["n_matches"],
+                 "n_live": art["n_live"], "n_active": report["final"]["n_active"]})
     pipeline.save_json(hist, "history.json")
     log("codex saved", version, "gate", gate)
 
 
 if __name__ == "__main__":
     ap = argparse.ArgumentParser()
-    ap.add_argument("stage", choices=["prepare", "evaluate", "placebo", "codex", "all"])
+    ap.add_argument("stage", choices=["prepare", "evaluate", "placebo", "codex", "all", "living"])
     ap.add_argument("--k", type=int, default=10)
+    ap.add_argument("--fresh", action="store_true", help="placebo: discard this version's previous placebo skies")
     a = ap.parse_args()
-    if a.stage in ("prepare", "all"):
+    # living = the weekly retrain: rebuild data (history + settled live matches), evaluate, refit, publish
+    if a.stage in ("prepare", "all", "living"):
         prepare()
-    if a.stage in ("evaluate", "all"):
+    if a.stage in ("evaluate", "all", "living"):
         evaluate()
     if a.stage in ("placebo", "all"):
-        placebo(a.k)
-    if a.stage in ("codex", "all"):
+        placebo(a.k, fresh=a.fresh)
+    if a.stage in ("codex", "all", "living"):
         make_codex()

@@ -300,6 +300,21 @@ def report(ledger: Path = LEDGER) -> dict:
                       "lift_pp": float((hit.mean() - exp.mean()) * 100) if ok.any() else None,
                       "lift_se_pp": float(np.sqrt((exp * (1 - exp)).sum()) / max(ok.sum(), 1) * 100) if ok.any() else None})
         out["engines"][eng] = e
+    # The living Engine 4 changes version weekly: score each version on its own forecasts
+    by_v: dict[str, list[int]] = {}
+    for i, (r, _) in enumerate(rows):
+        if "engine4" in r["predictions"]:
+            by_v.setdefault(r.get("model_version") or "?", []).append(i)
+    out["engine4_by_version"] = {}
+    for v, idx in sorted(by_v.items()):
+        idx = np.array(idx)
+        P = np.array([[rows[i][0]["predictions"]["engine4"][k] for k in ("fav", "draw", "dog")] for i in idx])
+        P = P / P.sum(1, keepdims=True)
+        dv = {"n": len(idx), **models.scores(P, y[idx]),
+              "rps_market": float(models.rps(PM[idx], y[idx]).mean())}
+        if len(idx) >= 30:
+            dv["delta_rps_vs_market"] = models.block_bootstrap_delta(models.rps(P, y[idx]), models.rps(PM[idx], y[idx]), day[idx])
+        out["engine4_by_version"][v] = dv
     return out
 
 

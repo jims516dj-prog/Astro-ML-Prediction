@@ -112,6 +112,30 @@ python scripts/research.py codex                  # final fit, Codex, one-shot v
 - **Tables to verify against the books** (marked `VERIFY` in `tables.py`): Rao's node friendships and the
   108-syllable table (standard Avakahada chakra is used).
 
+## The living Engine 4
+
+Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):
+
+1. **Data grows daily.** The training table is the historical corpus plus every live match that has
+   settled since the previous run (forecast sealed before kickoff, result in).
+2. **Inputs:** 2,463 sky primitives (all zodiacs, house systems, aspects, angles, lordships, Moon, time
+   lords) **plus the three books**: every Rao, Chokoisky and Frawley testimony type as a signed feature
+   (+ for the favourite), and each engine's verdict and net score. Engine 4 can learn which classical
+   patterns, alone or alongside sky configurations, carry signal, and how much.
+3. **Baseline:** de-vigged odds plus calendar/scheduling controls. Elo and form are not used: live
+   fixtures don't have them. Astrology is only credited with what it adds beyond this baseline.
+4. **Learning:** sparse (L1) model on the residual, penalty chosen by inner validation with the
+   one-standard-error rule, walk-forward over every season since 2020/21.
+5. **Publishing:** each run publishes `engine4_vN`. Live forecasts use the newest version, and the
+   ledger records which version made each forecast; the Live record page scores every version
+   separately against the market.
+6. **When nothing has been learned**, Engine 4 outputs the de-vigged odds themselves.
+7. **The gate** decides whether Engine 4 also drives the headline synthesis: its walk-forward ΔRPS must
+   beat the baseline with a 95% CI excluding zero **and** the real sky must beat ≥ 95% of placebo skies
+   (refreshed monthly by `.github/workflows/placebo.yml`, with Engines 1-3 re-run on the placebo charts).
+   The one-shot vault (2025/26) was spent on the first version, so its seasons are now training data and
+   the prospective live record is the out-of-sample test.
+
 ## Live track record
 
 The backtest can only show that nothing *was* predictable. A live record shows whether anything *is*:

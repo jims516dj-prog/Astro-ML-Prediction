@@ -16,6 +16,15 @@ then commit and push <code>ledger/</code> before the earliest kickoff.</p>
   <div class="tile"><div class="k">RPS: Engine 4 vs market</div><div class="v mono">{% if e4 and mk %}{{ "%.4f"|format(e4.rps) }} / {{ "%.4f"|format(mk.rps) }}{% else %}—{% endif %}</div>
     <div class="s">{% if e4 and e4.delta_rps_vs_market %}ΔRPS {{ fmt_num(e4.delta_rps_vs_market.delta,5) }} [{{ fmt_num(e4.delta_rps_vs_market.ci95[0],5) }}, {{ fmt_num(e4.delta_rps_vs_market.ci95[1],5) }}]{% else %}CI shown from 30 settled matches{% endif %}</div></div>
 </section>
+{% if rep.engine4_by_version %}
+<h2>Engine 4 by model version</h2>
+<p class="note">The living Engine 4 is retrained weekly; each version is scored only on the forecasts it sealed.
+Lower RPS is better; negative ΔRPS means better than the market.</p>
+<table class="data"><thead><tr><th>Version</th><th class="num">Settled</th><th class="num">RPS</th><th class="num">Market RPS</th><th class="num">ΔRPS [95% CI]</th></tr></thead><tbody>
+{% for v, e in rep.engine4_by_version.items() %}<tr><td>{{ v }}</td><td class="num">{{ e.n }}</td><td class="num">{{ "%.4f"|format(e.rps) }}</td><td class="num">{{ "%.4f"|format(e.rps_market) }}</td>
+<td class="num">{% if e.delta_rps_vs_market %}{{ fmt_num(e.delta_rps_vs_market.delta,4) }} [{{ fmt_num(e.delta_rps_vs_market.ci95[0],4) }}, {{ fmt_num(e.delta_rps_vs_market.ci95[1],4) }}]{% else %}needs 30{% endif %}</td></tr>{% endfor %}
+</tbody></table>
+{% endif %}
 {% if rep.settled %}
 <h2>Classical verdicts vs the market</h2>
 <table class="data"><thead><tr><th>Engine</th><th class="num">n</th><th class="num">Hit rate</th><th class="num">Market expected</th><th class="num">Lift (pp) ± 1 SE</th></tr></thead><tbody>

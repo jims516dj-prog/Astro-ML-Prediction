@@ -80,8 +80,9 @@ def control_matrix(m: pd.DataFrame, fr: pd.DataFrame) -> pd.DataFrame:
     c["over25_missing"] = m.p_over25.isna().astype(float)
     c["overround"] = m.overround
     c["t1_home"] = fr.t1_home.astype(float)
-    c["elo_diff"] = fr.elo_diff.fillna(0) / 100
-    c["form_diff"] = fr.form_diff.fillna(0) / 5
+    # Elo and form are deliberately NOT used: they exist for the historical table but not for live
+    # fixtures, and a model trained with them mis-predicts when they are missing (the live record showed
+    # it). Market odds already carry that information.
     ko = m.kickoff_utc
     c["year"] = (ko.dt.year - 2020) / 5
     dummies = [pd.get_dummies(m.division, prefix="lg"),

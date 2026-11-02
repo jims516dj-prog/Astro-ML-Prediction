@@ -8,7 +8,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from . import ephem, foundings, geo, lattice, models
+from . import classical_batch, ephem, foundings, geo, lattice, models
 from . import sky as skymod
 from .config import MODELS
 from .dataset import devig
@@ -51,12 +51,14 @@ def _guardrails(rc: dict, v_trop: View, v_sid: View) -> list[str]:
     return w
 
 
-def engine4(art, jd, lat, lon, frame_inputs: dict) -> dict | None:
+def engine4(art, jd, lat, lon, frame_inputs: dict, classical_row: pd.DataFrame | None = None) -> dict | None:
     """frame_inputs: p_t1/p_d/p_t2 per frame plus control fields. Returns probs in fav terms."""
     if art is None:
         return None
     s = _single_sky(jd, lat, lon)
     X = lattice.build(s)
+    if classical_row is not None:
+        X = pd.concat([X.reset_index(drop=True), classical_row.reset_index(drop=True)], axis=1)
     frame = art["frame"]
     fi = frame_inputs[frame]
     C = pd.DataFrame([fi["controls"]])
@@ -76,9 +78,10 @@ def engine4(art, jd, lat, lon, frame_inputs: dict) -> dict | None:
                         contrib.append({"feature": c, "desc": lattice.META.get(c, {}).get("desc", c),
                                         "team1_logodds": 2 * a, "value": float(x[0, j])})
         else:
-            P = P0
+            # nothing astrological was learned: defer to the de-vigged odds themselves
+            P = np.exp(np.array([[fi["controls"]["lp1"], fi["controls"]["lpd"], fi["controls"]["lp2"]]]))
     else:
-        P = P0
+        P = np.exp(np.array([[fi["controls"]["lp1"], fi["controls"]["lpd"], fi["controls"]["lp2"]]]))
     contrib.sort(key=lambda r: -abs(r["team1_logodds"]))
     t1_is_fav = fi["t1_is_fav"]
     p = P[0]
@@ -174,7 +177,8 @@ def analyse(inp: dict) -> dict:
             t1_home = (t1_is_a == home_a) and home_known
             frame_inputs[fr] = {"controls": _controls(odds, t1_home, ko, inp.get("p_over25"), inp.get("division")),
                                 "t1_is_fav": t1_is_a == fav_is_a}
-        e4 = engine4(art, jd, inp["lat"], inp["lon"], frame_inputs)
+        cls_row = classical_batch.single_row(rc, fav, dog, equal_odds) if art.get("classical") else None
+        e4 = engine4(art, jd, inp["lat"], inp["lon"], frame_inputs, cls_row)
 
     v_trop, v_sid = View(rc, "tropical", "placidus"), View(rc, "lahiri", "whole_sign")
     verdicts = {"rao": v_rao.to_dict(), "chokoisky": v_cho.to_dict(), "frawley": v_fra.to_dict()}
