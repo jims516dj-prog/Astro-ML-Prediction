@@ -1,71 +1,21 @@
 {
- "version": "v1",
- "generated_at": "2026-10-27T20:54:03",
- "lattice_version": "L-2026.1",
+ "version": "v2",
+ "generated_at": "2026-11-02T17:01:03",
+ "lattice_version": "L-2026.2",
  "final": {
   "frame": "FAV",
   "frac": null,
-  "val_gain": -2.109250143137657e-06,
+  "val_gain": 2.2149326590058722e-06,
   "n_active": 0
  },
  "gate": {
   "engine4_in_synthesis": false,
   "reasons": [
    "walk-forward \u0394RPS vs market model: 95% CI does not exclude zero",
-   "real sky beats only 76% of placebo skies (needs \u226595%)"
+   "placebo skies not yet run"
   ]
  },
- "placebo": {
-  "n": 21,
-  "deltas": [
-   -1.0635114758952713e-06,
-   1.7931844916282676e-07,
-   1.1985971627387815e-05,
-   1.5603474857806352e-06,
-   1.9577300428293014e-05,
-   1.0174041975760849e-05,
-   4.229321948631658e-05,
-   1.498400045624467e-06,
-   9.884820629790546e-07,
-   1.7660575735000538e-05,
-   1.498400045624467e-06,
-   4.916481262347601e-05,
-   0.00017857715186150264,
-   3.0415300555017136e-06,
-   2.9359578301545006e-05,
-   1.0863378255504234e-05,
-   3.421936671542459e-05,
-   7.604231939091178e-05,
-   4.4723705157168766e-05,
-   1.308206000661345e-05,
-   1.7551535702624047e-06
-  ],
-  "kinds": [
-   "date_shift",
-   "date_shift",
-   "date_shift",
-   "date_shift",
-   "date_shift",
-   "date_shift",
-   "date_shift",
-   "place_shift",
-   "place_shift",
-   "place_shift",
-   "place_shift",
-   "place_shift",
-   "place_shift",
-   "place_shift",
-   "time_shift",
-   "time_shift",
-   "time_shift",
-   "time_shift",
-   "time_shift",
-   "time_shift",
-   "time_shift"
-  ],
-  "real_delta": 1.498400045624467e-06,
-  "percentile": 76.19047619047619
- },
+ "placebo": null,
  "vault": {
   "lattice_version": "L-2026.1",
   "accessed_at": "2026-10-27T20:54:03",
@@ -94,233 +44,233 @@
    "p_model_better": 0.0
   }
  },
- "null_statement": "Across 58,568 out-of-sample matches (seasons 2020/21\u20132024/25), no combination of 2,463 astrological primitives improved on the market-based control model (\u0394RPS +0.000001, 95% CI -0.000001 to +0.000004); the real sky ranked better than 76% of 21 placebo skies. No rule reached Provisional status.",
+ "null_statement": "Across 67,055 out-of-sample matches (seasons 2020/21\u20132024/25), no combination of 2,552 astrological primitives improved on the market-based control model (\u0394RPS +0.000055, 95% CI -0.000012 to +0.000124). No rule reached Provisional status.",
  "rules": [],
  "top_univariate": [
   {
    "feature": "L.campanus.lahiri.L10.house6",
    "desc": "lord of the 10th (team1) in the 6th house (Campanus, lahiri)",
    "family": "F5 lordship",
-   "z": 3.746049039354552,
-   "q_value": 0.44245698717205395,
-   "placebo_sd": 1.048944272062415,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.placidus.lahiri.L10.house6",
-   "desc": "lord of the 10th (team1) in the 6th house (Placidus, lahiri)",
-   "family": "F5 lordship",
-   "z": 3.306330230051028,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.9118193286071105,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.campanus.lahiri.L7.house12",
-   "desc": "lord of the 7th (team2) in the 12th house (Campanus, lahiri)",
-   "family": "F5 lordship",
-   "z": -3.2303386975846453,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.3637356299382564,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.placidus.lahiri.L10.house7",
-   "desc": "lord of the 10th (team1) in the 7th house (Placidus, lahiri)",
-   "family": "F5 lordship",
-   "z": -3.1391021695285297,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.9386434413678402,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.regiomontanus.lahiri.L10.house6",
-   "desc": "lord of the 10th (team1) in the 6th house (Regiomontanus, lahiri)",
-   "family": "F5 lordship",
-   "z": 3.1183707210765026,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.9959681427579775,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "H.placidus.Su.house12",
-   "desc": "Sun in the 12th house (Placidus)",
-   "family": "F4 houses",
-   "z": -3.115993109862063,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.210630300165549,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.campanus.lahiri.L10.house11",
-   "desc": "lord of the 10th (team1) in the 11th house (Campanus, lahiri)",
-   "family": "F5 lordship",
-   "z": 3.0242207828242864,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.0148408301492944,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.regiomontanus.lahiri.L10.house7",
-   "desc": "lord of the 10th (team1) in the 7th house (Regiomontanus, lahiri)",
-   "family": "F5 lordship",
-   "z": -3.021722305388519,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.9004179850543397,
-   "placebo_percentile": 100.0
+   "z": 3.581201169664784,
+   "q_value": 0.606290091331841,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
    "feature": "L.equal.lahiri.L10.house7",
    "desc": "lord of the 10th (team1) in the 7th house (Equal, lahiri)",
    "family": "F5 lordship",
-   "z": -2.9997356389150625,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.7367635596868835,
-   "placebo_percentile": 100.0
+   "z": -3.3608083000760667,
+   "q_value": 0.606290091331841,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "Z.lahiri.Mo.sign.2",
-   "desc": "Moon in Gemini",
-   "family": "F2 dignity & condition",
-   "z": -2.8845308221198516,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.3406428375961856,
-   "placebo_percentile": 66.66666666666666
-  },
-  {
-   "feature": "L.campanus.lahiri.victory_malefics",
-   "desc": "malefics in team1's victory houses minus team2's (Campanus, lahiri)",
+   "feature": "L.placidus.lahiri.L10.house6",
+   "desc": "lord of the 10th (team1) in the 6th house (Placidus, lahiri)",
    "family": "F5 lordship",
-   "z": 2.865865091652619,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.0841145489770487,
-   "placebo_percentile": 100.0
+   "z": 3.3489292517155995,
+   "q_value": 0.606290091331841,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "L.campanus.tropical.victory_malefics",
-   "desc": "malefics in team1's victory houses minus team2's (Campanus, tropical)",
+   "feature": "L.campanus.lahiri.L7.house12",
+   "desc": "lord of the 7th (team2) in the 12th house (Campanus, lahiri)",
    "family": "F5 lordship",
-   "z": 2.865865091652619,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.0841145489770487,
-   "placebo_percentile": 100.0
+   "z": -3.2757168805858066,
+   "q_value": 0.606290091331841,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "L.whole_sign.lahiri.L7.Dsc.before",
-   "desc": "lord of the 7th (team2) applying to team2's Descendant (7th) (lahiri)",
+   "feature": "L.placidus.lahiri.L10.house7",
+   "desc": "lord of the 10th (team1) in the 7th house (Placidus, lahiri)",
    "family": "F5 lordship",
-   "z": 2.8572177153902367,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.884097262185675,
-   "placebo_percentile": 95.23809523809523
+   "z": -3.203189169071035,
+   "q_value": 0.606290091331841,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "L.regiomontanus.lahiri.L10.house2",
-   "desc": "lord of the 10th (team1) in the 2nd house (Regiomontanus, lahiri)",
+   "feature": "L.campanus.lahiri.L10.house11",
+   "desc": "lord of the 10th (team1) in the 11th house (Campanus, lahiri)",
    "family": "F5 lordship",
-   "z": -2.8549638829173714,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.844529679507532,
-   "placebo_percentile": 100.0
+   "z": 3.189448180994404,
+   "q_value": 0.606290091331841,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "Z.tropical.Ju.sign.0",
-   "desc": "Jupiter in Aries",
-   "family": "F2 dignity & condition",
-   "z": 2.85474254937698,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.7055150816165477,
-   "placebo_percentile": 47.61904761904761
-  },
-  {
-   "feature": "L.placidus.lahiri.L7.house12",
-   "desc": "lord of the 7th (team2) in the 12th house (Placidus, lahiri)",
-   "family": "F5 lordship",
-   "z": -2.8334456806024706,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.1614027180516675,
-   "placebo_percentile": 100.0
-  },
-  {
-   "feature": "L.equal.lahiri.L7.house12",
-   "desc": "lord of the 7th (team2) in the 12th house (Equal, lahiri)",
-   "family": "F5 lordship",
-   "z": -2.8009599960613696,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.388340938219996,
-   "placebo_percentile": 95.23809523809523
-  },
-  {
-   "feature": "H.campanus.PF.house8",
-   "desc": "Part of Fortune in the 8th house (Campanus)",
+   "feature": "H.placidus.Su.house12",
+   "desc": "Sun in the 12th house (Placidus)",
    "family": "F4 houses",
-   "z": -2.798829958441471,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.9108999029651731,
-   "placebo_percentile": 100.0
+   "z": -3.1181649432408007,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "H.equal.Ur.house9",
-   "desc": "Uranus in the 9th house (Equal)",
-   "family": "F4 houses",
-   "z": 2.7463379435456785,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.9962916837959779,
-   "placebo_percentile": 100.0
+   "feature": "S.asp.Ve-Ur.60",
+   "desc": "Venus sextile Uranus",
+   "family": "F3 inter-planetary",
+   "z": -3.0679058205964598,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "L.whole_sign.lahiri.L4.house12",
-   "desc": "lord of the 4th (team2) in the 12th house (Whole Sign, lahiri)",
+   "feature": "L.regiomontanus.lahiri.L10.house7",
+   "desc": "lord of the 10th (team1) in the 7th house (Regiomontanus, lahiri)",
    "family": "F5 lordship",
-   "z": -2.738042414693995,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.0844648004184263,
-   "placebo_percentile": 100.0
+   "z": -3.0456675232317467,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "H.whole_sign.tropical.Pl.house6",
-   "desc": "Pluto in the 6th house (Whole Sign, tropical)",
-   "family": "F4 houses",
-   "z": 2.737131453391648,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.8713582217047201,
-   "placebo_percentile": 100.0
+   "feature": "L.equal.lahiri.L10.Dsc.after",
+   "desc": "lord of the 10th (team1) just inside team2's Descendant (7th) (lahiri)",
+   "family": "F5 lordship",
+   "z": -2.9762876279461357,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "L.regiomontanus.lahiri.L10.house6",
+   "desc": "lord of the 10th (team1) in the 6th house (Regiomontanus, lahiri)",
+   "family": "F5 lordship",
+   "z": 2.9469843532770152,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
    "feature": "H.campanus.Ur.house11",
    "desc": "Uranus in the 11th house (Campanus)",
    "family": "F4 houses",
-   "z": -2.7245788059072398,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 0.7423097113831538,
-   "placebo_percentile": 100.0
+   "z": -2.8675407092486727,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "L.campanus.lahiri.L10.house8",
-   "desc": "lord of the 10th (team1) in the 8th house (Campanus, lahiri)",
+   "feature": "L.placidus.lahiri.L7.house12",
+   "desc": "lord of the 7th (team2) in the 12th house (Placidus, lahiri)",
    "family": "F5 lordship",
-   "z": -2.721107952354584,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.0351003706363884,
-   "placebo_percentile": 100.0
+   "z": -2.847289988356603,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "L.campanus.tropical.victory_malefics",
+   "desc": "malefics in team1's victory houses minus team2's (Campanus, tropical)",
+   "family": "F5 lordship",
+   "z": 2.824593066183323,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "L.campanus.lahiri.victory_malefics",
+   "desc": "malefics in team1's victory houses minus team2's (Campanus, lahiri)",
+   "family": "F5 lordship",
+   "z": 2.824592301932493,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "H.equal.Ju.house7",
+   "desc": "Jupiter in the 7th house (Equal)",
+   "family": "F4 houses",
+   "z": -2.8132102353783224,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "H.campanus.Sa.house6",
+   "desc": "Saturn in the 6th house (Campanus)",
+   "family": "F4 houses",
+   "z": 2.802605345881881,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "L.regiomontanus.lahiri.L10.house2",
+   "desc": "lord of the 10th (team1) in the 2nd house (Regiomontanus, lahiri)",
+   "family": "F5 lordship",
+   "z": -2.749680524407385,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "L.placidus.tropical.L1.house2",
+   "desc": "lord of the 1st (team1) in the 2nd house (Placidus, tropical)",
+   "family": "F5 lordship",
+   "z": -2.749331740123544,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "H.equal.Sa.house6",
+   "desc": "Saturn in the 6th house (Equal)",
+   "family": "F4 houses",
+   "z": 2.737777844478832,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "Z.tropical.Ju.sign.0",
+   "desc": "Jupiter in Aries",
+   "family": "F2 dignity & condition",
+   "z": 2.7312718668823774,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
    "feature": "L.regiomontanus.lahiri.L7.house12",
    "desc": "lord of the 7th (team2) in the 12th house (Regiomontanus, lahiri)",
    "family": "F5 lordship",
-   "z": -2.6528023613385963,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.1533628780195158,
-   "placebo_percentile": 100.0
+   "z": -2.7078501129769315,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   },
   {
-   "feature": "H.equal.PF.house4",
-   "desc": "Part of Fortune in the 4th house (Equal)",
+   "feature": "L.whole_sign.lahiri.L4.house12",
+   "desc": "lord of the 4th (team2) in the 12th house (Whole Sign, lahiri)",
+   "family": "F5 lordship",
+   "z": -2.695775043243712,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "H.campanus.Ju.house2",
+   "desc": "Jupiter in the 2nd house (Campanus)",
    "family": "F4 houses",
-   "z": 2.64726737897216,
-   "q_value": 0.6414083576636865,
-   "placebo_sd": 1.5181446709752395,
-   "placebo_percentile": 52.38095238095239
+   "z": -2.6883512612786387,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
+  },
+  {
+   "feature": "L.equal.lahiri.L4.Asc.before",
+   "desc": "lord of the 4th (team2) applying to team1's Ascendant (lahiri)",
+   "family": "F5 lordship",
+   "z": 2.6542214351813067,
+   "q_value": 0.6566366506780899,
+   "placebo_sd": null,
+   "placebo_percentile": null
   }
  ]
 }

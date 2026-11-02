@@ -11,5 +11,22 @@
   "gate_open": false,
   "n_rules": 0,
   "n_provisional": 0
+ },
+ {
+  "version": "v2",
+  "trained_at": "2026-11-02T17:01:03",
+  "delta_rps": 5.529692058676876e-05,
+  "ci95": [
+   -1.1670281055692224e-05,
+   0.00012404613271694897
+  ],
+  "placebo_percentile": null,
+  "gate_open": false,
+  "n_rules": 0,
+  "n_provisional": 0,
+  "lattice_version": "L-2026.2",
+  "n_matches": 107462,
+  "n_live": 199,
+  "n_active": 0
  }
 ]

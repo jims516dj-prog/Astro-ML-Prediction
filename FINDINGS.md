@@ -1,10 +1,10 @@
 # Findings
 
-_Generated 2026-10-27T20:54:03 · lattice L-2026.1 · 107,263 matches · 2,463 astrological primitives_
+_Generated 2026-11-02T17:01:03 · lattice L-2026.2 · 107,462 matches · 2,552 astrological primitives_
 
 ## Headline
 
-Across 58,568 out-of-sample matches (seasons 2020/21–2024/25), no combination of 2,463 astrological primitives improved on the market-based control model (ΔRPS +0.000001, 95% CI -0.000001 to +0.000004); the real sky ranked better than 76% of 21 placebo skies. No rule reached Provisional status.
+Across 67,055 out-of-sample matches (seasons 2020/21–2024/25), no combination of 2,552 astrological primitives improved on the market-based control model (ΔRPS +0.000055, 95% CI -0.000012 to +0.000124). No rule reached Provisional status.
 
 ## Walk-forward (seasons 2020/21–2024/25, out of sample)
 
@@ -12,25 +12,25 @@ Across 58,568 out-of-sample matches (seasons 2020/21–2024/25), no combination 
 
 | Model | RPS | Log loss | Accuracy | ΔRPS vs M0 [95% CI] |
 |---|---|---|---|---|
-| Market odds (de-vigged) | 0.20421 | 1.00285 | 50.20% | |
-| M0 market + controls | 0.20467 | 1.00494 | 50.06% | 0 |
-| M1 classical engines re-weighted | 0.20460 | 1.00473 | 50.04% | +0.000021 [-0.000002, +0.000046] |
-| Engine 4 (Emergent Codex) | 0.20467 | 1.00495 | 50.05% | +0.000001 [-0.000001, +0.000004] |
-| Engine 4, coin-flip frame (negative control) | 0.20471 | 1.00506 | 50.05% | +0.000000 [+0.000000, +0.000000] |
+| Market odds (de-vigged) | 0.20418 | 1.00264 | 50.26% | |
+| M0 market + controls | 0.20453 | 1.00424 | 50.13% | 0 |
+| M1 classical engines re-weighted | 0.20455 | 1.00435 | 50.11% | +0.000021 [-0.000002, +0.000043] |
+| Engine 4 (Emergent Codex) | 0.20458 | 1.00442 | 50.11% | +0.000055 [-0.000012, +0.000124] |
+| Engine 4, coin-flip frame (negative control) | 0.20464 | 1.00460 | 50.05% | +0.000000 [+0.000000, +0.000000] |
 
-Note: M0 (market + calendar/scheduling controls) is itself slightly *worse* than the raw de-vigged odds (RPS 0.20467 vs 0.20421): the ~90 control covariates add a little noise. Engine 4 is benchmarked against M0 so that astrology is never credited with calendar effects. Since it does not beat M0, it falls further short of the raw market. The app therefore shows raw market probabilities whenever the Engine 4 gate is closed.
+Note: M0 (market + calendar/scheduling controls) is itself slightly *worse* than the raw de-vigged odds (RPS 0.20453 vs 0.20418): the ~90 control covariates add a little noise. Engine 4 is benchmarked against M0 so that astrology is never credited with calendar effects. Since it does not beat M0, it falls further short of the raw market. The app therefore shows raw market probabilities whenever the Engine 4 gate is closed.
 
-Per fold, inner validation chose: 2020/21: HOME, 1 primitives; 2021/22: FAV, 0 primitives; 2022/23: FAV, 0 primitives; 2023/24: FAV, 0 primitives; 2024/25: FAV, 0 primitives
+Per fold, inner validation chose: 2020/21: FAV, 8 primitives; 2021/22: FAV, 215 primitives; 2022/23: FAV, 0 primitives; 2023/24: FAV, 0 primitives; 2024/25: FAV, 0 primitives; 2025/26: FAV, 0 primitives; 2026/27: FAV, 0 primitives
 
 ## Raw accuracy of the classical engines (pre-vault, favourite frame)
 
 | System | Accuracy | Picks favourite | Picks draw | n |
 |---|---|---|---|---|
-| Rao | 33.0% | 33.7% | 20.6% | 98,975 |
-| Chokoisky | 32.9% | 33.6% | 17.0% | 98,975 |
-| Frawley | 38.4% | 55.0% | 5.3% | 97,326 |
-| Always favourite | 50.3% | 100.0% | 0.0% | 98,975 |
-| Market (most likely outcome) | 50.3% | 99.9% | 0.1% | 98,975 |
+| Rao | 33.1% | 34.1% | 20.5% | 107,462 |
+| Chokoisky | 32.9% | 33.5% | 16.8% | 107,462 |
+| Frawley | 38.4% | 54.8% | 5.4% | 105,612 |
+| Always favourite | 50.3% | 100.0% | 0.0% | 107,462 |
+| Market (most likely outcome) | 50.3% | 99.9% | 0.1% | 107,462 |
 
 ## Structural declarations
 
@@ -68,22 +68,21 @@ Ten strongest doctrines by raw p-value (still subject to Holm correction across 
 
 | Doctrine | Matches | Hit rate | Market expected | Effect (pp) | p | p (Holm) | Verdict |
 |---|---|---|---|---|---|---|---|
-| chokoisky.d1_cusp.Sa | 9,270 | 39.9% | 39.1% | +1.07 | 0.017 | 1.000 | not supported |
-| rao.score | 38,493 | 36.9% | 36.4% | +0.46 | 0.039 | 1.000 | not supported |
-| chokoisky.d1_cusp.Ju | 8,839 | 37.1% | 37.8% | -0.77 | 0.096 | 1.000 | not supported |
-| chokoisky.tara.Wasat | 3,925 | 37.3% | 36.1% | +1.13 | 0.102 | 1.000 | not supported |
-| chokoisky.victory_house | 80,548 | 33.5% | 33.2% | +0.24 | 0.111 | 1.000 | not supported |
-| chokoisky.d9_cusp.Ma | 2,676 | 38.6% | 37.0% | +1.32 | 0.115 | 1.000 | not supported |
-| rao.fans | 30,732 | 36.5% | 36.1% | +0.39 | 0.119 | 1.000 | not supported |
-| frawley.fortuna_antiscion_cusp1 | 1,500 | 52.9% | 50.6% | +1.74 | 0.124 | 1.000 | not supported |
-| frawley.body.inside_enemy_house | 4,790 | 34.3% | 33.3% | +0.96 | 0.124 | 1.000 | not supported |
-| frawley.l1_opp_fortuna | 3,451 | 22.2% | 23.1% | -1.14 | 0.127 | 1.000 | not supported |
+| chokoisky.d1_cusp.Sa | 9,945 | 40.0% | 39.3% | +0.91 | 0.036 | 1.000 | not supported |
+| rao.fans | 33,757 | 36.6% | 36.1% | +0.48 | 0.043 | 1.000 | not supported |
+| chokoisky.d1_cusp.Ju | 9,753 | 36.9% | 37.6% | -0.87 | 0.049 | 1.000 | not supported |
+| rao.score | 42,092 | 36.4% | 35.9% | +0.41 | 0.055 | 1.000 | not supported |
+| chokoisky.d1_cusp.Ra | 7,638 | 36.4% | 37.2% | -0.94 | 0.058 | 1.000 | not supported |
+| chokoisky.d1_cusp.Ke | 7,638 | 36.4% | 37.2% | -0.94 | 0.058 | 1.000 | not supported |
+| chokoisky.tara.Wasat | 4,639 | 38.0% | 36.7% | +1.16 | 0.069 | 1.000 | not supported |
+| chokoisky.victory_house | 87,386 | 33.3% | 33.1% | +0.22 | 0.129 | 1.000 | not supported |
+| frawley.body.inside_enemy_house | 5,233 | 34.0% | 33.3% | +0.90 | 0.133 | 1.000 | not supported |
+| chokoisky.tara.Spica | 4,359 | 37.3% | 38.0% | -0.98 | 0.136 | 1.000 | not supported |
 
 ## Codex
 
-Version v1. Gate: closed (walk-forward ΔRPS vs market model: 95% CI does not exclude zero; real sky beats only 76% of placebo skies (needs ≥95%)).
+Version v2. Gate: closed (walk-forward ΔRPS vs market model: 95% CI does not exclude zero; placebo skies not yet run).
 
-Placebo skies: 21 runs. The real sky beat 76% of them.
 Vault (one-shot, 8,288 matches from 2025/26 onward, accessed 2026-10-27T20:54:03): ΔRPS +0.000000 [+0.000000, +0.000000].
 
 | Status | Rule | Effect (pp) | q | Stability | Leagues | Placebo pct |
@@ -94,15 +93,15 @@ Vault (one-shot, 8,288 matches from 2025/26 onward, accessed 2026-10-27T20:54:03
 
 | Primitive | z | BH q | Placebo sd of z | Placebo pct |
 |---|---|---|---|---|
-| lord of the 10th (team1) in the 6th house (Campanus, lahiri) | +3.75 | 0.442 | 1.05 | 100 |
-| lord of the 10th (team1) in the 6th house (Placidus, lahiri) | +3.31 | 0.641 | 0.91 | 100 |
-| lord of the 7th (team2) in the 12th house (Campanus, lahiri) | -3.23 | 0.641 | 1.36 | 100 |
-| lord of the 10th (team1) in the 7th house (Placidus, lahiri) | -3.14 | 0.641 | 0.94 | 100 |
-| lord of the 10th (team1) in the 6th house (Regiomontanus, lahiri) | +3.12 | 0.641 | 1.00 | 100 |
-| Sun in the 12th house (Placidus) | -3.12 | 0.641 | 1.21 | 100 |
-| lord of the 10th (team1) in the 11th house (Campanus, lahiri) | +3.02 | 0.641 | 1.01 | 100 |
-| lord of the 10th (team1) in the 7th house (Regiomontanus, lahiri) | -3.02 | 0.641 | 0.90 | 100 |
-| lord of the 10th (team1) in the 7th house (Equal, lahiri) | -3.00 | 0.641 | 0.74 | 100 |
-| Moon in Gemini | -2.88 | 0.641 | 1.34 | 67 |
-| malefics in team1's victory houses minus team2's (Campanus, lahiri) | +2.87 | 0.641 | 1.08 | 100 |
-| malefics in team1's victory houses minus team2's (Campanus, tropical) | +2.87 | 0.641 | 1.08 | 100 |
+| lord of the 10th (team1) in the 6th house (Campanus, lahiri) | +3.58 | 0.606 | — | — |
+| lord of the 10th (team1) in the 7th house (Equal, lahiri) | -3.36 | 0.606 | — | — |
+| lord of the 10th (team1) in the 6th house (Placidus, lahiri) | +3.35 | 0.606 | — | — |
+| lord of the 7th (team2) in the 12th house (Campanus, lahiri) | -3.28 | 0.606 | — | — |
+| lord of the 10th (team1) in the 7th house (Placidus, lahiri) | -3.20 | 0.606 | — | — |
+| lord of the 10th (team1) in the 11th house (Campanus, lahiri) | +3.19 | 0.606 | — | — |
+| Sun in the 12th house (Placidus) | -3.12 | 0.657 | — | — |
+| Venus sextile Uranus | -3.07 | 0.657 | — | — |
+| lord of the 10th (team1) in the 7th house (Regiomontanus, lahiri) | -3.05 | 0.657 | — | — |
+| lord of the 10th (team1) just inside team2's Descendant (7th) (lahiri) | -2.98 | 0.657 | — | — |
+| lord of the 10th (team1) in the 6th house (Regiomontanus, lahiri) | +2.95 | 0.657 | — | — |
+| Uranus in the 11th house (Campanus) | -2.87 | 0.657 | — | — |
