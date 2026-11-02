@@ -10,3 +10,4 @@ data/work/oof_*.pkl
 data/app.sqlite3
 # run logs (research.log is rewritten by every run)
 data/*.log
+data/models/local_backup/

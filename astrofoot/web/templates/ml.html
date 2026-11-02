@@ -40,11 +40,10 @@
 {% for h in hist|reverse %}<tr><td>{{ h.version }}</td><td>{{ h.trained_at }}</td><td class="num">{{ fmt_num(h.delta_rps,6) }}</td><td class="num">{{ "%.0f"|format(h.placebo_percentile) if h.placebo_percentile is not none else "—" }}</td><td>{{ "open" if h.gate_open else "closed" }}</td><td class="num">{{ h.n_rules }} ({{ h.n_provisional }})</td></tr>{% endfor %}
 </tbody></table>
 {% endif %}
-<h2>Training controls</h2>
-<form method="post" action="/ml/retrain" class="row">
-  <button class="btn" name="stage" value="codex">Refit Codex &amp; gate (minutes)</button>
-  <button class="btn ghost" name="stage" value="evaluate">Re-run walk-forward evaluation (~30 min)</button>
-</form>
-<p class="note">Placebo skies: <code>python scripts/research.py placebo --k 10</code> (≈3 min per sky). The vault is evaluated once per lattice version and never re-run.</p>
+<h2>Training</h2>
+<p class="note">Engine 4 retrains itself every Monday on GitHub (workflow <code>retrain-engine4</code>) on the full history
+plus every settled live forecast, and the placebo skies are refreshed monthly (<code>placebo-skies</code>). New versions
+reach this app when you click <strong>Get latest results</strong> on the Live record page. To retrain by hand instead:
+<code>python scripts/research.py living</code> (about 30 minutes).</p>
 {% if log %}<details><summary>Research log (tail)</summary><pre class="log">{{ log }}</pre></details>{% endif %}
 {% endblock %}

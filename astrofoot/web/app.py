@@ -354,16 +354,6 @@ def _track_record(c):
     return out
 
 
-@app.post("/ml/retrain")
-def retrain(stage: str = Form("codex")):
-    if stage not in ("codex", "evaluate", "all"):
-        raise HTTPException(400)
-    cmd = [sys.executable, str(ROOT / "scripts" / "research.py"), stage]
-    with open(DATA / "research.log", "a") as fh:
-        subprocess.Popen(cmd, stdout=fh, stderr=subprocess.STDOUT, cwd=ROOT)
-    return RedirectResponse("/ml", status_code=303)
-
-
 def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit=""):
     out = []
     t = team.lower().strip()
@@ -426,6 +416,31 @@ def live_match(request: Request, key: str):
                                                            "page": "live"})
 
 
+# Files the GitHub jobs publish (ledger, model versions, reports). Local edits to them only block
+# `git pull`, so they are reset before pulling; untracked model files are moved aside, never deleted.
+GENERATED = ["ledger", "data/models", "data/work", "data/research.log", "data/selftest.log", "data/power.log",
+             "FINDINGS.md"]
+
+
+def _tidy_generated_files() -> str | None:
+    import shutil
+    st = subprocess.run(["git", "status", "--porcelain", "--", *GENERATED], cwd=ROOT, capture_output=True,
+                        text=True, timeout=60).stdout.splitlines()
+    modified = [ln[3:] for ln in st if ln[:2].strip() in ("M", "D", "MM", "AM")]
+    untracked = [ln[3:] for ln in st if ln.startswith("??") and ln[3:].startswith("data/models/")
+                 and not ln[3:].startswith("data/models/local_backup")]
+    backup = None
+    if untracked:
+        backup = f"data/models/local_backup/{datetime.now().strftime('%Y%m%d-%H%M%S')}"
+        for f in untracked:
+            dst = ROOT / backup / Path(f).relative_to("data/models")
+            dst.parent.mkdir(parents=True, exist_ok=True)
+            shutil.move(str(ROOT / f), str(dst))
+    if modified:
+        subprocess.run(["git", "checkout", "--", *modified], cwd=ROOT, capture_output=True, timeout=60)
+    return backup
+
+
 @app.post("/live/refresh")
 def live_refresh():
     """Bring in results (and new forecasts) that the scheduled GitHub job has pushed: git pull."""
@@ -435,6 +450,7 @@ def live_refresh():
     before = live.records()
     n_res, n_fc = sum(r["status"] == "settled" for r in before), len(before)
     try:
+        set_aside = _tidy_generated_files()
         r = subprocess.run(["git", "pull", "--ff-only"], cwd=ROOT, capture_output=True, text=True, timeout=120)
         out = (r.stdout + r.stderr).strip().splitlines()
         if r.returncode != 0:
@@ -445,7 +461,8 @@ def live_refresh():
             new_fc = len(after) - n_fc
             code = any(line.strip().startswith(("astrofoot/", "scripts/")) for line in out)
             msg = (f"Up to date: {new_res} new result(s), {new_fc} new forecast(s)."
-                   + (" The app's code was also updated: restart the app to use it." if code else ""))
+                   + (" The app's code was also updated: restart the app to use it." if code else "")
+                   + (f" Local model files from an earlier refit were moved to {set_aside}." if set_aside else ""))
     except (OSError, subprocess.TimeoutExpired) as e:
         msg = f"Update failed: {type(e).__name__} (is Git installed?)"
     imported.cache_clear()
