@@ -44,7 +44,9 @@ def test_ambiguous_names_are_ranked_by_prominence(tmp_path, monkeypatch):
     rows = [dict(ROWS[0], team="Arsenal", aliases="", sitelinks="3", source="wikidata:Q2"),
             dict(ROWS[0], team="Arsenal F.C.", aliases="Arsenal|The Gunners", sitelinks="95", source="wikidata:Q9617"),
             dict(ROWS[0], team="Celtic", aliases="", sitelinks="40", source="wikidata:Q3"),
-            dict(ROWS[0], team="Celtic F.C.", aliases="Celtic", sitelinks="60", source="wikidata:Q19593")]
+            dict(ROWS[0], team="Celtic F.C.", aliases="Celtic", sitelinks="60", source="wikidata:Q19593"),
+            dict(ROWS[0], team="Boca Juniors F.C.", aliases="", sitelinks="2", source="wikidata:Q4"),
+            dict(ROWS[0], team="Club Atlético Boca Juniors", aliases="", sitelinks="70", source="wikidata:Q170703")]
     p = tmp_path / "t.csv"
     with p.open("w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0])); w.writeheader(); w.writerows(rows)
@@ -53,6 +55,8 @@ def test_ambiguous_names_are_ranked_by_prominence(tmp_path, monkeypatch):
     assert foundings.best("Arsenal")["source"] == "wikidata:Q9617"     # 95 vs 3: clear, auto-fill
     assert foundings.best("Celtic") is None                           # 60 vs 40: ambiguous, ask
     assert foundings.search("Celtic")[0]["source"] == "wikidata:Q19593"
+    assert foundings.best("Boca Juniors") is None                     # obscure exact vs famous near-match
+    assert any(c["source"] == "wikidata:Q170703" for c in foundings.search("Boca Juniors"))
     foundings.table.cache_clear()
 
 

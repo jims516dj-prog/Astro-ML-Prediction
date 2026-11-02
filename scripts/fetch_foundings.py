@@ -39,8 +39,11 @@ ENRICH_TOP = 8000          # clubs (by sitelinks) whose year/month-only date we 
 MONTHS = {m: i for i, m in enumerate(["january", "february", "march", "april", "may", "june", "july", "august",
                                        "september", "october", "november", "december"], 1)}
 
+# p:P31/ps:P31 (any rank), not wdt:P31: a club whose *preferred* class is e.g. "multi-sport club"
+# (FC Barcelona) is otherwise missed. Deprecated inception statements are skipped.
 CLUBS = """SELECT ?item ?inc ?pr WHERE {
-  ?item wdt:P31 wd:Q476028 ; p:P571/psv:P571 ?tv .
+  ?item p:P31/ps:P31 wd:Q476028 ; p:P571 ?st .
+  ?st psv:P571 ?tv ; wikibase:rank ?rk . FILTER(?rk != wikibase:DeprecatedRank)
   ?tv wikibase:timeValue ?inc ; wikibase:timePrecision ?pr .
   FILTER(?inc >= "%d-01-01T00:00:00Z"^^xsd:dateTime && ?inc < "%d-01-01T00:00:00Z"^^xsd:dateTime)
 }"""
@@ -188,9 +191,11 @@ def infobox_founded(wikitext: str) -> tuple[int, int, int] | None:
     if not m:
         return None
     v = m.group(1)
-    t = re.search(r"\{\{\s*(?:start date|start date and age|founded date)[^|}]*\|\s*(\d{4})\s*\|\s*(\d{1,2})\s*\|\s*(\d{1,2})", v, re.I)
-    if t:
-        return int(t.group(1)), int(t.group(2)), int(t.group(3))
+    t = re.search(r"\{\{\s*(?:start date and age|start date|founded date)\s*\|([^}]*)\}\}", v, re.I)
+    if t:   # positional numbers only: {{Start date and age|df=yes|1887|11|6}} -> 1887, 11, 6
+        nums = [x.strip() for x in t.group(1).split("|") if "=" not in x and x.strip().isdigit()]
+        if len(nums) >= 3:
+            return int(nums[0]), int(nums[1]), int(nums[2])
     t = re.search(r"(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})", v)
     if t and t.group(2).lower() in MONTHS:
         return int(t.group(3)), MONTHS[t.group(2).lower()], int(t.group(1))

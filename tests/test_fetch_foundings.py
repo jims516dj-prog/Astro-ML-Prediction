@@ -55,5 +55,8 @@ def test_infobox_founded_formats():
     assert ff.infobox_founded("| founded = {{Start date and age|1878|3|5|df=y}}, as Newton Heath") == (1878, 3, 5)
     assert ff.infobox_founded("|founded= 1 December 1886; as Dial Square") == (1886, 12, 1)
     assert ff.infobox_founded("| founded = March 10, 1905") == (1905, 3, 10)
+    assert ff.infobox_founded("| founded = {{Start date and age|df=yes|1887|11|6}}") == (1887, 11, 6)
+    assert ff.infobox_founded("| founded = {{start date|1905|3|10}}<ref>x</ref>") == (1905, 3, 10)
+    assert ff.infobox_founded("| founded = October 1886; as Dial Square") is None       # month only
     assert ff.infobox_founded("| founded = 1892") is None
     assert ff.infobox_founded("no infobox here") is None

@@ -93,13 +93,17 @@ DOMINANCE = 3.0   # auto-fill only if the top name match has this many times the
 
 def best(q: str, con=None) -> dict | None:
     """The record to auto-fill, or None when the name is ambiguous (the form then offers a dropdown)."""
-    c = [x for x in search(q, con, limit=5) if x["match"] in ("exact", "alias")]
+    allc = search(q, con, limit=8)
+    c = [x for x in allc if x["match"] in ("exact", "alias")]
     if not c:
         return None
-    if c[0]["kind"] == "manual" or len(c) == 1:
+    if c[0]["kind"] == "manual":
         return c[0]
-    top, nxt = int(c[0].get("sitelinks") or 0), int(c[1].get("sitelinks") or 0)
-    return c[0] if top >= DOMINANCE * max(nxt, 1) else None
+    top = int(c[0].get("sitelinks") or 0)
+    # a far more prominent near-match means the name is ambiguous ("Boca Juniors" the Gibraltar club vs
+    # Club Atlético Boca Juniors), so ask instead of guessing
+    rivals = [int(x.get("sitelinks") or 0) for x in allc if x is not c[0]]
+    return c[0] if top >= DOMINANCE * max(rivals + [1]) or (len(allc) == 1) else None
 
 
 def usable(rec: dict) -> tuple[bool, str]:
