@@ -20,6 +20,7 @@ from fastapi.templating import Jinja2Templates
 
 from .. import db, foundings, live, service, venues
 from ..config import DATA, MODELS, ROOT, WORK
+from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
 from .svg import chart_wheel, orb_svg, placebo_svg, reliability_svg
 
@@ -29,7 +30,8 @@ app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 T = Jinja2Templates(directory=HERE / "templates")
 T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.{d}f}%",
                      fmt_num=lambda x, d=4: "—" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x:+.{d}f}",
-                     JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET))
+                     JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET),
+                     league_name=lambda code: LEAGUE_NAMES.get(code, code))
 
 
 def _json(name):
@@ -263,7 +265,7 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     per = 50
     pages = max(1, math.ceil(len(q) / per))
     rows = q.iloc[(page - 1) * per: page * per]
-    leagues = sorted(m.division.unique()) if len(m) else []
+    leagues = sorted(m.division.unique(), key=lambda c: LEAGUE_NAMES.get(c, c)) if len(m) else []
     seasons = sorted(m.season.unique(), reverse=True) if len(m) else []
     live_done = [r for r in live.records() if r["status"] == "settled"]
     if league:
@@ -392,7 +394,7 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
     return T.TemplateResponse(request, "live.html", {
         "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages,
         "q": q, "qs": "&".join(f"{k}={v}" for k, v in q.items() if v),
-        "leagues": sorted({r["division"] for r in recs}), "rep": rep, "msg": msg, "page": "live"})
+        "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "page": "live"})
 
 
 @app.get("/live/match/{key}", response_class=HTMLResponse)

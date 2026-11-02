@@ -30,7 +30,7 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 <div class="scroll"><table class="data">
 <thead><tr><th>#</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Predicted result</th><th class="num">Probability</th><th class="num">Astrology agrees</th><th>Result</th></tr></thead>
 <tbody>{% for r in picks %}
-<tr><td>{{ loop.index }}</td><td class="mono">{{ r.kickoff_utc[11:16] }}</td><td>{{ r.division }}</td>
+<tr><td>{{ loop.index }}</td><td class="mono">{{ r.kickoff_utc[11:16] }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
 <td><a href="/live/match/{{ r.match_key }}">{{ r.home }} v {{ r.away }}</a></td>
 <td>{% if r.pick == "draw" %}Draw{% else %}{{ r.favourite if r.pick == "fav" else r.underdog }} win{% endif %}</td>
 <td class="num">{{ fmt_pct(r.pick_p) }}</td><td class="num">{{ r.classical_agree }}/3</td>
