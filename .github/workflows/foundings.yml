@@ -2,7 +2,12 @@
 # nations). Run on demand from the Actions tab, and monthly to pick up Wikidata corrections.
 name: refresh-founding-charts
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      probe:
+        description: "Diagnostics only: comma-separated Wikidata ids to inspect (nothing is committed)"
+        required: false
+        default: ""
   schedule:
     - cron: "41 3 7 * *"
 permissions:
@@ -16,8 +21,12 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-      - run: python scripts/fetch_foundings.py
+      - if: ${{ inputs.probe != '' }}
+        run: python scripts/fetch_foundings.py --probe "${{ inputs.probe }}"
+      - if: ${{ !inputs.probe }}
+        run: python scripts/fetch_foundings.py
       - name: Push table
+        if: ${{ !inputs.probe }}
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"

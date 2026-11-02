@@ -100,10 +100,16 @@ def best(q: str, con=None) -> dict | None:
     if c[0]["kind"] == "manual":
         return c[0]
     top = int(c[0].get("sitelinks") or 0)
-    # a far more prominent near-match means the name is ambiguous ("Boca Juniors" the Gibraltar club vs
-    # Club Atlético Boca Juniors), so ask instead of guessing
-    rivals = [int(x.get("sitelinks") or 0) for x in allc if x is not c[0]]
-    return c[0] if top >= DOMINANCE * max(rivals + [1]) or (len(allc) == 1) else None
+    # other teams with the same name must be clearly less prominent ...
+    same_name = [int(x.get("sitelinks") or 0) for x in c[1:]]
+    if same_name and top < DOMINANCE * max(max(same_name), 1):
+        return None
+    # ... and no merely similar name may be more prominent than the exact match: "Boca Juniors" the
+    # Gibraltar club vs Club Atlético Boca Juniors. Less prominent look-alikes (Armenia for "Argentina",
+    # AJ Auxerre for "Ajax") do not block.
+    if any(int(x.get("sitelinks") or 0) > top for x in allc if x["match"] == "close"):
+        return None
+    return c[0]
 
 
 def usable(rec: dict) -> tuple[bool, str]:

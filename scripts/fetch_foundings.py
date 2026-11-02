@@ -258,5 +258,21 @@ def main():
           f"with coordinates: {sum(bool(r['lat']) for r in rows)}")
 
 
+def probe(ids: list[str]):
+    """Diagnostics: how Wikidata records given items (classes, inception, English Wikipedia title)."""
+    ents = entities(set(ids))
+    for i in ids:
+        e = ents.get(i, {})
+        classes = [(c["mainsnak"].get("datavalue", {}).get("value", {}).get("id"), c.get("rank"))
+                   for c in e.get("claims", {}).get("P31", [])]
+        inc = [(c["mainsnak"].get("datavalue", {}).get("value", {}).get("time"),
+                c["mainsnak"].get("datavalue", {}).get("value", {}).get("precision"), c.get("rank"))
+               for c in e.get("claims", {}).get("P571", [])]
+        print(f"{i} {label(e)!r}: P31={classes} P571={inc} enwiki={enwiki(e)!r} sitelinks={sitelinks(e)}")
+
+
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) > 2 and sys.argv[1] == "--probe":
+        probe(sys.argv[2].split(","))
+    else:
+        main()
