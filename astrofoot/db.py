@@ -34,6 +34,10 @@ CREATE TABLE IF NOT EXISTS audit (
   id INTEGER PRIMARY KEY AUTOINCREMENT, match_id TEXT NOT NULL, field TEXT NOT NULL,
   old_value TEXT, new_value TEXT, edited_at TEXT NOT NULL, edited_by TEXT
 );
+CREATE TABLE IF NOT EXISTS team_charts (
+  team TEXT PRIMARY KEY, founded_date TEXT NOT NULL, founded_time TEXT, place TEXT,
+  lat REAL, lon REAL, notes TEXT, based_on TEXT, updated_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS venues (
   name TEXT PRIMARY KEY, lat REAL NOT NULL, lon REAL NOT NULL, source TEXT NOT NULL, verified_at TEXT
 );
@@ -128,3 +132,15 @@ def save_venue(con, name, lat, lon, source):
 
 def find_venue(con, name):
     return con.execute("SELECT * FROM venues WHERE lower(name)=lower(?)", (name,)).fetchone()
+
+
+def save_team_chart(con, team: str, founded_date: str, founded_time: str | None, place: str | None,
+                    lat: float | None, lon: float | None, based_on: str | None = None, notes: str | None = None):
+    """The user's own founding chart for a team; it takes priority over the Wikidata table."""
+    con.execute("INSERT OR REPLACE INTO team_charts VALUES (?,?,?,?,?,?,?,?,?)",
+                (team.strip(), founded_date, founded_time or None, place, lat, lon, notes, based_on, utcnow()))
+    con.commit()
+
+
+def team_charts(con):
+    return [{**dict(r), "date_precision": "day"} for r in con.execute("SELECT * FROM team_charts ORDER BY team")]

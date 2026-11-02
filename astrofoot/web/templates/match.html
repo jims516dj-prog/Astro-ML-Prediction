@@ -77,6 +77,12 @@
 <details class="card {{ cls }}" {% if loop.first %}open{% endif %}>
   <summary><strong>{{ label }}</strong> — {{ name[v.winner] }} <span class="small">(net {{ v.net }})</span></summary>
   <p class="small">{{ book }}</p>
+  {% if k == "rao" and a.founding and (a.founding.a or a.founding.b) %}
+  <p class="small">Founding charts:
+  {% for side, team in [("a", r.team_a), ("b", r.team_b)] %}{% set f = a.founding[side] %}
+    <strong>{{ team }}</strong> {% if f %}{{ f.founded_date }}{% if f.time_known %} {{ f.founded_time }}{% else %} (time unknown: Moon only{% if f.moon_sign_certain == false %}, Moon sign uncertain{% endif %}){% endif %}{% if not f.usable %} — not used: {{ f.reason }}{% endif %} · {{ f.source }}{% else %}none{% endif %}{% if not loop.last %};{% endif %}
+  {% endfor %}</p>
+  {% endif %}
   {% if v.table and k=="rao" %}
   <table class="data"><thead><tr><th>Parameter</th><th class="num">{{ a.fav }}</th><th class="num">{{ a.dog }}</th><th>Notes</th></tr></thead><tbody>
   {% for t in v.table %}<tr><td>{{ t.parameter }}</td><td class="num">{{ t.fav if t.fav is not none else "skipped" }}</td><td class="num">{{ t.dog if t.dog is not none else "skipped" }}</td><td class="small">{{ t.notes or "" }}</td></tr>{% endfor %}

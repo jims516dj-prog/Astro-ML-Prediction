@@ -8,7 +8,7 @@ import joblib
 import numpy as np
 import pandas as pd
 
-from . import ephem, geo, lattice, models
+from . import ephem, foundings, geo, lattice, models
 from . import sky as skymod
 from .config import MODELS
 from .dataset import devig
@@ -107,7 +107,8 @@ def _uk():
 
 def analyse(inp: dict) -> dict:
     """inp: team_a, team_b, kickoff_utc (ISO), lat, lon, odds_a, odds_d, odds_b, home_side (A/B/neutral),
-    context, captain (optional dict), founding_a/b (optional {date, time_utc, lat, lon})."""
+    context, captain (optional dict), founding_a/b (optional: {founded_date, founded_time (local, may be
+    empty), lat, lon, source} or {datetime_utc, lat, lon})."""
     ko = datetime.fromisoformat(inp["kickoff_utc"]).astimezone(timezone.utc)
     jd = ephem.jd_utc(ko)
     rc = ephem.raw_chart(jd, inp["lat"], inp["lon"])
@@ -123,12 +124,24 @@ def analyse(inp: dict) -> dict:
         p_a, p_d, p_b = two[0], 0.0, two[1]
     market = {"p_fav": float(p_a if fav_is_a else p_b), "p_draw": float(p_d), "p_dog": float(p_b if fav_is_a else p_a)}
 
-    natal = {}
+    natal, founding_used = {}, {}
     for side in ("a", "b"):
         f = inp.get(f"founding_{side}")
-        if f and f.get("datetime_utc") and f.get("lat") is not None:
+        if not f or f.get("lat") is None:
+            continue
+        if f.get("datetime_utc"):                       # exact instant given directly
             njd = ephem.jd_utc(datetime.fromisoformat(f["datetime_utc"]))
-            natal[side] = ephem.raw_chart(njd, float(f["lat"]), float(f["lon"]), with_hours=False)
+            natal[side] = {**ephem.raw_chart(njd, float(f["lat"]), float(f["lon"]), with_hours=False),
+                           "time_known": True}
+            founding_used[side] = {"usable": True, "time_known": True, "source": f.get("source", "manual")}
+        elif f.get("founded_date"):                     # date (+ optional local time) at the founding place
+            rec = {**f, "lat": float(f["lat"]), "lon": float(f["lon"]),
+                   "date_precision": f.get("date_precision") or "day"}
+            rc_n, meta = foundings.cast(rec)
+            founding_used[side] = {**meta, "source": f.get("source", "manual"), "kind": f.get("kind"),
+                                   "founded_date": f["founded_date"], "founded_time": f.get("founded_time")}
+            if rc_n is not None:
+                natal[side] = rc_n
     nat_fav = natal.get("a" if fav_is_a else "b")
     nat_dog = natal.get("b" if fav_is_a else "a")
     cap = inp.get("captain")
@@ -171,6 +184,7 @@ def analyse(inp: dict) -> dict:
         "engine4": e4, "guardrails": _guardrails(rc, v_trop, v_sid), "chart": _chart_summary(rc),
         "kickoff_local_uk": ko.astimezone(_uk()).strftime("%Y-%m-%d %H:%M"),
         "venue_timezone": tz,
+        "founding": {"a": founding_used.get("a"), "b": founding_used.get("b")},
         "kickoff_local_venue": ko_local.strftime("%a %Y-%m-%d %H:%M") if tz else None,
     }
     out["synthesis"] = synthesise(out)

@@ -17,7 +17,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, live, service, venues
+from .. import db, foundings, live, service, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..tables import JERSEY_COLOR_PLANET
 from .svg import chart_wheel, orb_svg, placebo_svg, reliability_svg
@@ -100,9 +100,12 @@ def _inputs_from_form(form) -> dict:
         inp["captain"] = {"a_jersey": _i(form.get("a_jersey")), "b_jersey": _i(form.get("b_jersey")),
                           "a_color": form.get("a_color") or None, "b_color": form.get("b_color") or None}
     for s in ("a", "b"):
-        if form.get(f"found_{s}_dt") and form.get(f"found_{s}_lat"):
-            inp[f"founding_{s}"] = {"datetime_utc": datetime.fromisoformat(form[f"found_{s}_dt"]).replace(
-                tzinfo=timezone.utc).isoformat(), "lat": _f(form[f"found_{s}_lat"]), "lon": _f(form[f"found_{s}_lon"])}
+        if form.get(f"found_{s}_date") and _f(form.get(f"found_{s}_lat")) is not None:
+            inp[f"founding_{s}"] = {
+                "founded_date": form[f"found_{s}_date"], "founded_time": form.get(f"found_{s}_time") or None,
+                "place": form.get(f"found_{s}_place", ""), "lat": _f(form[f"found_{s}_lat"]),
+                "lon": _f(form[f"found_{s}_lon"]), "source": form.get(f"found_{s}_source") or "manual",
+                "kind": form.get(f"found_{s}_kind") or None, "save": bool(form.get(f"found_{s}_save"))}
     return inp
 
 
@@ -124,6 +127,11 @@ async def analyze_submit(request: Request):
     c = con()
     if inp.get("venue"):
         db.save_venue(c, inp["venue"], inp["lat"], inp["lon"], inp["loc_source"])
+    for side, team in (("a", inp["team_a"]), ("b", inp["team_b"])):
+        f = inp.get(f"founding_{side}")
+        if f and f.pop("save", False):
+            db.save_team_chart(c, team, f["founded_date"], f["founded_time"], f["place"], f["lat"], f["lon"],
+                               based_on=f["source"])
     rec = {"team_a": inp["team_a"], "team_b": inp["team_b"], "home_side": inp["home_side"], "sport": "football",
            "context": inp["context"], "kickoff_utc": inp["kickoff_utc"], "time_precision": inp["time_precision"],
            "venue": inp["venue"], "lat": inp["lat"], "lon": inp["lon"], "loc_source": inp["loc_source"],
@@ -362,6 +370,17 @@ def live_page(request: Request):
         rows.append({**r, "result": res, "outcome": out, "verified": live.verify(r),
                      "pre_kickoff": r["committed_at"] < r["kickoff_utc"]})
     return T.TemplateResponse(request, "live.html", {"rows": rows, "rep": rep, "page": "live"})
+
+
+@app.get("/api/teams")
+def api_teams(q: str):
+    """Founding-chart candidates for a typed team name (your saved charts first, then Wikidata)."""
+    cands = foundings.search(q, con())
+    for c in cands:
+        ok, why = foundings.usable(c)
+        c["usable"], c["why_not"] = ok, why
+    return {"candidates": cands, "auto": next((c for c in cands if c["match"] in ("exact", "alias")), None),
+            "table_loaded": len(foundings.table()) > 0}
 
 
 @app.get("/api/localtime")

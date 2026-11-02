@@ -6,8 +6,8 @@
   <input type="hidden" name="mode" value="{{ 'historical' if historical else 'pending' }}">
   <fieldset><legend>Core match</legend>
     <div class="grid2">
-      <label>Team A<input name="team_a" required placeholder="Manchester United"></label>
-      <label>Team B<input name="team_b" required placeholder="Bayern Munich"></label>
+      <label>Team A<input name="team_a" id="team_a" required placeholder="Manchester United" autocomplete="off"></label>
+      <label>Team B<input name="team_b" id="team_b" required placeholder="Bayern Munich" autocomplete="off"></label>
       <label>Kickoff (GMT/UTC)<input type="datetime-local" name="kickoff_utc" id="ko" required value="{{ now }}">
         <span class="note" id="kolocal">Enter the venue to see the local kickoff time.</span></label>
       <label>Kickoff precision
@@ -37,13 +37,27 @@
     </div>
     <p class="note">Equal odds (within ±0.05) disable Frawley's engine. Engine 4 needs draw odds.</p>
   </fieldset>
-  <details class="fs"><summary>Team founding charts (Rao's Nations' Charts step)</summary>
-    <div class="grid3">
-      <label>Team A founded (UTC)<input type="datetime-local" name="found_a_dt"></label>
-      <label>Lat<input name="found_a_lat"></label><label>Lon<input name="found_a_lon"></label>
-      <label>Team B founded (UTC)<input type="datetime-local" name="found_b_dt"></label>
-      <label>Lat<input name="found_b_lat"></label><label>Lon<input name="found_b_lon"></label>
+  <details class="fs" id="found_box"><summary>Team founding charts (Rao's Nations' Charts step) <span class="note" id="found_sum"></span></summary>
+    <p class="note">Filled in automatically from Wikidata when a team is recognised, or from your own saved chart.
+    Everything stays editable. Most sources give only the founding <em>date</em>: leave the time empty if unknown,
+    and Rao then uses the founding Moon only (no Ascendant).</p>
+    {% for s, label in [("a", "Team A"), ("b", "Team B")] %}
+    <div class="found" data-side="{{ s }}">
+      <div class="found-head"><strong>{{ label }}</strong> <span class="badge muted" id="found_{{ s }}_tag">no chart</span></div>
+      <label class="span-all">Chart<select id="found_{{ s }}_pick"><option value="">— enter a team name above —</option></select></label>
+      <div class="grid3">
+        <label>Founded (date)<input type="date" name="found_{{ s }}_date" id="found_{{ s }}_date"></label>
+        <label>Local time, if known<input type="time" name="found_{{ s }}_time" id="found_{{ s }}_time"></label>
+        <label>Place<input name="found_{{ s }}_place" id="found_{{ s }}_place"></label>
+        <label>Latitude<input name="found_{{ s }}_lat" id="found_{{ s }}_lat" inputmode="decimal"></label>
+        <label>Longitude<input name="found_{{ s }}_lon" id="found_{{ s }}_lon" inputmode="decimal"></label>
+        <label class="inline"><input type="checkbox" name="found_{{ s }}_save" value="1"> Save as my default for this team</label>
+      </div>
+      <input type="hidden" name="found_{{ s }}_source" id="found_{{ s }}_source">
+      <input type="hidden" name="found_{{ s }}_kind" id="found_{{ s }}_kind">
+      <p class="note" id="found_{{ s }}_note"></p>
     </div>
+    {% endfor %}
   </details>
   <details class="fs"><summary><label class="inline"><input type="checkbox" name="use_captain" value="1"> Include captains &amp; jersey configuration</label></summary>
     <p class="note">Usually unavailable until shortly before kickoff. Without it Rao runs without the Planetary Influence layer.</p>
@@ -86,5 +100,85 @@ async function localPreview() {
 }
 ["lat","lon","ko"].forEach(id => $(id).addEventListener("change", localPreview));
 
+// ---- founding charts: auto-fill from the team name, always editable ----
+const FIELDS = ["date", "time", "place", "lat", "lon"];
+const found = {a: {cands: [], dirty: false}, b: {cands: [], dirty: false}};
+function fmtCand(c) {
+  const when = c.founded_date + (c.founded_time ? " " + c.founded_time : "");
+  const where = c.place ? ", " + c.place : (c.country ? ", " + c.country : "");
+  return `${c.team} — ${c.kind_label}: ${when}${where}` + (c.usable === false ? "  (not usable: " + c.why_not + ")" : "");
+}
+function fillFound(side, c) {
+  const f = k => $(`found_${side}_${k}`);
+  f("date").value = c ? (c.founded_date || "") : "";
+  f("time").value = c && c.founded_time ? c.founded_time.slice(0, 5) : "";
+  f("place").value = c ? (c.place || "") : "";
+  f("lat").value = c && c.lat != null ? c.lat : "";
+  f("lon").value = c && c.lon != null ? c.lon : "";
+  f("source").value = c ? c.source : "";
+  f("kind").value = c ? c.kind : "";
+  found[side].dirty = false;
+  const tag = f("tag");
+  if (!c) { tag.textContent = "no chart"; tag.className = "badge muted"; f("note").textContent = ""; return; }
+  tag.textContent = c.kind === "manual" ? "your saved chart" : "from Wikidata";
+  tag.className = "badge ok";
+  const notes = [];
+  if (c.source && c.source.startsWith("wikidata:"))
+    notes.push(`Source: ${c.source.replace("wikidata:", "Wikidata ")} (${c.kind_label}).`);
+  if (c.kind === "nation") notes.push("Place shown is the present-day capital; change it if the state was founded elsewhere.");
+  if (c.usable === false) notes.push("Not usable as is: " + c.why_not + ". Enter the full date to use it.");
+  f("note").dataset.base = notes.join(" ");
+  timeNote(side);
+  $("found_box").open = true;
+  updateFoundSummary();
+}
+function timeNote(side) {
+  const note = $(`found_${side}_note`), hasDate = $(`found_${side}_date`).value;
+  const t = !hasDate ? "" : $(`found_${side}_time`).value
+    ? "Founding time given: Rao uses the full chart (Moon and Ascendant)."
+    : "Founding time unknown: Rao will use the Moon only. Add the time if you know it.";
+  note.textContent = [note.dataset.base || "", t].filter(Boolean).join(" ");
+}
+function updateFoundSummary() {
+  const n = ["a", "b"].filter(s => $(`found_${s}_date`).value).length;
+  $("found_sum").textContent = n ? `(${n} of 2 filled)` : "";
+}
+async function lookupTeam(side) {
+  const q = $(`team_${side}`).value.trim();
+  const pick = $(`found_${side}_pick`);
+  if (!q) return;
+  const r = await fetch("/api/teams?q=" + encodeURIComponent(q)).then(r => r.ok ? r.json() : null);
+  if (!r) return;
+  found[side].cands = r.candidates;
+  pick.innerHTML = "";
+  const none = document.createElement("option");
+  none.value = ""; none.textContent = r.candidates.length ? "— none (leave empty / enter manually) —"
+    : (r.table_loaded ? "no match found: enter manually" : "founding table not downloaded: enter manually");
+  pick.appendChild(none);
+  r.candidates.forEach((c, i) => {
+    const o = document.createElement("option"); o.value = i; o.textContent = fmtCand(c); pick.appendChild(o);
+  });
+  if (found[side].dirty) return;            // never overwrite what the user typed
+  const auto = r.auto ? r.candidates.indexOf(r.candidates.find(c => c.source === r.auto.source && c.kind === r.auto.kind)) : -1;
+  pick.value = auto >= 0 ? String(auto) : "";
+  fillFound(side, auto >= 0 ? r.candidates[auto] : null);
+}
+["a", "b"].forEach(side => {
+  $(`team_${side}`).addEventListener("change", () => lookupTeam(side));
+  $(`found_${side}_pick`).addEventListener("change", e => {
+    const c = e.target.value === "" ? null : found[side].cands[+e.target.value];
+    fillFound(side, c);
+  });
+  FIELDS.forEach(k => $(`found_${side}_${k}`).addEventListener("input", () => {
+    found[side].dirty = true;
+    const tag = $(`found_${side}_tag`);
+    tag.textContent = "edited by you"; tag.className = "badge warn";
+    const src = $(`found_${side}_source`);
+    if (src.value && !src.value.startsWith("manual")) src.value = "manual (from " + src.value + ")";
+    else if (!src.value) src.value = "manual";
+    timeNote(side);
+    updateFoundSummary();
+  }));
+});
 </script>
 {% endblock %}

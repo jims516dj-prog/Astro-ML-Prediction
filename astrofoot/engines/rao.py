@@ -74,18 +74,21 @@ def _house_score(v: View, h: int) -> int:
     return 1
 
 
-def _nation_points(v: View, natal: View) -> tuple[int, int, bool]:
-    """Transpose nation Moon and Ascendant onto the match chart. Returns (moon, asc, saturn8)."""
-    pts = []
-    for x in (natal.lon["Mo"], natal.asc):
+def _nation_points(v: View, natal: View, use_asc: bool) -> tuple[int, int | None, bool | None]:
+    """Transpose the team chart's Moon (and Ascendant, when the founding time is known) onto the
+    match chart. Returns (moon points, asc points or None, saturn-on-8th or None)."""
+    def points(x):
         h = ephem.house_of(x, v.cusps)
         ben, mal = _influences(v, h)
         heavy = [p for p in mal if p in ("Sa", "Ma")]
-        pts.append(0 if heavy and "Ju" not in ben else 2 if ben and not mal else 1 + ("Ju" in ben))
+        return min(3, 0 if heavy and "Ju" not in ben else 2 if ben and not mal else 1 + ("Ju" in ben))
+    moon = points(natal.lon["Mo"])
+    if not use_asc:
+        return moon, None, None
     # transit Saturn's house in the team chart, and the houses its 3/7/10 drishti reaches
     sat_house = ephem.house_of(v.lon["Sa"], natal.cusps)
     saturn8 = 8 in {(sat_house - 1 + k - 1) % 12 + 1 for k in (3, 7, 10)} or sat_house == 8
-    return min(pts[0], 3), min(pts[1], 3), saturn8
+    return moon, points(natal.asc), saturn8
 
 
 def _digit(n: int) -> int:
@@ -137,20 +140,36 @@ def analyse(rc: dict, *, draw_possible: bool = True, when: datetime | None = Non
 
     if natal_fav and natal_dog:
         nf, nd = View(natal_fav, "lahiri", "whole_sign"), View(natal_dog, "lahiri", "whole_sign")
-        mf, af, s8f = _nation_points(v, nf)
-        md, ad, s8d = _nation_points(v, nd)
-        for label, pf, pd, key in (("Nation Moon", mf, md, "nation_moon"), ("Nation Ascendant", af, ad, "nation_asc")):
+        # The Ascendant (and the 8th house) exist only when both founding times are known; with a
+        # date alone the chart is cast for noon and only the Moon is meaningful.
+        use_asc = natal_fav.get("time_known", True) and natal_dog.get("time_known", True)
+        mf, af, s8f = _nation_points(v, nf, use_asc)
+        md, ad, s8d = _nation_points(v, nd, use_asc)
+        rows = [("Nation Moon", mf, md, "nation_moon")]
+        if use_asc:
+            rows.append(("Nation Ascendant", af, ad, "nation_asc"))
+        else:
+            vd.caveats.append("Founding time unknown for at least one team: Nations' Charts used the Moon only "
+                              "(no Ascendant, no Saturn-on-8th interruption check).")
+        for label, pf, pd, key in rows:
             vd.table.append({"parameter": label, "fav": pf, "dog": pd})
             vd.score_fav += pf
             vd.score_dog += pd
             if pf != pd:
                 vd.add(f"{label}: {pf} vs {pd}", "fav" if pf > pd else "dog", 0, f"rao.{key}")
+        if not use_asc:
+            vd.table.append({"parameter": "Nation Ascendant", "fav": None, "dog": None,
+                             "notes": "skipped: founding time unknown"})
+        for nat, who in ((natal_fav, "favourite"), (natal_dog, "underdog")):
+            if nat.get("moon_sign_certain") is False:
+                vd.caveats.append(f"The {who}'s founding-day Moon changes sign that day; without a founding "
+                                  "time its sign is uncertain.")
         if s8f or s8d:
             vd.caveats.append("Saturn aspects the 8th house of a team chart: interruption risk. "
                               "If the match is interrupted, Rao's method must be set aside.")
             vd.features["saturn_8th"] = True
     else:
-        vd.caveats.append("Nations' Charts phase skipped — founding charts not provided.")
+        vd.caveats.append("Nations' Charts phase skipped — founding charts not provided for both teams.")
 
     if captain and when:
         fp, fnotes = _influence_points(captain.get("fav_jersey"), captain.get("fav_color"), when)

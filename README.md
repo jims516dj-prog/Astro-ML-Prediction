@@ -48,6 +48,24 @@ Open **http://localhost:8000**. Leave the terminal window open while you use the
 - *Port 8000 already in use*: add `--port 8001` and open http://localhost:8001.
 - *Venue lookup finds nothing*: type the latitude and longitude yourself (any map site shows them).
 
+## Team founding charts (auto-filled)
+
+Typing a team name on **Analyze** fills in its founding chart for Rao's Nations' Charts step, from
+`data/ref/team_foundings.csv`, a table of founding dates built from **Wikidata** (open data, CC0) for
+football clubs, national teams and the nations they represent. Short names work ("Man United").
+Every field stays editable, other candidates (e.g. *nation* vs *national team* charts) are in the
+**Chart** dropdown, and **Save as my default for this team** stores your version, which then takes
+priority (in `data/app.sqlite3`, on your computer only).
+
+- Founding **times** are almost never recorded. Without one, the chart is cast for local noon, Rao uses
+  the founding **Moon only** (no Ascendant, no Saturn-on-8th check), and a warning appears if the Moon
+  changed sign that day. Enter the time when you know it to use the full chart.
+- Dates known only to the month or year are listed but not used: the Moon can't be placed.
+- For nations, the place shown is the present-day capital; edit it if the state was founded elsewhere.
+- The table is refreshed monthly by `.github/workflows/foundings.yml` (or `python scripts/fetch_foundings.py`
+  wherever query.wikidata.org is reachable). Pull to get it: `git pull`.
+- Live forecasts are unaffected: they never include founding charts, so the record's method stays fixed.
+
 ## Rebuild the research (optional, hours)
 
 ```sh

@@ -120,3 +120,6 @@ code { font-family: var(--mono); font-size: .88em; background: var(--muted-bg); 
 }
 .two.rel .fig svg { max-width: 300px; margin: 0 auto; }
 .ok-txt { color: var(--ok); font-weight: 600; }
+.found { border-top: 1px solid var(--line); padding-top: 8px; margin-top: 8px; }
+.found-head { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; font-family: var(--sans); }
+.found select { width: 100%; }
