@@ -1,0 +1,25 @@
+# Refresh data/ref/team_foundings.csv from Wikidata (founding dates of clubs, national teams and
+# nations). Run on demand from the Actions tab, and monthly to pick up Wikidata corrections.
+name: refresh-founding-charts
+on:
+  workflow_dispatch: {}
+  schedule:
+    - cron: "41 3 7 * *"
+permissions:
+  contents: write
+concurrency: foundings
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python scripts/fetch_foundings.py
+      - name: Push table
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          git add data/ref/team_foundings.csv
+          git diff --cached --quiet || { git commit -m "foundings: refresh from Wikidata $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }
