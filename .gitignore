@@ -8,3 +8,5 @@ data/work/skies/
 data/work/oof_*.pkl
 # Local user database (matches you enter, prediction ledger)
 data/app.sqlite3
+# run logs (research.log is rewritten by every run)
+data/*.log
