@@ -59,10 +59,6 @@ def similarity(a: str, b: str) -> float:
     return max(jac, seq * 0.85)
 
 
-def _team_sim(name: str, team: dict) -> float:
-    return max(similarity(name, team.get(k) or "") for k in ("name", "shortName", "tla"))
-
-
 def fetch(date_from: date, date_to: date, tok: str, base: str = API) -> list[dict]:
     """Finished matches between two dates (inclusive), in windows the API accepts."""
     out, d = [], date_from
@@ -77,8 +73,23 @@ def fetch(date_from: date, date_to: date, tok: str, base: str = API) -> list[dic
     return out
 
 
-def match_results(pending: list[dict], matches: list[dict]) -> tuple[dict[str, dict], list[str]]:
-    """Pair our pending forecasts with the API's finished matches.
+def normalise(matches: list[dict]) -> list[dict]:
+    """football-data.org matches → the common form used by pair()."""
+    out = []
+    for m in matches:
+        div = COMPETITION_DIV.get((m.get("competition") or {}).get("code"))
+        sc = m.get("score") or {}
+        ft = sc.get("regularTime") or sc.get("fullTime") or {}      # 90 minutes, like the primary source
+        if div and m.get("status") == "FINISHED" and ft.get("home") is not None and ft.get("away") is not None:
+            out.append({"division": div, "utc": m["utcDate"],
+                        "home": [m["homeTeam"].get(k) or "" for k in ("name", "shortName", "tla")],
+                        "away": [m["awayTeam"].get(k) or "" for k in ("name", "shortName", "tla")],
+                        "goals_home": int(ft["home"]), "goals_away": int(ft["away"])})
+    return out
+
+
+def pair(pending: list[dict], matches: list[dict], source: str) -> tuple[dict[str, dict], list[str]]:
+    """Pair our pending forecasts with another source's finished matches (common form).
 
     Same division and kickoff within 3 h, then team-name similarity. With a single candidate in that
     slot a modest similarity suffices; with several, the best must clearly beat the runner-up.
@@ -87,29 +98,30 @@ def match_results(pending: list[dict], matches: list[dict]) -> tuple[dict[str, d
     """
     by_div: dict[str, list[dict]] = {}
     for m in matches:
-        div = COMPETITION_DIV.get((m.get("competition") or {}).get("code"))
-        sc = m.get("score") or {}
-        ft = sc.get("regularTime") or sc.get("fullTime") or {}      # 90 minutes, like the primary source
-        if div and m.get("status") == "FINISHED" and ft.get("home") is not None and ft.get("away") is not None:
-            by_div.setdefault(div, []).append(m)
+        by_div.setdefault(m["division"], []).append(m)
+    sim = lambda name, names: max(similarity(name, n) for n in names)      # noqa: E731
     found, notes = {}, []
     for rec in pending:
         ko = datetime.fromisoformat(rec["kickoff_utc"])
         cands = [m for m in by_div.get(rec["division"], [])
-                 if abs((datetime.fromisoformat(m["utcDate"].replace("Z", "+00:00")) - ko).total_seconds()) <= 3 * 3600]
+                 if abs((datetime.fromisoformat(m["utc"].replace("Z", "+00:00")) - ko).total_seconds()) <= 3 * 3600]
         if not cands:
             continue
-        scored = sorted(((_team_sim(rec["home"], m["homeTeam"]), _team_sim(rec["away"], m["awayTeam"]), m)
-                         for m in cands), key=lambda x: -(x[0] + x[1]))
+        scored = sorted(((sim(rec["home"], m["home"]), sim(rec["away"], m["away"]), m) for m in cands),
+                        key=lambda x: -(x[0] + x[1]))
         sh, sa, m = scored[0]
         if len(scored) == 1:
             ok = max(sh, sa) >= 0.5 and min(sh, sa) >= 0.2
         else:
             ok = min(sh, sa) >= 0.35 and (sh + sa) - (scored[1][0] + scored[1][1]) >= 0.3
         if ok:
-            ft = m["score"].get("regularTime") or m["score"]["fullTime"]
-            found[rec["match_key"]] = {"goals_home": int(ft["home"]), "goals_away": int(ft["away"]), "source": SOURCE}
+            found[rec["match_key"]] = {"goals_home": m["goals_home"], "goals_away": m["goals_away"], "source": source}
         else:
             notes.append(f"{rec['home']} v {rec['away']}: no confident match among "
-                         + "; ".join(f"{c['homeTeam'].get('shortName')} v {c['awayTeam'].get('shortName')}" for c in cands))
+                         + "; ".join(f"{c['home'][0]} v {c['away'][0]}" for c in cands))
     return found, notes
+
+
+def match_results(pending: list[dict], matches: list[dict]) -> tuple[dict[str, dict], list[str]]:
+    """Pair pending forecasts with football-data.org's raw matches."""
+    return pair(pending, normalise(matches), SOURCE)

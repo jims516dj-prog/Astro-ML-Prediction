@@ -140,7 +140,11 @@ football-data.co.uk sometimes publishes results a day or more late. For the top 
 ask **football-data.org** (official API, free plan), which has scores minutes after full time.
 
 Covered: Premier League, Championship, Bundesliga, Serie A, La Liga, Ligue 1, Eredivisie, Primeira Liga,
-Brasileirão. Other leagues still wait for football-data.co.uk.
+Brasileirão.
+
+Every other league (and any top-league game football-data.org misses) is looked up on **ESPN's public
+scoreboard feed**, which needs no key. It is unofficial: if it changes or goes down, those games simply
+wait for football-data.co.uk. Games decided after extra time or penalties are left to football-data.co.uk.
 
 One-time setup:
 

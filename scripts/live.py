@@ -18,7 +18,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import live, results2  # noqa: E402
+from astrofoot import live, results2, results_espn  # noqa: E402
 
 
 def load_fixtures(a) -> list[dict]:
@@ -55,12 +55,12 @@ def load_results(a, now) -> tuple[dict, dict]:
             print(f"results unavailable: {url}: {type(e).__name__}: {e}", file=sys.stderr)
     for k in res:
         res[k]["source"] = live.PRIMARY
-    # Second source for matches the primary has not published yet (needs FOOTBALL_DATA_ORG_TOKEN)
+    # Faster sources for matches the primary has not published yet; the primary later confirms or corrects them
     settled = live.read_results(a.ledger)
-    pending = [r for r in live.read_predictions(a.ledger)
+    waiting = [r for r in live.read_predictions(a.ledger)
                if r["match_key"] not in settled and r["match_key"] not in res
-               and r["division"] in results2.COMPETITION_DIV.values()
                and datetime.fromisoformat(r["kickoff_utc"]) + timedelta(hours=2) < now]
+    pending = [r for r in waiting if r["division"] in results2.COMPETITION_DIV.values()]
     tok = results2.token()
     if pending and tok:
         days = [datetime.fromisoformat(r["kickoff_utc"]).date() for r in pending]
@@ -74,8 +74,7 @@ def load_results(a, now) -> tuple[dict, dict]:
             print(f"football-data.org returned {len(got)} finished match(es): "
                   + (", ".join(f"{c} {n}" for c, n in sorted(per.items(), key=lambda x: str(x[0]))) or "none"))
             found, notes = results2.match_results(pending, got)
-            for k, v in found.items():
-                res[k] = v
+            res.update(found)
             print(f"football-data.org: {len(found)} of {len(pending)} pending top-league result(s) found")
             for n in notes:
                 print("  unmatched:", n)
@@ -83,6 +82,14 @@ def load_results(a, now) -> tuple[dict, dict]:
             print(f"football-data.org unavailable: {type(e).__name__}: {e}", file=sys.stderr)
     elif pending:
         print(f"{len(pending)} pending top-league match(es) could settle faster with FOOTBALL_DATA_ORG_TOKEN set")
+    rest = [r for r in waiting if r["match_key"] not in res]
+    if rest:
+        found, notes, counts = results_espn.match_results(rest)
+        res.update(found)
+        print("espn.com returned finished match(es): " + (", ".join(f"{d} {n}" for d, n in counts.items()) or "none"))
+        print(f"espn.com: {len(found)} of {len(rest)} remaining pending result(s) found")
+        for n in notes:
+            print("  unmatched:", n)
     return res, latest
 
 
