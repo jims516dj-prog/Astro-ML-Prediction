@@ -18,10 +18,10 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import live, results2, results_espn  # noqa: E402
+from astrofoot import fixtures2, live, results2, results_espn  # noqa: E402
 
 
-def load_fixtures(a) -> list[dict]:
+def load_fixtures(a, now) -> list[dict]:
     if a.fixtures:
         return live.parse_fixtures(live.read_csv_bytes(Path(a.fixtures).read_bytes()))
     out, errors = [], []
@@ -32,6 +32,14 @@ def load_fixtures(a) -> list[dict]:
             errors.append(f"{url}: {type(e).__name__}: {e}")
     if errors:
         print("fixture sources unavailable:\n  " + "\n  ".join(errors), file=sys.stderr)
+    key = fixtures2.token()
+    if key:
+        import pandas as pd
+        local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
+        out += fixtures2.extra_fixtures(out, now, a.horizon, a.ledger, fixtures2.Client(key), live.fetch_csv,
+                                        live.results_url, live.match_key, local_date, live.read_predictions(a.ledger))
+    else:
+        print("extra fixtures: set ODDS_API_KEY to add games football-data.co.uk has not listed yet")
     if not out and errors:
         raise SystemExit("No fixtures could be downloaded (is www.football-data.co.uk allowed by the network policy?)")
     return out
@@ -113,6 +121,8 @@ def diagnose(a, now):
     settled = live.read_results(a.ledger)
     pending = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in settled]
     print(f"PENDING forecasts: {len(pending)}")
+    print("EXTRA FIXTURES the-odds-api.com: " + ("key configured" if fixtures2.token() else
+          "no key (set the ODDS_API_KEY secret to add games football-data.co.uk has not listed yet)"))
     print("SECOND SOURCE football-data.org: " + ("key configured" if results2.token() else
           "no key (set the FOOTBALL_DATA_ORG_TOKEN secret to settle top-league results faster)"))
     files = {}
@@ -163,7 +173,7 @@ def main():
         n = live.settle(res, now, a.ledger, latest=latest)
         print(f"settled {n} match(es)")
     if a.cmd in ("cycle", "commit"):
-        r = live.commit(load_fixtures(a), now, a.horizon, a.ledger)
+        r = live.commit(load_fixtures(a, now), now, a.horizon, a.ledger)
         print(f"committed {r['committed']} prediction(s)")
         for s in r["skipped"]:
             print("  skipped:", s)

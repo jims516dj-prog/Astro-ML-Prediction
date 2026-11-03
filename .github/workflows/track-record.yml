@@ -30,10 +30,13 @@ jobs:
         run: python scripts/live.py diagnose
         env:
           FOOTBALL_DATA_ORG_TOKEN: ${{ secrets.FOOTBALL_DATA_ORG_TOKEN }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       - if: ${{ !inputs.diagnose }}
         run: python scripts/live.py cycle
         env:
           FOOTBALL_DATA_ORG_TOKEN: ${{ secrets.FOOTBALL_DATA_ORG_TOKEN }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
       - name: Push ledger
         if: ${{ !inputs.diagnose }}
         run: |

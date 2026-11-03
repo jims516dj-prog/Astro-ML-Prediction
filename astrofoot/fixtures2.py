@@ -1,0 +1,197 @@
+"""Second fixtures-and-odds source: The Odds API (the-odds-api.com, free plan, personal key).
+
+football-data.co.uk (the primary) refreshes its fixtures list about twice a week, so games announced in
+between were missed. This source fills those gaps, conservatively:
+
+- Upcoming games are listed per league for free; odds cost one credit per league request (free plan:
+  500 a month). A league's odds are bought only when it has a game within ODDS_LEAD_HOURS that neither
+  the primary lists nor the ledger has forecast, and at most once per MIN_HOURS_BETWEEN per league.
+- Team names are translated to football-data.co.uk's spelling (from the league's current-season results
+  file and earlier forecasts), so venues resolve and the match key is the same one the primary will use
+  for the fixture and its result. A name that cannot be paired confidently skips the game.
+- Odds: Bet365 if offered (the training data's bookmaker), otherwise the average over the bookmakers
+  offered, like football-data.co.uk's "Avg" columns. The forecast records which.
+"""
+from __future__ import annotations
+
+import json
+import os
+import urllib.parse
+import urllib.request
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+
+import pandas as pd
+
+from .dataset import LEAGUE_NAMES
+from .results2 import similarity
+
+API = "https://api.the-odds-api.com/v4"
+SOURCE = "the-odds-api.com"
+ODDS_LEAD_HOURS = 30
+MIN_HOURS_BETWEEN = 20
+MIN_CREDITS_LEFT = 25
+SPORT_DIV = {
+    "soccer_epl": "E0", "soccer_efl_champ": "E1", "soccer_england_league1": "E2", "soccer_england_league2": "E3",
+    "soccer_spl": "SC0", "soccer_germany_bundesliga": "D1", "soccer_germany_bundesliga2": "D2",
+    "soccer_italy_serie_a": "I1", "soccer_italy_serie_b": "I2", "soccer_spain_la_liga": "SP1",
+    "soccer_spain_segunda_division": "SP2", "soccer_france_ligue_one": "F1", "soccer_france_ligue_two": "F2",
+    "soccer_netherlands_eredivisie": "N1", "soccer_belgium_first_div": "B1", "soccer_portugal_primeira_liga": "P1",
+    "soccer_turkey_super_league": "T1", "soccer_greece_super_league": "G1",
+    "soccer_argentina_primera_division": "ARG", "soccer_austria_bundesliga": "AUT",
+    "soccer_brazil_campeonato": "BRA", "soccer_china_superleague": "CHN", "soccer_denmark_superliga": "DEN",
+    "soccer_finland_veikkausliiga": "FIN", "soccer_league_of_ireland": "IRL", "soccer_japan_j_league": "JAP",
+    "soccer_mexico_ligamx": "MEX", "soccer_norway_eliteserien": "NOR", "soccer_poland_ekstraklasa": "POL",
+    "soccer_russia_premier_league": "RUS", "soccer_switzerland_superleague": "SUI",
+    "soccer_sweden_allsvenskan": "SWE", "soccer_usa_mls": "USA",
+}
+
+
+def token() -> str | None:
+    return os.environ.get("ODDS_API_KEY") or None
+
+
+class Client:
+    def __init__(self, key: str, base: str = API):
+        self.key, self.base, self.remaining = key, base, None
+
+    def get(self, path: str, **params):
+        q = urllib.parse.urlencode({"apiKey": self.key, **params})
+        req = urllib.request.Request(f"{self.base}{path}?{q}", headers={"User-Agent": "astro-football-research"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            rem = r.headers.get("x-requests-remaining")
+            if rem is not None:
+                self.remaining = float(rem)
+            return json.loads(r.read())
+
+
+# ----------------------------------------------------------------------------- team names
+def canonical_name(name: str, known: set[str]) -> str | None:
+    """football-data.co.uk spelling of `name`, or None when no single known team is a clear match."""
+    if name in known:
+        return name
+    scored = sorted(((similarity(name, k), k) for k in known), reverse=True)
+    if not scored or scored[0][0] < 0.6:
+        return None
+    if len(scored) > 1 and scored[0][0] - scored[1][0] < 0.15:
+        return None
+    return scored[0][1]
+
+
+def known_teams(div: str, now: datetime, fetch_csv, results_url, ledger_preds: list[dict]) -> set[str]:
+    """Team names football-data.co.uk uses in a division this season."""
+    names = {n for r in ledger_preds if r["division"] == div for n in (r["home"], r["away"])}
+    try:
+        df = fetch_csv(results_url(div, now))
+        if "Date" in df:
+            dates = pd.to_datetime(df["Date"], dayfirst=True, errors="coerce")
+            df = df[dates >= pd.Timestamp(now.date()) - pd.Timedelta(days=330)]
+        for col in ("HomeTeam", "AwayTeam"):
+            if col in df:
+                names |= {str(x).strip() for x in df[col].dropna()}
+    except Exception:  # noqa: BLE001 - fall back to names already seen in the ledger
+        pass
+    return names
+
+
+# ----------------------------------------------------------------------------- odds
+def best_odds(event: dict, home: str, away: str) -> tuple[list[float], str] | None:
+    """[home, draw, away] decimal odds: Bet365 if offered, else the average over bookmakers."""
+    rows = {}
+    for b in event.get("bookmakers", []):
+        for m in b.get("markets", []):
+            if m.get("key") != "h2h":
+                continue
+            px = {o["name"]: float(o["price"]) for o in m.get("outcomes", [])}
+            trio = [px.get(home), px.get("Draw"), px.get(away)]
+            if all(p and p > 1.0 for p in trio):
+                rows[b.get("key")] = trio
+    if not rows:
+        return None
+    if "bet365" in rows:
+        return rows["bet365"], "Bet365"
+    avg = [sum(r[i] for r in rows.values()) / len(rows) for i in range(3)]
+    return avg, f"average of {len(rows)} bookmakers"
+
+
+# ----------------------------------------------------------------------------- main entry
+def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledger: Path, client: Client,
+                   fetch_csv, results_url, match_key, local_date, ledger_preds: list[dict],
+                   log=print) -> list[dict]:
+    """Fixtures (with odds) that the primary does not list, in the same form as live.parse_fixtures."""
+    state_path = ledger / "odds_api_state.json"
+    try:
+        state = json.loads(state_path.read_text())
+    except (OSError, ValueError):
+        state = {}
+    have = {f["match_key"] for f in primary} | {r["match_key"] for r in ledger_preds}
+    # a team the primary already lists in that league on that day: the primary's fixture wins
+    busy = {(f["division"], f["kickoff_utc"][:10], t) for f in primary for t in (f["home"], f["away"])}
+    try:
+        active = {s["key"] for s in client.get("/sports") if s.get("active")}
+    except Exception as e:  # noqa: BLE001
+        log(f"the-odds-api.com unavailable: {type(e).__name__}: {e}")
+        return []
+    out, bought, skipped = [], [], []
+    for sport, div in SPORT_DIV.items():
+        if sport not in active:
+            continue
+        try:
+            events = client.get(f"/sports/{sport}/events")
+        except Exception as e:  # noqa: BLE001
+            log(f"  {div}: events unavailable ({type(e).__name__})")
+            continue
+        soon = []
+        for ev in events:
+            ko = datetime.fromisoformat(ev["commence_time"].replace("Z", "+00:00"))
+            if now < ko <= now + timedelta(hours=min(ODDS_LEAD_HOURS, horizon_days * 24)):
+                soon.append((ko, ev))
+        if not soon:
+            continue
+        known = known_teams(div, now, fetch_csv, results_url, ledger_preds)
+        todo = []
+        for ko, ev in soon:
+            h, a = canonical_name(ev["home_team"], known), canonical_name(ev["away_team"], known)
+            if not h or not a or h == a:
+                skipped.append(f"{ev['home_team']} v {ev['away_team']} ({div}): team name not recognised")
+                continue
+            key = match_key(div, local_date(ko), h, a)
+            day = ko.isoformat()[:10]
+            if key in have or (div, day, h) in busy or (div, day, a) in busy:
+                continue
+            todo.append((ko, ev, h, a, key))
+        if not todo:
+            continue
+        last = state.get(sport)
+        if last and now - datetime.fromisoformat(last) < timedelta(hours=MIN_HOURS_BETWEEN):
+            continue
+        if client.remaining is not None and client.remaining < MIN_CREDITS_LEFT:
+            log(f"the-odds-api.com: only {client.remaining:g} credits left this month; not buying more odds")
+            break
+        try:
+            priced = {e["id"]: e for e in client.get(f"/sports/{sport}/odds", regions="uk,eu" if div in
+                                                     ("E0", "E1", "E2", "E3", "SC0") else "eu",
+                                                     markets="h2h", oddsFormat="decimal")}
+        except Exception as e:  # noqa: BLE001
+            log(f"  {div}: odds unavailable ({type(e).__name__}: {e})")
+            continue
+        state[sport] = now.isoformat(timespec="seconds")
+        bought.append(div)
+        for ko, ev, h, a, key in todo:
+            got = best_odds(priced.get(ev["id"], {}), ev["home_team"], ev["away_team"])
+            if not got:
+                skipped.append(f"{h} v {a} ({div}): no odds offered yet")
+                continue
+            odds, book = got
+            out.append({"match_key": key, "division": div, "league": LEAGUE_NAMES.get(div, div),
+                        "home": h, "away": a, "kickoff_utc": ko.isoformat(),
+                        "odds": {"home": odds[0], "draw": odds[1], "away": odds[2]},
+                        "odds_source": f"{SOURCE} {book}", "p_over25": None})
+            have.add(key)
+    state_path.parent.mkdir(parents=True, exist_ok=True)
+    state_path.write_text(json.dumps(state, indent=1, sort_keys=True) + "\n")
+    rem = f"; {client.remaining:g} credits left this month" if client.remaining is not None else ""
+    log(f"the-odds-api.com: {len(out)} extra fixture(s); odds bought for {', '.join(bought) or 'no league'}{rem}")
+    for s in skipped:
+        log("  skipped:", s)
+    return out

@@ -162,6 +162,32 @@ How it is kept honest:
   appends a *confirms* record, or a *corrects* record if the scores differ (the primary source wins).
 - For running it on your own computer, set the environment variable `FOOTBALL_DATA_ORG_TOKEN` instead.
 
+## More fixtures and odds (optional)
+
+football-data.co.uk refreshes its fixtures list about twice a week (typically Tuesday and Friday), so games
+announced in between had no forecast. **The Odds API** (free plan, 500 credits a month) fills those gaps.
+
+One-time setup:
+
+1. Register at <https://the-odds-api.com> (choose the free plan). The API key arrives by email.
+2. On GitHub: the repository → **Settings → Secrets and variables → Actions → New repository secret**.
+   Name: `ODDS_API_KEY`, value: the key.
+3. The next cycle logs `the-odds-api.com: N extra fixture(s); odds bought for …; X credits left this month`.
+
+How it works:
+
+- Listing a league's upcoming games is free. Odds cost 1 credit per league request, and are bought only when
+  that league has a game in the next 30 hours that football-data.co.uk does not list and that has no forecast
+  yet, at most once every 20 hours per league, and never below 25 credits left. Normal use stays within
+  the free 500 a month.
+- Team names are translated to football-data.co.uk's spelling (from the league's current-season results), so
+  the venue resolves and the forecast's match key is the same one the primary uses for the fixture and the
+  result. A name that cannot be paired confidently skips that game (listed in the run log).
+- Odds: Bet365 if offered (the bookmaker the model was trained on), otherwise the average across
+  bookmakers, like football-data.co.uk's "Avg" columns. Each forecast records which in `odds_source`.
+  These forecasts have no over/under 2.5 price, so that one input is left out.
+- National League and Scottish tiers below the Premiership are not covered; they still rely on football-data.co.uk.
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):
