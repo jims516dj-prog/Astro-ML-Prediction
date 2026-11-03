@@ -197,3 +197,10 @@
 {"goals_away":2,"goals_home":5,"match_key":"409fe2f31aa4","settled_at":"2026-11-02T13:35:00+00:00","sha256":"d980407f3741cf23e3029cd7d2fd5522b00770078a828770e5345fd5299224ef","source":"football-data.co.uk"}
 {"goals_away":0,"goals_home":2,"match_key":"e05907e617e9","settled_at":"2026-11-02T13:35:00+00:00","sha256":"22b9a187341ed9d46bf1e05e7ea595a7ab5e61f525fef772aa8d97d22396f88c","source":"football-data.co.uk"}
 {"goals_away":2,"goals_home":2,"match_key":"939ec299091d","settled_at":"2026-11-02T13:35:00+00:00","sha256":"82ff0ce4f4746622505cbcc6521fd388965661c406eb4d1e68accb2152093153","source":"football-data.co.uk"}
+{"goals_away":1,"goals_home":0,"match_key":"7fc86a1e7b29","settled_at":"2026-11-03T07:22:02+00:00","sha256":"9bd71741ebe937f5d8e70aafbedeb76755dacf4c4b32a31121c52faf451663f8","source":"football-data.org"}
+{"goals_away":2,"goals_home":0,"match_key":"54986f9281cd","settled_at":"2026-11-03T07:22:02+00:00","sha256":"7f1c90d4428a23a7de94a223ffc03db2fdf81e3f3d9e81d5ad8ce7d0ae4d4200","source":"football-data.org"}
+{"goals_away":4,"goals_home":2,"match_key":"d095d26e013f","settled_at":"2026-11-03T07:22:02+00:00","sha256":"31d051997db82fa9c0b657b86528ac719e1c461c6060b978032ae2123e7cdee5","source":"football-data.org"}
+{"goals_away":3,"goals_home":0,"match_key":"64ccd2615a60","settled_at":"2026-11-03T07:22:02+00:00","sha256":"8430e67425017f510bc888ef73a5df106fb58f6e9ac1778cb31b1fc75dec3950","source":"football-data.org"}
+{"goals_away":0,"goals_home":1,"match_key":"645cb0ab8c36","settled_at":"2026-11-03T07:22:02+00:00","sha256":"20cbc972e905e7f208eebca68d6f3958766f2cc15d21d7302266c3e7c85b3aa6","source":"football-data.org"}
+{"goals_away":0,"goals_home":0,"match_key":"bd5329c1bb21","settled_at":"2026-11-03T07:22:02+00:00","sha256":"f75178225611cb3cd1ea56468b14f8258ea5e2ec840ab6b6a2a60effaf43f643","source":"football-data.org"}
+{"goals_away":1,"goals_home":2,"match_key":"b06509fe7978","settled_at":"2026-11-03T07:22:02+00:00","sha256":"8bf54ed7b5103e6b1ebd0d6a3fea07e1a1dbecc6b0e4eec94a96c03f006eb978","source":"football-data.org"}
