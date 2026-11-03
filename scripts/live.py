@@ -63,6 +63,9 @@ def diagnose(a, now):
             soon = [f for f in fx if now < datetime.fromisoformat(f["kickoff_utc"]) <= now + pd.Timedelta(days=a.horizon)]
             print(f"FIXTURES {url}: {len(df)} rows, {len(fx)} usable; kickoffs {ko[0][:16] if ko else '-'} .. "
                   f"{ko[-1][:16] if ko else '-'}; within {a.horizon:g} days: {len(soon)}")
+            if len(df) and not fx:      # layout we cannot read: show it
+                print(f"  columns: {list(df.columns)}")
+                print(f"  first row: {df.iloc[0].to_dict()}")
         except Exception as e:  # noqa: BLE001
             print(f"FIXTURES {url}: unavailable ({type(e).__name__}: {e})")
     settled = live.read_results(a.ledger)
