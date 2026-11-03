@@ -66,3 +66,18 @@ def test_run_cycle_requires_a_token(monkeypatch):
     monkeypatch.setattr(sync, "TOKEN_FILE", sync.ROOT / "no-such-token-file")
     with pytest.raises(RuntimeError, match="token"):
         sync.run_cycle(slug="me/repo")
+
+
+class Expired(FakeGitHub):
+    def do_POST(self):
+        self._reply(401, {"message": "Bad credentials"})
+
+
+def test_expired_token_gives_a_plain_message():
+    srv = ThreadingHTTPServer(("127.0.0.1", 0), Expired)
+    threading.Thread(target=srv.serve_forever, daemon=True).start()
+    try:
+        with pytest.raises(RuntimeError, match="expired or was revoked"):
+            sync.run_cycle(tok="old", slug="me/repo", base=f"http://127.0.0.1:{srv.server_address[1]}", poll=0.01)
+    finally:
+        srv.shutdown()

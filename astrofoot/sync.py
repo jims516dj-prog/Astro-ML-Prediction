@@ -13,6 +13,7 @@ import os
 import re
 import subprocess
 import time
+import urllib.error
 import urllib.request
 from datetime import datetime, timezone
 
@@ -45,8 +46,17 @@ def _api(method: str, path: str, tok: str, body: dict | None = None, base: str =
     req = urllib.request.Request(base + path, method=method, data=json.dumps(body).encode() if body else None,
                                  headers={"Authorization": f"Bearer {tok}", "Accept": "application/vnd.github+json",
                                           "X-GitHub-Api-Version": "2022-11-28", "User-Agent": "astro-football-app"})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        raw = r.read()
+    try:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            raw = r.read()
+    except urllib.error.HTTPError as e:
+        if e.code == 401:
+            raise RuntimeError("your GitHub token has expired or was revoked: create a new one and replace "
+                               "the contents of .github_token (README → 'Update now'), then restart the app") from e
+        if e.code in (403, 404):
+            raise RuntimeError("your GitHub token is not allowed to run this repository's workflows: it needs "
+                               "access to this repository with 'Actions: Read and write' (README → 'Update now')") from e
+        raise
     return json.loads(raw) if raw else None
 
 
