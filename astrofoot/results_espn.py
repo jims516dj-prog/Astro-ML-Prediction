@@ -8,6 +8,7 @@ for matches the primary source has not published yet; the primary later confirms
 from __future__ import annotations
 
 import json
+import urllib.error
 import urllib.request
 from datetime import date, timedelta
 
@@ -29,13 +30,26 @@ LEAGUE_SLUG = {
 FINAL = {"STATUS_FULL_TIME", "STATUS_FINAL"}
 
 
-def fetch(division: str, date_from: date, date_to: date, base: str = API) -> list[dict]:
-    """Raw ESPN events of one division between two dates (inclusive)."""
-    slug = LEAGUE_SLUG[division]
-    url = f"{base}/{slug}/scoreboard?dates={date_from:%Y%m%d}-{date_to:%Y%m%d}&limit=500"
-    req = urllib.request.Request(url, headers={"User-Agent": "astro-football-research"})
+def _get(url: str) -> list[dict]:
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (astro-football-research)"})
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read()).get("events", [])
+
+
+def fetch(division: str, date_from: date, date_to: date, base: str = API) -> list[dict]:
+    """Raw ESPN events of one division between two dates (inclusive): one range query, or day by day
+    if the feed refuses the range."""
+    url = f"{base}/{LEAGUE_SLUG[division]}/scoreboard"
+    try:
+        return _get(f"{url}?dates={date_from:%Y%m%d}-{date_to:%Y%m%d}")
+    except urllib.error.HTTPError as e:
+        if e.code != 400:
+            raise
+    out, d = [], date_from
+    while d <= date_to:
+        out += _get(f"{url}?dates={d:%Y%m%d}")
+        d += timedelta(days=1)
+    return out
 
 
 def normalise(division: str, events: list[dict]) -> list[dict]:
