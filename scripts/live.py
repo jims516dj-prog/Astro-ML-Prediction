@@ -14,11 +14,11 @@ from __future__ import annotations
 
 import argparse
 import sys
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import live  # noqa: E402
+from astrofoot import live, results2  # noqa: E402
 
 
 def load_fixtures(a) -> list[dict]:
@@ -53,6 +53,28 @@ def load_results(a, now) -> tuple[dict, dict]:
             take(live.fetch_csv(url))
         except Exception as e:  # noqa: BLE001
             print(f"results unavailable: {url}: {type(e).__name__}: {e}", file=sys.stderr)
+    for k in res:
+        res[k]["source"] = live.PRIMARY
+    # Second source for matches the primary has not published yet (needs FOOTBALL_DATA_ORG_TOKEN)
+    settled = live.read_results(a.ledger)
+    pending = [r for r in live.read_predictions(a.ledger)
+               if r["match_key"] not in settled and r["match_key"] not in res
+               and r["division"] in results2.COMPETITION_DIV.values()
+               and datetime.fromisoformat(r["kickoff_utc"]) + timedelta(hours=2) < now]
+    tok = results2.token()
+    if pending and tok:
+        days = [datetime.fromisoformat(r["kickoff_utc"]).date() for r in pending]
+        try:
+            found, notes = results2.match_results(pending, results2.fetch(min(days), max(days), tok))
+            for k, v in found.items():
+                res[k] = v
+            print(f"football-data.org: {len(found)} of {len(pending)} pending top-league result(s) found")
+            for n in notes:
+                print("  unmatched:", n)
+        except Exception as e:  # noqa: BLE001
+            print(f"football-data.org unavailable: {type(e).__name__}: {e}", file=sys.stderr)
+    elif pending:
+        print(f"{len(pending)} pending top-league match(es) could settle faster with FOOTBALL_DATA_ORG_TOKEN set")
     return res, latest
 
 
@@ -76,6 +98,8 @@ def diagnose(a, now):
     settled = live.read_results(a.ledger)
     pending = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in settled]
     print(f"PENDING forecasts: {len(pending)}")
+    print("SECOND SOURCE football-data.org: " + ("key configured" if results2.token() else
+          "no key (set the FOOTBALL_DATA_ORG_TOKEN secret to settle top-league results faster)"))
     files = {}
     for rec in pending:
         ko = datetime.fromisoformat(rec["kickoff_utc"])

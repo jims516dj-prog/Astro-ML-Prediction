@@ -130,8 +130,33 @@ One-time setup: a token that can do only this.
    (Alternatively set the environment variable `GITHUB_TOKEN`.)
 4. Restart the app.
 
-To revoke it, delete the token on GitHub (same page) or delete the file. A result can only appear once
-football-data.co.uk has published it, usually within hours of full time.
+To revoke it, delete the token on GitHub (same page) or delete the file. When the token expires, Update now
+says so ("your GitHub token has expired or was revoked…") and still downloads whatever GitHub has already
+published; generate a new token (steps 1–2) and replace the contents of `.github_token`.
+
+## Faster results (second source, optional)
+
+football-data.co.uk sometimes publishes results a day or more late. For the top leagues the cycle can also
+ask **football-data.org** (official API, free plan), which has scores minutes after full time.
+
+Covered: Premier League, Championship, Bundesliga, Serie A, La Liga, Ligue 1, Eredivisie, Primeira Liga,
+Brasileirão. Other leagues still wait for football-data.co.uk.
+
+One-time setup:
+
+1. Register at <https://www.football-data.org/client/register> (free). The API key arrives by email.
+2. On GitHub: the repository → **Settings → Secrets and variables → Actions → New repository secret**.
+   Name: `FOOTBALL_DATA_ORG_TOKEN`, value: the key. (Never paste it into a chat or a committed file.)
+3. Done. The next cycle (scheduled, or Update now) uses it; the run log shows
+   `football-data.org: N of M pending top-league result(s) found`.
+
+How it is kept honest:
+
+- A match is paired only when league, kickoff (±3 h) and both team names agree; any doubt leaves it pending.
+- Scores are after 90 minutes (plus stoppage time), like the primary source; extra time and penalties are ignored.
+- Every result records its source. When football-data.co.uk later publishes the same match, the ledger
+  appends a *confirms* record, or a *corrects* record if the scores differ (the primary source wins).
+- For running it on your own computer, set the environment variable `FOOTBALL_DATA_ORG_TOKEN` instead.
 
 ## The living Engine 4
 

@@ -39,6 +39,7 @@ COUNTRY_DIV = {"Argentina": "ARG", "Austria": "AUT", "Brazil": "BRA", "China": "
                "Finland": "FIN", "Ireland": "IRL", "Japan": "JAP", "Mexico": "MEX", "Norway": "NOR",
                "Poland": "POL", "Romania": "ROM", "Russia": "RUS", "Switzerland": "SUI", "Sweden": "SWE",
                "USA": "USA"}
+PRIMARY = "football-data.co.uk"
 VOID_AFTER_DAYS = 2   # missing from a results file that already runs this many days past the match: void
 # Odds preference: Bet365 first, because the model's market baseline was trained on Bet365 odds
 ODDS_SETS = [("B365H", "B365D", "B365A"), ("AvgH", "AvgD", "AvgA"), ("PSH", "PSD", "PSA"),
@@ -254,7 +255,7 @@ def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledge
 
 
 # ----------------------------------------------------------------------------- settle
-def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, source: str = "football-data.co.uk",
+def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, source: str = PRIMARY,
            latest: dict[str, str] | None = None) -> int:
     """Append results for forecast matches. A match still missing once its division's results file runs
     VOID_AFTER_DAYS past its date was postponed or abandoned: it is recorded as void (never scored)."""
@@ -265,9 +266,18 @@ def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, sourc
     for rec in read_predictions(ledger):
         k = rec["match_key"]
         if k in settled:
+            prev, now_r = settled[k], results.get(k)
+            # the primary source later confirms, or corrects, a result first taken from a secondary source
+            if (now_r and not prev.get("void") and now_r.get("source", source) == source
+                    and prev.get("source", source) != source):
+                same = (prev["goals_home"], prev["goals_away"]) == (now_r["goals_home"], now_r["goals_away"])
+                new.append(seal({"match_key": k, **now_r, "source": source, "settled_at": stamp,
+                                 ("confirms" if same else "corrects"): {
+                                     "source": prev.get("source"), "goals_home": prev["goals_home"],
+                                     "goals_away": prev["goals_away"]}}))
             continue
         if k in results:
-            new.append(seal({"match_key": k, **results[k], "settled_at": stamp, "source": source}))
+            new.append(seal({"match_key": k, "source": source, **results[k], "settled_at": stamp}))
             continue
         day = datetime.fromisoformat(rec["kickoff_utc"]).astimezone(ZoneInfo(TIMEZONE_OF_SOURCE_TIMES)).date()
         last = latest.get(rec["division"])
@@ -285,7 +295,9 @@ def needed_result_urls(ledger: Path = LEDGER, now: datetime | None = None) -> se
     urls = set()
     for rec in read_predictions(ledger):
         ko = datetime.fromisoformat(rec["kickoff_utc"])
-        if rec["match_key"] not in settled and ko + timedelta(hours=2) < now:
+        prev = settled.get(rec["match_key"])
+        unconfirmed = prev is not None and not prev.get("void") and prev.get("source", PRIMARY) != PRIMARY
+        if (prev is None or unconfirmed) and ko + timedelta(hours=2) < now:
             urls.add(results_url(rec["division"], ko))
     return urls
 
