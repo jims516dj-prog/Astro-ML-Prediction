@@ -6,7 +6,12 @@ name: live-track-record
 on:
   schedule:
     - cron: "17 5,11,17 * * *"   # GitHub may delay or drop scheduled runs under load; three slots keep a margin
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      diagnose:
+        description: "Diagnostics only: report what the source files contain (nothing is committed)"
+        required: false
+        default: ""
 permissions:
   contents: write
 concurrency: track-record
@@ -21,8 +26,12 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python scripts/fetch_data.py --live
-      - run: python scripts/live.py cycle
+      - if: ${{ inputs.diagnose != '' }}
+        run: python scripts/live.py diagnose
+      - if: ${{ !inputs.diagnose }}
+        run: python scripts/live.py cycle
       - name: Push ledger
+        if: ${{ !inputs.diagnose }}
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"

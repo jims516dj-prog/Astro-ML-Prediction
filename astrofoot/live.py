@@ -17,6 +17,7 @@ import io
 import json
 import os
 import urllib.request
+from zoneinfo import ZoneInfo
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 

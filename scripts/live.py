@@ -51,9 +51,51 @@ def load_results(a, now) -> dict:
     return res
 
 
+def diagnose(a, now):
+    """What do the source files actually contain? (read-only; prints a report, writes nothing)"""
+    import pandas as pd
+    print(f"now (UTC): {now:%Y-%m-%d %H:%M}")
+    for url in live.FIXTURE_URLS:
+        try:
+            df = live.fetch_csv(url)
+            fx = live.parse_fixtures(df)
+            ko = sorted(f["kickoff_utc"] for f in fx)
+            soon = [f for f in fx if now < datetime.fromisoformat(f["kickoff_utc"]) <= now + pd.Timedelta(days=a.horizon)]
+            print(f"FIXTURES {url}: {len(df)} rows, {len(fx)} usable; kickoffs {ko[0][:16] if ko else '-'} .. "
+                  f"{ko[-1][:16] if ko else '-'}; within {a.horizon:g} days: {len(soon)}")
+        except Exception as e:  # noqa: BLE001
+            print(f"FIXTURES {url}: unavailable ({type(e).__name__}: {e})")
+    settled = live.read_results(a.ledger)
+    pending = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in settled]
+    print(f"PENDING forecasts: {len(pending)}")
+    files = {}
+    for rec in pending:
+        ko = datetime.fromisoformat(rec["kickoff_utc"])
+        url = live.results_url(rec["division"], ko)
+        if url not in files:
+            try:
+                df = live.fetch_csv(url)
+                dates = pd.to_datetime(df["Date"], dayfirst=True, errors="coerce")
+                files[url] = (df, dates)
+                print(f"RESULTS {url}: {len(df)} rows, latest match date {dates.max():%Y-%m-%d}")
+            except Exception as e:  # noqa: BLE001
+                files[url] = None
+                print(f"RESULTS {url}: unavailable ({type(e).__name__}: {e})")
+        if files[url] is None:
+            continue
+        df, dates = files[url]
+        day = ko.astimezone(live.ZoneInfo("Europe/London")).date()     # source dates are UK calendar dates
+        same_day = df[dates.dt.date == day]
+        exact = same_day[(same_day.HomeTeam.str.strip() == rec["home"]) & (same_day.AwayTeam.str.strip() == rec["away"])]
+        state = ("in file" + ("" if "FTHG" in df and pd.notna(exact.iloc[0].get("FTHG")) else " but no score yet")) if len(exact) \
+            else (f"NOT in file; that day lists: {', '.join((same_day.HomeTeam + ' v ' + same_day.AwayTeam).head(4))}"
+                  if len(same_day) else "NOT in file (no matches on that date yet)")
+        print(f"  {rec['kickoff_utc'][:16]} {rec['division']:4} {rec['home']} v {rec['away']}: {state}")
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("cmd", choices=["cycle", "commit", "settle", "report", "verify"])
+    ap.add_argument("cmd", choices=["cycle", "commit", "settle", "report", "verify", "diagnose"])
     ap.add_argument("--fixtures")
     ap.add_argument("--results", nargs="*")
     ap.add_argument("--horizon", type=float, default=4.0)
@@ -61,6 +103,9 @@ def main():
     ap.add_argument("--now", help="ISO timestamp (testing/replay only)")
     a = ap.parse_args()
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
+    if a.cmd == "diagnose":
+        diagnose(a, now)
+        return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
         bad = [r.get("match_key") for r in recs if not live.verify(r)]
