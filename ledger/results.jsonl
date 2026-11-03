@@ -204,3 +204,11 @@
 {"goals_away":0,"goals_home":1,"match_key":"645cb0ab8c36","settled_at":"2026-11-03T07:22:02+00:00","sha256":"20cbc972e905e7f208eebca68d6f3958766f2cc15d21d7302266c3e7c85b3aa6","source":"football-data.org"}
 {"goals_away":0,"goals_home":0,"match_key":"bd5329c1bb21","settled_at":"2026-11-03T07:22:02+00:00","sha256":"f75178225611cb3cd1ea56468b14f8258ea5e2ec840ab6b6a2a60effaf43f643","source":"football-data.org"}
 {"goals_away":1,"goals_home":2,"match_key":"b06509fe7978","settled_at":"2026-11-03T07:22:02+00:00","sha256":"8bf54ed7b5103e6b1ebd0d6a3fea07e1a1dbecc6b0e4eec94a96c03f006eb978","source":"football-data.org"}
+{"goals_away":4,"goals_home":1,"match_key":"4af6382c2f98","settled_at":"2026-11-03T07:30:21+00:00","sha256":"e22a81875c5f150ba8958ff39e875fc87fddc81e9ef7d1f2439ce5d3ec5f830f","source":"espn.com"}
+{"goals_away":0,"goals_home":2,"match_key":"19ea85566f50","settled_at":"2026-11-03T07:30:21+00:00","sha256":"68cb35d7d86c84cdb90799c687194b9e55326569b44705b27f8a7a53a882cd8c","source":"espn.com"}
+{"goals_away":0,"goals_home":3,"match_key":"bcc623ea7818","settled_at":"2026-11-03T07:30:21+00:00","sha256":"89ceed438531b28c4fb26ba541785cd5a3abdd09939f5bacb5c8ffd141fa8296","source":"espn.com"}
+{"goals_away":1,"goals_home":1,"match_key":"bc30b0786adf","settled_at":"2026-11-03T07:30:21+00:00","sha256":"a4b790cd6198ad24adcb112e9dbb1384b683decb6c481caa0313aee1822e8a64","source":"espn.com"}
+{"goals_away":3,"goals_home":2,"match_key":"cfa901077c88","settled_at":"2026-11-03T07:30:21+00:00","sha256":"792e3457a66b261d6bf59fb9aee15b6a53f5c1a91f3f40ec18ab841d31e6adaf","source":"espn.com"}
+{"goals_away":3,"goals_home":4,"match_key":"73022aa7a119","settled_at":"2026-11-03T07:30:21+00:00","sha256":"1c49842273865c6e972443d310d204cc6c33f72fc0b3a8138029afb5aedc47ad","source":"espn.com"}
+{"goals_away":1,"goals_home":2,"match_key":"bd9d66b5c05f","settled_at":"2026-11-03T07:30:21+00:00","sha256":"7caa4d795c7221e768554bb57c75325e8d53eebed664d408d3404380bc99b589","source":"espn.com"}
+{"goals_away":0,"goals_home":5,"match_key":"9b53e1fb6b82","settled_at":"2026-11-03T07:30:21+00:00","sha256":"26f5c100d1def9f0ef3e6306cf597763bfd84ef7e73ec29bf41b4acc5a7929f3","source":"espn.com"}
