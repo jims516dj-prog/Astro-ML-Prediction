@@ -11,3 +11,4 @@ data/app.sqlite3
 # run logs (research.log is rewritten by every run)
 data/*.log
 data/models/local_backup/
+.github_token

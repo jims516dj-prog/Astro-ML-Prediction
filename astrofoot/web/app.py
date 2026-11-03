@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, foundings, live, service, venues
+from .. import db, foundings, live, service, sync, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
@@ -356,10 +356,14 @@ def _track_record(c):
     return out
 
 
-def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit=""):
+def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit="", agree=""):
     out = []
     t = team.lower().strip()
     for r in recs:
+        # agreement between the overall outlook (most probable result) and the classical engines
+        n = r["classical_agree"]
+        if (agree == "consensus" and n < 2) or (agree == "all3" and n < 3) or (agree == "disagree" and n >= 2):
+            continue
         d = r["kickoff_utc"][:10]
         if (date_from and d < date_from) or (date_to and d > date_to):
             continue
@@ -382,18 +386,20 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
 
 @app.get("/live", response_class=HTMLResponse)
 def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
-              team: str = "", engine: str = "", hit: str = "", page_no: int = 1, msg: str = ""):
+              team: str = "", engine: str = "", hit: str = "", agree: str = "", page_no: int = 1, msg: str = "",
+              syncing: int = 0):
     recs = live.records()
     rep = live.report() if recs else None
-    rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit)
+    rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree)
+    subset = live.score_picks([r for r in rows if r["pre_kickoff"]])
     per = 50
     pages = max(1, math.ceil(len(rows) / per))
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
-         "engine": engine, "hit": hit}
+         "engine": engine, "hit": hit, "agree": agree}
     return T.TemplateResponse(request, "live.html", {
         "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages,
-        "q": q, "qs": "&".join(f"{k}={v}" for k, v in q.items() if v),
+        "q": q, "qs": "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in q.items() if v), "subset": subset, "syncing": bool(syncing) or SYNC["running"], "has_token": sync.token() is not None,
         "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "page": "live"})
 
 
@@ -443,12 +449,11 @@ def _tidy_generated_files() -> str | None:
     return backup
 
 
-@app.post("/live/refresh")
-def live_refresh():
-    """Bring in results (and new forecasts) that the scheduled GitHub job has pushed: git pull."""
+def _pull_and_report() -> str:
+    """git pull the results/forecasts/model versions the GitHub jobs publish; summarise what arrived."""
     if not (ROOT / ".git").exists():
-        return RedirectResponse("/live?msg=" + "This folder is not a git clone: download the project again "
-                                "(Code → Download ZIP) to get new results.", status_code=303)
+        return ("This folder is not a git clone: download the project again (Code → Download ZIP) "
+                "to get new results.")
     before = live.records()
     n_res, n_fc = sum(r["status"] == "settled" for r in before), len(before)
     try:
@@ -456,19 +461,62 @@ def live_refresh():
         r = subprocess.run(["git", "pull", "--ff-only"], cwd=ROOT, capture_output=True, text=True, timeout=120)
         out = (r.stdout + r.stderr).strip().splitlines()
         if r.returncode != 0:
-            msg = "Update failed: " + (out[-1] if out else "git error") + " — run `git pull` in Git Bash to see details."
-        else:
-            after = live.records()
-            new_res = sum(x["status"] == "settled" for x in after) - n_res
-            new_fc = len(after) - n_fc
-            code = any(line.strip().startswith(("astrofoot/", "scripts/")) for line in out)
-            msg = (f"Up to date: {new_res} new result(s), {new_fc} new forecast(s)."
-                   + (" The app's code was also updated: restart the app to use it." if code else "")
-                   + (f" Local model files from an earlier refit were moved to {set_aside}." if set_aside else ""))
+            return "Update failed: " + (out[-1] if out else "git error") + " — run `git pull` in Git Bash to see details."
+        after = live.records()
+        new_res = sum(x["status"] == "settled" for x in after) - n_res
+        new_fc = len(after) - n_fc
+        code = any(line.strip().startswith(("astrofoot/", "scripts/")) for line in out)
+        return (f"Up to date: {new_res} new result(s), {new_fc} new forecast(s)."
+                + (" The app's code was also updated: restart the app to use it." if code else "")
+                + (f" Local model files from an earlier refit were moved to {set_aside}." if set_aside else ""))
     except (OSError, subprocess.TimeoutExpired) as e:
-        msg = f"Update failed: {type(e).__name__} (is Git installed?)"
-    imported.cache_clear()
-    return RedirectResponse("/live?" + urllib.parse.urlencode({"msg": msg}), status_code=303)
+        return f"Update failed: {type(e).__name__} (is Git installed?)"
+    finally:
+        imported.cache_clear()
+
+
+@app.post("/live/refresh")
+def live_refresh():
+    """Bring in what the scheduled GitHub jobs have already published: git pull."""
+    return RedirectResponse("/live?" + urllib.parse.urlencode({"msg": _pull_and_report()}), status_code=303)
+
+
+SYNC = {"running": False, "phase": "", "detail": "", "msg": ""}
+
+
+def _sync_worker():
+    def progress(phase, detail=""):
+        SYNC.update(phase=phase, detail=detail)
+    try:
+        conclusion = sync.run_cycle(progress)
+        progress("pulling", "Downloading the new forecasts and results")
+        msg = _pull_and_report()
+        if conclusion != "success":
+            msg = f"GitHub's run ended with '{conclusion}' (see the repository's Actions tab). " + msg
+        SYNC["msg"] = msg
+    except Exception as e:  # noqa: BLE001 - shown to the user, never crashes the app
+        SYNC["msg"] = f"Update now failed: {e}. " + _pull_and_report()
+    finally:
+        SYNC.update(running=False, phase="done")
+
+
+@app.post("/live/sync")
+def live_sync():
+    """Run the forecast/results cycle on GitHub right now, wait for it, then pull."""
+    if sync.token() is None:
+        return RedirectResponse("/live?" + urllib.parse.urlencode({"msg": (
+            "Update now needs a GitHub token (one-time setup, see README → 'Update now'). Meanwhile: "
+            + _pull_and_report())}), status_code=303)
+    if not SYNC["running"]:
+        import threading
+        SYNC.update(running=True, phase="starting", detail="Starting", msg="")
+        threading.Thread(target=_sync_worker, daemon=True).start()
+    return RedirectResponse("/live?syncing=1", status_code=303)
+
+
+@app.get("/live/sync/status")
+def live_sync_status():
+    return JSONResponse(SYNC)
 
 
 @app.get("/top", response_class=HTMLResponse)

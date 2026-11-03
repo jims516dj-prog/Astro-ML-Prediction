@@ -112,6 +112,27 @@ python scripts/research.py codex                  # final fit, Codex, one-shot v
 - **Tables to verify against the books** (marked `VERIFY` in `tables.py`): Rao's node friendships and the
   108-syllable table (standard Avakahada chakra is used).
 
+## Update now (on-demand forecasts and results)
+
+The **Update now** button on the Live record page asks GitHub to run the forecast/results cycle immediately,
+waits for it (2–3 minutes) and downloads the outcome, instead of waiting for the scheduled runs. GitHub
+stays the only writer of the ledger; the button just starts the same job.
+
+One-time setup: a token that can do only this.
+
+1. On GitHub: your photo → **Settings → Developer settings → Personal access tokens → Fine-grained tokens →
+   Generate new token**.
+2. Name it e.g. *astro update now*, pick an expiry (e.g. 90 days). **Repository access: Only select
+   repositories → Astro-ML-Prediction**. **Permissions → Repository permissions → Actions: Read and write**
+   (nothing else). Generate, and copy the token (it starts with `github_pat_`).
+3. In the project folder create a file named `.github_token` containing just that token, e.g. in Git Bash:
+   `cat > .github_token`, paste, press Enter, then Ctrl+D. The file is git-ignored and never uploaded.
+   (Alternatively set the environment variable `GITHUB_TOKEN`.)
+4. Restart the app.
+
+To revoke it, delete the token on GitHub (same page) or delete the file. A result can only appear once
+football-data.co.uk has published it, usually within hours of full time.
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):
