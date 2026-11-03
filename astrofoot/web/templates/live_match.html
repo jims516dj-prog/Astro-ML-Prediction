@@ -6,7 +6,7 @@
 <h1>{{ r.home }} <span class="v">v</span> {{ r.away }}</h1>
 <p class="meta">{{ r.league }} · {{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %}
 · favourite: <strong>{{ r.favourite }}</strong> · odds {{ r.odds.home }} / {{ r.odds.draw }} / {{ r.odds.away }} ({{ r.odds_source }})
-· {% if r.result %}<span class="badge ok">completed</span> result <strong>{{ r.result.goals_home }}–{{ r.result.goals_away }}</strong>{% else %}<span class="badge muted">pending</span>{% endif %}</p>
+· {% if r.result %}<span class="badge ok">completed</span> result <strong>{{ r.result.goals_home }}–{{ r.result.goals_away }}</strong>{% elif r.status == "void" %}<span class="badge warn">void: postponed or abandoned, not scored</span>{% else %}<span class="badge muted">pending</span>{% endif %}</p>
 
 <section class="card">
   <h2>Sealed forecast</h2>

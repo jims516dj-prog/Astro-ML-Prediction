@@ -92,3 +92,35 @@ def test_top_picks_ignore_late_records_and_score_honestly():
     assert live.top_picks([late]) == {}                  # committed after kickoff: never a pick
     s = live.score_picks([_rec("d", "A", 0.8, "fav"), _rec("d", "B", 0.6, "dog"), _rec("d", "C", 0.7)])
     assert s["n"] == 2 and s["hits"] == 1 and abs(s["expected"] - 0.7) < 1e-9
+
+
+NEW_LEAGUES = (b"Country,League,Date,Time,Home,Away,PSH,PSD,PSA,MaxH,MaxD,MaxA,AvgH,AvgD,AvgA,BFEH,BFED,BFEA,B365H,B365D,B365A\n"
+               b"Argentina,Liga Profesional,30/10/2026,22:00,Estudiantes Rio Cuarto,Gimnasia L.P.,,,,4.75,3.4,1.91,"
+               b"4.21,3.26,1.87,4.6,3.4,1.98,4.5,3.3,1.86\n")
+
+
+def test_extra_league_fixtures_get_their_division_from_the_country():
+    fx = live.parse_fixtures(live.read_csv_bytes(NEW_LEAGUES))
+    assert len(fx) == 1 and fx[0]["division"] == "ARG" and fx[0]["odds"]["home"] == 4.5   # Bet365 first
+    assert fx[0]["kickoff_utc"] == "2026-10-30T22:00:00+00:00"                           # UK time, GMT
+
+
+def test_extra_league_results_match_their_forecast():
+    res = live.parse_results(live.read_csv_bytes(
+        b"Country,League,Season,Date,Time,Home,Away,HG,AG,Res\n"
+        b"Argentina,Liga Profesional,2026,30/10/2026,22:00,Estudiantes Rio Cuarto,Gimnasia L.P.,2,1,H\n"))
+    assert res == {live.match_key("ARG", "2026-10-30", "Estudiantes Rio Cuarto", "Gimnasia L.P."):
+                   {"goals_home": 2, "goals_away": 1}}
+
+
+@needs_venues
+def test_postponed_match_becomes_void_not_pending(tmp_path):
+    fx = live.parse_fixtures(live.read_csv_bytes(CSV))                        # Arsenal v Chelsea, 8 Nov
+    live.commit(fx, datetime(2026, 11, 6, 12, tzinfo=timezone.utc), 4, tmp_path)
+    later = datetime(2026, 11, 12, tzinfo=timezone.utc)
+    assert live.settle({}, later, tmp_path, latest={"E0": "2026-11-09"}) == 0   # file only 1 day past: wait
+    assert live.settle({}, later, tmp_path, latest={"E0": "2026-11-10"}) == 1   # 2 days past and absent: void
+    r = live.records(tmp_path)[0]
+    assert r["status"] == "void" and r["outcome"] is None
+    rep = live.report(tmp_path)
+    assert rep["void"] == 1 and rep["settled"] == 0 and rep["pending"] == 0

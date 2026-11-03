@@ -61,7 +61,7 @@ published it, usually within hours of full time.</p>
   <label>To<input type="date" name="date_to" value="{{ q.date_to }}"></label>
   <label>Status<select name="status">
     <option value="">All</option>
-    {% for v, l in [("pending","Pending"),("settled","Completed")] %}<option value="{{ v }}" {{ "selected" if q.status==v }}>{{ l }}</option>{% endfor %}
+    {% for v, l in [("pending","Pending"),("settled","Completed"),("void","Postponed / void")] %}<option value="{{ v }}" {{ "selected" if q.status==v }}>{{ l }}</option>{% endfor %}
   </select></label>
   <label>League<select name="league"><option value="">All</option>
     {% for l in leagues %}<option value="{{ l }}" {{ "selected" if q.league==l }}>{{ league_name(l) }}</option>{% endfor %}</select></label>
@@ -89,7 +89,7 @@ something; within it, it doesn't.</p>{% endif %}
 <td class="num">{% if p.engine4 %}{{ fmt_pct(p.engine4.fav,0) }}/{{ fmt_pct(p.engine4.draw,0) }}/{{ fmt_pct(p.engine4.dog,0) }}{% else %}—{% endif %}</td>
 {% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ W[p[k].winner] }}</td>{% endfor %}
 <td class="num">{{ r.classical_agree }}/3</td>
-<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ W[r.outcome] }}){% else %}pending{% endif %}</td>
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ W[r.outcome] }}){% elif r.status == "void" %}<span title="not in the results file: postponed or abandoned">void</span>{% else %}pending{% endif %}</td>
 <td class="mono" title="committed {{ r.committed_at }} · sha256 {{ r.sha256 }}">{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}</td></tr>
 {% else %}<tr><td colspan="12">No forecasts match these filters.</td></tr>{% endfor %}</tbody></table></div>
 <p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no-1 }}">← newer</a>{% endif %}

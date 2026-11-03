@@ -37,18 +37,23 @@ def load_fixtures(a) -> list[dict]:
     return out
 
 
-def load_results(a, now) -> dict:
-    res = {}
+def load_results(a, now) -> tuple[dict, dict]:
+    res, latest = {}, {}
+
+    def take(df):
+        res.update(live.parse_results(df))
+        for d, day in live.latest_dates(df).items():
+            latest[d] = max(day, latest.get(d, ""))
     if a.results:
         for f in a.results:
-            res.update(live.parse_results(live.read_csv_bytes(Path(f).read_bytes())))
-        return res
+            take(live.read_csv_bytes(Path(f).read_bytes()))
+        return res, latest
     for url in sorted(live.needed_result_urls(a.ledger, now)):
         try:
-            res.update(live.parse_results(live.fetch_csv(url)))
+            take(live.fetch_csv(url))
         except Exception as e:  # noqa: BLE001
             print(f"results unavailable: {url}: {type(e).__name__}: {e}", file=sys.stderr)
-    return res
+    return res, latest
 
 
 def diagnose(a, now):
@@ -115,7 +120,8 @@ def main():
         print(f"{len(recs) - len(bad)}/{len(recs)} records verify" + (f"; FAILED: {bad}" if bad else ""))
         raise SystemExit(1 if bad else 0)
     if a.cmd in ("cycle", "settle"):
-        n = live.settle(load_results(a, now), now, a.ledger)
+        res, latest = load_results(a, now)
+        n = live.settle(res, now, a.ledger, latest=latest)
         print(f"settled {n} match(es)")
     if a.cmd in ("cycle", "commit"):
         r = live.commit(load_fixtures(a), now, a.horizon, a.ledger)

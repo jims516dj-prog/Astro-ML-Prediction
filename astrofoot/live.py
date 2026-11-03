@@ -34,6 +34,12 @@ FIXTURE_URLS = [f"{FD}/fixtures.csv", f"{FD}/new_league_fixtures.csv"]
 EXTRA_LEAGUES = {"ARG", "AUT", "BRA", "CHN", "DEN", "FIN", "IRL", "JAP", "MEX", "NOR", "POL", "ROM",
                  "RUS", "SUI", "SWE", "USA"}
 UA = "astro-football-research/1.0 (track record; contact via repository)"
+# The extra-leagues files have no division code, only the country (plus the league's own name)
+COUNTRY_DIV = {"Argentina": "ARG", "Austria": "AUT", "Brazil": "BRA", "China": "CHN", "Denmark": "DEN",
+               "Finland": "FIN", "Ireland": "IRL", "Japan": "JAP", "Mexico": "MEX", "Norway": "NOR",
+               "Poland": "POL", "Romania": "ROM", "Russia": "RUS", "Switzerland": "SUI", "Sweden": "SWE",
+               "USA": "USA"}
+VOID_AFTER_DAYS = 2   # missing from a results file that already runs this many days past the match: void
 # Odds preference: Bet365 first, because the model's market baseline was trained on Bet365 odds
 ODDS_SETS = [("B365H", "B365D", "B365A"), ("AvgH", "AvgD", "AvgA"), ("PSH", "PSD", "PSA"),
              ("MaxH", "MaxD", "MaxA")]
@@ -97,12 +103,18 @@ def _first_set(row, sets):
     return None, None
 
 
+def _div(r) -> str:
+    d = str(r.get("Div", "") or "").strip()
+    if d in LEAGUE_NAMES or d in EXTRA_LEAGUES:
+        return d
+    return COUNTRY_DIV.get(str(r.get("Div_country", "") or "").strip(), "")
+
+
 def parse_fixtures(df: pd.DataFrame) -> list[dict]:
     out = []
-    div_col = "Div" if "Div" in df.columns else "League"
     for _, r in df.iterrows():
-        div = str(r.get(div_col, "")).strip()
-        if div not in LEAGUE_NAMES and div not in EXTRA_LEAGUES:
+        div = _div(r)
+        if not div:
             continue
         ko = _kickoff_utc(r.get("Date"), r.get("Time"))
         home, away = str(r.get("HomeTeam", "")).strip(), str(r.get("AwayTeam", "")).strip()
@@ -119,14 +131,29 @@ def parse_fixtures(df: pd.DataFrame) -> list[dict]:
     return out
 
 
+def latest_dates(df: pd.DataFrame) -> dict[str, str]:
+    """Per division, the latest date that has a final score in a results file."""
+    out: dict[str, str] = {}
+    for _, r in df.iterrows():
+        if not np.isfinite(pd.to_numeric(r.get("FTHG"), errors="coerce")):
+            continue
+        try:
+            d = pd.to_datetime(str(r.get("Date")), dayfirst=True).strftime("%Y-%m-%d")
+        except (ValueError, TypeError):
+            continue
+        div = _div(r)
+        if div and d > out.get(div, ""):
+            out[div] = d
+    return out
+
+
 def parse_results(df: pd.DataFrame) -> dict[str, dict]:
     out = {}
-    div_col = "Div" if "Div" in df.columns else "League"
     for _, r in df.iterrows():
         gh, ga = pd.to_numeric(r.get("FTHG"), errors="coerce"), pd.to_numeric(r.get("FTAG"), errors="coerce")
         if not (np.isfinite(gh) and np.isfinite(ga)):
             continue
-        div = str(r.get(div_col, "")).strip()
+        div = _div(r)
         try:
             local_date = pd.to_datetime(str(r.get("Date")), dayfirst=True).strftime("%Y-%m-%d")
         except (ValueError, TypeError):
@@ -227,15 +254,26 @@ def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledge
 
 
 # ----------------------------------------------------------------------------- settle
-def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, source: str = "football-data.co.uk") -> int:
+def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, source: str = "football-data.co.uk",
+           latest: dict[str, str] | None = None) -> int:
+    """Append results for forecast matches. A match still missing once its division's results file runs
+    VOID_AFTER_DAYS past its date was postponed or abandoned: it is recorded as void (never scored)."""
     settled = read_results(ledger)
+    latest = latest or {}
     new = []
+    stamp = now.isoformat(timespec="seconds")
     for rec in read_predictions(ledger):
         k = rec["match_key"]
-        if k in settled or k not in results:
+        if k in settled:
             continue
-        r = results[k]
-        new.append(seal({"match_key": k, **r, "settled_at": now.isoformat(timespec="seconds"), "source": source}))
+        if k in results:
+            new.append(seal({"match_key": k, **results[k], "settled_at": stamp, "source": source}))
+            continue
+        day = datetime.fromisoformat(rec["kickoff_utc"]).astimezone(ZoneInfo(TIMEZONE_OF_SOURCE_TIMES)).date()
+        last = latest.get(rec["division"])
+        if last and datetime.fromisoformat(last).date() >= day + timedelta(days=VOID_AFTER_DAYS):
+            new.append(seal({"match_key": k, "void": True, "settled_at": stamp, "source": source,
+                             "reason": f"not in the results file, which runs to {last}: postponed or abandoned"}))
     if new:
         _append(ledger / "results.jsonl", new)
     return len(new)
@@ -267,10 +305,11 @@ def report(ledger: Path = LEDGER) -> dict:
         if rec["committed_at"] >= rec["kickoff_utc"]:
             integrity["late"] += 1
             continue                          # only pre-kickoff predictions count
-        if rec["match_key"] in results:
+        if rec["match_key"] in results and not results[rec["match_key"]].get("void"):
             rows.append((rec, _outcome(rec, results[rec["match_key"]])))
     out = {"generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "integrity": integrity,
-           "pending": sum(1 for r in preds if r["match_key"] not in results), "settled": len(rows), "engines": {}}
+           "pending": sum(1 for r in preds if r["match_key"] not in results), "settled": len(rows),
+           "void": sum(1 for v in results.values() if v.get("void")), "engines": {}}
     if not rows:
         return out
     y = np.array([o for _, o in rows])
@@ -360,13 +399,17 @@ def records(ledger: Path = LEDGER) -> list[dict]:
     out = []
     for r in read_predictions(ledger):
         res = results.get(r["match_key"])
+        void = bool(res and res.get("void"))
+        if void:
+            res = None
         outcome = OUTCOMES[_outcome(r, res)] if res else None
         p = r["predictions"]
         probs = p.get("synthesis") or p["market"]
         pick = max(OUTCOMES, key=lambda k: probs[k])
         agree = sum(1 for e in ("rao", "chokoisky", "frawley") if p.get(e, {}).get("winner") == pick)
         out.append({**r, "result": res, "outcome": outcome, "verified": verify(r),
-                    "pre_kickoff": r["committed_at"] < r["kickoff_utc"], "status": "settled" if res else "pending",
+                    "pre_kickoff": r["committed_at"] < r["kickoff_utc"],
+                    "status": "void" if void else "settled" if res else "pending",
                     "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
                     "pick_hit": (outcome == pick) if res else None})
     out.sort(key=lambda r: r["kickoff_utc"], reverse=True)
