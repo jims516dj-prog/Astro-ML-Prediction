@@ -65,7 +65,15 @@ def load_results(a, now) -> tuple[dict, dict]:
     if pending and tok:
         days = [datetime.fromisoformat(r["kickoff_utc"]).date() for r in pending]
         try:
-            found, notes = results2.match_results(pending, results2.fetch(min(days), max(days), tok))
+            # a day either side: the API's dateTo is not inclusive, and kickoff times are checked anyway
+            got = results2.fetch(min(days) - timedelta(days=1), max(days) + timedelta(days=1), tok)
+            per = {}
+            for m in got:
+                c = (m.get("competition") or {}).get("code")
+                per[c] = per.get(c, 0) + 1
+            print(f"football-data.org returned {len(got)} finished match(es): "
+                  + (", ".join(f"{c} {n}" for c, n in sorted(per.items(), key=lambda x: str(x[0]))) or "none"))
+            found, notes = results2.match_results(pending, got)
             for k, v in found.items():
                 res[k] = v
             print(f"football-data.org: {len(found)} of {len(pending)} pending top-league result(s) found")
