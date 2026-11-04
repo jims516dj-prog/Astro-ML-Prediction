@@ -1,0 +1,41 @@
+{# Goal predictions. gm = goalmarkets.markets() output. #}
+{% macro mark(hit) %}{% if hit is not none %} {{ "✓" if hit else "✗" }}{% endif %}{% endmacro %}
+
+{% macro badges(gm) -%}
+{% if gm %}<span class="gm">
+{%- if gm.ou %}<span class="badge {{ 'ok' if gm.ou.pick == 'over' else '' }}" title="Over/under 2.5: P(over) {{ fmt_pct(gm.ou.p_over) }}">{{ "O" if gm.ou.pick == "over" else "U" }}2.5 {{ fmt_pct(gm.ou.pick_p, 0) }}{{ mark(gm.ou.hit) }}</span>{% else %}<span class="badge" title="No over/under price">O/U –</span>{% endif %}
+<span class="badge {{ 'ok' if gm.ts.pick == 'home' else 'warn' }}" title="Home scores {{ fmt_pct(gm.ts.p_home) }} · away scores {{ fmt_pct(gm.ts.p_away) }}">{{ "Home" if gm.ts.pick == "home" else "Away" }} goal {{ fmt_pct(gm.ts.pick_p, 0) }}{{ mark(gm.ts.hit) }}</span>
+<span class="badge {{ 'ok' if gm.bt.pick == 'yes' else '' }}" title="Both teams to score: {{ fmt_pct(gm.bt.p_yes) }}">BTTS {{ "yes" if gm.bt.pick == "yes" else "no" }} {{ fmt_pct(gm.bt.pick_p, 0) }}{{ mark(gm.bt.hit) }}</span>
+</span>{% endif %}
+{%- endmacro %}
+
+{% macro card(gm, home, away) %}
+<section class="card">
+  <h2>Goals: over/under 2.5 · home or away goal · both teams to score</h2>
+  <div class="tiles gm-tiles">
+    <div class="tile"><div class="k">Over/under 2.5</div>
+      {% if gm.ou %}<div class="v sm">{{ "Over" if gm.ou.pick == "over" else "Under" }} 2.5 · {{ fmt_pct(gm.ou.pick_p) }}{{ mark(gm.ou.hit) }}</div>
+      <div class="probbar"><span class="pf" style="width:{{ 100 * gm.ou.p_over }}%">Over {{ fmt_pct(gm.ou.p_over, 0) }}</span><span class="pd" style="width:{{ 100 * (1 - gm.ou.p_over) }}%">Under {{ fmt_pct(1 - gm.ou.p_over, 0) }}</span></div>
+      <div class="s">astrology agrees {{ gm.ou.agree }}/{{ gm.n_engines }}</div>
+      {% else %}<div class="v sm">no over/under price</div><div class="s">Enter over/under 2.5 odds to get this prediction.</div>{% endif %}</div>
+    <div class="tile"><div class="k">Home or away goal</div>
+      <div class="v sm">{{ gm.ts.team }} to score · {{ fmt_pct(gm.ts.pick_p) }}{{ mark(gm.ts.hit) }}</div>
+      <div class="s">{{ home }} scores {{ fmt_pct(gm.ts.p_home) }} · {{ away }} scores {{ fmt_pct(gm.ts.p_away) }}</div>
+      <div class="s">astrology agrees {{ gm.ts.agree }}/{{ gm.n_engines }}</div></div>
+    <div class="tile"><div class="k">Both teams to score</div>
+      <div class="v sm">{{ "Yes" if gm.bt.pick == "yes" else "No" }} · {{ fmt_pct(gm.bt.pick_p) }}{{ mark(gm.bt.hit) }}</div>
+      <div class="probbar"><span class="pf" style="width:{{ 100 * gm.bt.p_yes }}%">Yes {{ fmt_pct(gm.bt.p_yes, 0) }}</span><span class="pd" style="width:{{ 100 * (1 - gm.bt.p_yes) }}%">No {{ fmt_pct(1 - gm.bt.p_yes, 0) }}</span></div>
+      <div class="s">astrology agrees {{ gm.bt.agree }}/{{ gm.n_engines }}</div></div>
+  </div>
+  <div class="scroll"><table class="data">
+    <thead><tr><th>Engine</th><th class="num">Predicted score ({{ home }} first)</th><th>Over/under</th><th>Scores</th><th>Both score</th></tr></thead>
+    <tbody>{% for k, label, dot in [("rao","Rao","rao"),("chokoisky","Chokoisky","cho"),("frawley","Frawley","fra")] %}{% set e = gm.engine_scores[k] %}
+    <tr><td><span class="dot {{ dot }}"></span>{{ label }}</td>{% if e %}<td class="num">{{ e[0] }}–{{ e[1] }}</td>
+      <td>{{ "Over" if e[0] + e[1] > 2.5 else "Under" }}</td>
+      <td>{{ [home if e[0] > 0 else none, away if e[1] > 0 else none]|select|join(" & ") or "neither" }}</td>
+      <td>{{ "Yes" if e[0] > 0 and e[1] > 0 else "No" }}</td>{% else %}<td colspan="4" class="small">no score predicted</td>{% endif %}</tr>{% endfor %}</tbody>
+  </table></div>
+  <p class="note">Probabilities come from the market odds, recalibrated on past seasons, so they carry no betting value. The engines' calls
+  are shown for comparison; historically none of them beat the market on goals (<a href="/top?market=goals">backtests</a>).</p>
+</section>
+{% endmacro %}

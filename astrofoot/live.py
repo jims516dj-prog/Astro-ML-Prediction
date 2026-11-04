@@ -433,7 +433,7 @@ def records(ledger: Path = LEDGER) -> list[dict]:
 
 # market -> (hit, probability, astrology-agreement) fields of records()
 PICK_KEYS = {"result": ("pick_hit", "pick_p", "classical_agree"), "goals": ("ou_hit", "ou_pick_p", "ou_agree"),
-             "score": ("ts_hit", "ts_pick_p", "ts_agree")}
+             "score": ("ts_hit", "ts_pick_p", "ts_agree"), "btts": ("bt_hit", "bt_pick_p", "bt_agree")}
 
 
 def top_picks(recs: list[dict], per_day: int = 10, market: str = "result") -> dict[str, list[dict]]:

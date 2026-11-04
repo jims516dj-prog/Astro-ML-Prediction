@@ -83,3 +83,27 @@ def test_engine_scoring_rules():
     assert list(fs) == [True, True, True, False] and list(ds) == [True, False, True, True]
     fs, ds = teamgoals.chok_scores(np.array([1, 0, -1]), np.array([9, 0, -9]))
     assert list(fs) == [True, True, False] and list(ds) == [False, True, True]
+
+
+def test_goal_markets_everywhere_consistent():
+    from astrofoot import goalmarkets, teamgoals
+    assert abs(goalmarkets.p_over_from_odds(1.75, 2.10) - (1 / 1.75) / (1 / 1.75 + 1 / 2.10)) < 1e-12
+    assert goalmarkets.p_over_from_odds(None, 2.0) is None and goalmarkets.p_over_from_odds(1.0, 2.0) is None
+    gm = goalmarkets.markets(0.55, 0.20, 0.58, {"rao": (2, 1), "chokoisky": (1, 0), "frawley": None}, (2, 1), "H", "A")
+    assert gm["ou"]["pick"] == "over" and gm["ou"]["hit"] is True and gm["ou"]["agree"] == 1
+    assert gm["ts"]["pick"] == "home" and gm["ts"]["team"] == "H" and gm["ts"]["agree"] == 2 and gm["ts"]["hit"] is True
+    assert gm["bt"]["hit"] == (gm["bt"]["pick"] == "yes") and gm["n_engines"] == 2
+    assert abs(gm["bt"]["p_yes"] - teamgoals.btts_prob(0.55, 0.20)) < 1e-12
+    assert goalmarkets.markets(0.55, 0.20)["ou"] is None
+
+
+def test_goal_markets_from_analysis_respects_home_side():
+    from astrofoot import goalmarkets
+    a = {"inputs": {"team_a": "Alpha", "team_b": "Beta", "home_side": "B", "p_over25": 0.5},
+         "market": {"p_fav": 0.6, "p_draw": 0.25, "p_dog": 0.15}, "fav_is_a": True,
+         "verdicts": {"rao": {"goals_fav": 2, "goals_dog": 0}, "chokoisky": {"goals_fav": None, "goals_dog": None},
+                      "frawley": {"goals_fav": 1, "goals_dog": 1}}}
+    gm = goalmarkets.from_analysis(a, result=(3, 0))           # Alpha 3, Beta 0; Beta is at home
+    assert gm["engine_scores"]["rao"] == (0, 2)                   # home (Beta) first
+    assert gm["ts"]["pick"] == "away" and gm["ts"]["team"] == "Alpha" and gm["ts"]["hit"] is True
+    assert gm["bt"]["hit"] == (gm["bt"]["pick"] == "no")

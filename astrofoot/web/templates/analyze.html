@@ -35,7 +35,12 @@
       <label>Odds source<input name="odds_source" placeholder="bookmaker / exchange"></label>
       <label>Odds type<select name="odds_type"><option value="closing">Closing</option><option value="opening">Opening</option><option value="other" selected>Other</option></select></label>
     </div>
-    <p class="note">Equal odds (within ±0.05) disable Frawley's engine. Engine 4 needs draw odds.</p>
+    <div class="grid3">
+      <label>Over 2.5 goals <span class="note">(optional)</span><input name="odds_over25" inputmode="decimal" placeholder="1.90"></label>
+      <label>Under 2.5 goals <span class="note">(optional)</span><input name="odds_under25" inputmode="decimal" placeholder="1.95"></label>
+    </div>
+    <p class="note">Equal odds (within ±0.05) disable Frawley's engine. Engine 4 needs draw odds. Over/under odds are
+    optional: they give the over/under 2.5 prediction (home or away goal and both teams to score come from the match odds).</p>
   </fieldset>
   <details class="fs" id="found_box"><summary>Team founding charts (Rao's Nations' Charts step) <span class="note" id="found_sum"></span></summary>
     <p class="note">Filled in automatically from Wikidata when a team is recognised, or from your own saved chart.

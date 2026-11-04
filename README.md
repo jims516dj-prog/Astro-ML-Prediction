@@ -221,6 +221,25 @@ The third tab ranks up to 10 matches a day by the team likelier to **score at le
   four comparisons, is a hypothesis for the live record, not an edge. Frawley: live only.
 - Rebuilt with the over/under step: `python scripts/research.py overunder` (writes `data/models/teamgoals.json`).
 
+## Top picks: both teams to score, and goal predictions everywhere
+
+The fourth tab ranks up to 10 matches a day by whether **both teams score** (yes or no) is most probable. It uses
+the same Poisson scoring rates as "home or away goal", recalibrated on a rolling window of the three previous
+seasons, because the both-score rate drifts (50.5% in 2014/15, about 55% now). It is the hardest of the four
+markets: the top-10/day rule was right 57.7% of the time vs 58.1% expected (29,468 picks), and the model only just
+beats always saying the average rate (log loss 0.686 vs 0.692). Rao and Chokoisky: within noise.
+
+**Every game now gets all three goal predictions** (over/under 2.5, home or away goal, both teams to score), with
+✓/✗ once the score is in:
+
+- **Analyze** (new games): an optional *Over 2.5 / Under 2.5* odds pair on the form gives the over/under
+  prediction; the other two come from the match odds. Each analysis shows a *Goals* card with probabilities,
+  and each engine's predicted score with its three calls.
+- **Dataset**: a *Goals* column on your matches, the completed live forecasts and all 107,462 corpus matches.
+- **Live record**: a *Goals* column on every forecast; each forecast's page has the goals card.
+
+All of them use one function (`astrofoot/goalmarkets.py`), so a game shows the same numbers everywhere.
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):

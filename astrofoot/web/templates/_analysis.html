@@ -43,6 +43,11 @@
     {% for k,v in a.verdicts.items() %}{% for c in v.caveats %}<li>{{ k|capitalize }}: {{ c }}</li>{% endfor %}{% endfor %}</ul></div>
   {% else %}<div class="cautions"><h3>Cautions</h3><ul>{% for k,v in a.verdicts.items() %}{% for c in v.caveats %}<li>{{ k|capitalize }}: {{ c }}</li>{% endfor %}{% endfor %}</ul></div>{% endif %}
 </section>
+{% from "_goals.html" import card as goals_card %}
+{% set gm = a.goal_markets or goal_markets(a) %}
+{% set _home_b = a.inputs.home_side == "B" %}
+{{ goals_card(gm, a.inputs.team_b if _home_b else a.inputs.team_a, a.inputs.team_a if _home_b else a.inputs.team_b) }}
+
 
 {% if E4 %}
 <section class="card e4">

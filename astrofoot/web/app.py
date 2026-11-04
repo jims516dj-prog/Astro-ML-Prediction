@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, foundings, live, overunder, service, sync, teamgoals, venues
+from .. import db, foundings, goalmarkets, live, overunder, service, sync, teamgoals, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
@@ -31,7 +31,32 @@ T = Jinja2Templates(directory=HERE / "templates")
 T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.{d}f}%",
                      fmt_num=lambda x, d=4: "—" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x:+.{d}f}",
                      JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET),
-                     league_name=lambda code: LEAGUE_NAMES.get(code, code))
+                     league_name=lambda code: LEAGUE_NAMES.get(code, code),
+                     goal_markets=lambda a: goalmarkets.from_analysis(a))
+
+
+def _gm_live(r: dict) -> dict:
+    """Goal predictions for a live-ledger record (sealed odds and engine scores)."""
+    mk, fh = r["predictions"]["market"], r["fav_is_home"]
+    p_home, p_away = (mk["fav"], mk["dog"]) if fh else (mk["dog"], mk["fav"])
+    res = r.get("result")
+    result = (res["goals_home"], res["goals_away"]) if res and res.get("goals_home") is not None else None
+    scores = r.get("ts_engine_scores") or {}
+    return goalmarkets.markets(p_home, p_away, r.get("p_over25"), scores, result, r["home"], r["away"])
+
+
+def _gm_hist(r: dict) -> dict | None:
+    """Goal predictions for an imported historical match (market only: engines are not run per row)."""
+    try:
+        if not (r.get("p_home") == r.get("p_home") and r.get("p_away") == r.get("p_away")):
+            return None
+        po = r.get("p_over25")
+        po = None if po is None or po != po else float(po)
+        gh, ga = r.get("goals_home"), r.get("goals_away")
+        result = (int(gh), int(ga)) if gh == gh and ga == ga and gh is not None else None
+        return goalmarkets.markets(float(r["p_home"]), float(r["p_away"]), po, None, result, r["home"], r["away"])
+    except (KeyError, TypeError, ValueError):
+        return None
 
 
 def _json(name):
@@ -99,6 +124,10 @@ def _inputs_from_form(form) -> dict:
            "home_side": form.get("home_side", "A"), "context": form.get("context", "league"),
            "time_precision": form.get("time_precision", "T2_scheduled"),
            "odds_source": form.get("odds_source", ""), "odds_type": form.get("odds_type", "other")}
+    ov, un = _f(form.get("odds_over25")), _f(form.get("odds_under25"))
+    p_ov = goalmarkets.p_over_from_odds(ov, un)
+    if p_ov is not None:
+        inp.update(odds_over25=ov, odds_under25=un, p_over25=p_ov)
     if form.get("use_captain"):
         inp["captain"] = {"a_jersey": _i(form.get("a_jersey")), "b_jersey": _i(form.get("b_jersey")),
                           "a_color": form.get("a_color") or None, "b_color": form.get("b_color") or None}
@@ -250,6 +279,8 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
         u["fav"], u["verdicts"] = a["fav"], {k: v["winner"] for k, v in a["verdicts"].items()}
         u["e4"] = a.get("engine4")
         u["consensus"] = a["synthesis"]["consensus"]
+        res = (u["score_a"], u["score_b"]) if u.get("score_a") is not None and u.get("score_b") is not None else None
+        u["gm"] = goalmarkets.from_analysis(a, res)
     if status:
         user = [u for u in user if u["status"] == status]
     m = imported()
@@ -272,9 +303,14 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
         live_done = [r for r in live_done if r["division"] == league]
     if team:
         live_done = [r for r in live_done if team.lower() in r["home"].lower() or team.lower() in r["away"].lower()]
+    hist = rows.to_dict("records")
+    for r in hist:
+        r["gm"] = _gm_hist(r)
+    for r in live_done[:50]:
+        r["gm"] = _gm_live(r)
     return T.TemplateResponse(request, "dataset.html", {
         "live_done": live_done[:50], "live_done_n": len(live_done),
-        "user": user, "rows": rows.to_dict("records"), "n": len(q), "page_no": page, "pages": pages,
+        "user": user, "rows": hist, "n": len(q), "page_no": page, "pages": pages,
         "league": league, "season": season, "team": team, "leagues": leagues, "seasons": seasons,
         "status": status, "page": "dataset"})
 
@@ -397,8 +433,11 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
          "engine": engine, "hit": hit, "agree": agree}
+    shown = rows[(page_no - 1) * per: page_no * per]
+    for r in shown:
+        r["gm"] = _gm_live(r)
     return T.TemplateResponse(request, "live.html", {
-        "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages,
+        "rows": shown, "n": len(rows), "page_no": page_no, "pages": pages,
         "q": q, "qs": "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in q.items() if v), "subset": subset, "syncing": bool(syncing) or SYNC["running"], "has_token": sync.token() is not None,
         "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "page": "live"})
 
@@ -538,7 +577,7 @@ def top_page(request: Request, day: str = "", market: str = "result", agree: str
         "day": day, "days": days, "picks": picks, "market": market, "agree": agree,
         "score_all": live.score_picks(all_picks, market), "score_day": live.score_picks(picks, market),
         "by_agree": by_agree, "ou": overunder.load() if market == "goals" else None,
-        "ts": teamgoals.load() if market == "score" else None, "page": "top"})
+        "ts": teamgoals.load() if market in ("score", "btts") else None, "page": "top"})
 
 
 @app.get("/api/teams")

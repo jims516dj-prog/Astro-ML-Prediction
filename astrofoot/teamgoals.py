@@ -25,6 +25,8 @@ from .overunder import _rate
 CAL_FILE = MODELS / "teamgoals.json"
 ENGINES = ("rao", "chokoisky", "frawley")
 DEFAULT_CAL = {"a": 0.21, "b": 1.015, "c": -0.011}
+DEFAULT_BTTS = {"a": 0.33, "b": 0.885}
+BTTS_WINDOW = 3
 
 
 def _logit(p):
@@ -70,6 +72,14 @@ def score_probs(p_home: float, p_away: float, cal: dict | None = None) -> tuple[
     return float(p[0]), float(p[1])
 
 
+def btts_prob(p_home: float, p_away: float, cal: dict | None = None) -> float:
+    """Calibrated P(both teams score), from the same Poisson rates (recalibrated on its own)."""
+    c = ((cal or load()).get("btts") or {}).get("calibration", DEFAULT_BTTS)
+    lh, la = rates(p_home, p_away)
+    raw = (1 - np.exp(-lh)) * (1 - np.exp(-la))
+    return float(1 / (1 + np.exp(-(c["a"] + c["b"] * _logit(raw))))[0])
+
+
 def _engine_goals(pred: dict | None, fav_is_home: bool) -> tuple[int, int] | None:
     if not pred or pred.get("goals_fav") is None or pred.get("goals_dog") is None:
         return None
@@ -89,8 +99,13 @@ def view(rec: dict, res: dict | None, cal: dict | None = None) -> dict:
     out = {"ts_p_home": ph, "ts_p_away": pa, "ts_pick": side, "ts_pick_p": max(ph, pa),
            "ts_team": rec["home"] if side == "home" else rec["away"], "ts_engine_scores": scores,
            "ts_agree": sum(1 for s in scores.values() if s is not None and s[j] > 0), "ts_hit": None}
+    pb = btts_prob(p_home, p_away, cal)
+    yes = pb > 0.5
+    out.update({"bt_p_yes": pb, "bt_pick": "yes" if yes else "no", "bt_pick_p": max(pb, 1 - pb),
+                "bt_agree": sum(1 for s in scores.values() if s is not None and (min(s) > 0) == yes), "bt_hit": None})
     if res and res.get("goals_home") is not None:
         out["ts_hit"] = (res["goals_home"] if side == "home" else res["goals_away"]) > 0
+        out["bt_hit"] = (res["goals_home"] > 0 and res["goals_away"] > 0) == yes
     return out
 
 
@@ -170,7 +185,57 @@ def backtest(matches: pd.DataFrame, engines: pd.DataFrame, per_day: int = 10) ->
         out["engines"][name] = {**_rate(hit, exp), "blank_share": float(fail.mean()),
                                 "blank_calls": _rate(hit[fail], exp[fail])}
     out["engines"]["frawley"] = {"n": 0, "note": "its goal count depends on testimony counts the history does not store"}
+    out["btts"] = _btts_backtest(d, lh, la, calls, seasons, per_day)
     return out
+
+
+def _btts_backtest(d, lh, la, calls, seasons, per_day) -> dict:
+    """Both teams to score: walk-forward recalibration of the Poisson probability, picks and engine calls."""
+    from sklearn.linear_model import LogisticRegression
+    raw = (1 - np.exp(-lh)) * (1 - np.exp(-la))
+    y = ((d.goals_home > 0) & (d.goals_away > 0)).to_numpy(float)
+    X = _logit(raw)[:, None]
+    pc = np.full(len(d), np.nan)
+    # rolling window of the three previous seasons: the both-score rate drifts (50.5% in 2014/15, 55% now)
+    for i, s in enumerate(seasons[3:], start=3):
+        tr = ((d.season < s) & (d.season >= seasons[i - BTTS_WINDOW])).to_numpy()
+        te = (d.season == s).to_numpy()
+        pc[te] = LogisticRegression(C=1e6, max_iter=500).fit(X[tr], y[tr]).predict_proba(X[te])[:, 1]
+    recent = (d.season >= seasons[-BTTS_WINDOW]).to_numpy()
+    final = LogisticRegression(C=1e6, max_iter=500).fit(X[recent], y[recent])
+    ok = ~np.isnan(pc)
+    t = d[ok].assign(p=pc[ok], y=y[ok], raw=raw[ok])
+    t["yes"] = t.p > 0.5
+    t["pp"] = np.maximum(t.p, 1 - t.p)
+    t["hit"] = np.where(t.yes, t.y, 1 - t.y)
+    t["day"] = pd.to_datetime(t.kickoff_utc, utc=True).dt.strftime("%Y-%m-%d")
+    fh = t.fav_is_home.to_numpy().astype(bool)
+    eng = {}
+    agree = np.zeros(len(t), int)
+    for name, fn, w, n in (("rao", rao_scores, "rao_win", "rao_net"), ("chokoisky", chok_scores, "chok_win", "chok_net")):
+        fs, ds = fn(t[w].to_numpy(), t[n].to_numpy())
+        both = fs & ds
+        agree += (both == t.yes.to_numpy()).astype(int)
+        hit = np.where(both, t.y, 1 - t.y)
+        exp = np.where(both, t.p, 1 - t.p)
+        eng[name] = {**_rate(hit, exp), "yes_share": float(both.mean())}
+    t["agree"] = agree
+    top = t.sort_values(["pp", "agree"], ascending=False).groupby("day").head(per_day)
+    ll = lambda q: float(-(t.y * np.log(q) + (1 - t.y) * np.log(1 - q)).mean())       # noqa: E731
+    bins = pd.cut(t.p, [0, .3, .4, .5, .6, .7, 1])
+    return {
+        "calibration": {"a": float(final.intercept_[0]), "b": float(final.coef_[0, 0])},
+        "window_seasons": BTTS_WINDOW, "rate": float(y.mean()), "recent_rate": float(y[recent].mean()), "n_test": int(len(t)),
+        "log_loss": {"raw": ll(t.raw.clip(.01, .99).to_numpy()), "calibrated": ll(t.p.to_numpy()),
+                     "constant": ll(np.full(len(t), y.mean()))},
+        "all_picks": _rate(t.hit.to_numpy(), t.pp.to_numpy()),
+        "top": _rate(top.hit.to_numpy(), top.pp.to_numpy()), "top_yes_share": float(top.yes.mean()),
+        "top_by_agree": {str(k): _rate(g.hit.to_numpy(), g.pp.to_numpy()) for k, g in top.groupby("agree")},
+        "reliability": [{"band": f"{int(100 * b.left)}–{int(100 * b.right)}%", "n": int(len(g)),
+                         "observed": float(g.y.mean()), "predicted": float(g.p.mean())}
+                        for b, g in t.groupby(bins, observed=True)],
+        "engines": eng,
+    }
 
 
 def write(result: dict):

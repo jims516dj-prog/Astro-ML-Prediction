@@ -192,6 +192,8 @@ def analyse(inp: dict) -> dict:
         "kickoff_local_venue": ko_local.strftime("%a %Y-%m-%d %H:%M") if tz else None,
     }
     out["synthesis"] = synthesise(out)
+    from . import goalmarkets
+    out["goal_markets"] = goalmarkets.from_analysis(out)
     return out
 
 
