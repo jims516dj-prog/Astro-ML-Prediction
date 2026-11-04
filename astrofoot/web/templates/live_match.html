@@ -31,6 +31,26 @@
   was sealed). The sealed forecast above is what counts in the track record; the analysis below is today's.</p>{% endif %}
 </section>
 
+<section class="card">
+  <h2>Over/under 2.5 goals</h2>
+  {% if r.ou_p_over is not none %}
+  <div class="probbar" role="img" aria-label="Over {{ fmt_pct(r.ou_p_over) }}, under {{ fmt_pct(1 - r.ou_p_over) }}">
+    <span class="pf" style="width: {{ 100 * r.ou_p_over }}%">Over {{ fmt_pct(r.ou_p_over) }}</span>
+    <span class="pd" style="width: {{ 100 * (1 - r.ou_p_over) }}%">Under {{ fmt_pct(1 - r.ou_p_over) }}</span></div>
+  <p class="small">Calibrated market probability (raw de-vigged price {{ fmt_pct(r.ou_p_over_market) }}). Prediction:
+  <strong>{{ "Over" if r.ou_pick == "over" else "Under" }} 2.5</strong> · astrology agrees {{ r.ou_agree }}/3
+  {% if r.ou_goals is not none %}· result {{ r.ou_goals }} goals {{ "✓" if r.ou_hit else "✗" }}{% endif %}</p>
+  {% else %}<p class="small">No over/under price was available when this forecast was sealed.</p>{% endif %}
+  <table class="data">
+    <thead><tr><th>Engine</th><th class="num">Predicted goals</th><th>Call</th><th>Result</th></tr></thead>
+    <tbody>{% for k, label, dot in [("rao","Rao","rao"),("chokoisky","Chokoisky","cho"),("frawley","Frawley","fra")] %}{% set t = r.ou_engine_totals[k] %}
+    <tr><td><span class="dot {{ dot }}"></span>{{ label }}</td><td class="num">{{ t if t is not none else "–" }}</td>
+      <td>{% if t is not none %}{{ "Over" if t > 2.5 else "Under" }}{% endif %}</td>
+      <td>{% if t is not none and r.ou_goals is not none %}{{ "✓" if (t > 2.5) == (r.ou_goals > 2.5) else "✗" }}{% endif %}</td></tr>{% endfor %}</tbody>
+  </table>
+  <p class="note">Historically, neither Rao's nor Chokoisky's over/under calls beat the market (<a href="/top?market=goals">backtest</a>).</p>
+</section>
+
 <h2>Full analysis</h2>
 <p class="note">Recomputed from the same inputs as the sealed forecast (kickoff, venue, odds). Founding charts are not used in live forecasts.</p>
 {% include "_analysis.html" %}

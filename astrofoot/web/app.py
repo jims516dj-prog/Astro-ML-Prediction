@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, foundings, live, service, sync, venues
+from .. import db, foundings, live, overunder, service, sync, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
@@ -520,17 +520,24 @@ def live_sync_status():
 
 
 @app.get("/top", response_class=HTMLResponse)
-def top_page(request: Request, day: str = ""):
+def top_page(request: Request, day: str = "", market: str = "result", agree: str = ""):
+    market = "goals" if market == "goals" else "result"
     recs = live.records()
-    tp = live.top_picks(recs, per_day=10)
+    tp = live.top_picks(recs, per_day=10, market=market)
     days = list(tp)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
-    if not day:
+    if not day or day not in tp:
         day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
-    all_picks = [p for ps in tp.values() for p in ps]
+    agree_key = "classical_agree" if market == "result" else "ou_agree"
+    min_agree = int(agree) if agree in ("1", "2", "3") else 0
+    keep = lambda ps: [p for p in ps if (p.get(agree_key) or 0) >= min_agree]      # noqa: E731
+    picks = keep(tp.get(day, []))
+    all_picks = keep([p for ps in tp.values() for p in ps])
+    by_agree = {k: live.score_picks([p for p in all_picks if (p.get(agree_key) or 0) == k], market) for k in range(4)}
     return T.TemplateResponse(request, "top.html", {
-        "day": day, "days": days, "picks": tp.get(day, []), "score_all": live.score_picks(all_picks),
-        "score_day": live.score_picks(tp.get(day, [])), "page": "top"})
+        "day": day, "days": days, "picks": picks, "market": market, "agree": agree,
+        "score_all": live.score_picks(all_picks, market), "score_day": live.score_picks(picks, market),
+        "by_agree": by_agree, "ou": overunder.load() if market == "goals" else None, "page": "top"})
 
 
 @app.get("/api/teams")

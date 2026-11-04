@@ -188,6 +188,24 @@ How it works:
   These forecasts have no over/under 2.5 price, so that one input is left out.
 - National League and Scottish tiers below the Premiership are not covered; they still rely on football-data.co.uk.
 
+## Top picks: over/under 2.5 goals
+
+The Top picks page has two tabs: **Match result** and **Over/under 2.5 goals**. The goals tab ranks up to 10
+matches a day by the probability of the likelier side of 2.5 goals, and shows each classical engine's
+predicted total, how many agree, and the result.
+
+- **Probability:** the market's over/under price, recalibrated (`p' = σ(a + b·logit p)`, b ≈ 1.12) because
+  proportional de-vigging understates the likelier side. Fitted walk-forward on 53,078 historical matches:
+  the top-10/day rule hit 62.1% vs 61.9% expected out of sample. Without recalibration it would have
+  claimed 60.8%, an apparent edge that was only the bookmaker's margin.
+- **Astrology:** Rao's and Chokoisky's predicted scores are fixed functions of their net points, so their
+  over/under calls were rebuilt for every historical match. Neither beats the market: Rao −0.4 points,
+  Chokoisky +0.3 points (both within ±2 SE). Agreement with the pick adds nothing. Frawley's goal count needs
+  testimony counts the history does not store, so it is shown live only.
+- `python scripts/research.py overunder` rebuilds `data/models/overunder.json` (2 seconds); the weekly
+  retrain refreshes it automatically.
+- Forecasts without an over/under price (some extra leagues, games from The Odds API) are not ranked.
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):

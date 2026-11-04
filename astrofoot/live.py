@@ -26,6 +26,7 @@ import pandas as pd
 
 from . import geo, models, service
 from .config import ROOT, TIMEZONE_OF_SOURCE_TIMES
+from . import overunder
 from .dataset import LEAGUE_NAMES, devig
 
 LEDGER = Path(os.environ.get("ASTRO_LEDGER", ROOT / "ledger"))
@@ -408,6 +409,7 @@ OUTCOMES = ("fav", "draw", "dog")
 def records(ledger: Path = LEDGER) -> list[dict]:
     """Every sealed forecast joined with its result (if settled), newest kickoff first."""
     results = read_results(ledger)
+    ou_cal = overunder.load()
     out = []
     for r in read_predictions(ledger):
         res = results.get(r["match_key"])
@@ -423,32 +425,36 @@ def records(ledger: Path = LEDGER) -> list[dict]:
                     "pre_kickoff": r["committed_at"] < r["kickoff_utc"],
                     "status": "void" if void else "settled" if res else "pending",
                     "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
-                    "pick_hit": (outcome == pick) if res else None})
+                    "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal)})
     out.sort(key=lambda r: r["kickoff_utc"], reverse=True)
     return out
 
 
-def top_picks(recs: list[dict], per_day: int = 10) -> dict[str, list[dict]]:
-    """Per kickoff date (UTC): the matches whose predicted result is most probable, at most `per_day`.
+def top_picks(recs: list[dict], per_day: int = 10, market: str = "result") -> dict[str, list[dict]]:
+    """Per kickoff date (UTC): the matches whose predicted outcome is most probable, at most `per_day`.
 
-    The rule uses only the sealed, pre-kickoff probabilities (the synthesis, which equals the market
-    while Engine 4's gate is closed), so it can be scored honestly afterwards.
+    market "result": the predicted 1X2 result, ranked by the synthesis probability (which equals the
+    market while Engine 4's gate is closed). market "goals": over/under 2.5, ranked by the calibrated
+    market probability (overunder.py); forecasts without an over/under price are left out.
+    Only sealed, pre-kickoff probabilities are used, so the picks can be scored honestly afterwards.
     """
+    p_key, agree_key = ("pick_p", "classical_agree") if market == "result" else ("ou_pick_p", "ou_agree")
     days: dict[str, list[dict]] = {}
     for r in recs:
-        if r["pre_kickoff"]:
+        if r["pre_kickoff"] and r.get(p_key) is not None:
             days.setdefault(r["kickoff_utc"][:10], []).append(r)
-    return {d: sorted(rs, key=lambda r: (-r["pick_p"], -r["classical_agree"]))[:per_day]
+    return {d: sorted(rs, key=lambda r: (-r[p_key], -(r[agree_key] or 0)))[:per_day]
             for d, rs in sorted(days.items(), reverse=True)}
 
 
-def score_picks(picks: list[dict]) -> dict:
+def score_picks(picks: list[dict], market: str = "result") -> dict:
     """Hit rate of settled picks vs the hit rate their probabilities implied."""
-    s = [p for p in picks if p["pick_hit"] is not None]
+    hit_key, p_key = ("pick_hit", "pick_p") if market == "result" else ("ou_hit", "ou_pick_p")
+    s = [p for p in picks if p.get(hit_key) is not None and p.get(p_key) is not None]
     if not s:
         return {"n": 0}
-    hits = sum(p["pick_hit"] for p in s)
-    exp = sum(p["pick_p"] for p in s)
-    var = sum(p["pick_p"] * (1 - p["pick_p"]) for p in s)
+    hits = sum(p[hit_key] for p in s)
+    exp = sum(p[p_key] for p in s)
+    var = sum(p[p_key] * (1 - p[p_key]) for p in s)
     return {"n": len(s), "hits": hits, "hit_rate": hits / len(s), "expected": exp / len(s),
             "se": var ** 0.5 / len(s)}
