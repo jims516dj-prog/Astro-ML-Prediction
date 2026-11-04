@@ -4,7 +4,7 @@
   python scripts/research.py evaluate           # walk-forward: Engine 4, COIN control, M1, structures, Tribunal
   python scripts/research.py placebo --k 10     # placebo skies (time/date/place shift), identical pipeline
   python scripts/research.py codex              # final fit, Codex rules, vault (once), gate, artifact
-  python scripts/research.py overunder          # over/under 2.5: calibration + backtest of the classical calls
+  python scripts/research.py overunder          # over/under 2.5 and team to score: calibration + backtests
   python scripts/research.py all --k 10
 """
 from __future__ import annotations
@@ -21,7 +21,7 @@ import pandas as pd
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
-from astrofoot import classical_batch, codex, dataset, lattice, models, overunder, pipeline  # noqa: E402
+from astrofoot import classical_batch, codex, dataset, lattice, models, overunder, pipeline, teamgoals  # noqa: E402
 from astrofoot import sky as skymod  # noqa: E402
 from astrofoot.config import LATTICE_VERSION, LIVING, MODELS, WORK  # noqa: E402
 
@@ -251,3 +251,7 @@ if __name__ == "__main__":
         log(f"over/under: calibration b={res['calibration']['b']:.3f}; top picks hit {res['top']['hit_rate']:.3f} "
             f"vs {res['top']['expected']:.3f} expected; Rao lift {res['engines']['rao']['lift']:+.4f}, "
             f"Chokoisky lift {res['engines']['chokoisky']['lift']:+.4f}")
+        tg = teamgoals.backtest(pd.read_parquet(WORK / "matches.parquet"), pd.read_parquet(WORK / "engines_real.parquet"))
+        teamgoals.write(tg)
+        log(f"team to score: top picks hit {tg['top']['hit_rate']:.3f} vs {tg['top']['expected']:.3f} expected; "
+            f"Rao lift {tg['engines']['rao']['lift']:+.4f}, Chokoisky lift {tg['engines']['chokoisky']['lift']:+.4f}")

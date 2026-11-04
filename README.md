@@ -206,6 +206,21 @@ predicted total, how many agree, and the result.
   retrain refreshes it automatically.
 - Forecasts without an over/under price (some extra leagues, games from The Odds API) are not ranked.
 
+## Top picks: home or away goal
+
+The third tab ranks up to 10 matches a day by the team likelier to **score at least once**, home or away.
+
+- **Probability:** the market does not price "team to score" in our data, so it is derived from the de-vigged
+  1X2 odds: the Poisson scoring rates that reproduce the home-win and away-win probabilities give
+  P(team scores) = 1 − e^(−λ). That raw model understates scoring (home teams score 76.4% of the time; it
+  says 72.5%), so it is recalibrated walk-forward. Out of sample, every probability band is within about a
+  point of the observed rate, and the top-10/day rule scored 85.2% vs 85.3% expected over 29,468 picks (74.5%
+  of them home teams). The over/under price added nothing, so every forecast can be ranked.
+- **Astrology:** each engine's predicted score says whether each team scores. Rao: −0.2 points vs the market
+  (slightly below); Chokoisky: −0.0. Both engines' rarer "fails to score" calls are about +2 SE, which, with
+  four comparisons, is a hypothesis for the live record, not an edge. Frawley: live only.
+- Rebuilt with the over/under step: `python scripts/research.py overunder` (writes `data/models/teamgoals.json`).
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):

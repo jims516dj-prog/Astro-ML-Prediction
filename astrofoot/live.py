@@ -26,7 +26,7 @@ import pandas as pd
 
 from . import geo, models, service
 from .config import ROOT, TIMEZONE_OF_SOURCE_TIMES
-from . import overunder
+from . import overunder, teamgoals
 from .dataset import LEAGUE_NAMES, devig
 
 LEDGER = Path(os.environ.get("ASTRO_LEDGER", ROOT / "ledger"))
@@ -409,7 +409,7 @@ OUTCOMES = ("fav", "draw", "dog")
 def records(ledger: Path = LEDGER) -> list[dict]:
     """Every sealed forecast joined with its result (if settled), newest kickoff first."""
     results = read_results(ledger)
-    ou_cal = overunder.load()
+    ou_cal, ts_cal = overunder.load(), teamgoals.load()
     out = []
     for r in read_predictions(ledger):
         res = results.get(r["match_key"])
@@ -425,9 +425,15 @@ def records(ledger: Path = LEDGER) -> list[dict]:
                     "pre_kickoff": r["committed_at"] < r["kickoff_utc"],
                     "status": "void" if void else "settled" if res else "pending",
                     "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
-                    "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal)})
+                    "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal),
+                    **teamgoals.view(r, res, ts_cal)})
     out.sort(key=lambda r: r["kickoff_utc"], reverse=True)
     return out
+
+
+# market -> (hit, probability, astrology-agreement) fields of records()
+PICK_KEYS = {"result": ("pick_hit", "pick_p", "classical_agree"), "goals": ("ou_hit", "ou_pick_p", "ou_agree"),
+             "score": ("ts_hit", "ts_pick_p", "ts_agree")}
 
 
 def top_picks(recs: list[dict], per_day: int = 10, market: str = "result") -> dict[str, list[dict]]:
@@ -435,10 +441,11 @@ def top_picks(recs: list[dict], per_day: int = 10, market: str = "result") -> di
 
     market "result": the predicted 1X2 result, ranked by the synthesis probability (which equals the
     market while Engine 4's gate is closed). market "goals": over/under 2.5, ranked by the calibrated
-    market probability (overunder.py); forecasts without an over/under price are left out.
+    market probability (overunder.py); forecasts without an over/under price are left out. market
+    "score": the team likelier to score at least once, home or away (teamgoals.py).
     Only sealed, pre-kickoff probabilities are used, so the picks can be scored honestly afterwards.
     """
-    p_key, agree_key = ("pick_p", "classical_agree") if market == "result" else ("ou_pick_p", "ou_agree")
+    p_key, agree_key = PICK_KEYS[market][1], PICK_KEYS[market][2]
     days: dict[str, list[dict]] = {}
     for r in recs:
         if r["pre_kickoff"] and r.get(p_key) is not None:
@@ -449,7 +456,7 @@ def top_picks(recs: list[dict], per_day: int = 10, market: str = "result") -> di
 
 def score_picks(picks: list[dict], market: str = "result") -> dict:
     """Hit rate of settled picks vs the hit rate their probabilities implied."""
-    hit_key, p_key = ("pick_hit", "pick_p") if market == "result" else ("ou_hit", "ou_pick_p")
+    hit_key, p_key = PICK_KEYS[market][0], PICK_KEYS[market][1]
     s = [p for p in picks if p.get(hit_key) is not None and p.get(p_key) is not None]
     if not s:
         return {"n": 0}

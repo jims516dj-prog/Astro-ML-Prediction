@@ -2,26 +2,35 @@
 {% block title %}Top picks · Astro Football Lab{% endblock %}
 {% set W = {"fav": "Favourite", "draw": "Draw", "dog": "Underdog"} %}
 {% set goals = market == "goals" %}
+{% set scorer = market == "score" %}
+{% set result_tab = market == "result" %}
 {% set nE = 3 %}
 {% macro pp(x) %}{{ "%+.1f"|format(100 * x) }} pts{% endmacro %}
 {% block body %}
 <h1>Top picks</h1>
 
 <nav class="seg" aria-label="Market">
-  <a href="/top?market=result{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if not goals }}">Match result</a>
+  <a href="/top?market=result{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if result_tab }}">Match result</a>
   <a href="/top?market=goals{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if goals }}">Over/under 2.5 goals</a>
+  <a href="/top?market=score{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if scorer }}">Home or away goal</a>
 </nav>
 
-{% if not goals %}
+{% if result_tab %}
 <p class="lede">Up to 10 matches a day whose predicted result is <em>most probable</em>, from the sealed pre-kickoff
 forecasts. The ranking uses the calibrated probability of the predicted result, which comes from the market odds while
 Engine 4 shows no demonstrated edge. No astrological engine has shown predictive accuracy beyond the odds, so they don't
 drive this ranking; the "astrology agrees" column only shows how many of the three classical engines made the same call.</p>
-{% else %}
+{% elif goals %}
 <p class="lede">Up to 10 matches a day where <em>over or under 2.5 goals</em> is most probable, from the sealed
 pre-kickoff forecasts. The probability is the market's over/under price, recalibrated on {{ "{:,}".format(ou.n_matches) if ou.n_matches else "historical" }}
 past matches (bookmaker prices understate the likelier side by a little), so "expected" below is an honest target. Each
 classical engine predicts a score; "astrology agrees" counts how many of the three predict the same side of 2.5.</p>
+{% else %}
+<p class="lede">Up to 10 matches a day where one team is most likely to <em>score at least once</em>: the home team or
+the away team, whichever is likelier. The market does not price this directly here, so it is derived from the match odds
+(the scoring rates that reproduce the home-win and away-win probabilities) and recalibrated on
+{{ "{:,}".format(ts.n_matches) if ts else "historical" }} past matches. "Astrology agrees" counts how many of the three
+classical engines' predicted scores have that team scoring.</p>
 {% endif %}
 <p class="note">Because these probabilities come from bookmaker odds, these picks carry no betting value: the odds already
 price them. This is a research view of which matches are most predictable, not betting advice.</p>
@@ -34,6 +43,11 @@ price them. This is a research view of which matches are most predictable, not b
   <div class="tile"><div class="k">This day</div>
     {% if score_day.n %}<div class="v">{{ score_day.hits }} / {{ score_day.n }}</div>
     <div class="s">expected {{ fmt_pct(score_day.expected) }}</div>{% else %}<div class="v sm">{{ picks|length }} picks, none settled yet</div>{% endif %}</div>
+  {% if scorer and ts and ts.top %}
+  <div class="tile"><div class="k">Same rule, {{ ts.test_from }}–{{ ts.seasons[-1] }} backtest</div>
+    <div class="v">{{ fmt_pct(ts.top.hit_rate) }}</div>
+    <div class="s">of {{ "{:,}".format(ts.top.n) }} picks scored, vs {{ fmt_pct(ts.top.expected) }} expected (± {{ fmt_pct(ts.top.se) }})</div></div>
+  {% endif %}
   {% if goals and ou and ou.top %}
   <div class="tile"><div class="k">Same rule, {{ ou.seasons[1] }}–{{ ou.seasons[-1] }} backtest</div>
     <div class="v">{{ fmt_pct(ou.top.hit_rate) }}</div>
@@ -53,7 +67,7 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 </form>
 
 <div class="scroll"><table class="data">
-{% if not goals %}
+{% if result_tab %}
 <thead><tr><th>#</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Predicted result</th><th class="num">Probability</th><th class="num">Astrology agrees</th><th>Result</th></tr></thead>
 <tbody>{% for r in picks %}
 <tr><td>{{ loop.index }}</td><td class="mono">{{ r.kickoff_utc[11:16] }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
@@ -62,7 +76,7 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 <td class="num">{{ fmt_pct(r.pick_p) }}</td><td class="num">{{ r.classical_agree }}/3</td>
 <td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} {{ "✓" if r.pick_hit else "✗" }}{% else %}pending{% endif %}</td></tr>
 {% else %}<tr><td colspan="8">No forecasts for this day{% if agree %} with that much agreement{% endif %}.</td></tr>{% endfor %}</tbody>
-{% else %}
+{% elif goals %}
 <thead><tr><th>#</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Prediction</th><th class="num">Probability</th>
 <th class="num" title="Predicted total goals: Rao · Chokoisky · Frawley">Engines' goals</th><th class="num">Astrology agrees</th><th>Result</th></tr></thead>
 <tbody>{% for r in picks %}{% set t = r.ou_engine_totals %}
@@ -74,8 +88,55 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 <td class="num">{{ r.ou_agree }}/3</td>
 <td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ r.ou_goals }}) {{ "✓" if r.ou_hit else "✗" }}{% else %}pending{% endif %}</td></tr>
 {% else %}<tr><td colspan="9">No forecasts with an over/under price for this day{% if agree %} with that much agreement{% endif %}.</td></tr>{% endfor %}</tbody>
+{% else %}
+<thead><tr><th>#</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Prediction</th><th class="num">Probability</th>
+<th class="num" title="Chance each side scores at least once">Home · away scores</th>
+<th class="num" title="Predicted score, home first: Rao · Chokoisky · Frawley">Engines' scores</th><th class="num">Astrology agrees</th><th>Result</th></tr></thead>
+<tbody>{% for r in picks %}{% set es = r.ts_engine_scores %}
+<tr><td>{{ loop.index }}</td><td class="mono">{{ r.kickoff_utc[11:16] }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
+<td><a href="/live/match/{{ r.match_key }}">{{ r.home }} v {{ r.away }}</a></td>
+<td><span class="badge {{ 'ok' if r.ts_pick == 'home' else 'warn' }}">{{ "Home" if r.ts_pick == "home" else "Away" }} goal</span> {{ r.ts_team }} to score</td>
+<td class="num">{{ fmt_pct(r.ts_pick_p) }}</td>
+<td class="num mono">{{ fmt_pct(r.ts_p_home) }} · {{ fmt_pct(r.ts_p_away) }}</td>
+<td class="num mono">{% for k, dot in (("rao", "rao"), ("chokoisky", "cho"), ("frawley", "fra")) %}{% set e = es[k] %}<span class="dot {{ dot }}"></span>{{ "%d–%d"|format(e[0], e[1]) if e else "–" }} {% endfor %}</td>
+<td class="num">{{ r.ts_agree }}/3</td>
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} {{ "✓" if r.ts_hit else "✗" }}{% else %}pending{% endif %}</td></tr>
+{% else %}<tr><td colspan="10">No forecasts for this day{% if agree %} with that much agreement{% endif %}.</td></tr>{% endfor %}</tbody>
 {% endif %}
 </table></div>
+
+{% if scorer %}
+<p class="note">Engines' scores = each classical engine's predicted score, home first:
+<span class="dot rao"></span>Rao <span class="dot cho"></span>Chokoisky <span class="dot fra"></span>Frawley. A pick is a hit if that team scores at least once in 90 minutes.</p>
+<h2>Does astrology add anything on who scores?</h2>
+<p class="small">Live so far, top picks by how many engines agreed with the pick:</p>
+<div class="scroll"><table class="data">
+<thead><tr><th>Astrology agrees</th><th class="num">Settled picks</th><th class="num">Hit rate</th><th class="num">Expected</th></tr></thead>
+<tbody>{% for k in (0, 1, 2, 3) %}{% set s = by_agree[k] %}
+<tr><td>{{ k }}/3</td><td class="num">{{ s.n }}</td><td class="num">{{ fmt_pct(s.hit_rate) if s.n else "–" }}</td><td class="num">{{ fmt_pct(s.expected) if s.n else "–" }}</td></tr>{% endfor %}</tbody></table></div>
+{% if ts and ts.engines %}
+<p class="small">Historical backtest ({{ "{:,}".format(ts.n_test) }} matches, {{ ts.test_from }}–{{ ts.seasons[-1] }}, each season predicted by a
+calibration fitted only on earlier seasons). Every engine makes two calls per match, one per team ("scores" or "fails to score").
+"Lift" is its hit rate minus what the calibrated market said about the very same calls.</p>
+<div class="scroll"><table class="data">
+<thead><tr><th>Engine</th><th class="num">Calls</th><th class="num">Hit rate</th><th class="num">Market said</th><th class="num">Lift</th><th class="num">± 2 SE</th><th>Verdict</th><th>"Fails to score" calls</th></tr></thead>
+<tbody>
+{% for name, label, dot in (("rao", "Rao", "rao"), ("chokoisky", "Chokoisky", "cho")) %}{% set e = ts.engines[name] %}{% set b = e.blank_calls %}
+<tr><td><span class="dot {{ dot }}"></span>{{ label }}</td><td class="num">{{ "{:,}".format(e.n) }}</td>
+<td class="num">{{ fmt_pct(e.hit_rate) }}</td><td class="num">{{ fmt_pct(e.expected) }}</td><td class="num">{{ pp(e.lift) }}</td>
+<td class="num">{{ "%.1f"|format(200 * e.se) }} pts</td>
+<td>{% if e.z|abs < 2 %}<span class="badge">within noise</span>{% elif e.z > 0 %}<span class="badge ok">above market</span>{% else %}<span class="badge warn">below market</span>{% endif %}</td>
+<td class="small">{{ fmt_pct(e.blank_share) }} of calls; {{ pp(b.lift) }} (z {{ "%.1f"|format(b.z) }})</td></tr>{% endfor %}
+<tr><td><span class="dot fra"></span>Frawley</td><td colspan="7" class="small">Not backtested: {{ ts.engines.frawley.note }}. Shown live only.</td></tr>
+<tr class="tot"><td>Top-10/day rule</td><td class="num">{{ "{:,}".format(ts.top.n) }}</td><td class="num">{{ fmt_pct(ts.top.hit_rate) }}</td><td class="num">{{ fmt_pct(ts.top.expected) }}</td>
+<td class="num">{{ pp(ts.top.lift) }}</td><td class="num">{{ "%.1f"|format(200 * ts.top.se) }} pts</td><td><span class="badge ok">calibrated</span></td><td class="small">{{ fmt_pct(ts.top_home_share) }} of picks are home teams</td></tr>
+</tbody></table></div>
+<p class="small">Both engines' "fails to score" calls sit about 2 SE above the market. With four comparisons made here, one at that
+level is expected by chance about one time in six; treat it as a hypothesis for the live record to test, not an edge.
+Calibration check, predicted vs observed rate of scoring:
+{% for b in ts.reliability %}{{ b.band }}: {{ fmt_pct(b.predicted) }} vs {{ fmt_pct(b.observed) }}{{ "; " if not loop.last }}{% endfor %}.</p>
+{% endif %}
+{% endif %}
 
 {% if goals %}
 <p class="note">Engines' goals = each classical engine's predicted total:

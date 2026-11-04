@@ -51,6 +51,27 @@
   <p class="note">Historically, neither Rao's nor Chokoisky's over/under calls beat the market (<a href="/top?market=goals">backtest</a>).</p>
 </section>
 
+<section class="card">
+  <h2>Home or away goal</h2>
+  <div class="probbar" role="img" aria-label="{{ r.home }} scores {{ fmt_pct(r.ts_p_home) }}">
+    <span class="pf" style="width: {{ 100 * r.ts_p_home }}%">{{ r.home }} scores {{ fmt_pct(r.ts_p_home) }}</span>
+    <span class="pd" style="width: {{ 100 * (1 - r.ts_p_home) }}%"></span></div>
+  <div class="probbar" role="img" aria-label="{{ r.away }} scores {{ fmt_pct(r.ts_p_away) }}">
+    <span class="pg" style="width: {{ 100 * r.ts_p_away }}%">{{ r.away }} scores {{ fmt_pct(r.ts_p_away) }}</span>
+    <span class="pd" style="width: {{ 100 * (1 - r.ts_p_away) }}%"></span></div>
+  <p class="small">Chance each team scores at least once, from the match odds (calibrated). Likelier:
+  <strong>{{ r.ts_team }} to score</strong> ({{ "home" if r.ts_pick == "home" else "away" }}) · astrology agrees {{ r.ts_agree }}/3
+  {% if r.ts_hit is not none %}· {{ "✓ scored" if r.ts_hit else "✗ did not score" }}{% endif %}</p>
+  <table class="data">
+    <thead><tr><th>Engine</th><th class="num">Predicted score (home first)</th><th>{{ r.home }} scores?</th><th>{{ r.away }} scores?</th></tr></thead>
+    <tbody>{% for k, label, dot in [("rao","Rao","rao"),("chokoisky","Chokoisky","cho"),("frawley","Frawley","fra")] %}{% set e = r.ts_engine_scores[k] %}
+    <tr><td><span class="dot {{ dot }}"></span>{{ label }}</td><td class="num">{{ "%d–%d"|format(e[0], e[1]) if e else "–" }}</td>
+      {% for j, g in ((0, r.result.goals_home if r.result else none), (1, r.result.goals_away if r.result else none)) %}
+      <td>{% if e %}{{ "yes" if e[j] > 0 else "no" }}{% if g is not none %} {{ "✓" if (e[j] > 0) == (g > 0) else "✗" }}{% endif %}{% endif %}</td>{% endfor %}</tr>{% endfor %}</tbody>
+  </table>
+  <p class="note">Historically, neither engine's calls on who scores beat the market (<a href="/top?market=score">backtest</a>).</p>
+</section>
+
 <h2>Full analysis</h2>
 <p class="note">Recomputed from the same inputs as the sealed forecast (kickoff, venue, odds). Founding charts are not used in live forecasts.</p>
 {% include "_analysis.html" %}

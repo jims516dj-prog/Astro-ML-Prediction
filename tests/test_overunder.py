@@ -59,3 +59,27 @@ def test_backtest_runs_on_synthetic_history():
     r = overunder.backtest(m, e)
     assert r["calibration"]["b"] > 1 and r["top"]["n"] > 0
     assert abs(r["engines"]["rao"]["lift"]) < 4 * r["engines"]["rao"]["se"] + 0.02
+
+
+def test_team_to_score_probabilities_and_view():
+    from astrofoot import teamgoals
+    cal = {"calibration": {"a": 0.21, "b": 1.015, "c": -0.011}}
+    ph, pa = teamgoals.score_probs(0.70, 0.12, cal)          # strong home favourite
+    assert 0.85 < ph < 0.97 and pa < 0.65 and ph > pa
+    ph2, pa2 = teamgoals.score_probs(0.15, 0.65, cal)        # strong away favourite
+    assert pa2 > ph2
+    r = rec(0.6, [(2, 1), (1, 0), (2, 0)])
+    r.update({"home": "Home FC", "away": "Away FC", "fav_is_home": False,
+              "predictions": {**r["predictions"], "market": {"fav": 0.65, "draw": 0.2, "dog": 0.15}}})
+    v = teamgoals.view(r, {"goals_home": 0, "goals_away": 2}, cal)
+    assert v["ts_pick"] == "away" and v["ts_team"] == "Away FC" and v["ts_hit"] is True
+    assert v["ts_engine_scores"]["rao"] == (1, 2) and v["ts_agree"] == 3
+
+
+def test_engine_scoring_rules():
+    from astrofoot import teamgoals
+    win, net = np.array([1, 1, 0, -1]), np.array([2, 6, 0, -9])
+    fs, ds = teamgoals.rao_scores(win, net)          # 2–1, 2–0, 1–1, 0–3 (fav first)
+    assert list(fs) == [True, True, True, False] and list(ds) == [True, False, True, True]
+    fs, ds = teamgoals.chok_scores(np.array([1, 0, -1]), np.array([9, 0, -9]))
+    assert list(fs) == [True, True, False] and list(ds) == [False, True, True]
