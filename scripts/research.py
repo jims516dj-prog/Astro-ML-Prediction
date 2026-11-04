@@ -22,6 +22,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from astrofoot import classical_batch, codex, dataset, lattice, models, overunder, pipeline, teamgoals  # noqa: E402
+from astrofoot import doublechance  # noqa: E402
 from astrofoot import sky as skymod  # noqa: E402
 from astrofoot.config import LATTICE_VERSION, LIVING, MODELS, WORK  # noqa: E402
 
@@ -255,3 +256,7 @@ if __name__ == "__main__":
         teamgoals.write(tg)
         log(f"team to score: top picks hit {tg['top']['hit_rate']:.3f} vs {tg['top']['expected']:.3f} expected; "
             f"Rao lift {tg['engines']['rao']['lift']:+.4f}, Chokoisky lift {tg['engines']['chokoisky']['lift']:+.4f}")
+        dc = doublechance.backtest(pd.read_parquet(WORK / "matches.parquet"), pd.read_parquet(WORK / "engines_real.parquet"))
+        doublechance.write(dc)
+        log(f"double chance: picks hit {dc['all']['hit_rate']:.3f} vs {dc['all']['expected']:.3f} expected; "
+            f"over 1.5 picks hit {tg['over15']['all']['hit_rate']:.3f} vs {tg['over15']['all']['expected']:.3f}")

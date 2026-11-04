@@ -85,7 +85,7 @@ football-data.co.uk later confirms or corrects them.</p>
 from its own probabilities (± {{ fmt_pct(subset.se) }}). A gap well beyond ± over hundreds of matches would mean the filter adds
 something; within it, it doesn't.</p>{% endif %}
 <div class="scroll"><table class="data small">
-<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Favourite</th><th class="num">Market F/D/U</th><th class="num">Engine 4 F/D/U</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num" title="classical engines agreeing with the outlook's call">Agree</th><th title="Over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th><th>Seal</th></tr></thead>
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Favourite</th><th class="num">Market F/D/U</th><th class="num">Engine 4 F/D/U</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num" title="classical engines agreeing with the outlook's call">Agree</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th><th>Seal</th></tr></thead>
 <tbody>{% for r in rows %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
 <td><a href="/live/match/{{ r.match_key }}">{{ r.home }} v {{ r.away }}</a></td><td>{{ r.favourite }}</td>

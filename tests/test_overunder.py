@@ -107,3 +107,26 @@ def test_goal_markets_from_analysis_respects_home_side():
     assert gm["engine_scores"]["rao"] == (0, 2)                   # home (Beta) first
     assert gm["ts"]["pick"] == "away" and gm["ts"]["team"] == "Alpha" and gm["ts"]["hit"] is True
     assert gm["bt"]["hit"] == (gm["bt"]["pick"] == "no")
+
+
+def test_double_chance_and_over15():
+    from astrofoot import doublechance, goalmarkets, teamgoals
+    pr = doublechance.probs(0.5, 0.3, 0.2)
+    assert abs(pr["1X"] - 0.8) < 1e-12 and abs(pr["12"] - 0.7) < 1e-12
+    gm = goalmarkets.markets(0.5, 0.2, None, {"rao": (2, 1), "chokoisky": (1, 1), "frawley": (0, 2)}, (1, 1), p_draw=0.3)
+    assert gm["dc"]["pick"] == "1X" and gm["dc"]["hit"] is True and gm["dc"]["agree"] == 2      # home and draw inside
+    assert gm["o15"]["pick"] == "over" and gm["o15"]["hit"] is True and gm["o15"]["agree"] == 3
+    assert teamgoals.over15_prob(0.5, 0.2) > teamgoals.over15_prob(0.3, 0.3) - 0.2
+    r = rec(0.6, [(2, 1), (1, 1), (0, 2)])
+    r["predictions"]["rao"]["winner"], r["predictions"]["chokoisky"]["winner"] = "fav", "draw"
+    r["predictions"]["frawley"]["winner"] = "dog"
+    v = doublechance.view(r, {"goals_home": 0, "goals_away": 1})
+    assert v["dc_pick"] == "1X" and v["dc_calls"] == {"rao": "home", "chokoisky": "draw", "frawley": "away"}
+    assert v["dc_agree"] == 2 and v["dc_hit"] is False
+
+
+def test_top_picks_has_no_daily_cap_and_min_probability():
+    recs = [{**rec(0.6, [(2, 1)] * 3, key=f"k{i}"), "pre_kickoff": True, "pick_p": 0.4 + i / 100,
+             "classical_agree": 0, "pick_hit": None} for i in range(25)]
+    assert len(live.top_picks(recs)["2026-11-04"]) == 25
+    assert len(live.top_picks(recs, min_p=0.6)["2026-11-04"]) == 5

@@ -7,7 +7,7 @@ the historical corpus. The classical engines' predicted scores are shown alongsi
 """
 from __future__ import annotations
 
-from . import overunder, teamgoals
+from . import doublechance, overunder, teamgoals
 
 ENGINES = ("rao", "chokoisky", "frawley")
 
@@ -25,7 +25,8 @@ def p_over_from_odds(over: float | None, under: float | None) -> float | None:
 
 def markets(p_home: float, p_away: float, p_over25: float | None = None,
             engine_scores: dict | None = None, result: tuple[int, int] | None = None,
-            home: str = "Home", away: str = "Away", ou_cal: dict | None = None, ts_cal: dict | None = None) -> dict:
+            home: str = "Home", away: str = "Away", ou_cal: dict | None = None, ts_cal: dict | None = None,
+            p_draw: float | None = None, engine_calls: dict | None = None) -> dict:
     """p_home/p_away: de-vigged 1X2 win probabilities. p_over25: de-vigged over-2.5 price, if any.
     engine_scores: {engine: (home goals, away goals)} predicted by each classical engine.
     result: final score (home, away), if known."""
@@ -54,7 +55,21 @@ def markets(p_home: float, p_away: float, p_over25: float | None = None,
     bt = {"p_yes": pb, "pick": "yes" if yes else "no", "pick_p": max(pb, 1 - pb),
           "agree": sum(1 for s in known if (min(s) > 0) == yes),
           "hit": None if gh is None else ((gh > 0 and ga > 0) == yes)}
-    return {"ou": ou, "ts": ts, "bt": bt, "engine_scores": scores, "n_engines": len(known)}
+    p15 = teamgoals.over15_prob(p_home, p_away, ts_cal)
+    o15 = p15 > 0.5
+    o = {"p_over": p15, "pick": "over" if o15 else "under", "pick_p": max(p15, 1 - p15),
+         "agree": sum(1 for s in known if (sum(s) > 1.5) == o15),
+         "hit": None if gh is None else ((gh + ga > 1.5) == o15)}
+
+    pd_ = p_draw if p_draw is not None else max(0.0, 1 - p_home - p_away)
+    pr = doublechance.probs(p_home, pd_, p_away)
+    pick = max(doublechance.OPTIONS, key=pr.get)
+    calls = engine_calls or {e: (None if s is None else doublechance.outcome(*s)) for e, s in scores.items()}
+    cover = doublechance.COVERS[pick]
+    dc = {"probs": pr, "pick": pick, "label": doublechance.LABEL[pick], "pick_p": pr[pick],
+          "agree": sum(1 for c in calls.values() if c in cover), "n": sum(1 for c in calls.values() if c),
+          "hit": None if gh is None else (doublechance.outcome(gh, ga) in cover)}
+    return {"ou": ou, "ts": ts, "bt": bt, "o15": o, "dc": dc, "engine_scores": scores, "n_engines": len(known)}
 
 
 def from_analysis(a: dict, result: tuple[int, int] | None = None) -> dict:
@@ -76,4 +91,13 @@ def from_analysis(a: dict, result: tuple[int, int] | None = None) -> dict:
         scores[e] = (g_b, g_a) if b_home else (g_a, g_b)
     if result is not None and b_home:
         result = (result[1], result[0])          # result is given as (Team A, Team B)
-    return markets(p_home, p_away, inp.get("p_over25"), scores, result, home or "Home", away or "Away")
+    side = {"fav": "a", "dog": "b"} if a["fav_is_a"] else {"fav": "b", "dog": "a"}
+    calls = {}
+    for e in ENGINES:
+        w = (a["verdicts"].get(e) or {}).get("winner")
+        if w == "draw":
+            calls[e] = "draw"
+        elif w in side:
+            calls[e] = "home" if (side[w] == "b") == b_home else "away"
+    return markets(p_home, p_away, inp.get("p_over25"), scores, result, home or "Home", away or "Away",
+                   p_draw=mk.get("p_draw"), engine_calls=calls)

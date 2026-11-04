@@ -11,7 +11,7 @@
 <form class="row" method="get"><select name="status" onchange="this.form.submit()"><option value="">All statuses</option>
 {% for s in ["pending","completed","abandoned","walkover"] %}<option {{ "selected" if s==status }}>{{ s }}</option>{% endfor %}</select></form>
 <div class="scroll"><table class="data">
-<thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Score</th><th>Status</th><th>Favourite</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th>Engine 4 (fav/D/dog)</th><th title="Over/under 2.5 · home or away goal · both teams to score">Goals</th><th></th></tr></thead>
+<thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Score</th><th>Status</th><th>Favourite</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th>Engine 4 (fav/D/dog)</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th></th></tr></thead>
 <tbody>
 {% for u in user %}
 <tr><td class="mono">{{ u.kickoff_utc[:16].replace("T"," ") }}</td><td>{{ u.team_a }} v {{ u.team_b }}</td>
@@ -28,7 +28,7 @@
 <p class="note">Matches from the live track record whose results have come in (use <strong>Get latest results</strong> on the
 <a href="/live">Live record</a> page). Newest 50 shown; <a href="/live?status=settled">see all with filters</a>.</p>
 <div class="scroll"><table class="data small">
-<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num">Score</th><th>Favourite</th><th>Result</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Market F/D/U</th><th title="Over/under 2.5 · home or away goal · both teams to score">Goals</th></tr></thead>
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num">Score</th><th>Favourite</th><th>Result</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Market F/D/U</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th></tr></thead>
 <tbody>{% for r in live_done %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
 <td><a href="/live/match/{{ r.match_key }}">{{ r.home }} v {{ r.away }}</a></td>
@@ -40,7 +40,7 @@
 </tbody></table></div>
 
 <h2>Research corpus <span class="small">({{ "{:,}".format(n) }} matches)</span></h2>
-<p class="note">Goals column: over/under 2.5, home or away goal and both teams to score for every match, from its odds
+<p class="note">Goals column: double chance, over/under 1.5, over/under 2.5, home or away goal and both teams to score for every match, from its odds
 (recalibrated on past seasons), with ✓/✗ against the final score. Hover a badge for the full probabilities.</p>
 <form class="row" method="get">
   <select name="league"><option value="">All leagues</option>{% for l in leagues %}<option value="{{ l }}" {{ "selected" if l==league }}>{{ league_name(l) }}</option>{% endfor %}</select>
@@ -48,7 +48,7 @@
   <input name="team" value="{{ team }}" placeholder="team contains…"><button class="btn ghost">Filter</button>
 </form>
 <div class="scroll"><table class="data small">
-<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Home</th><th>Away</th><th class="num">Score</th><th class="num">Odds H/D/A</th><th>Fav</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th title="Over/under 2.5 · home or away goal · both teams to score (from the market, recalibrated)">Goals</th><th>Location</th></tr></thead>
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Home</th><th>Away</th><th class="num">Score</th><th class="num">Odds H/D/A</th><th>Fav</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score (from the market, recalibrated)">Goals</th><th>Location</th></tr></thead>
 <tbody>
 {% for r in rows %}
 <tr><td class="mono">{{ r.kickoff_utc.strftime("%Y-%m-%d %H:%M") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td><td>{{ r.home }}</td><td>{{ r.away }}</td>

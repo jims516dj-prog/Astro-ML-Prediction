@@ -26,7 +26,7 @@ import pandas as pd
 
 from . import geo, models, service
 from .config import ROOT, TIMEZONE_OF_SOURCE_TIMES
-from . import overunder, teamgoals
+from . import doublechance, overunder, teamgoals
 from .dataset import LEAGUE_NAMES, devig
 
 LEDGER = Path(os.environ.get("ASTRO_LEDGER", ROOT / "ledger"))
@@ -426,29 +426,34 @@ def records(ledger: Path = LEDGER) -> list[dict]:
                     "status": "void" if void else "settled" if res else "pending",
                     "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
                     "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal),
-                    **teamgoals.view(r, res, ts_cal)})
+                    **teamgoals.view(r, res, ts_cal),
+                    **doublechance.view(r, res)})
     out.sort(key=lambda r: r["kickoff_utc"], reverse=True)
     return out
 
 
 # market -> (hit, probability, astrology-agreement) fields of records()
 PICK_KEYS = {"result": ("pick_hit", "pick_p", "classical_agree"), "goals": ("ou_hit", "ou_pick_p", "ou_agree"),
-             "score": ("ts_hit", "ts_pick_p", "ts_agree"), "btts": ("bt_hit", "bt_pick_p", "bt_agree")}
+             "score": ("ts_hit", "ts_pick_p", "ts_agree"), "btts": ("bt_hit", "bt_pick_p", "bt_agree"),
+             "dc": ("dc_hit", "dc_pick_p", "dc_agree"), "o15": ("o15_hit", "o15_pick_p", "o15_agree")}
 
 
-def top_picks(recs: list[dict], per_day: int = 10, market: str = "result") -> dict[str, list[dict]]:
-    """Per kickoff date (UTC): the matches whose predicted outcome is most probable, at most `per_day`.
+def top_picks(recs: list[dict], per_day: int | None = None, market: str = "result",
+              min_p: float = 0.0) -> dict[str, list[dict]]:
+    """Per kickoff date (UTC): every forecast match ranked by how probable its predicted outcome is
+    (optionally only the first `per_day`, or only picks at least `min_p` likely).
 
     market "result": the predicted 1X2 result, ranked by the synthesis probability (which equals the
     market while Engine 4's gate is closed). market "goals": over/under 2.5, ranked by the calibrated
     market probability (overunder.py); forecasts without an over/under price are left out. market
-    "score": the team likelier to score at least once, home or away (teamgoals.py).
+    "score": the team likelier to score at least once, home or away (teamgoals.py); "btts": both teams to
+    score; "o15": over/under 1.5 (teamgoals.py); "dc": double chance (doublechance.py).
     Only sealed, pre-kickoff probabilities are used, so the picks can be scored honestly afterwards.
     """
     p_key, agree_key = PICK_KEYS[market][1], PICK_KEYS[market][2]
     days: dict[str, list[dict]] = {}
     for r in recs:
-        if r["pre_kickoff"] and r.get(p_key) is not None:
+        if r["pre_kickoff"] and r.get(p_key) is not None and r[p_key] >= min_p:
             days.setdefault(r["kickoff_utc"][:10], []).append(r)
     return {d: sorted(rs, key=lambda r: (-r[p_key], -(r[agree_key] or 0)))[:per_day]
             for d, rs in sorted(days.items(), reverse=True)}

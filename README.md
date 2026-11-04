@@ -190,8 +190,7 @@ How it works:
 
 ## Top picks: over/under 2.5 goals
 
-The Top picks page has two tabs: **Match result** and **Over/under 2.5 goals**. The goals tab ranks up to 10
-matches a day by the probability of the likelier side of 2.5 goals, and shows each classical engine's
+The Over/under 2.5 tab ranks the day's matches by the probability of the likelier side of 2.5 goals, and shows each classical engine's
 predicted total, how many agree, and the result.
 
 - **Probability:** the market's over/under price, recalibrated (`p' = σ(a + b·logit p)`, b ≈ 1.12) because
@@ -239,6 +238,23 @@ beats always saying the average rate (log loss 0.686 vs 0.692). Rao and Chokoisk
 - **Live record**: a *Goals* column on every forecast; each forecast's page has the goals card.
 
 All of them use one function (`astrofoot/goalmarkets.py`), so a game shows the same numbers everywhere.
+
+## Top picks: every game, six markets
+
+Top picks now ranks **every** forecast match of the day (no 10-game cap) in six tabs: Match result, **Double
+chance**, **Over/under 1.5**, Over/under 2.5, Home or away goal, Both teams to score. Filters: day, astrology
+agreement, and **minimum probability** (60%+ … 90%+). Under each table, "How often picks at each probability come
+true" compares live and backtest hit rates per probability band, so you can pick a threshold that holds up.
+
+- **Double chance** (1X, X2, 12): the sum of two de-vigged 1X2 probabilities. Already calibrated without any
+  correction: picks won 77.6% of the time vs 77.5% claimed over 107,462 matches. All three engines are backtested
+  (their predicted winners are stored): agreeing with them adds nothing (Rao −0.0, Chokoisky +0.0, Frawley −0.0
+  points).
+- **Over/under 1.5**: from the total Poisson scoring rate, recalibrated on the last three seasons; 74.3% vs 74.5%
+  expected. About 74% of matches have 2+ goals, so picks are almost always "over". Rao always predicts 2+
+  goals; neither engine adds anything.
+- The backtest tiles now score **all** picks (the rule the page applies), not just the top 10 a day.
+- Every Dataset, Live and Analyze view shows all five goal-and-chance predictions as badges/cards.
 
 ## The living Engine 4
 

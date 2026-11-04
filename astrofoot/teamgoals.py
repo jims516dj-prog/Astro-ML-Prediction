@@ -26,6 +26,7 @@ CAL_FILE = MODELS / "teamgoals.json"
 ENGINES = ("rao", "chokoisky", "frawley")
 DEFAULT_CAL = {"a": 0.21, "b": 1.015, "c": -0.011}
 DEFAULT_BTTS = {"a": 0.33, "b": 0.885}
+DEFAULT_O15 = {"a": 0.28, "b": 1.0}
 BTTS_WINDOW = 3
 
 
@@ -80,6 +81,15 @@ def btts_prob(p_home: float, p_away: float, cal: dict | None = None) -> float:
     return float(1 / (1 + np.exp(-(c["a"] + c["b"] * _logit(raw))))[0])
 
 
+def over15_prob(p_home: float, p_away: float, cal: dict | None = None) -> float:
+    """Calibrated P(2+ goals), from the total Poisson rate λh + λa (recalibrated on its own)."""
+    c = ((cal or load()).get("over15") or {}).get("calibration", DEFAULT_O15)
+    lh, la = rates(p_home, p_away)
+    t = lh + la
+    raw = 1 - np.exp(-t) * (1 + t)
+    return float(1 / (1 + np.exp(-(c["a"] + c["b"] * _logit(raw))))[0])
+
+
 def _engine_goals(pred: dict | None, fav_is_home: bool) -> tuple[int, int] | None:
     if not pred or pred.get("goals_fav") is None or pred.get("goals_dog") is None:
         return None
@@ -99,6 +109,12 @@ def view(rec: dict, res: dict | None, cal: dict | None = None) -> dict:
     out = {"ts_p_home": ph, "ts_p_away": pa, "ts_pick": side, "ts_pick_p": max(ph, pa),
            "ts_team": rec["home"] if side == "home" else rec["away"], "ts_engine_scores": scores,
            "ts_agree": sum(1 for s in scores.values() if s is not None and s[j] > 0), "ts_hit": None}
+    p15 = over15_prob(p_home, p_away, cal)
+    o15 = p15 > 0.5
+    out.update({"o15_p_over": p15, "o15_pick": "over" if o15 else "under", "o15_pick_p": max(p15, 1 - p15),
+                "o15_agree": sum(1 for s in scores.values() if s is not None and (sum(s) > 1.5) == o15), "o15_hit": None})
+    if res and res.get("goals_home") is not None:
+        out["o15_hit"] = (res["goals_home"] + res["goals_away"] > 1.5) == o15
     pb = btts_prob(p_home, p_away, cal)
     yes = pb > 0.5
     out.update({"bt_p_yes": pb, "bt_pick": "yes" if yes else "no", "bt_pick_p": max(pb, 1 - pb),
@@ -170,6 +186,7 @@ def backtest(matches: pd.DataFrame, engines: pd.DataFrame, per_day: int = 10) ->
         "log_loss": {"raw": ll(t.p.clip(.01, .99).to_numpy()), "calibrated": ll(t.pc.to_numpy())},
         "reliability": reliability,
         "top": _rate(top.hit.to_numpy(), top.pp.to_numpy()),
+        "all": _rate(m.hit.to_numpy(), m.pp.to_numpy()), "bands": bands(m.hit.to_numpy(), m.pp.to_numpy()),
         "top_home_share": float(top.pick_home.mean()),
         "top_by_agree": {str(k): _rate(g.hit.to_numpy(), g.pp.to_numpy()) for k, g in top.groupby("agree")},
         "engines": {},
@@ -186,7 +203,54 @@ def backtest(matches: pd.DataFrame, engines: pd.DataFrame, per_day: int = 10) ->
                                 "blank_calls": _rate(hit[fail], exp[fail])}
     out["engines"]["frawley"] = {"n": 0, "note": "its goal count depends on testimony counts the history does not store"}
     out["btts"] = _btts_backtest(d, lh, la, calls, seasons, per_day)
+    out["over15"] = _o15_backtest(d, lh, la, seasons)
     return out
+
+
+def bands(hit: np.ndarray, p: np.ndarray, edges=(0.5, 0.6, 0.7, 0.8, 0.9, 1.0)) -> list[dict]:
+    """Hit rate vs claimed probability of the pick, by probability band (for the minimum-probability filter)."""
+    out = []
+    for lo, hi in zip(edges[:-1], edges[1:]):
+        sel = (p > lo) & (p <= hi)
+        if sel.sum():
+            out.append({"band": f"{int(100 * lo)}–{int(100 * hi)}%", "lo": lo, **_rate(hit[sel], p[sel])})
+    return out
+
+
+def _o15_backtest(d, lh, la, seasons) -> dict:
+    """Over/under 1.5: walk-forward recalibration of the Poisson total, picks and engine calls."""
+    from sklearn.linear_model import LogisticRegression
+    t = lh + la
+    raw = 1 - np.exp(-t) * (1 + t)
+    y = ((d.goals_home + d.goals_away) > 1.5).to_numpy(float)
+    X = _logit(raw)[:, None]
+    pc = np.full(len(d), np.nan)
+    for i, s in enumerate(seasons[3:], start=3):           # rolling window, like BTTS: scoring rates drift
+        tr = ((d.season < s) & (d.season >= seasons[i - BTTS_WINDOW])).to_numpy()
+        te = (d.season == s).to_numpy()
+        pc[te] = LogisticRegression(C=1e6, max_iter=500).fit(X[tr], y[tr]).predict_proba(X[te])[:, 1]
+    recent = (d.season >= seasons[-BTTS_WINDOW]).to_numpy()
+    final = LogisticRegression(C=1e6, max_iter=500).fit(X[recent], y[recent])
+    ok = ~np.isnan(pc)
+    p, yy = pc[ok], y[ok]
+    over = p > 0.5
+    pp = np.maximum(p, 1 - p)
+    hit = np.where(over, yy, 1 - yy)
+    eng = {}
+    for name, w, n in (("rao", "rao_win", "rao_net"), ("chokoisky", "chok_win", "chok_net")):
+        win, net = d[w].to_numpy()[ok], d[n].to_numpy()[ok]
+        if name == "rao":
+            m_ = np.abs(net)
+            tot = np.where(win == 0, 2, np.where(m_ <= 3, 3, np.where(m_ < 8, 2, 3)))
+        else:
+            tot = np.where(win == 0, 2, np.maximum(np.minimum(np.round(np.abs(net) / 3), 5), 1))
+        call = tot > 1.5
+        eh, ee = np.where(call, yy, 1 - yy), np.where(call, p, 1 - p)
+        eng[name] = {**_rate(eh, ee), "over_share": float(call.mean())}
+    return {"calibration": {"a": float(final.intercept_[0]), "b": float(final.coef_[0, 0])},
+            "rate": float(y.mean()), "n_test": int(ok.sum()), "under_share": float((~over).mean()),
+            "all": _rate(hit, pp), "bands": bands(hit, pp), "under_picks": _rate(hit[~over], pp[~over]),
+            "engines": eng}
 
 
 def _btts_backtest(d, lh, la, calls, seasons, per_day) -> dict:
@@ -228,7 +292,8 @@ def _btts_backtest(d, lh, la, calls, seasons, per_day) -> dict:
         "window_seasons": BTTS_WINDOW, "rate": float(y.mean()), "recent_rate": float(y[recent].mean()), "n_test": int(len(t)),
         "log_loss": {"raw": ll(t.raw.clip(.01, .99).to_numpy()), "calibrated": ll(t.p.to_numpy()),
                      "constant": ll(np.full(len(t), y.mean()))},
-        "all_picks": _rate(t.hit.to_numpy(), t.pp.to_numpy()),
+        "all_picks": _rate(t.hit.to_numpy(), t.pp.to_numpy()), "all": _rate(t.hit.to_numpy(), t.pp.to_numpy()),
+        "bands": bands(t.hit.to_numpy(), t.pp.to_numpy()),
         "top": _rate(top.hit.to_numpy(), top.pp.to_numpy()), "top_yes_share": float(top.yes.mean()),
         "top_by_agree": {str(k): _rate(g.hit.to_numpy(), g.pp.to_numpy()) for k, g in top.groupby("agree")},
         "reliability": [{"band": f"{int(100 * b.left)}–{int(100 * b.right)}%", "n": int(len(g)),

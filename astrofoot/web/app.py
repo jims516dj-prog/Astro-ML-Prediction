@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, foundings, goalmarkets, live, overunder, service, sync, teamgoals, venues
+from .. import db, doublechance, foundings, goalmarkets, live, overunder, service, sync, teamgoals, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
@@ -42,7 +42,8 @@ def _gm_live(r: dict) -> dict:
     res = r.get("result")
     result = (res["goals_home"], res["goals_away"]) if res and res.get("goals_home") is not None else None
     scores = r.get("ts_engine_scores") or {}
-    return goalmarkets.markets(p_home, p_away, r.get("p_over25"), scores, result, r["home"], r["away"])
+    return goalmarkets.markets(p_home, p_away, r.get("p_over25"), scores, result, r["home"], r["away"],
+                               p_draw=mk["draw"], engine_calls=r.get("dc_calls"))
 
 
 def _gm_hist(r: dict) -> dict | None:
@@ -54,7 +55,8 @@ def _gm_hist(r: dict) -> dict | None:
         po = None if po is None or po != po else float(po)
         gh, ga = r.get("goals_home"), r.get("goals_away")
         result = (int(gh), int(ga)) if gh == gh and ga == ga and gh is not None else None
-        return goalmarkets.markets(float(r["p_home"]), float(r["p_away"]), po, None, result, r["home"], r["away"])
+        return goalmarkets.markets(float(r["p_home"]), float(r["p_away"]), po, None, result, r["home"], r["away"],
+                                   p_draw=float(r["p_draw"]) if r.get("p_draw") == r.get("p_draw") else None)
     except (KeyError, TypeError, ValueError):
         return None
 
@@ -558,26 +560,43 @@ def live_sync_status():
     return JSONResponse(SYNC)
 
 
+TOP_MARKETS = [("result", "Match result"), ("dc", "Double chance"), ("o15", "Over/under 1.5"),
+               ("goals", "Over/under 2.5"), ("score", "Home or away goal"), ("btts", "Both teams to score")]
+
+
 @app.get("/top", response_class=HTMLResponse)
-def top_page(request: Request, day: str = "", market: str = "result", agree: str = ""):
+def top_page(request: Request, day: str = "", market: str = "result", agree: str = "", min_p: str = ""):
     market = market if market in live.PICK_KEYS else "result"
+    try:
+        mp = min(max(float(min_p), 0.0), 0.99) if min_p else 0.0
+    except ValueError:
+        mp = 0.0
     recs = live.records()
-    tp = live.top_picks(recs, per_day=10, market=market)
+    tp = live.top_picks(recs, market=market)
     days = list(tp)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     if not day or day not in tp:
         day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
-    agree_key = live.PICK_KEYS[market][2]
+    hit_key, p_key, agree_key = live.PICK_KEYS[market]
     min_agree = int(agree) if agree in ("1", "2", "3") else 0
-    keep = lambda ps: [p for p in ps if (p.get(agree_key) or 0) >= min_agree]      # noqa: E731
+    keep = lambda ps: [p for p in ps if (p.get(agree_key) or 0) >= min_agree and p[p_key] >= mp]   # noqa: E731
     picks = keep(tp.get(day, []))
     all_picks = keep([p for ps in tp.values() for p in ps])
     by_agree = {k: live.score_picks([p for p in all_picks if (p.get(agree_key) or 0) == k], market) for k in range(4)}
+    edges = (0.5, 0.6, 0.7, 0.8, 0.9, 1.0001)
+    live_bands = [{"band": f"{int(100 * lo)}–{min(100, int(100 * hi))}%",
+                   **live.score_picks([p for p in all_picks if lo < p[p_key] <= hi], market)}
+                  for lo, hi in zip(edges[:-1], edges[1:])]
+    tg = teamgoals.load()
+    research = {"goals": overunder.load(), "score": tg, "btts": tg.get("btts"), "o15": tg.get("over15"),
+                "dc": doublechance.load()}.get(market)
     return T.TemplateResponse(request, "top.html", {
-        "day": day, "days": days, "picks": picks, "market": market, "agree": agree,
+        "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p,
+        "markets": TOP_MARKETS, "n_day_all": len(tp.get(day, [])),
         "score_all": live.score_picks(all_picks, market), "score_day": live.score_picks(picks, market),
-        "by_agree": by_agree, "ou": overunder.load() if market == "goals" else None,
-        "ts": teamgoals.load() if market in ("score", "btts") else None, "page": "top"})
+        "by_agree": by_agree, "live_bands": live_bands, "research": research,
+        "ou": overunder.load() if market == "goals" else None,
+        "ts": tg if market in ("score", "btts") else None, "page": "top"})
 
 
 @app.get("/api/teams")

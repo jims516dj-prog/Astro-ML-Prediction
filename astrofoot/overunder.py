@@ -91,6 +91,11 @@ def _rate(hit: np.ndarray, exp: np.ndarray) -> dict:
             "z": lift / se if se else 0.0}
 
 
+def _bands(hit, p):
+    from .teamgoals import bands
+    return bands(hit, p)
+
+
 def backtest(matches: pd.DataFrame, engines: pd.DataFrame, per_day: int = 10) -> dict:
     """Walk-forward calibration + backtest of the over/under picks and the classical calls."""
     from sklearn.linear_model import LogisticRegression
@@ -129,6 +134,7 @@ def backtest(matches: pd.DataFrame, engines: pd.DataFrame, per_day: int = 10) ->
         "top_raw": _rate(np.where(raw_top.p_over25 > 0.5, raw_top.y, 1 - raw_top.y),
                          np.maximum(raw_top.p_over25, 1 - raw_top.p_over25).to_numpy()),
         "top": _rate(top.hit.to_numpy(), top.pp.to_numpy()),
+        "all": _rate(t.hit.to_numpy(), t.pp.to_numpy()), "bands": _bands(t.hit.to_numpy(), t.pp.to_numpy()),
         "top_by_agree": {str(a): _rate(g.hit.to_numpy(), g.pp.to_numpy()) for a, g in top.groupby("agree")},
         "engines": {},
     }
