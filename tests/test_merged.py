@@ -74,3 +74,25 @@ def test_summary_picks_most_likely_outcome_per_game():
     assert r["sum_pick_p"] == max(o["p"] for o in opts if o["market"] in ("result", "btts"))
     picks = live.top_picks([r], market="summary")
     assert picks["2026-11-09"][0]["match_key"] == "S1"
+
+
+def test_commit_never_seals_the_same_game_twice_under_another_spelling(tmp_path, monkeypatch):
+    from datetime import datetime, timezone
+    now = datetime(2026, 11, 3, 7, 0, tzinfo=timezone.utc)
+    monkeypatch.setattr(live, "predict_fixture", lambda fx, now: {**fx, "committed_at": now.isoformat()})
+    fx = lambda key, away, src: {"match_key": key, "division": "E1", "home": "Preston", "away": away,
+                                 "kickoff_utc": "2026-11-03T19:45:00+00:00", "odds_source": src}
+    assert live.commit([fx("a", "Sheffield United", "odds api")], now, ledger=tmp_path)["committed"] == 1
+    r = live.commit([fx("b", "Sheffield Utd", "primary")], now, ledger=tmp_path)
+    assert r["committed"] == 0 and "already forecast" in r["skipped"][0]
+
+
+def test_withdrawn_forecasts_hidden_and_never_top_picks():
+    a = live_rec("A", "Leverkusen", "Marseille", "2026-11-05T20:00:00+00:00")
+    b = live.join({**{k: v for k, v in a.items()}, "match_key": "B", "home": "Bayer Leverkusen"},
+                  {"void": True, "reason": "withdrawn before kickoff: duplicate"})
+    assert b["withdrawn"] and b["status"] == "void"
+    out = merged.all_records([row("m1", "Leverkusen", "Marseille", ko="2026-11-05T20:00:00+00:00")], [b, a])
+    assert [r["match_key"] for r in out] == ["A"] and out[0]["also"] == ["/match/m1"]
+    assert len(merged.all_records([], [b, a], include_withdrawn=True)) == 2
+    assert [r["match_key"] for r in live.top_picks([a, b])["2026-11-05"]] == ["A"]

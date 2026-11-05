@@ -280,7 +280,8 @@ def delete_match(mid: str):
 def dataset_page(request: Request, league: str = "", season: str = "", team: str = "", page: int = 1,
                  status: str = "", origin: str = "", gpage: int = 1):
     # 1) every game we forecast: live record + games added by hand, each game once
-    games = _filter_live(_all_games(), status=status, origin=origin, league=league, team=team)
+    games = _filter_live(_all_games(include_withdrawn=status == "void"), status=status, origin=origin,
+                         league=league, team=team)
     per = 50
     gpages = max(1, math.ceil(len(games) / per))
     gpage = min(max(gpage, 1), gpages)
@@ -391,9 +392,9 @@ def _track_record(c):
     return out
 
 
-def _all_games() -> list[dict]:
+def _all_games(include_withdrawn: bool = False) -> list[dict]:
     """Live forecasts plus manual games (Analyze), each game once (merged.py)."""
-    return merged.all_records([dict(r) for r in db.list_matches(con())])
+    return merged.all_records([dict(r) for r in db.list_matches(con())], include_withdrawn=include_withdrawn)
 
 
 def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit="", agree="",
@@ -431,7 +432,7 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
 def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
               team: str = "", engine: str = "", hit: str = "", agree: str = "", page_no: int = 1, msg: str = "",
               syncing: int = 0, origin: str = ""):
-    recs = _all_games()
+    recs = _all_games(include_withdrawn=status == "void")   # withdrawn duplicates: only under "void"
     rep = live.report() if any(r["origin"] == "live" for r in recs) else None
     rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree, origin)
     subset = live.score_picks([r for r in rows if r["pre_kickoff"]])

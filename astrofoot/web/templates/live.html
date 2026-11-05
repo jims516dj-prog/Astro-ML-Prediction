@@ -100,7 +100,7 @@ something; within it, it doesn't.</p>{% endif %}
 {% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ W[p[k].winner] }}</td>{% endfor %}
 <td class="num">{{ r.classical_agree }}/3</td>
 <td>{{ gm_badges(r.gm) }}</td>
-<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ W[r.outcome] }}){% elif r.status == "void" %}<span title="not in the results file: postponed or abandoned">void</span>{% else %}pending{% endif %}</td>
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ W[r.outcome] }}){% elif r.status == "void" %}<span title="{{ r.void_reason or 'postponed or abandoned' }}">{{ "withdrawn" if r.withdrawn else "void" }}</span>{% else %}pending{% endif %}</td>
 <td class="mono" title="committed {{ r.committed_at }}{% if r.sha256 %} · sha256 {{ r.sha256 }}{% endif %}">{% if r.origin == "manual" %}<span class="small">not sealed{{ "" if r.pre_kickoff else " · after kickoff" }}</span>{% else %}{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}{% endif %}</td></tr>
 {% else %}<tr><td colspan="13">No forecasts match these filters.</td></tr>{% endfor %}</tbody></table></div>
 <p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no-1 }}">← newer</a>{% endif %}

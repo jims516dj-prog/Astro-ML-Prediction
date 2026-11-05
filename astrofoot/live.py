@@ -242,12 +242,37 @@ def predict_fixture(fx: dict, now: datetime) -> dict | None:
     })
 
 
+SAME_GAME_HOURS = 6
+
+
+def same_game(home1: str, away1: str, ko1: str, home2: str, away2: str, ko2: str, threshold: float = 0.6) -> bool:
+    """Two entries are one game: kickoffs within SAME_GAME_HOURS and both clubs' names match (either way
+    round), so "Sheffield United" and "Sheffield Utd", or "Bayer Leverkusen" and "Leverkusen", are one game."""
+    from .results2 import similarity
+    if abs((datetime.fromisoformat(ko1) - datetime.fromisoformat(ko2)).total_seconds()) > SAME_GAME_HOURS * 3600:
+        return False
+    straight = similarity(home1, home2) >= threshold and similarity(away1, away2) >= threshold
+    swapped = similarity(home1, away2) >= threshold and similarity(away1, home2) >= threshold
+    return straight or swapped
+
+
 def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledger: Path = LEDGER) -> dict:
-    done = {r["match_key"] for r in read_predictions(ledger)}
+    """Seal forecasts for fixtures kicking off within the horizon. A fixture is never sealed twice: not under
+    the same key, and not under another spelling from another source (same_game, within its competition)."""
+    preds = read_predictions(ledger)
+    withdrawn = {k for k, v in read_results(ledger).items() if str(v.get("reason", "")).startswith("withdrawn")}
+    done = {r["match_key"] for r in preds}
+    active = [r for r in preds if r["match_key"] not in withdrawn]
     new, skipped = [], []
     for fx in fixtures:
         ko = datetime.fromisoformat(fx["kickoff_utc"])
         if fx["match_key"] in done or not (now < ko <= now + timedelta(days=horizon_days)):
+            continue
+        twin = next((r for r in active if r["division"] == fx["division"] and
+                     same_game(fx["home"], fx["away"], fx["kickoff_utc"], r["home"], r["away"], r["kickoff_utc"])), None)
+        if twin is not None:
+            skipped.append(f"{fx['home']} v {fx['away']} ({fx['division']}): already forecast as "
+                           f"{twin['home']} v {twin['away']} ({twin['match_key']})")
             continue
         rec = predict_fixture(fx, now)
         if rec is None:
@@ -255,6 +280,7 @@ def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledge
             continue
         new.append(rec)
         done.add(fx["match_key"])
+        active.append(rec)
     if new:
         _append(ledger / "predictions" / f"{now:%Y-%m-%d}.jsonl", new)
     return {"committed": len(new), "skipped": skipped}
@@ -423,6 +449,9 @@ OUTCOMES = ("fav", "draw", "dog")
 def join(r: dict, res: dict | None, ou_cal: dict | None = None, ts_cal: dict | None = None) -> dict:
     """One forecast joined with its result: the derived fields every page uses (also for manual games)."""
     void = bool(res and res.get("void"))
+    # withdrawn before kickoff (a duplicate or a name mix-up): kept in the ledger, hidden from the lists
+    withdrawn = void and str(res.get("reason", "")).startswith("withdrawn")
+    void_reason = res.get("reason") if void else None
     if void:
         res = None
     outcome = OUTCOMES[_outcome(r, res)] if res else None
@@ -434,7 +463,7 @@ def join(r: dict, res: dict | None, ou_cal: dict | None = None, ts_cal: dict | N
             "verified": verify(r) if "sha256" in r else True,
             "pre_kickoff": r["committed_at"] < r["kickoff_utc"],
             "status": "void" if void else "settled" if res else "pending",
-            "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
+            "withdrawn": withdrawn, "void_reason": void_reason, "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
             "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal),
             **teamgoals.view(r, res, ts_cal), **doublechance.view(r, res)}
 
@@ -511,7 +540,7 @@ def top_picks(recs: list[dict], per_day: int | None = None, market: str = "resul
     p_key, agree_key = PICK_KEYS[market][1], PICK_KEYS[market][2]
     days: dict[str, list[dict]] = {}
     for r in recs:
-        if r["pre_kickoff"] and r.get(p_key) is not None and r[p_key] >= min_p:
+        if r["pre_kickoff"] and r.get("status") != "void" and r.get(p_key) is not None and r[p_key] >= min_p:
             days.setdefault(r["kickoff_utc"][:10], []).append(r)
     return {d: sorted(rs, key=lambda r: (-r[p_key], -(r[agree_key] or 0)))[:per_day]
             for d, rs in sorted(days.items(), reverse=True)}

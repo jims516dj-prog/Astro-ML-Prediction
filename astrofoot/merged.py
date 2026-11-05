@@ -27,11 +27,7 @@ def _ko(s: str) -> datetime:
 
 
 def same_game(home1: str, away1: str, ko1: str, home2: str, away2: str, ko2: str) -> bool:
-    if abs((_ko(ko1) - _ko(ko2)).total_seconds()) > SAME_GAME_HOURS * 3600:
-        return False
-    straight = similarity(home1, home2) >= NAME_MATCH and similarity(away1, away2) >= NAME_MATCH
-    swapped = similarity(home1, away2) >= NAME_MATCH and similarity(away1, home2) >= NAME_MATCH
-    return straight or swapped
+    return live.same_game(home1, away1, ko1, home2, away2, ko2, NAME_MATCH)
 
 
 def to_record(row: dict) -> dict | None:
@@ -89,10 +85,12 @@ def manual_records(rows: list[dict]) -> list[dict]:
     return out
 
 
-def all_records(rows: list[dict], live_recs: list[dict] | None = None) -> list[dict]:
-    """Live records plus manual games, newest kickoff first, each game once."""
+def all_records(rows: list[dict], live_recs: list[dict] | None = None, include_withdrawn: bool = False) -> list[dict]:
+    """Live records plus manual games, newest kickoff first, each game once. Forecasts withdrawn before
+    kickoff (duplicates, name mix-ups) are left out unless include_withdrawn, and never absorb a manual game."""
     live_recs = live.records() if live_recs is None else live_recs
-    kept = list(live_recs)
+    withdrawn = [r for r in live_recs if r.get("withdrawn")]
+    kept = [r for r in live_recs if not r.get("withdrawn")]
     for m in sorted(manual_records(rows), key=lambda r: r["committed_at"]):
         twin = next((r for r in kept if same_game(m["home"], m["away"], m["kickoff_utc"],
                                                    r["home"], r["away"], r["kickoff_utc"])), None)
@@ -100,6 +98,8 @@ def all_records(rows: list[dict], live_recs: list[dict] | None = None) -> list[d
             kept.append(m)
         else:
             twin.setdefault("also", []).append(m["url"])
+    if include_withdrawn:
+        kept += withdrawn
     kept.sort(key=lambda r: r["kickoff_utc"], reverse=True)
     return kept
 
