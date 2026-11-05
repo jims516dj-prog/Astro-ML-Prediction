@@ -278,10 +278,13 @@ def delete_match(mid: str):
 
 @app.get("/dataset", response_class=HTMLResponse)
 def dataset_page(request: Request, league: str = "", season: str = "", team: str = "", page: int = 1,
-                 status: str = "", origin: str = "", gpage: int = 1):
+                 status: str = "", origin: str = "", gpage: int = 1, g_from: str = "", g_to: str = "",
+                 g_agree: str = "", c_from: str = "", c_to: str = "", c_agree: str = ""):
     # 1) every game we forecast: live record + games added by hand, each game once
-    games = _filter_live(_all_games(include_withdrawn=status == "void"), status=status, origin=origin,
-                         league=league, team=team)
+    g_agree, g_ok = _agree_test(g_agree)
+    games = [r for r in _filter_live(_all_games(include_withdrawn=status == "void"), date_from=g_from, date_to=g_to,
+                                     status=status, origin=origin, league=league, team=team)
+             if g_ok(r["classical_agree"])]
     per = 50
     gpages = max(1, math.ceil(len(games) / per))
     gpage = min(max(gpage, 1), gpages)
@@ -298,21 +301,46 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     if team:
         t = team.lower()
         q = q[q.home.str.lower().str.contains(t) | q.away.str.lower().str.contains(t)]
+    if len(q) and (c_from or c_to):
+        day = pd.to_datetime(q.kickoff_utc, utc=True).dt.strftime("%Y-%m-%d")
+        q = q[((day >= c_from) if c_from else True) & ((day <= c_to) if c_to else True)]
+    c_agree, c_ok = _agree_test(c_agree)
+    if len(q) and c_agree:
+        q = q[_corpus_agree(q).map(c_ok)]
     q = q.sort_values("kickoff_utc", ascending=False)
     pages = max(1, math.ceil(len(q) / per))
     rows = q.iloc[(page - 1) * per: page * per]
     hist = rows.to_dict("records")
-    for r in hist:
+    agree_n = _corpus_agree(rows) if len(rows) else []
+    for r, n in zip(hist, agree_n):
         r["gm"] = _gm_hist(r)
+        r["agree"] = int(n)
     leagues = sorted(set(m.division.unique()) | {r["division"] for r in games} if len(m) else
                      {r["division"] for r in games}, key=lambda c: LEAGUE_NAMES.get(c, c))
     seasons = sorted(m.season.unique(), reverse=True) if len(m) else []
     counts = {o: sum(1 for r in games if r["origin"] == o) for o in ("live", "manual")}
+    keep_g = {"origin": origin, "status": status, "g_from": g_from, "g_to": g_to, "g_agree": g_agree}
+    keep_c = {"season": season, "c_from": c_from, "c_to": c_to, "c_agree": c_agree}
+    shared = {"league": league, "team": team}
+    qs = lambda d: "&".join(f"{k}={urllib.parse.quote(str(v))}" for k, v in d.items() if v)      # noqa: E731
     return T.TemplateResponse(request, "dataset.html", {
         "games": shown, "games_n": len(games), "gpage": gpage, "gpages": gpages, "counts": counts,
         "rows": hist, "n": len(q), "page_no": page, "pages": pages,
         "league": league, "season": season, "team": team, "leagues": leagues, "seasons": seasons,
-        "status": status, "origin": origin, "page": "dataset"})
+        "status": status, "origin": origin, "g_from": g_from, "g_to": g_to, "g_agree": g_agree,
+        "c_from": c_from, "c_to": c_to, "c_agree": c_agree, "agree_choices": AGREE_CHOICES,
+        "keep_g": keep_g, "keep_c": keep_c, "g_qs": qs({**shared, **keep_g, **keep_c, "page": page}),
+        "c_qs": qs({**shared, **keep_g, **keep_c, "gpage": gpage}), "page": "dataset"})
+
+
+def _corpus_agree(q: pd.DataFrame) -> pd.Series:
+    """Per corpus match: how many classical engines picked the result the odds made most likely."""
+    if not {"rao_win", "chok_win", "fraw_win"} <= set(q.columns):
+        return pd.Series(0, index=q.index)
+    fh = q.fav_is_home.astype(bool).to_numpy()
+    probs = np.c_[np.where(fh, q.p_home, q.p_away), q.p_draw, np.where(fh, q.p_away, q.p_home)]   # fav, draw, dog
+    pick = pd.Series(np.array([1, 0, -1])[probs.argmax(axis=1)], index=q.index)
+    return sum((q[c] == pick).astype(int) for c in ("rao_win", "chok_win", "fraw_win"))
 
 
 @app.get("/dataset/export.csv")
@@ -390,6 +418,19 @@ def _track_record(c):
         e["accuracy"] = e["hits"] / e["n"] if e["n"] else None
         e["logloss"] = e["logloss"] / e["n_prob"] if e["n_prob"] else None
     return out
+
+
+AGREE_CHOICES = [("=0", "0/3 (none agree)"), ("=1", "exactly 1/3"), ("=2", "exactly 2/3"), ("=3", "3/3 (all agree)"),
+                 ("1", "at least 1/3"), ("2", "at least 2/3")]
+
+
+def _agree_test(agree: str):
+    """'=0'..'=3': exactly that many classical engines agree; '1'..'3': at least that many; '': any."""
+    if agree in ("=0", "=1", "=2", "=3"):
+        return agree, (lambda n, k=int(agree[1]): n == k)
+    if agree in ("1", "2", "3"):
+        return agree, (lambda n, k=int(agree): n >= k)
+    return "", (lambda n: True)
 
 
 def _all_games(include_withdrawn: bool = False) -> list[dict]:
@@ -588,13 +629,7 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
     if not day or day not in tp:
         day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
     hit_key, p_key, agree_key = live.PICK_KEYS[market]
-    # "=0".."=3": exactly that many engines agree; "1".."3": at least that many; "": any
-    if agree in ("=0", "=1", "=2", "=3"):
-        ok_agree = lambda n, k=int(agree[1]): n == k              # noqa: E731
-    elif agree in ("1", "2", "3"):
-        ok_agree = lambda n, k=int(agree): n >= k                 # noqa: E731
-    else:
-        agree, ok_agree = "", (lambda n: True)
+    agree, ok_agree = _agree_test(agree)
     keep = lambda ps: [p for p in ps if ok_agree(p.get(agree_key) or 0) and p[p_key] >= mp]   # noqa: E731
     picks = keep(tp.get(day, []))
     all_picks = keep([p for ps in tp.values() for p in ps])
