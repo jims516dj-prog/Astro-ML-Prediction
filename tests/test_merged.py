@@ -60,3 +60,17 @@ def test_find_duplicate():
     assert merged.find_duplicate("Alpha", "Beta", "2026-11-09T14:00:00+00:00", [], preds) == ("live", "L1")
     assert merged.find_duplicate("Gamma", "Delta", "2026-11-09T15:00:00+00:00", [row("m2", "Gamma", "Delta")], []) == ("manual", "m2")
     assert merged.find_duplicate("Gamma", "Delta", "2026-11-20T15:00:00+00:00", [row("m2", "Gamma", "Delta")], []) is None
+
+
+def test_summary_picks_most_likely_outcome_per_game():
+    r = live_rec("S1", "Alpha", "Beta", "2026-11-09T15:00:00+00:00")
+    opts = live.outcome_options(r)
+    assert [o["p"] for o in opts] == sorted((o["p"] for o in opts), reverse=True)
+    assert {o["market"] for o in opts} >= {"result", "dc", "o15", "score", "btts"}
+    live.add_summary([r])
+    assert r["sum_pick_p"] == opts[0]["p"] and r["sum_market"] == opts[0]["market"]
+    live.add_summary([r], ["result", "btts"])
+    assert r["sum_market"] in ("result", "btts")
+    assert r["sum_pick_p"] == max(o["p"] for o in opts if o["market"] in ("result", "btts"))
+    picks = live.top_picks([r], market="summary")
+    assert picks["2026-11-09"][0]["match_key"] == "S1"

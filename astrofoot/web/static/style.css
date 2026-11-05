@@ -131,3 +131,8 @@ code { font-family: var(--mono); font-size: .88em; background: var(--muted-bg); 
 .gm { display: inline-flex; flex-wrap: wrap; gap: 3px; }
 .gm .badge { font-size: .68rem; padding: 1px 6px; }
 .gm-tiles .probbar { margin: 6px 0; }
+.mk-pick { border: 0; padding: 0; margin: 0 0 4px; flex-basis: 100%; display: flex; flex-wrap: wrap; gap: 4px 14px; }
+.mk-pick legend { padding: 0; margin-bottom: 4px; width: 100%; }
+label.chk { display: inline-flex; flex-direction: row; gap: 5px; align-items: center; color: var(--ink); font-size: .88rem; }
+label.chk { white-space: nowrap; }
+label.chk input { padding: 0; width: auto; min-width: 0; margin: 0; flex: none; }

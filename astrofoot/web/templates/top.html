@@ -39,6 +39,7 @@ Neither adds anything. The model picked "under" in only {{ "{:,}".format(researc
 {% set scorer = market == "score" %}
 {% set btts = market == "btts" %}
 {% set result_tab = market == "result" %}
+{% set summary = market == "summary" %}
 {% set dc = market == "dc" %}
 {% set o15 = market == "o15" %}
 {% set nE = 3 %}
@@ -50,7 +51,13 @@ Neither adds anything. The model picked "under" in only {{ "{:,}".format(researc
   {% for k, label in markets %}<a href="/top?market={{ k }}{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
 </nav>
 
-{% if result_tab %}
+{% if summary %}
+<p class="lede">One line per game: its <em>single most likely outcome</em> across the markets you tick below (match
+result, double chance, over/under 1.5 and 2.5, home or away goal, both teams to score), ranked by that probability, with
+every other market's prediction alongside. Each market's probability is calibrated on its own (see its tab), so the
+"expected" rate here is an honest target. The safest calls (over 1.5 goals, double chance, a team to score) usually come
+out on top; untick them to see the most likely <em>bolder</em> outcome instead.</p>
+{% elif result_tab %}
 <p class="lede">Every forecast match of the day, ranked by how probable its predicted result is, from the sealed pre-kickoff
 forecasts. The ranking uses the calibrated probability of the predicted result, which comes from the market odds while
 Engine 4 shows no demonstrated edge. No astrological engine has shown predictive accuracy beyond the odds, so they don't
@@ -106,6 +113,9 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 
 <form method="get" class="row">
   <input type="hidden" name="market" value="{{ market }}">
+  {% if summary %}<fieldset class="row mk-pick"><legend class="small">Markets considered</legend>
+    {% for k, label in markets if k != "summary" %}<label class="chk"><input type="checkbox" name="m" value="{{ k }}" {{ "checked" if k in chosen }} onchange="this.form.submit()"> {{ label }}</label>{% endfor %}
+  </fieldset>{% endif %}
   <label>Day<select name="day" onchange="this.form.submit()">
     {% for d in days %}<option {{ "selected" if d == day }}>{{ d }}</option>{% endfor %}</select></label>
   <label>Astrology agrees<select name="agree" onchange="this.form.submit()">
@@ -117,7 +127,19 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 </form>
 
 <div class="scroll"><table class="data">
-{% if result_tab %}
+{% if summary %}
+<thead><tr><th>#</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Most likely outcome</th><th class="num">Probability</th>
+<th>Other markets</th><th class="num">Astrology agrees</th><th>Result</th></tr></thead>
+<tbody>{% for r in picks %}
+<tr><td>{{ loop.index }}</td><td class="mono">{{ r.kickoff_utc[11:16] }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.origin == "manual" %} <span class="badge">manual</span>{% endif %}</td>
+<td><span class="badge ok">{{ summary_names[r.sum_market] }}</span> <strong>{{ r.sum_label }}</strong></td>
+<td class="num">{{ fmt_pct(r.sum_pick_p) }}</td>
+<td><span class="gm">{% for o in r.sum_options if not (o.market == r.sum_market) %}<span class="badge" title="{{ summary_names[o.market] }}">{{ o.label }} {{ fmt_pct(o.p, 0) }}{% if o.hit is not none %} {{ "✓" if o.hit else "✗" }}{% endif %}</span>{% endfor %}</span></td>
+<td class="num">{{ r.sum_agree }}/3</td>
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} {{ "✓" if r.sum_hit else "✗" }}{% else %}pending{% endif %}</td></tr>
+{% else %}<tr><td colspan="9">No forecasts for this day{% if agree or min_p %} with these filters{% endif %}.</td></tr>{% endfor %}</tbody>
+{% elif result_tab %}
 <thead><tr><th>#</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Predicted result</th><th class="num">Probability</th><th class="num">Astrology agrees</th><th>Result</th></tr></thead>
 <tbody>{% for r in picks %}
 <tr><td>{{ loop.index }}</td><td class="mono">{{ r.kickoff_utc[11:16] }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
@@ -193,6 +215,8 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
 {% endif %}
 </table></div>
 
+{% if summary and picks %}<p class="note">This day's most likely outcomes come from:
+{% for k, n in summary_mix.items() if n %}{{ summary_names[k] }} {{ n }}{{ ", " if not loop.last }}{% endfor %}.</p>{% endif %}
 <h2>How often picks at each probability come true</h2>
 <p class="small">Use this with the minimum-probability filter: a band's hit rate should match its probability.</p>
 <div class="scroll"><table class="data">

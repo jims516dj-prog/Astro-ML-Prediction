@@ -274,6 +274,15 @@ football-data.co.uk has no files for club competitions, so these come only from 
 - The models were trained on league football only; European games are forecast the same way (market
   baseline plus the classical engines), and the track record will show whether that holds.
 
+## Top picks: Summary
+
+The first Top picks tab, **Summary**, lists each game of the day once with its **single most likely outcome**
+across the markets you tick (match result, double chance, over/under 1.5, over/under 2.5, home or away goal,
+both teams to score), ranked by that probability, with every other market's prediction alongside and ✓/✗ once
+played. Each market is calibrated on its own, so the "expected" hit rate is an honest target. With every
+market ticked, the safest calls (a team to score, over 1.5, double chance) usually win; untick them to see
+each game's most likely bolder outcome. The note under the table shows which markets the day's picks came from.
+
 ## One list of games: manual and automatic, no duplicates
 
 - **Live record and Top picks** list the games you add on the Analyze page alongside the automatic forecasts,

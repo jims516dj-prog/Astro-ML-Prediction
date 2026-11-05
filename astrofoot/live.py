@@ -451,7 +451,49 @@ def records(ledger: Path = LEDGER) -> list[dict]:
 # market -> (hit, probability, astrology-agreement) fields of records()
 PICK_KEYS = {"result": ("pick_hit", "pick_p", "classical_agree"), "goals": ("ou_hit", "ou_pick_p", "ou_agree"),
              "score": ("ts_hit", "ts_pick_p", "ts_agree"), "btts": ("bt_hit", "bt_pick_p", "bt_agree"),
-             "dc": ("dc_hit", "dc_pick_p", "dc_agree"), "o15": ("o15_hit", "o15_pick_p", "o15_agree")}
+             "dc": ("dc_hit", "dc_pick_p", "dc_agree"), "o15": ("o15_hit", "o15_pick_p", "o15_agree"),
+             "summary": ("sum_hit", "sum_pick_p", "sum_agree")}
+SUMMARY_MARKETS = ("result", "dc", "o15", "goals", "score", "btts")
+
+
+def outcome_options(r: dict) -> list[dict]:
+    """Every market's predicted outcome for one game: {market, label, p, hit, agree}, most probable first."""
+    out = []
+    win = {"fav": r.get("favourite"), "dog": r.get("underdog")}
+    out.append({"market": "result", "label": "Draw" if r["pick"] == "draw" else f"{win[r['pick']]} win",
+                "p": r["pick_p"], "hit": r["pick_hit"], "agree": r["classical_agree"]})
+    if r.get("dc_pick"):
+        txt = {"1X": f"{r['home']} or draw", "X2": f"{r['away']} or draw", "12": "No draw"}[r["dc_pick"]]
+        out.append({"market": "dc", "label": f"{txt} ({r['dc_pick']})", "p": r["dc_pick_p"], "hit": r["dc_hit"],
+                    "agree": r["dc_agree"]})
+    if r.get("o15_pick"):
+        out.append({"market": "o15", "label": f"{r['o15_pick'].capitalize()} 1.5 goals", "p": r["o15_pick_p"],
+                    "hit": r["o15_hit"], "agree": r["o15_agree"]})
+    if r.get("ou_pick"):
+        out.append({"market": "goals", "label": f"{r['ou_pick'].capitalize()} 2.5 goals", "p": r["ou_pick_p"],
+                    "hit": r["ou_hit"], "agree": r["ou_agree"]})
+    if r.get("ts_pick"):
+        out.append({"market": "score", "label": f"{r['ts_team']} to score", "p": r["ts_pick_p"], "hit": r["ts_hit"],
+                    "agree": r["ts_agree"]})
+    if r.get("bt_pick"):
+        out.append({"market": "btts", "label": f"Both teams to score: {r['bt_pick']}", "p": r["bt_pick_p"],
+                    "hit": r["bt_hit"], "agree": r["bt_agree"]})
+    return sorted(out, key=lambda o: -o["p"])
+
+
+def add_summary(recs: list[dict], markets=SUMMARY_MARKETS) -> list[dict]:
+    """Attach each game's single most likely outcome among `markets` (sum_* fields, for the Summary tab)."""
+    for r in recs:
+        opts = outcome_options(r)
+        chosen = [o for o in opts if o["market"] in markets]
+        r["sum_options"] = opts
+        if chosen:
+            b = chosen[0]
+            r.update(sum_market=b["market"], sum_label=b["label"], sum_pick_p=b["p"], sum_hit=b["hit"],
+                     sum_agree=b["agree"])
+        else:
+            r.update(sum_market=None, sum_label=None, sum_pick_p=None, sum_hit=None, sum_agree=None)
+    return recs
 
 
 def top_picks(recs: list[dict], per_day: int | None = None, market: str = "result",

@@ -13,7 +13,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
-from fastapi import FastAPI, Form, HTTPException, Request
+from fastapi import FastAPI, Form, HTTPException, Query, Request
 from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -565,18 +565,22 @@ def live_sync_status():
     return JSONResponse(SYNC)
 
 
-TOP_MARKETS = [("result", "Match result"), ("dc", "Double chance"), ("o15", "Over/under 1.5"),
+TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Double chance"), ("o15", "Over/under 1.5"),
                ("goals", "Over/under 2.5"), ("score", "Home or away goal"), ("btts", "Both teams to score")]
 
 
 @app.get("/top", response_class=HTMLResponse)
-def top_page(request: Request, day: str = "", market: str = "result", agree: str = "", min_p: str = ""):
-    market = market if market in live.PICK_KEYS else "result"
+def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "",
+             m: list[str] = Query(default=[])):
+    market = market if market in live.PICK_KEYS else "summary"
+    chosen = [x for x in m if x in live.SUMMARY_MARKETS] or list(live.SUMMARY_MARKETS)
     try:
         mp = min(max(float(min_p), 0.0), 0.99) if min_p else 0.0
     except ValueError:
         mp = 0.0
     recs = _all_games()
+    if market == "summary":
+        live.add_summary(recs, chosen)
     tp = live.top_picks(recs, market=market)
     days = list(tp)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -597,7 +601,9 @@ def top_page(request: Request, day: str = "", market: str = "result", agree: str
                 "dc": doublechance.load()}.get(market)
     return T.TemplateResponse(request, "top.html", {
         "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p,
-        "markets": TOP_MARKETS, "n_day_all": len(tp.get(day, [])),
+        "markets": TOP_MARKETS, "n_day_all": len(tp.get(day, [])), "chosen": chosen,
+        "summary_names": dict(TOP_MARKETS),
+        "summary_mix": {k: sum(1 for p in picks if p.get("sum_market") == k) for k in live.SUMMARY_MARKETS},
         "score_all": live.score_picks(all_picks, market), "score_day": live.score_picks(picks, market),
         "by_agree": by_agree, "live_bands": live_bands, "research": research,
         "ou": overunder.load() if market == "goals" else None,
