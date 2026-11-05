@@ -1,14 +1,4 @@
 {
- "AGF Aarhus": {
-  "lat": 56.1265862,
-  "lon": 10.1769814,
-  "source": "openstreetmap: AGF Vej, Fredensvang, Teghøj, Holme, Aarhus, Aarhus Kommune, Region Midtjylland, 8270, Danmark"
- },
- "AZ Alkmaar": {
-  "lat": 52.6128273,
-  "lon": 4.7420619,
-  "source": "openstreetmap: AFAS Stadion, P7, Kooimeer, Overdie, Alkmaar, Noord-Holland, Nederland, 1812 AZ, Nederland"
- },
  "Anderlecht": {
   "lat": 50.83619,
   "lon": 4.31454,
@@ -39,94 +29,30 @@
   "lon": -0.085556,
   "source": "stadium"
  },
- "FC Copenhagen": {
-  "lat": 55.6788808,
-  "lon": 12.5743016,
-  "source": "openstreetmap: Liverpool FC, Jorcks Passage, Nørrevold, Indre By, København, Københavns Kommune, Region Hovedstaden, 1162, Danmark"
- },
- "FC Lugano": {
-  "lat": 46.0038007,
-  "lon": 8.9512275,
-  "source": "openstreetmap: Lugano, Circolo di Lugano ovest, Distretto di Lugano, Ticino, Schweiz / Suisse / Svizzera / Svizra"
- },
- "FC Midtjylland": {
-  "lat": 56.1170409,
-  "lon": 8.950923,
-  "source": "openstreetmap: FC MIDTJYLLAND Premium 1. sal, Kaj Zartows Vej, Lind, Herning, Herning Kommune, Region Midtjylland, 7400, Danmark"
- },
- "FC Thun": {
-  "lat": 46.7471545,
-  "lon": 7.6104453,
-  "source": "openstreetmap: FC Rot-Schwarz Thun, Allmendingen-Allee, Thun, Verwaltungskreis Thun, Verwaltungsregion Oberland, Bern/Berne, 3602, Schweiz / Suisse / Svizzera / Svizra"
- },
  "Getafe": {
   "lat": 40.325556,
   "lon": -3.714722,
   "source": "stadium"
  },
- "Hapoel Be'er Sheva": null,
- "KuPS Kuopio": null,
  "Leverkusen": {
   "lat": 51.038256,
   "lon": 7.002206,
   "source": "stadium"
- },
- "Lillestrom": {
-  "lat": 59.95,
-  "lon": 11.08333333,
-  "source": "wikipedia: Lillestrøm"
- },
- "Lincoln": {
-  "lat": 53.22683,
-  "lon": -0.53792,
-  "source": "city"
  },
  "Milan": {
   "lat": 45.46427,
   "lon": 9.18951,
   "source": "city"
  },
- "Mjällby AIF": null,
  "Monaco": {
   "lat": 43.727606,
   "lon": 7.415614,
   "source": "stadium"
  },
- "Nijmegen": {
-  "lat": 51.8475,
-  "lon": 5.8625,
-  "source": "wikipedia: Nijmegen"
- },
- "PFC Levski Sofia": null,
  "Panathinaikos": {
   "lat": 37.98376,
   "lon": 23.72784,
   "source": "manual"
- },
- "Real Sociedad": {
-  "lat": 43.3218553,
-  "lon": -1.9833251,
-  "source": "openstreetmap: Real Sociedad, Elkano kalea, Erdialdea, Gune Erromantikoa, Erdialdea, Centro, Donostia / San Sebastián, Gipuzkoa, Euskadi, 20004, España"
- },
- "Red Star": {
-  "lat": 48.9118,
-  "lon": 2.3329,
-  "source": "manual"
- },
- "Riga FC": {
-  "lat": 56.950818,
-  "lon": 24.109241,
-  "source": "openstreetmap: Riga FC, 1, Vaļņu iela, Vecrīga, Latgales apkaime, Rīga, LV-1050, Latvija"
- },
- "SK Sturm Graz": {
-  "lat": 47.0462785,
-  "lon": 15.4790081,
-  "source": "openstreetmap: SK Sturm Graz, 118, Sternäckerweg, Katastralgemeinde Graz Stadt-Messendorf, Sankt Peter, Graz, Steiermark, 8042, Österreich"
- },
- "Sparta Prague": {
-  "lat": 50.099348,
-  "lon": 14.4179734,
-  "source": "openstreetmap: Sparta, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
  },
  "St Truiden": {
   "lat": 50.81679,
@@ -138,24 +64,9 @@
   "lon": -1.3882,
   "source": "stadium"
  },
- "Torreense": {
-  "lat": 39.190739,
-  "lon": -9.1845599,
-  "source": "openstreetmap: Cerâmica Torreense, Campelos e Outeiro da Cabeça, Torres Vedras, Lisboa, Portugal"
- },
  "Trabzonspor": {
   "lat": 41.0,
   "lon": 39.72,
   "source": "manual"
- },
- "Twente": {
-  "lat": 52.3066217,
-  "lon": 6.6873739,
-  "source": "openstreetmap: Twente, Overijssel, Nederland"
- },
- "Universitatea Craiova": {
-  "lat": 44.3189723,
-  "lon": 23.8008069,
-  "source": "openstreetmap: Universitatea din Craiova, 13, Strada Alexandru Ioan Cuza, Centru, Craiova, Zona Metropolitană Craiova, Dolj, 200396, România"
  }
 }

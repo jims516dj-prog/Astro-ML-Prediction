@@ -80,6 +80,21 @@ def canonical_name(name: str, known: set[str]) -> str | None:
     return scored[0][1]
 
 
+def european_name(name: str, known: set[str]) -> str | None:
+    """Stricter pairing for European ties, where clubs from everywhere meet: every word of the API's name
+    must be in our club's name (after expanding abbreviations), so "Manchester United" → "Man United" and
+    "AC Milan" → "Milan", but "Red Star Belgrade", "Lincoln Red Imps" or "Inter Club d'Escaldes" are not
+    taken for Red Star, Lincoln or Inter. Exactly one such club must exist."""
+    from .results2 import _tokens
+    if name in known:
+        return name
+    t = _tokens(name)
+    if not t:
+        return None
+    hits = [k for k in known if t <= _tokens(k)]
+    return hits[0] if len(hits) == 1 else None
+
+
 def known_teams(div: str, now: datetime, fetch_csv, results_url, ledger_preds: list[dict]) -> set[str]:
     """Team names football-data.co.uk uses in a division this season."""
     names = {n for r in ledger_preds if r["division"] == div for n in (r["home"], r["away"])}
@@ -170,9 +185,11 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
         known = (european_pool or set()) if euro else known_teams(div, now, fetch_csv, results_url, ledger_preds)
         todo = []
         for ko, ev in soon:
-            h, a = canonical_name(ev["home_team"], known), canonical_name(ev["away_team"], known)
             if euro:            # clubs from outside our leagues keep the API's spelling
-                h, a = h or ev["home_team"], a or ev["away_team"]
+                h = european_name(ev["home_team"], known) or ev["home_team"]
+                a = european_name(ev["away_team"], known) or ev["away_team"]
+            else:
+                h, a = canonical_name(ev["home_team"], known), canonical_name(ev["away_team"], known)
             if not h or not a or h == a:
                 skipped.append(f"{ev['home_team']} v {ev['away_team']} ({div}): team name not recognised")
                 continue

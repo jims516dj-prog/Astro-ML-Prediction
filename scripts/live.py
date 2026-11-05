@@ -23,14 +23,11 @@ from astrofoot import fixtures2, geo, live, results2, results_espn, venues  # no
 
 
 def european_pool(fixtures: list[dict], preds: list[dict]) -> set[str]:
-    """football-data.co.uk names of clubs we know (venue table, current fixtures, earlier forecasts), so a
-    Champions League entrant from one of our leagues gets the same name, and ground, as in its league."""
-    names = {n for r in fixtures + preds if r["division"] not in live.EUROPEAN for n in (r["home"], r["away"])}
-    try:
-        names |= set(geo.stadiums())
-    except Exception:  # noqa: BLE001 - venue table not downloaded
-        pass
-    return names
+    """football-data.co.uk names of top-division clubs we know (current fixtures, earlier forecasts), so a
+    European entrant from one of our leagues gets the same name, and ground, as in its league. Lower
+    divisions are left out: their clubs do not play in Europe, and their names collide with ones that do
+    (Red Star Paris / Red Star Belgrade, Lincoln City / Lincoln Red Imps)."""
+    return {n for r in fixtures + preds if r["division"] in live.TOP_TIER for n in (r["home"], r["away"])}
 
 
 class EuropeanGrounds:
@@ -52,7 +49,7 @@ class EuropeanGrounds:
     def __call__(self, team: str):
         if team in self.cache:
             c = self.cache[team]
-            return (c["lat"], c["lon"], c["source"]) if c else None
+            return (c["lat"], c["lon"], c["source"])
         loc = None
         try:
             st = geo.stadiums()
@@ -63,15 +60,17 @@ class EuropeanGrounds:
         if loc is None and team in self.div_of:
             loc = geo.resolve(team, self.div_of[team])
         if loc is None:
-            for fn, q in ((venues.wikipedia, team), (venues.nominatim, f"{team} stadium"), (venues.nominatim, team)):
+            for fn, src in ((venues.wikipedia_ground, "wikipedia"), (venues.nominatim_ground, "openstreetmap")):
                 try:
-                    hit = fn(q)
+                    hit = fn(team)
                 except Exception:  # noqa: BLE001
                     hit = None
                 if hit:
-                    loc = (hit[0], hit[1], f"{'wikipedia' if fn is venues.wikipedia else 'openstreetmap'}: {hit[2]}")
+                    loc = (hit[0], hit[1], f"{src}: {hit[2]}")
                     break
-        self.cache[team] = {"lat": loc[0], "lon": loc[1], "source": loc[2]} if loc else None
+        if loc is None:
+            return None             # not cached: tried again next cycle
+        self.cache[team] = {"lat": loc[0], "lon": loc[1], "source": loc[2]}
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(self.cache, indent=1, sort_keys=True, ensure_ascii=False) + "\n")
         return loc

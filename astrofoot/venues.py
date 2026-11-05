@@ -35,6 +35,35 @@ def wikipedia(name: str):
     return None
 
 
+GROUND_WORDS = ("stadium", "stadion", "stadio", "estadio", "estádio", "stade", "arena", "park", "ground", "field",
+                "parken", "anfield", "dome", "bowl", "kombëtar", "stadionul", "stadiumi", "štadión", "stadyum")
+
+
+def wikipedia_ground(club: str):
+    """A club's home ground via Wikipedia search ("<club> stadium"): the first hit that has coordinates and
+    whose title names a ground. Returns (lat, lon, title) or None."""
+    q = urllib.parse.urlencode({"action": "query", "format": "json", "generator": "search", "gsrlimit": 6,
+                                "gsrsearch": f"{club} stadium football", "prop": "coordinates", "redirects": 1})
+    data = _get(f"https://en.wikipedia.org/w/api.php?{q}", timeout=8.0)
+    pages = sorted(data.get("query", {}).get("pages", {}).values(), key=lambda p: p.get("index", 99))
+    for page in pages:
+        coords = page.get("coordinates") or []
+        if coords and any(w in page.get("title", "").lower() for w in GROUND_WORDS):
+            return float(coords[0]["lat"]), float(coords[0]["lon"]), page["title"]
+    return None
+
+
+def nominatim_ground(club: str):
+    """OpenStreetMap search for the club, accepting only a sports ground (leisure=stadium/pitch/sports_centre)."""
+    for query in (f"{club} stadium", club):
+        q = urllib.parse.urlencode({"q": query, "format": "json", "limit": 8})
+        for hit in _get(f"https://nominatim.openstreetmap.org/search?{q}", timeout=8.0) or []:
+            if hit.get("type") in ("stadium", "pitch", "sports_centre") or hit.get("class") == "leisure" and \
+                    hit.get("type") == "stadium":
+                return float(hit["lat"]), float(hit["lon"]), hit.get("display_name")
+    return None
+
+
 def nominatim(name: str):
     q = urllib.parse.urlencode({"q": name, "format": "json", "limit": 1})
     data = _get(f"https://nominatim.openstreetmap.org/search?{q}")

@@ -41,6 +41,8 @@ COUNTRY_DIV = {"Argentina": "ARG", "Austria": "AUT", "Brazil": "BRA", "China": "
                "Poland": "POL", "Romania": "ROM", "Russia": "RUS", "Switzerland": "SUI", "Sweden": "SWE",
                "USA": "USA"}
 PRIMARY = "football-data.co.uk"
+# top divisions: the only clubs that play in European competitions
+TOP_TIER = {"E0", "SC0", "D1", "I1", "SP1", "F1", "N1", "B1", "P1", "T1", "G1"} | EXTRA_LEAGUES
 EUROPEAN_VOID_DAYS = 3   # a European tie no secondary source has a result for this long after kickoff
 VOID_AFTER_DAYS = 2   # missing from a results file that already runs this many days past the match: void
 # Odds preference: Bet365 first, because the model's market baseline was trained on Bet365 odds
