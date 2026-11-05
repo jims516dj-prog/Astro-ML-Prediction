@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .dataset import LEAGUE_NAMES
+from .dataset import EUROPEAN, LEAGUE_NAMES
 from .results2 import similarity
 
 API = "https://api.the-odds-api.com/v4"
@@ -44,6 +44,8 @@ SPORT_DIV = {
     "soccer_mexico_ligamx": "MEX", "soccer_norway_eliteserien": "NOR", "soccer_poland_ekstraklasa": "POL",
     "soccer_russia_premier_league": "RUS", "soccer_switzerland_superleague": "SUI",
     "soccer_sweden_allsvenskan": "SWE", "soccer_usa_mls": "USA",
+    "soccer_uefa_champs_league": "UCL", "soccer_uefa_europa_league": "UEL",
+    "soccer_uefa_europa_conference_league": "UECL",
 }
 
 
@@ -114,10 +116,26 @@ def best_odds(event: dict, home: str, away: str) -> tuple[list[float], str] | No
     return avg, f"average of {len(rows)} bookmakers"
 
 
+def over25(event: dict) -> float | None:
+    """De-vigged P(over 2.5) from the bookmakers' totals market (average over books quoting the 2.5 line)."""
+    ps = []
+    for b in event.get("bookmakers", []):
+        for m in b.get("markets", []):
+            if m.get("key") != "totals":
+                continue
+            px = {o["name"].lower(): float(o["price"]) for o in m.get("outcomes", []) if float(o.get("point", 0)) == 2.5}
+            if px.get("over", 0) > 1 and px.get("under", 0) > 1:
+                ps.append((1 / px["over"]) / (1 / px["over"] + 1 / px["under"]))
+    return sum(ps) / len(ps) if ps else None
+
+
 # ----------------------------------------------------------------------------- main entry
 def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledger: Path, client: Client,
                    fetch_csv, results_url, match_key, local_date, ledger_preds: list[dict],
-                   log=print) -> list[dict]:
+                   log=print, venue_of=None, european_pool: set[str] | None = None) -> list[dict]:
+    """venue_of(team) -> (lat, lon, source) | None locates a European home team's ground; european_pool is the
+    set of football-data.co.uk team names to translate European entrants to (clubs outside it keep the
+    API's name)."""
     """Fixtures (with odds) that the primary does not list, in the same form as live.parse_fixtures."""
     state_path = ledger / "odds_api_state.json"
     try:
@@ -148,10 +166,13 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
                 soon.append((ko, ev))
         if not soon:
             continue
-        known = known_teams(div, now, fetch_csv, results_url, ledger_preds)
+        euro = div in EUROPEAN
+        known = (european_pool or set()) if euro else known_teams(div, now, fetch_csv, results_url, ledger_preds)
         todo = []
         for ko, ev in soon:
             h, a = canonical_name(ev["home_team"], known), canonical_name(ev["away_team"], known)
+            if euro:            # clubs from outside our leagues keep the API's spelling
+                h, a = h or ev["home_team"], a or ev["away_team"]
             if not h or not a or h == a:
                 skipped.append(f"{ev['home_team']} v {ev['away_team']} ({div}): team name not recognised")
                 continue
@@ -169,9 +190,11 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
             log(f"the-odds-api.com: only {client.remaining:g} credits left this month; not buying more odds")
             break
         try:
+            # European nights: also the totals market (one more credit) so goal predictions have a price
             priced = {e["id"]: e for e in client.get(f"/sports/{sport}/odds", regions="uk,eu" if div in
                                                      ("E0", "E1", "E2", "E3", "SC0") else "eu",
-                                                     markets="h2h", oddsFormat="decimal")}
+                                                     markets="h2h,totals" if div in EUROPEAN else "h2h",
+                                                     oddsFormat="decimal")}
         except Exception as e:  # noqa: BLE001
             log(f"  {div}: odds unavailable ({type(e).__name__}: {e})")
             continue
@@ -183,10 +206,17 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
                 skipped.append(f"{h} v {a} ({div}): no odds offered yet")
                 continue
             odds, book = got
-            out.append({"match_key": key, "division": div, "league": LEAGUE_NAMES.get(div, div),
-                        "home": h, "away": a, "kickoff_utc": ko.isoformat(),
-                        "odds": {"home": odds[0], "draw": odds[1], "away": odds[2]},
-                        "odds_source": f"{SOURCE} {book}", "p_over25": None})
+            fx = {"match_key": key, "division": div, "league": LEAGUE_NAMES.get(div, div),
+                  "home": h, "away": a, "kickoff_utc": ko.isoformat(),
+                  "odds": {"home": odds[0], "draw": odds[1], "away": odds[2]},
+                  "odds_source": f"{SOURCE} {book}", "p_over25": over25(priced.get(ev["id"], {})) if euro else None}
+            if euro:
+                loc = venue_of(h) if venue_of else None
+                if not loc:
+                    skipped.append(f"{h} v {a} ({div}): home ground not found")
+                    continue
+                fx.update(venue_lat=loc[0], venue_lon=loc[1], venue_source=loc[2])
+            out.append(fx)
             have.add(key)
     state_path.parent.mkdir(parents=True, exist_ok=True)
     state_path.write_text(json.dumps(state, indent=1, sort_keys=True) + "\n")

@@ -24,10 +24,13 @@ LEAGUE_SLUG = {
     "ARG": "arg.1", "AUT": "aut.1", "BRA": "bra.1", "CHN": "chn.1", "DEN": "den.1", "FIN": "fin.1",
     "IRL": "irl.1", "JAP": "jpn.1", "MEX": "mex.1", "NOR": "nor.1", "POL": "pol.1", "ROM": "rou.1",
     "RUS": "rus.1", "SUI": "sui.1", "SWE": "swe.1", "USA": "usa.1",
+    "UCL": "uefa.champions", "UEL": "uefa.europa", "UECL": "uefa.europa.conf",
 }
-# Only plain full-time results: a league match decided after extra time or penalties would carry
-# 120-minute scores, so it is left for the primary source.
+# Plain full-time results. After extra time the headline score covers 120 minutes, so only the first two
+# per-half line scores are used (and the match is skipped if they are missing).
 FINAL = {"STATUS_FULL_TIME", "STATUS_FINAL"}
+# European knockout ties can go to extra time: their 90-minute score is read from the per-half line scores
+AFTER_EXTRA_TIME = {"STATUS_FINAL_AET", "STATUS_FINAL_PEN"}
 
 
 def _get(url: str) -> list[dict]:
@@ -58,13 +61,19 @@ def normalise(division: str, events: list[dict]) -> list[dict]:
     for e in events:
         status = ((e.get("status") or {}).get("type") or {})
         comp = (e.get("competitions") or [{}])[0]
-        if status.get("name") not in FINAL or not status.get("completed"):
+        name = status.get("name")
+        if not status.get("completed") or name not in FINAL | AFTER_EXTRA_TIME:
             continue
         side = {c.get("homeAway"): c for c in comp.get("competitors", [])}
         if "home" not in side or "away" not in side:
             continue
         try:
-            gh, ga = int(side["home"]["score"]), int(side["away"]["score"])
+            if name in FINAL:
+                gh, ga = int(side["home"]["score"]), int(side["away"]["score"])
+            else:       # knockout tie that went to extra time: the 90-minute score is the two halves
+                gh, ga = (sum(int(float(x["value"])) for x in side[s]["linescores"][:2]) for s in ("home", "away"))
+                if any(len(side[s].get("linescores", [])) < 2 for s in ("home", "away")):
+                    continue
         except (KeyError, TypeError, ValueError):
             continue
         names = lambda c: [(c.get("team") or {}).get(k) or "" for k in            # noqa: E731

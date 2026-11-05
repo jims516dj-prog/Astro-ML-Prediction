@@ -6,7 +6,8 @@ source later publishes the same match, live.settle() compares them and appends a
 disagree.
 
 The free plan covers these of our divisions: Premier League (E0), Championship (E1), Bundesliga (D1),
-Serie A (I1), La Liga (SP1), Ligue 1 (F1), Eredivisie (N1), Primeira Liga (P1), Brasileirão (BRA).
+Serie A (I1), La Liga (SP1), Ligue 1 (F1), Eredivisie (N1), Primeira Liga (P1), Brasileirão (BRA), and the
+UEFA Champions League (UCL).
 """
 from __future__ import annotations
 
@@ -22,7 +23,7 @@ from datetime import date, datetime, timedelta
 API = "https://api.football-data.org/v4"
 SOURCE = "football-data.org"
 COMPETITION_DIV = {"PL": "E0", "ELC": "E1", "BL1": "D1", "SA": "I1", "PD": "SP1", "FL1": "F1", "DED": "N1",
-                   "PPL": "P1", "BSA": "BRA"}
+                   "PPL": "P1", "BSA": "BRA", "CL": "UCL"}
 MAX_SPAN_DAYS = 10            # the API's dateFrom..dateTo limit
 
 _DROP = {"fc", "cf", "afc", "sc", "ac", "as", "ss", "ssc", "sl", "sv", "vfb", "vfl", "tsg", "rcd", "rc", "ud", "sd",

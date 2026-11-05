@@ -13,12 +13,68 @@ After `cycle`, commit and push the ledger/ directory *before* the earliest kicko
 from __future__ import annotations
 
 import argparse
+import json
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import fixtures2, live, results2, results_espn  # noqa: E402
+from astrofoot import fixtures2, geo, live, results2, results_espn, venues  # noqa: E402
+
+
+def european_pool(fixtures: list[dict], preds: list[dict]) -> set[str]:
+    """football-data.co.uk names of clubs we know (venue table, current fixtures, earlier forecasts), so a
+    Champions League entrant from one of our leagues gets the same name, and ground, as in its league."""
+    names = {n for r in fixtures + preds if r["division"] not in live.EUROPEAN for n in (r["home"], r["away"])}
+    try:
+        names |= set(geo.stadiums())
+    except Exception:  # noqa: BLE001 - venue table not downloaded
+        pass
+    return names
+
+
+class EuropeanGrounds:
+    """Home ground of a club in a European tie: our venue tables first (stadium, or the club's own league),
+    then Wikipedia / OpenStreetMap for clubs outside our leagues. Lookups are cached in the ledger
+    (european_venues.json), so a club's ground is found once and stays the same."""
+
+    def __init__(self, ledger: Path, preds: list[dict]):
+        self.path = ledger / "european_venues.json"
+        try:
+            self.cache = json.loads(self.path.read_text())
+        except (OSError, ValueError):
+            self.cache = {}
+        self.div_of = {}
+        for r in preds:
+            if r["division"] not in live.EUROPEAN:
+                self.div_of.setdefault(r["home"], r["division"])
+
+    def __call__(self, team: str):
+        if team in self.cache:
+            c = self.cache[team]
+            return (c["lat"], c["lon"], c["source"]) if c else None
+        loc = None
+        try:
+            st = geo.stadiums()
+            if team in st:
+                loc = (*st[team], "stadium")
+        except Exception:  # noqa: BLE001
+            pass
+        if loc is None and team in self.div_of:
+            loc = geo.resolve(team, self.div_of[team])
+        if loc is None:
+            for fn, q in ((venues.wikipedia, team), (venues.nominatim, f"{team} stadium"), (venues.nominatim, team)):
+                try:
+                    hit = fn(q)
+                except Exception:  # noqa: BLE001
+                    hit = None
+                if hit:
+                    loc = (hit[0], hit[1], f"{'wikipedia' if fn is venues.wikipedia else 'openstreetmap'}: {hit[2]}")
+                    break
+        self.cache[team] = {"lat": loc[0], "lon": loc[1], "source": loc[2]} if loc else None
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        self.path.write_text(json.dumps(self.cache, indent=1, sort_keys=True, ensure_ascii=False) + "\n")
+        return loc
 
 
 def load_fixtures(a, now) -> list[dict]:
@@ -36,8 +92,11 @@ def load_fixtures(a, now) -> list[dict]:
     if key:
         import pandas as pd
         local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
+        preds = live.read_predictions(a.ledger)
         out += fixtures2.extra_fixtures(out, now, a.horizon, a.ledger, fixtures2.Client(key), live.fetch_csv,
-                                        live.results_url, live.match_key, local_date, live.read_predictions(a.ledger))
+                                        live.results_url, live.match_key, local_date, preds,
+                                        venue_of=EuropeanGrounds(a.ledger, preds),
+                                        european_pool=european_pool(out, preds))
     else:
         print("extra fixtures: set ODDS_API_KEY to add games football-data.co.uk has not listed yet")
     if not out and errors:

@@ -27,7 +27,7 @@ import pandas as pd
 from . import geo, models, service
 from .config import ROOT, TIMEZONE_OF_SOURCE_TIMES
 from . import doublechance, overunder, teamgoals
-from .dataset import LEAGUE_NAMES, devig
+from .dataset import EUROPEAN, LEAGUE_NAMES, devig
 
 LEDGER = Path(os.environ.get("ASTRO_LEDGER", ROOT / "ledger"))
 FD = "https://www.football-data.co.uk"
@@ -41,6 +41,7 @@ COUNTRY_DIV = {"Argentina": "ARG", "Austria": "AUT", "Brazil": "BRA", "China": "
                "Poland": "POL", "Romania": "ROM", "Russia": "RUS", "Switzerland": "SUI", "Sweden": "SWE",
                "USA": "USA"}
 PRIMARY = "football-data.co.uk"
+EUROPEAN_VOID_DAYS = 3   # a European tie no secondary source has a result for this long after kickoff
 VOID_AFTER_DAYS = 2   # missing from a results file that already runs this many days past the match: void
 # Odds preference: Bet365 first, because the model's market baseline was trained on Bet365 odds
 ODDS_SETS = [("B365H", "B365D", "B365A"), ("AvgH", "AvgD", "AvgA"), ("PSH", "PSD", "PSA"),
@@ -211,7 +212,9 @@ def _append(path: Path, recs: list[dict]):
 
 # ----------------------------------------------------------------------------- commit
 def predict_fixture(fx: dict, now: datetime) -> dict | None:
-    loc = geo.resolve(fx["home"], fx["division"])
+    # European fixtures carry their ground (found by the fixtures source); league fixtures are resolved here
+    loc = (fx["venue_lat"], fx["venue_lon"], fx["venue_source"]) if fx.get("venue_lat") is not None \
+        else geo.resolve(fx["home"], fx["division"])
     if loc is None:
         return None
     o = fx["odds"]
@@ -280,7 +283,14 @@ def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, sourc
         if k in results:
             new.append(seal({"match_key": k, "source": source, **results[k], "settled_at": stamp}))
             continue
-        day = datetime.fromisoformat(rec["kickoff_utc"]).astimezone(ZoneInfo(TIMEZONE_OF_SOURCE_TIMES)).date()
+        ko = datetime.fromisoformat(rec["kickoff_utc"])
+        if rec["division"] in EUROPEAN:
+            if now - ko > timedelta(days=EUROPEAN_VOID_DAYS):
+                new.append(seal({"match_key": k, "void": True, "settled_at": stamp, "source": "none",
+                                 "reason": f"no result from football-data.org or ESPN within {EUROPEAN_VOID_DAYS} days: "
+                                           "postponed, abandoned or not covered"}))
+            continue
+        day = ko.astimezone(ZoneInfo(TIMEZONE_OF_SOURCE_TIMES)).date()
         last = latest.get(rec["division"])
         if last and datetime.fromisoformat(last).date() >= day + timedelta(days=VOID_AFTER_DAYS):
             new.append(seal({"match_key": k, "void": True, "settled_at": stamp, "source": source,
@@ -298,6 +308,8 @@ def needed_result_urls(ledger: Path = LEDGER, now: datetime | None = None) -> se
         ko = datetime.fromisoformat(rec["kickoff_utc"])
         prev = settled.get(rec["match_key"])
         unconfirmed = prev is not None and not prev.get("void") and prev.get("source", PRIMARY) != PRIMARY
+        if rec["division"] in EUROPEAN:          # no football-data.co.uk file: secondary sources only
+            continue
         if (prev is None or unconfirmed) and ko + timedelta(hours=2) < now:
             urls.add(results_url(rec["division"], ko))
     return urls

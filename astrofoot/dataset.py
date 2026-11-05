@@ -25,7 +25,11 @@ LEAGUE_NAMES = {
     "FIN": "Finland", "IRL": "Ireland", "JAP": "Japan", "MEX": "Mexico", "NOR": "Norway",
     "POL": "Poland", "ROM": "Romania", "RUS": "Russia", "SUI": "Switzerland", "SWE": "Sweden",
     "USA": "USA MLS",
+    "UCL": "UEFA Champions League", "UEL": "UEFA Europa League", "UECL": "UEFA Conference League",
 }
+# Club competitions across countries: no football-data.co.uk files; fixtures/odds and results come from the
+# secondary sources only (fixtures2, results2, results_espn).
+EUROPEAN = {"UCL", "UEL", "UECL"}
 
 
 def devig(odds: np.ndarray) -> np.ndarray:

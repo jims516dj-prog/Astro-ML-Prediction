@@ -93,3 +93,46 @@ def test_canonical_name_refuses_ambiguity():
     known = {"Man United", "Man City", "Wolves"}
     assert fixtures2.canonical_name("Manchester City", known) == "Man City"
     assert fixtures2.canonical_name("Manchester", known) is None
+
+
+def test_european_fixtures_names_grounds_and_totals(tmp_path):
+    e = {"soccer_uefa_champs_league": [ev("u1", "Manchester United", "Slavia Praha", "2026-11-04T15:00:00Z"),
+                                       ev("u2", "Qarabag FK", "Wolverhampton Wanderers", "2026-11-04T15:00:00Z")]}
+    book = lambda i, h, a: {"id": i, "bookmakers": [{"key": "pinnacle", "markets": [
+        {"key": "h2h", "outcomes": [{"name": h, "price": 1.5}, {"name": "Draw", "price": 4.4}, {"name": a, "price": 6.5}]},
+        {"key": "totals", "outcomes": [{"name": "Over", "price": 1.8, "point": 2.5}, {"name": "Under", "price": 2.05, "point": 2.5}]}]}]}
+    o = {"soccer_uefa_champs_league": [book("u1", "Manchester United", "Slavia Praha"),
+                                       book("u2", "Qarabag FK", "Wolverhampton Wanderers")]}
+    c = FakeClient(e, o)
+    grounds = {"Man United": (53.46, -2.29, "stadium")}
+    out = fixtures2.extra_fixtures([], NOW, 4, tmp_path, c, results_csv, live.results_url, live.match_key, local_date, [],
+                                   log=lambda *a: None, venue_of=grounds.get,
+                                   european_pool={"Man United", "Wolves", "Nott'm Forest"})
+    assert len(out) == 1                                    # Qarabag's ground unknown here: skipped, not guessed
+    f = out[0]
+    assert (f["division"], f["home"], f["away"]) == ("UCL", "Man United", "Slavia Praha")
+    assert f["venue_lat"] == 53.46 and abs(f["p_over25"] - (1 / 1.8) / (1 / 1.8 + 1 / 2.05)) < 1e-9
+
+
+def test_european_results_settle_without_primary_and_void_after_three_days(tmp_path):
+    from datetime import timedelta
+    from astrofoot import results_espn
+    rec = {"match_key": "eu1", "division": "UCL", "home": "Man United", "away": "Slavia Praha",
+           "kickoff_utc": "2026-11-04T20:00:00+00:00"}
+    other = {**rec, "match_key": "eu2", "home": "Inter", "away": "Club Brugge"}
+    (tmp_path / "predictions").mkdir()
+    (tmp_path / "predictions" / "x.jsonl").write_text("\n".join(json.dumps(r) for r in (rec, other)) + "\n")
+    assert live.needed_result_urls(tmp_path, NOW + timedelta(days=1)) == set()
+    aet = {"date": "2026-11-04T20:00Z", "status": {"type": {"name": "STATUS_FINAL_AET", "completed": True}},
+           "competitions": [{"date": "2026-11-04T20:00Z", "competitors": [
+               {"homeAway": "home", "score": "3", "team": {"displayName": "Manchester United"},
+                "linescores": [{"value": 1}, {"value": 1}, {"value": 1}]},
+               {"homeAway": "away", "score": "2", "team": {"displayName": "Slavia Prague"},
+                "linescores": [{"value": 0}, {"value": 2}, {"value": 0}]}]}]}
+    found, _, _ = results_espn.match_results([rec], fetcher=lambda *a: [aet])
+    assert found["eu1"]["goals_home"] == 2 and found["eu1"]["goals_away"] == 2     # 90 minutes, not 120
+    n = live.settle(found, NOW + timedelta(days=1), tmp_path)
+    assert n == 1                                                                   # eu2 not void yet
+    n = live.settle({}, NOW + timedelta(days=5), tmp_path)
+    res = live.read_results(tmp_path)
+    assert n == 1 and res["eu2"]["void"] and not res["eu1"].get("void")

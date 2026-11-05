@@ -256,6 +256,24 @@ true" compares live and backtest hit rates per probability band, so you can pick
 - The backtest tiles now score **all** picks (the rule the page applies), not just the top 10 a day.
 - Every Dataset, Live and Analyze view shows all five goal-and-chance predictions as badges/cards.
 
+## European competitions (Champions League, Europa League, Conference League)
+
+football-data.co.uk has no files for club competitions, so these come only from the secondary sources:
+
+- **Fixtures and odds**: The Odds API (`ODDS_API_KEY`), games kicking off within 30 hours. For these nights the
+  over/under 2.5 market is bought too (2 credits per competition request instead of 1), so every goal
+  prediction has a price. Division codes: `UCL`, `UEL`, `UECL`.
+- **Team names**: clubs from our leagues get their football-data.co.uk name (e.g. "Man United"), so they line
+  up with their league games; clubs from elsewhere keep The Odds API's name.
+- **Ground**: our venue tables first; clubs outside our leagues are looked up on Wikipedia, then
+  OpenStreetMap. Each club's ground is cached in `ledger/european_venues.json` (committed, so it never
+  changes silently); a club whose ground cannot be found is skipped and listed in the run log.
+- **Results**: football-data.org (Champions League) and ESPN (all three). Knockout ties that go to extra
+  time are scored on the 90-minute result (ESPN's per-half scores). No primary source will confirm these,
+  so a European game with no result from either source 3 days after kickoff is recorded as void.
+- The models were trained on league football only; European games are forecast the same way (market
+  baseline plus the classical engines), and the track record will show whether that holds.
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):
