@@ -9,6 +9,11 @@
   "lon": 9.66721,
   "source": "manual"
  },
+ "Bayer Leverkusen": {
+  "lat": 51.03833333,
+  "lon": 7.00222222,
+  "source": "wikipedia: BayArena"
+ },
  "Benfica": {
   "lat": 38.75087,
   "lon": -9.20282,
@@ -34,6 +39,16 @@
   "lon": -3.714722,
   "source": "stadium"
  },
+ "Hapoel Be'er Sheva": {
+  "lat": 31.27315,
+  "lon": 34.77936111,
+  "source": "wikipedia: Turner Stadium"
+ },
+ "KuPS Kuopio": {
+  "lat": 62.88463,
+  "lon": 27.6718,
+  "source": "wikipedia: Kuopio Football Stadium"
+ },
  "Leverkusen": {
   "lat": 51.038256,
   "lon": 7.002206,
@@ -49,10 +64,30 @@
   "lon": 7.415614,
   "source": "stadium"
  },
+ "NEC Nijmegen": {
+  "lat": 51.8225,
+  "lon": 5.83666667,
+  "source": "wikipedia: Goffertstadion"
+ },
  "Panathinaikos": {
   "lat": 37.98376,
   "lon": 23.72784,
   "source": "manual"
+ },
+ "Red Star Belgrade": {
+  "lat": 44.78333333,
+  "lon": 20.46472222,
+  "source": "wikipedia: Red Star Stadium"
+ },
+ "Sint Truiden": {
+  "lat": 50.8134975,
+  "lon": 5.1661364,
+  "source": "openstreetmap: Daio Wasabi Stayen Stadium, Tiensesteenweg, Sint-Truiden, Hasselt, Limburg, Vlaanderen, 3800, België / Belgique / Belgien"
+ },
+ "Sociedad": {
+  "lat": 43.301378,
+  "lon": -1.973617,
+  "source": "stadium"
  },
  "St Truiden": {
   "lat": 50.81679,
