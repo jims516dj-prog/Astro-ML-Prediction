@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, doublechance, foundings, goalmarkets, live, overunder, service, sync, teamgoals, venues
+from .. import db, doublechance, foundings, goalmarkets, live, merged, overunder, service, sync, teamgoals, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
@@ -147,6 +147,11 @@ def _inputs_from_form(form) -> dict:
 async def analyze_submit(request: Request):
     form = dict(await request.form())
     inp = _inputs_from_form(form)
+    dup = merged.find_duplicate(inp["team_a"], inp["team_b"], inp["kickoff_utc"], [dict(r) for r in db.list_matches(con())])
+    if dup:                      # one entry per game: open the existing one instead of saving a copy
+        kind, ident = dup
+        return RedirectResponse(f"/live/match/{ident}?dup=1" if kind == "live" else f"/match/{ident}?dup=1",
+                                status_code=303)
     if inp["lat"] is None or inp["lon"] is None:
         look = venues.lookup(inp["venue"], con())
         if look["lat"] is None:
@@ -203,7 +208,7 @@ def _commit_ledger(c, mid, a, kickoff):
 
 
 @app.get("/match/{mid}", response_class=HTMLResponse)
-def match_page(request: Request, mid: str):
+def match_page(request: Request, mid: str, dup: int = 0):
     c = con()
     r = db.get_match(c, mid)
     if r is None:
@@ -212,7 +217,7 @@ def match_page(request: Request, mid: str):
     wheels = {z: chart_wheel(a["chart"][z], z) for z in ("tropical", "lahiri")}
     return T.TemplateResponse(request, "match.html", {
         "r": r, "a": a, "wheels": wheels, "audit": db.audit_trail(c, mid), "preds": db.predictions_for(c, mid),
-        "versions": json.loads(r["versions_json"] or "[]"), "page": "dataset"})
+        "versions": json.loads(r["versions_json"] or "[]"), "dup": dup, "page": "dataset"})
 
 
 @app.post("/match/{mid}/result")
@@ -273,18 +278,16 @@ def delete_match(mid: str):
 
 @app.get("/dataset", response_class=HTMLResponse)
 def dataset_page(request: Request, league: str = "", season: str = "", team: str = "", page: int = 1,
-                 status: str = ""):
-    c = con()
-    user = [dict(r) for r in db.list_matches(c)]
-    for u in user:
-        a = json.loads(u["analysis_json"])
-        u["fav"], u["verdicts"] = a["fav"], {k: v["winner"] for k, v in a["verdicts"].items()}
-        u["e4"] = a.get("engine4")
-        u["consensus"] = a["synthesis"]["consensus"]
-        res = (u["score_a"], u["score_b"]) if u.get("score_a") is not None and u.get("score_b") is not None else None
-        u["gm"] = goalmarkets.from_analysis(a, res)
-    if status:
-        user = [u for u in user if u["status"] == status]
+                 status: str = "", origin: str = "", gpage: int = 1):
+    # 1) every game we forecast: live record + games added by hand, each game once
+    games = _filter_live(_all_games(), status=status, origin=origin, league=league, team=team)
+    per = 50
+    gpages = max(1, math.ceil(len(games) / per))
+    gpage = min(max(gpage, 1), gpages)
+    shown = games[(gpage - 1) * per: gpage * per]
+    for r in shown:
+        r["gm"] = _gm_live(r)
+    # 2) the research corpus
     m = imported()
     q = m
     if league:
@@ -295,26 +298,20 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
         t = team.lower()
         q = q[q.home.str.lower().str.contains(t) | q.away.str.lower().str.contains(t)]
     q = q.sort_values("kickoff_utc", ascending=False)
-    per = 50
     pages = max(1, math.ceil(len(q) / per))
     rows = q.iloc[(page - 1) * per: page * per]
-    leagues = sorted(m.division.unique(), key=lambda c: LEAGUE_NAMES.get(c, c)) if len(m) else []
-    seasons = sorted(m.season.unique(), reverse=True) if len(m) else []
-    live_done = [r for r in live.records() if r["status"] == "settled"]
-    if league:
-        live_done = [r for r in live_done if r["division"] == league]
-    if team:
-        live_done = [r for r in live_done if team.lower() in r["home"].lower() or team.lower() in r["away"].lower()]
     hist = rows.to_dict("records")
     for r in hist:
         r["gm"] = _gm_hist(r)
-    for r in live_done[:50]:
-        r["gm"] = _gm_live(r)
+    leagues = sorted(set(m.division.unique()) | {r["division"] for r in games} if len(m) else
+                     {r["division"] for r in games}, key=lambda c: LEAGUE_NAMES.get(c, c))
+    seasons = sorted(m.season.unique(), reverse=True) if len(m) else []
+    counts = {o: sum(1 for r in games if r["origin"] == o) for o in ("live", "manual")}
     return T.TemplateResponse(request, "dataset.html", {
-        "live_done": live_done[:50], "live_done_n": len(live_done),
-        "user": user, "rows": hist, "n": len(q), "page_no": page, "pages": pages,
+        "games": shown, "games_n": len(games), "gpage": gpage, "gpages": gpages, "counts": counts,
+        "rows": hist, "n": len(q), "page_no": page, "pages": pages,
         "league": league, "season": season, "team": team, "leagues": leagues, "seasons": seasons,
-        "status": status, "page": "dataset"})
+        "status": status, "origin": origin, "page": "dataset"})
 
 
 @app.get("/dataset/export.csv")
@@ -394,7 +391,13 @@ def _track_record(c):
     return out
 
 
-def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit="", agree=""):
+def _all_games() -> list[dict]:
+    """Live forecasts plus manual games (Analyze), each game once (merged.py)."""
+    return merged.all_records([dict(r) for r in db.list_matches(con())])
+
+
+def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit="", agree="",
+                 origin=""):
     out = []
     t = team.lower().strip()
     for r in recs:
@@ -406,6 +409,8 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
         if (date_from and d < date_from) or (date_to and d > date_to):
             continue
         if status and r["status"] != status:
+            continue
+        if origin and r.get("origin", "live") != origin:
             continue
         if league and r["division"] != league:
             continue
@@ -425,16 +430,16 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
 @app.get("/live", response_class=HTMLResponse)
 def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
               team: str = "", engine: str = "", hit: str = "", agree: str = "", page_no: int = 1, msg: str = "",
-              syncing: int = 0):
-    recs = live.records()
-    rep = live.report() if recs else None
-    rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree)
+              syncing: int = 0, origin: str = ""):
+    recs = _all_games()
+    rep = live.report() if any(r["origin"] == "live" for r in recs) else None
+    rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree, origin)
     subset = live.score_picks([r for r in rows if r["pre_kickoff"]])
     per = 50
     pages = max(1, math.ceil(len(rows) / per))
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
-         "engine": engine, "hit": hit, "agree": agree}
+         "engine": engine, "hit": hit, "agree": agree, "origin": origin}
     shown = rows[(page_no - 1) * per: page_no * per]
     for r in shown:
         r["gm"] = _gm_live(r)
@@ -445,7 +450,7 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
 
 
 @app.get("/live/match/{key}", response_class=HTMLResponse)
-def live_match(request: Request, key: str):
+def live_match(request: Request, key: str, dup: int = 0):
     rec = next((r for r in live.records() if r["match_key"] == key), None)
     if rec is None:
         raise HTTPException(404)
@@ -460,7 +465,7 @@ def live_match(request: Request, key: str):
     diffs = [k for k in ("rao", "chokoisky", "frawley")
              if a["verdicts"][k]["winner"] != rec["predictions"].get(k, {}).get("winner")]
     wheels = {z: chart_wheel(a["chart"][z], z) for z in ("tropical", "lahiri")}
-    return T.TemplateResponse(request, "live_match.html", {"r": rec, "a": a, "wheels": wheels, "diffs": diffs,
+    return T.TemplateResponse(request, "live_match.html", {"r": rec, "a": a, "wheels": wheels, "diffs": diffs, "dup": dup,
                                                            "team_a": rec["home"], "team_b": rec["away"],
                                                            "page": "live"})
 
@@ -571,7 +576,7 @@ def top_page(request: Request, day: str = "", market: str = "result", agree: str
         mp = min(max(float(min_p), 0.0), 0.99) if min_p else 0.0
     except ValueError:
         mp = 0.0
-    recs = live.records()
+    recs = _all_games()
     tp = live.top_picks(recs, market=market)
     days = list(tp)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")

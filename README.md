@@ -274,6 +274,19 @@ football-data.co.uk has no files for club competitions, so these come only from 
 - The models were trained on league football only; European games are forecast the same way (market
   baseline plus the classical engines), and the track record will show whether that holds.
 
+## One list of games: manual and automatic, no duplicates
+
+- **Live record and Top picks** list the games you add on the Analyze page alongside the automatic forecasts,
+  marked *manual*, with every filter, prediction and score. A **Source** filter shows either kind alone. Only the
+  automatic forecasts are sealed on GitHub, so the official track record (tiles and `TRACK_RECORD.md`) counts
+  those alone. A historical game you add after it was played is never counted as a pre-kickoff forecast.
+- **Dataset** has one *Forecast games* table: every live forecast (pending, completed or void) and every manual
+  game, filterable by source, status, league and team.
+- **No duplicates.** Two entries are the same game when kickoffs are within 6 hours and both clubs' names match
+  (either way round). Analyze refuses to save a game that is already in your dataset or the live record and
+  opens the existing entry instead. A game you analysed before the live record forecast it is shown once,
+  as the sealed live forecast, with a link to your analysis (`astrofoot/merged.py`).
+
 ## The living Engine 4
 
 Engine 4 is retrained every week by `.github/workflows/retrain.yml` (`python scripts/research.py living`):

@@ -2,6 +2,9 @@
 {% block title %}{{ r.home }} v {{ r.away }} · Live record{% endblock %}
 {% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
 {% block body %}
+{% if dup %}<p class="callout small"><strong>This game is already in the live record</strong>, so it was not added again
+(one entry per game). Here is the existing entry.</p>{% endif %}
+
 <p class="crumbs"><a href="/live">Live record</a> › forecast</p>
 <h1>{{ r.home }} <span class="v">v</span> {{ r.away }}</h1>
 <p class="meta">{{ r.league }} · {{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %}

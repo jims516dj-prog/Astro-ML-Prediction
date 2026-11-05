@@ -420,28 +420,30 @@ def write_report(rep: dict, ledger: Path = LEDGER) -> None:
 OUTCOMES = ("fav", "draw", "dog")
 
 
+def join(r: dict, res: dict | None, ou_cal: dict | None = None, ts_cal: dict | None = None) -> dict:
+    """One forecast joined with its result: the derived fields every page uses (also for manual games)."""
+    void = bool(res and res.get("void"))
+    if void:
+        res = None
+    outcome = OUTCOMES[_outcome(r, res)] if res else None
+    p = r["predictions"]
+    probs = p.get("synthesis") or p["market"]
+    pick = max(OUTCOMES, key=lambda k: probs[k])
+    agree = sum(1 for e in ("rao", "chokoisky", "frawley") if p.get(e, {}).get("winner") == pick)
+    return {"origin": "live", "url": f"/live/match/{r['match_key']}", **r, "result": res, "outcome": outcome,
+            "verified": verify(r) if "sha256" in r else True,
+            "pre_kickoff": r["committed_at"] < r["kickoff_utc"],
+            "status": "void" if void else "settled" if res else "pending",
+            "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
+            "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal),
+            **teamgoals.view(r, res, ts_cal), **doublechance.view(r, res)}
+
+
 def records(ledger: Path = LEDGER) -> list[dict]:
     """Every sealed forecast joined with its result (if settled), newest kickoff first."""
     results = read_results(ledger)
     ou_cal, ts_cal = overunder.load(), teamgoals.load()
-    out = []
-    for r in read_predictions(ledger):
-        res = results.get(r["match_key"])
-        void = bool(res and res.get("void"))
-        if void:
-            res = None
-        outcome = OUTCOMES[_outcome(r, res)] if res else None
-        p = r["predictions"]
-        probs = p.get("synthesis") or p["market"]
-        pick = max(OUTCOMES, key=lambda k: probs[k])
-        agree = sum(1 for e in ("rao", "chokoisky", "frawley") if p.get(e, {}).get("winner") == pick)
-        out.append({**r, "result": res, "outcome": outcome, "verified": verify(r),
-                    "pre_kickoff": r["committed_at"] < r["kickoff_utc"],
-                    "status": "void" if void else "settled" if res else "pending",
-                    "pick": pick, "pick_p": float(probs[pick]), "classical_agree": agree,
-                    "pick_hit": (outcome == pick) if res else None, **overunder.view(r, res, ou_cal),
-                    **teamgoals.view(r, res, ts_cal),
-                    **doublechance.view(r, res)})
+    out = [join(r, results.get(r["match_key"]), ou_cal, ts_cal) for r in read_predictions(ledger)]
     out.sort(key=lambda r: r["kickoff_utc"], reverse=True)
     return out
 

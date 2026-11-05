@@ -3,6 +3,9 @@
 {% set S = a.synthesis %}{% set E4 = a.engine4 %}
 {% set name = {"fav": a.fav, "dog": a.dog, "draw": "Draw", "disabled": "— disabled —"} %}
 {% block body %}
+{% if dup %}<p class="callout small"><strong>This game is already in your dataset</strong>, so it was not added again
+(one entry per game). Here is the existing entry.</p>{% endif %}
+
 <p class="crumbs"><a href="/dataset">Dataset</a> › match record</p>
 <h1>{{ r.team_a }} <span class="v">v</span> {{ r.team_b }}</h1>
 <p class="meta">{{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %} · UK {{ a.kickoff_local_uk }} · {{ r.venue or "venue" }} ({{ "%.3f"|format(r.lat) }}, {{ "%.3f"|format(r.lon) }}, {{ r.loc_source }})

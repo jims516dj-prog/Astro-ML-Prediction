@@ -7,37 +7,34 @@
 <div class="row"><a class="btn" href="/analyze?historical=1">Add historical match</a><a class="btn ghost" href="/analyze">Add new match for analysis</a>
 <a class="btn ghost" href="/dataset/export.csv">Export CSV</a><a class="btn ghost" href="/dataset/export.json">Export JSON (full)</a></div>
 
-<h2>Your matches</h2>
-<form class="row" method="get"><select name="status" onchange="this.form.submit()"><option value="">All statuses</option>
-{% for s in ["pending","completed","abandoned","walkover"] %}<option {{ "selected" if s==status }}>{{ s }}</option>{% endfor %}</select></form>
-<div class="scroll"><table class="data">
-<thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Score</th><th>Status</th><th>Favourite</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th>Engine 4 (fav/D/dog)</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th></th></tr></thead>
-<tbody>
-{% for u in user %}
-<tr><td class="mono">{{ u.kickoff_utc[:16].replace("T"," ") }}</td><td>{{ u.team_a }} v {{ u.team_b }}</td>
-<td class="mono">{% if u.score_a is not none %}{{ u.score_a }}–{{ u.score_b }}{% else %}Pending{% endif %}</td>
-<td>{{ u.status }}{% if u.post_hoc %} · post-hoc{% endif %}{% if u.stale_analysis %} · stale{% endif %}</td><td>{{ u.fav }}</td>
-<td>{{ u.verdicts.rao }}</td><td>{{ u.verdicts.chokoisky }}</td><td>{{ u.verdicts.frawley }}</td>
-<td class="mono">{% if u.e4 %}{{ fmt_pct(u.e4.p_fav,0) }}/{{ fmt_pct(u.e4.p_draw,0) }}/{{ fmt_pct(u.e4.p_dog,0) }}{% else %}—{% endif %}</td>
-<td>{{ gm_badges(u.gm) }}</td>
-<td><a href="/match/{{ u.id }}">View / edit</a></td></tr>
-{% else %}<tr><td colspan="11">No matches yet. <a href="/analyze">Analyze one</a>.</td></tr>{% endfor %}
-</tbody></table></div>
-
-<h2>Live forecasts — completed <span class="small">({{ "{:,}".format(live_done_n) }} matches)</span></h2>
-<p class="note">Matches from the live track record whose results have come in (use <strong>Get latest results</strong> on the
-<a href="/live">Live record</a> page). Newest 50 shown; <a href="/live?status=settled">see all with filters</a>.</p>
+<h2>Forecast games <span class="small">({{ "{:,}".format(games_n) }}: {{ counts.live }} from the live record, {{ counts.manual }} added manually)</span></h2>
+<p class="note">Every game we have forecast, each once: the live record's automatic forecasts (pending, completed or void)
+and the games you add on the <a href="/analyze">Analyze</a> page. Completed live games appear here as soon as their
+results come in (<strong>Get latest results</strong> on the <a href="/live">Live record</a> page).</p>
+<form class="row" method="get">
+  <select name="origin" onchange="this.form.submit()"><option value="">All sources</option>
+    {% for v, l in [("live","Live record (automatic)"),("manual","Added manually")] %}<option value="{{ v }}" {{ "selected" if origin==v }}>{{ l }}</option>{% endfor %}</select>
+  <select name="status" onchange="this.form.submit()"><option value="">All statuses</option>
+    {% for v, l in [("pending","Pending"),("settled","Completed"),("void","Void / abandoned")] %}<option value="{{ v }}" {{ "selected" if status==v }}>{{ l }}</option>{% endfor %}</select>
+  <select name="league" onchange="this.form.submit()"><option value="">All leagues</option>{% for l in leagues %}<option value="{{ l }}" {{ "selected" if l==league }}>{{ league_name(l) }}</option>{% endfor %}</select>
+  <input name="team" value="{{ team }}" placeholder="team contains…"><button class="btn ghost">Filter</button>
+</form>
 <div class="scroll"><table class="data small">
-<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num">Score</th><th>Favourite</th><th>Result</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Market F/D/U</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th></tr></thead>
-<tbody>{% for r in live_done %}{% set p = r.predictions %}
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Source</th><th>Status</th><th class="num">Score</th><th>Favourite</th><th>Result</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Market F/D/U</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th></tr></thead>
+<tbody>{% for r in games %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
-<td><a href="/live/match/{{ r.match_key }}">{{ r.home }} v {{ r.away }}</a></td>
-<td class="num">{{ r.result.goals_home }}–{{ r.result.goals_away }}</td><td>{{ r.favourite }}</td><td>{{ r.outcome }}</td>
-{% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if p[k].winner == r.outcome }}">{{ p[k].winner }}</td>{% endfor %}
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}</td>
+<td>{% if r.origin == "manual" %}<span class="badge">manual</span>{% else %}<span class="badge ok">live</span>{% endif %}</td>
+<td>{{ {"settled": "completed", "pending": "pending", "void": "void"}[r.status] }}</td>
+<td class="num">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }}{% else %}–{% endif %}</td><td>{{ r.favourite }}</td><td>{{ r.outcome or "" }}</td>
+{% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ p[k].winner }}</td>{% endfor %}
 <td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td>
 <td>{{ gm_badges(r.gm) }}</td></tr>
-{% else %}<tr><td colspan="11">No completed live matches yet{% if league or team %} for these filters{% endif %}.</td></tr>{% endfor %}
+{% else %}<tr><td colspan="13">No games match these filters. <a href="/analyze">Analyze one</a>.</td></tr>{% endfor %}
 </tbody></table></div>
+<p class="row">{% if gpage > 1 %}<a href="?origin={{ origin }}&status={{ status }}&league={{ league }}&team={{ team }}&gpage={{ gpage-1 }}">← newer</a>{% endif %}
+<span>page {{ gpage }} / {{ gpages }}</span>
+{% if gpage < gpages %}<a href="?origin={{ origin }}&status={{ status }}&league={{ league }}&team={{ team }}&gpage={{ gpage+1 }}">older →</a>{% endif %}</p>
 
 <h2>Research corpus <span class="small">({{ "{:,}".format(n) }} matches)</span></h2>
 <p class="note">Goals column: double chance, over/under 1.5, over/under 2.5, home or away goal and both teams to score for every match, from its odds
