@@ -136,3 +136,15 @@ def test_european_results_settle_without_primary_and_void_after_three_days(tmp_p
     n = live.settle({}, NOW + timedelta(days=5), tmp_path)
     res = live.read_results(tmp_path)
     assert n == 1 and res["eu2"]["void"] and not res["eu1"].get("void")
+
+
+def test_european_game_not_forecast_twice_under_another_spelling(tmp_path):
+    e = {"soccer_uefa_europa_league": [ev("x", "Bayer Leverkusen", "Marseille", "2026-11-04T15:00:00Z")]}
+    o = {"soccer_uefa_europa_league": [priced("x", "Bayer Leverkusen", "Marseille", {"pinnacle": (1.7, 4.0, 4.5)})]}
+    earlier = [{"match_key": "old", "division": "UEL", "home": "Leverkusen", "away": "Marseille",
+                "kickoff_utc": "2026-11-04T15:00:00+00:00"}]
+    run = lambda preds: fixtures2.extra_fixtures([], NOW, 4, tmp_path, FakeClient(e, o), results_csv, live.results_url,
+                                                 live.match_key, local_date, preds, log=lambda *a: None,
+                                                 venue_of=lambda t: (51.0, 7.0, "x"), european_pool=set())
+    assert run(earlier) == []
+    assert len(run([])) == 1

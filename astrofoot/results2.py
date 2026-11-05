@@ -28,7 +28,7 @@ MAX_SPAN_DAYS = 10            # the API's dateFrom..dateTo limit
 
 _DROP = {"fc", "cf", "afc", "sc", "ac", "as", "ss", "ssc", "sl", "sv", "vfb", "vfl", "tsg", "rcd", "rc", "ud", "sd",
          "cd", "ca", "cr", "us", "club", "de", "del", "la", "le", "the", "futbol", "football", "calcio", "1",
-         "sad", "clube", "fk", "bk", "if", "ec", "se", "esporte", "bc", "pfc", "nk", "sk", "aif", "kf", "tc", "ff"}
+         "sad", "clube", "fk", "bk", "if", "ec", "se", "esporte", "bc", "pfc", "nk", "sk", "aif", "kf", "tc", "ff", "jk"}
 _EXPAND = {"man": "manchester", "utd": "united", "nottm": "nottingham", "sp": "sporting", "ath": "atletico",
            "st": "saint", "wolves": "wolverhampton", "spurs": "tottenham", "psg": "paris saint germain",
            "inter": "internazionale", "sociedad": "real sociedad", "betis": "real betis", "qpr": "queens park rangers"}

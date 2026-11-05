@@ -91,7 +91,8 @@ def load_fixtures(a, now) -> list[dict]:
     if key:
         import pandas as pd
         local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
-        preds = live.read_predictions(a.ledger)
+        voided = {k for k, v in live.read_results(a.ledger).items() if v.get("void")}
+        preds = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in voided]
         out += fixtures2.extra_fixtures(out, now, a.horizon, a.ledger, fixtures2.Client(key), live.fetch_csv,
                                         live.results_url, live.match_key, local_date, preds,
                                         venue_of=EuropeanGrounds(a.ledger, preds),

@@ -150,7 +150,16 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
                    log=print, venue_of=None, european_pool: set[str] | None = None) -> list[dict]:
     """venue_of(team) -> (lat, lon, source) | None locates a European home team's ground; european_pool is the
     set of football-data.co.uk team names to translate European entrants to (clubs outside it keep the
-    API's name)."""
+    API's name). European games already forecast (ledger_preds should exclude voided ones) are recognised by
+    competition, kickoff and either club's name, so a spelling change never forecasts a game twice."""
+    from .results2 import similarity
+    euro_slots = [(r["division"], r["kickoff_utc"][:16], r["home"], r["away"]) for r in ledger_preds
+                  if r["division"] in EUROPEAN]
+
+    def euro_done(div, ko, h, a):
+        k = ko.isoformat()[:16]
+        return any(d == div and t == k and max(similarity(h, x), similarity(a, y)) >= 0.6
+                   for d, t, x, y in euro_slots)
     """Fixtures (with odds) that the primary does not list, in the same form as live.parse_fixtures."""
     state_path = ledger / "odds_api_state.json"
     try:
@@ -194,6 +203,8 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
                 skipped.append(f"{ev['home_team']} v {ev['away_team']} ({div}): team name not recognised")
                 continue
             key = match_key(div, local_date(ko), h, a)
+            if euro and euro_done(div, ko, h, a):
+                continue
             day = ko.isoformat()[:10]
             if key in have or (div, day, h) in busy or (div, day, a) in busy:
                 continue
