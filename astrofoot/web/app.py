@@ -588,8 +588,14 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
     if not day or day not in tp:
         day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
     hit_key, p_key, agree_key = live.PICK_KEYS[market]
-    min_agree = int(agree) if agree in ("1", "2", "3") else 0
-    keep = lambda ps: [p for p in ps if (p.get(agree_key) or 0) >= min_agree and p[p_key] >= mp]   # noqa: E731
+    # "=0".."=3": exactly that many engines agree; "1".."3": at least that many; "": any
+    if agree in ("=0", "=1", "=2", "=3"):
+        ok_agree = lambda n, k=int(agree[1]): n == k              # noqa: E731
+    elif agree in ("1", "2", "3"):
+        ok_agree = lambda n, k=int(agree): n >= k                 # noqa: E731
+    else:
+        agree, ok_agree = "", (lambda n: True)
+    keep = lambda ps: [p for p in ps if ok_agree(p.get(agree_key) or 0) and p[p_key] >= mp]   # noqa: E731
     picks = keep(tp.get(day, []))
     all_picks = keep([p for ps in tp.values() for p in ps])
     by_agree = {k: live.score_picks([p for p in all_picks if (p.get(agree_key) or 0) == k], market) for k in range(4)}
