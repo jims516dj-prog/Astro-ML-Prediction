@@ -1,6 +1,6 @@
 # Live track record
 
-_Updated 2026-11-05T22:42:16+00:00 · 271 settled · 32 pending · 312/312 records verify · 0 excluded as committed after kickoff_
+_Updated 2026-11-06T05:21:53+00:00 · 274 settled · 29 pending · 312/312 records verify · 0 excluded as committed after kickoff_
 
 Every forecast below was committed to this ledger and pushed to git **before kickoff**. Each record carries a SHA-256 of its contents. Only these pre-registered forecasts count.
 
@@ -8,14 +8,14 @@ Every forecast below was committed to this ledger and pushed to git **before kic
 
 | Forecast | n | RPS | Log loss | Accuracy | ΔRPS vs market [95% CI] |
 |---|---|---|---|---|---|
-| market | 271 | 0.2078 | 0.9680 | 56.5% | — |
-| engine4 | 271 | 0.2103 | 0.9751 | 53.5% | +0.00249 [-0.00023, +0.00366] |
-| synthesis | 271 | 0.2078 | 0.9680 | 56.5% | +0.00000 [+0.00000, +0.00000] |
+| market | 274 | 0.2069 | 0.9636 | 56.9% | — |
+| engine4 | 274 | 0.2094 | 0.9706 | 54.0% | +0.00246 [-0.00011, +0.00360] |
+| synthesis | 274 | 0.2069 | 0.9636 | 56.9% | +0.00000 [+0.00000, +0.00000] |
 
 ## Classical verdicts (hit rate vs what the odds implied for the same picks)
 
 | Engine | n | Hit rate | Market expected | Lift (pp) ± 1 SE |
 |---|---|---|---|---|
-| rao | 271 | 36.9% | 34.7% | +2.2 ± 2.7 |
-| chokoisky | 271 | 37.6% | 36.6% | +1.1 ± 2.7 |
-| frawley | 263 | 41.4% | 38.2% | +3.2 ± 2.8 |
+| rao | 274 | 36.5% | 34.5% | +2.0 ± 2.7 |
+| chokoisky | 274 | 38.0% | 36.6% | +1.4 ± 2.7 |
+| frawley | 266 | 41.7% | 38.4% | +3.3 ± 2.7 |
