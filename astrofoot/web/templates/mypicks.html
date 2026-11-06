@@ -9,8 +9,8 @@ the games are played.</p>
 
 <form method="get" class="filters" id="dayform">
   <label>Day<select name="day" onchange="this.form.submit()">
-    {% if day not in days %}<option selected>{{ day }}</option>{% endif %}
-    {% for d in days %}<option {{ "selected" if d == day }}>{{ d }}</option>{% endfor %}</select></label>
+    {% if day not in days %}<option value="{{ day }}" selected title="{{ day }}">{{ day_label(day) }}</option>{% endif %}
+    {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
   <label>Or any date<input type="date" value="{{ day }}" onchange="location.href='/mypicks?day='+this.value"></label>
 </form>
 

@@ -88,3 +88,15 @@ def test_report_and_csv_show_every_pick_in_full(tmp_path, monkeypatch):
     rows = list(csv.DictReader(io.StringIO(client.get("/mypicks/export.csv?day=2026-11-09").text)))
     assert len(rows) == 1 and rows[0]["pick"] == "Over 1.5 goals" and rows[0]["rao_predicted_score_home_first"] == "2-1"
     assert rows[0]["rao_agrees"] == "yes" and rows[0]["astrology_agrees"] == "1" and rows[0]["engines_with_score"] == "2" and rows[0]["picked_after_kickoff"] == "no"
+
+
+def test_day_labels():
+    from datetime import datetime, timedelta, timezone
+
+    from astrofoot.web.app import _day_label
+    today = datetime.now(timezone.utc).date()
+    assert _day_label(today.isoformat()) == "Today"
+    assert _day_label((today - timedelta(days=1)).isoformat()) == "Yesterday"
+    assert _day_label((today + timedelta(days=1)).isoformat()) == "Tomorrow"
+    other = (today - timedelta(days=5)).isoformat()
+    assert _day_label(other) == other and _day_label("not a date") == "not a date"

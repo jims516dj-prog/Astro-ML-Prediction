@@ -33,7 +33,18 @@ T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.
                      JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET),
                      league_name=lambda code: LEAGUE_NAMES.get(code, code),
                      goal_markets=lambda a: goalmarkets.from_analysis(a),
-                     mypicks_market=lambda code: mypicks.MARKET_NAMES.get(code.split(":")[0], code))
+                     mypicks_market=lambda code: mypicks.MARKET_NAMES.get(code.split(":")[0], code),
+                     day_label=lambda d: _day_label(d))
+
+
+def _day_label(d: str) -> str:
+    """'Today', 'Yesterday' or 'Tomorrow' for those three dates (UTC, like the game dates); others unchanged."""
+    from datetime import date as _date
+    try:
+        delta = (_date.fromisoformat(d) - datetime.now(timezone.utc).date()).days
+    except (TypeError, ValueError):
+        return d
+    return {0: "Today", -1: "Yesterday", 1: "Tomorrow"}.get(delta, d)
 
 
 def _gm_live(r: dict) -> dict:

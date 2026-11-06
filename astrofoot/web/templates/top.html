@@ -117,7 +117,7 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
     {% for k, label in markets if k != "summary" %}<label class="chk"><input type="checkbox" name="m" value="{{ k }}" {{ "checked" if k in chosen }} onchange="this.form.submit()"> {{ label }}</label>{% endfor %}
   </fieldset>{% endif %}
   <label>Day<select name="day" onchange="this.form.submit()">
-    {% for d in days %}<option {{ "selected" if d == day }}>{{ d }}</option>{% endfor %}</select></label>
+    {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
   <label>Astrology agrees<select name="agree" onchange="this.form.submit()">
     <option value="" {{ "selected" if not agree }}>any</option>
     {% for v, l in [("=0", "0/3 (none agree)"), ("=1", "exactly 1/3"), ("=2", "exactly 2/3"), ("=3", "3/3 (all agree)"),
