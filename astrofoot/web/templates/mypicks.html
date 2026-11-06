@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}My picks · Astro Football Lab{% endblock %}
+{% block body %}
+<h1>My picks</h1>
+<p class="lede">Choose a day: its games load from the live record and your dataset. Tick the games you want, choose
+an outcome for each (the most likely one is preselected; every outcome shows its calibrated probability), and save.
+Your picks are scored once the games are played.</p>
+
+<form method="get" class="filters" id="dayform">
+  <label>Day<select name="day" onchange="this.form.submit()">
+    {% if day not in days %}<option selected>{{ day }}</option>{% endif %}
+    {% for d in days %}<option {{ "selected" if d == day }}>{{ d }}</option>{% endfor %}</select></label>
+  <label>Or any date<input type="date" value="{{ day }}" onchange="location.href='/mypicks?day='+this.value"></label>
+</form>
+
+<section class="tiles">
+  <div class="tile"><div class="k">My picks so far (all days)</div>
+    {% if score_all.n %}<div class="v">{{ score_all.hits }} / {{ score_all.n }}</div>
+    <div class="s">hit rate {{ fmt_pct(score_all.hit_rate) }} vs {{ fmt_pct(score_all.expected) }} expected (± {{ fmt_pct(score_all.se) }})</div>
+    {% else %}<div class="v sm">{{ n_all }} pick{{ "" if n_all == 1 else "s" }}, none scored yet</div>{% endif %}</div>
+  <div class="tile"><div class="k">This day ({{ day_picks|length }} pick{{ "" if day_picks|length == 1 else "s" }})</div>
+    {% if score_day.n %}<div class="v">{{ score_day.hits }} / {{ score_day.n }}</div><div class="s">expected {{ fmt_pct(score_day.expected) }}</div>
+    {% else %}<div class="v sm">none scored yet</div>{% endif %}</div>
+  <div class="tile"><div class="k">Chance all of this day's picks come in</div>
+    <div class="v">{{ fmt_pct(all_win) if all_win is not none else "–" }}</div>
+    <div class="s">product of the picks' probabilities (treats games as independent)</div></div>
+</section>
+<p class="note">Picks made after kickoff are marked and not scored. Probabilities come from the market odds, recalibrated
+per market, so they carry no betting value; this is a research tool, not betting advice.</p>
+
+{% if saved %}<p class="callout small">Saved {{ saved }} pick{{ "" if saved == 1 else "s" }} for {{ day }}.</p>{% endif %}
+
+{% if day_picks %}
+<h2>Your picks for {{ day }}</h2>
+<div class="scroll"><table class="data">
+<thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Your pick</th><th class="num">Probability</th><th>Result</th></tr></thead>
+<tbody>{% for p in day_picks %}
+<tr><td class="mono">{{ p.kickoff_utc[11:16] }}</td><td>{% if p.url %}<a href="{{ p.url }}">{{ p.home }} v {{ p.away }}</a>{% else %}{{ p.home }} v {{ p.away }}{% endif %}</td>
+<td><strong>{{ p.label }}</strong>{% if p.late %} <span class="badge warn" title="picked at {{ p.picked_at }}">after kickoff, not scored</span>{% endif %}</td>
+<td class="num">{{ fmt_pct(p.p) }}</td>
+<td class="mono">{% if p.result %}{{ p.result.goals_home }}–{{ p.result.goals_away }} {{ "✓" if p.hit else "✗" }}{% elif p.status == "void" %}void{% else %}pending{% endif %}</td></tr>
+{% endfor %}</tbody></table></div>
+{% endif %}
+
+<h2>Games on {{ day }} <span class="small">({{ rows|length }})</span></h2>
+{% if rows %}
+<form method="post" action="/mypicks" id="picks">
+  <input type="hidden" name="day" value="{{ day }}">
+  <div class="row"><button type="button" class="btn ghost small" onclick="tick(true)">Select all</button>
+    <button type="button" class="btn ghost small" onclick="tick(false)">Clear all</button>
+    <span class="small" id="count"></span></div>
+  <div class="scroll"><table class="data">
+  <thead><tr><th>Pick</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Outcome</th><th>Result</th></tr></thead>
+  <tbody>{% for row in rows %}{% set g = row.g %}{% set k = g.match_key %}
+  <tr class="{{ 'started' if row.started }}">
+    <td><input type="hidden" name="game" value="{{ k }}"><input type="checkbox" name="sel_{{ k }}" id="sel_{{ k }}" aria-label="pick {{ g.home }} v {{ g.away }}" {{ "checked" if row.pick }}></td>
+    <td class="mono">{{ g.kickoff_utc[11:16] }}{% if row.started %}<br><span class="badge" title="picking now counts as after kickoff">started</span>{% endif %}</td>
+    <td>{{ league_name(g.division) }}</td>
+    <td><a href="{{ g.url }}">{{ g.home }} v {{ g.away }}</a>{% if g.origin == "manual" %} <span class="badge">manual</span>{% endif %}</td>
+    <td><select name="out_{{ k }}" onchange="document.getElementById('sel_{{ k }}').checked = true; count()" aria-label="outcome for {{ g.home }} v {{ g.away }}">
+      {% for o in row.opts %}<option value="{{ o.code }}" {{ "selected" if o.code == row.chosen }}>{{ fmt_pct(o.p, 0) }} · {{ o.label }}{% if loop.first %} (most likely){% endif %}</option>{% endfor %}
+    </select></td>
+    <td class="mono">{% if g.result %}{{ g.result.goals_home }}–{{ g.result.goals_away }}{% else %}{{ g.status }}{% endif %}</td>
+  </tr>{% endfor %}</tbody></table></div>
+  <div class="row sticky-save"><button class="btn">Save my picks for {{ day }}</button>
+    <span class="small">Saving replaces this day's picks with the ticked games.</span></div>
+</form>
+<script>
+function tick(on) { document.querySelectorAll('#picks input[type=checkbox]').forEach(b => b.checked = on); count(); }
+function count() {
+  const n = document.querySelectorAll('#picks input[type=checkbox]:checked').length;
+  document.getElementById('count').textContent = n + ' selected';
+}
+document.querySelectorAll('#picks input[type=checkbox]').forEach(b => b.addEventListener('change', count));
+count();
+</script>
+{% else %}
+<p>No games on {{ day }} in the live record or your dataset. Pick another day, or add a game on the <a href="/analyze">Analyze</a> page.</p>
+{% endif %}
+{% endblock %}

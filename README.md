@@ -283,6 +283,17 @@ played. Each market is calibrated on its own, so the "expected" hit rate is an h
 market ticked, the safest calls (a team to score, over 1.5, double chance) usually win; untick them to see
 each game's most likely bolder outcome. The note under the table shows which markets the day's picks came from.
 
+## My picks
+
+The **My picks** tab (next to Top picks): choose a day and its games load from the live record and your dataset
+(each once). Tick the games you want and choose an outcome for each from a list of every market's outcomes
+(home/draw/away, double chance, over/under 1.5 and 2.5, each team to score or not, both teams to score or not),
+each with its calibrated probability; the most likely one is preselected. **Save** stores the day's picks in
+your local database (`data/app.sqlite3`, table `my_picks`; saving again replaces that day's picks).
+
+Played games are marked ✓/✗ and scored: hit rate vs the rate the picks' probabilities expected, for the day and
+all days, plus the chance that all of a day's picks come in. A pick made after kickoff is marked and not scored.
+
 ## One list of games: manual and automatic, no duplicates
 
 - **Live record and Top picks** list the games you add on the Analyze page alongside the automatic forecasts,

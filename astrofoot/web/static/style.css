@@ -136,3 +136,5 @@ code { font-family: var(--mono); font-size: .88em; background: var(--muted-bg); 
 label.chk { display: inline-flex; flex-direction: row; gap: 5px; align-items: center; color: var(--ink); font-size: .88rem; }
 label.chk { white-space: nowrap; }
 label.chk input { padding: 0; width: auto; min-width: 0; margin: 0; flex: none; }
+tr.started td { opacity: .75; }
+.sticky-save { position: sticky; bottom: 0; background: var(--bg); padding: 8px 0; border-top: 1px solid var(--line); }

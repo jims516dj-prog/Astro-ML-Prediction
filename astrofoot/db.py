@@ -41,6 +41,10 @@ CREATE TABLE IF NOT EXISTS team_charts (
 CREATE TABLE IF NOT EXISTS venues (
   name TEXT PRIMARY KEY, lat REAL NOT NULL, lon REAL NOT NULL, source TEXT NOT NULL, verified_at TEXT
 );
+CREATE TABLE IF NOT EXISTS my_picks (
+  match_key TEXT PRIMARY KEY, day TEXT NOT NULL, kickoff_utc TEXT NOT NULL, home TEXT NOT NULL, away TEXT NOT NULL,
+  league TEXT, selection TEXT NOT NULL, label TEXT NOT NULL, p REAL, picked_at TEXT NOT NULL, url TEXT
+);
 """
 
 EDITABLE = ["team_a", "team_b", "home_side", "kickoff_utc", "time_precision", "venue", "lat", "lon",
@@ -144,3 +148,22 @@ def save_team_chart(con, team: str, founded_date: str, founded_time: str | None,
 
 def team_charts(con):
     return [{**dict(r), "date_precision": "day"} for r in con.execute("SELECT * FROM team_charts ORDER BY team")]
+
+
+# ----------------------------------------------------------------------------- my picks
+def my_picks(con, day: str | None = None) -> list[dict]:
+    q, args = "SELECT * FROM my_picks", ()
+    if day:
+        q, args = q + " WHERE day=?", (day,)
+    return [dict(r) for r in con.execute(q + " ORDER BY kickoff_utc", args).fetchall()]
+
+
+def save_my_picks(con, day: str, picks: list[dict]):
+    """Replace the picks for one day with `picks` (one per game)."""
+    con.execute("DELETE FROM my_picks WHERE day=?", (day,))
+    for p in picks:
+        con.execute("INSERT OR REPLACE INTO my_picks (match_key, day, kickoff_utc, home, away, league, selection, label, p,"
+                    " picked_at, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    (p["match_key"], day, p["kickoff_utc"], p["home"], p["away"], p.get("league"), p["selection"],
+                     p["label"], p.get("p"), p["picked_at"], p.get("url")))
+    con.commit()

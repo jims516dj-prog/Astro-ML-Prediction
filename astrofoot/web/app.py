@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, doublechance, foundings, goalmarkets, live, merged, overunder, service, sync, teamgoals, venues
+from .. import db, doublechance, foundings, goalmarkets, live, merged, mypicks, overunder, service, sync, teamgoals, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..tables import JERSEY_COLOR_PLANET
@@ -650,6 +650,71 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
         "by_agree": by_agree, "live_bands": live_bands, "research": research,
         "ou": overunder.load() if market == "goals" else None,
         "ts": tg if market in ("score", "btts") else None, "page": "top"})
+
+
+def _picks_view(c, games: list[dict], saved: list[dict], now_iso: str) -> list[dict]:
+    """Saved picks joined with their game's result (✓/✗) and the after-kickoff flag."""
+    by_key = {g["match_key"]: g for g in games}
+    out = []
+    for p in saved:
+        g = by_key.get(p["match_key"])
+        res = g.get("result") if g else None
+        hit = mypicks.won(p["selection"], res["goals_home"], res["goals_away"]) if res else None
+        out.append({**p, "late": p["picked_at"] >= p["kickoff_utc"], "result": res, "hit": hit,
+                    "status": g["status"] if g else "unknown", "started": p["kickoff_utc"] <= now_iso})
+    return out
+
+
+@app.get("/mypicks", response_class=HTMLResponse)
+def my_picks_page(request: Request, day: str = "", saved: int = 0):
+    c = con()
+    games = _all_games()
+    now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    days = sorted({g["kickoff_utc"][:10] for g in games}, reverse=True)
+    today = now_iso[:10]
+    if not day:
+        day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else today)
+    mine = {p["match_key"]: p for p in db.my_picks(c, day)}
+    todays = sorted((g for g in games if g["kickoff_utc"][:10] == day and g["status"] != "void"),
+                    key=lambda g: (g["kickoff_utc"], g["home"]))
+    rows = []
+    for g in todays:
+        opts = mypicks.options(g)
+        pick = mine.get(g["match_key"])
+        rows.append({"g": g, "opts": opts, "pick": pick, "chosen": pick["selection"] if pick else opts[0]["code"],
+                     "started": g["kickoff_utc"] <= now_iso})
+    day_picks = _picks_view(c, games, db.my_picks(c, day), now_iso)
+    all_picks = _picks_view(c, games, db.my_picks(c), now_iso)
+    return T.TemplateResponse(request, "mypicks.html", {
+        "day": day, "days": days, "rows": rows, "day_picks": day_picks, "saved": saved,
+        "score_day": mypicks.score(day_picks), "score_all": mypicks.score(all_picks),
+        "all_win": mypicks.all_win(day_picks), "n_all": len(all_picks), "page": "mypicks"})
+
+
+@app.post("/mypicks")
+async def my_picks_save(request: Request):
+    form = await request.form()
+    day = str(form.get("day", ""))
+    c = con()
+    games = {g["match_key"]: g for g in _all_games()}
+    before = {p["match_key"]: p for p in db.my_picks(c, day)}
+    now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    picks = []
+    for key in form.getlist("game"):
+        g = games.get(key)
+        if g is None or not form.get(f"sel_{key}"):
+            continue
+        code = str(form.get(f"out_{key}", ""))
+        opt = next((o for o in mypicks.options(g) if o["code"] == code), None)
+        if opt is None:
+            continue
+        old = before.get(key)
+        picks.append({"match_key": key, "kickoff_utc": g["kickoff_utc"], "home": g["home"], "away": g["away"],
+                      "league": g["division"], "selection": code, "label": opt["label"], "p": opt["p"], "url": g["url"],
+                      # an unchanged pick keeps its original time, so re-saving never makes it look late
+                      "picked_at": old["picked_at"] if old and old["selection"] == code else now_iso})
+    db.save_my_picks(c, day, picks)
+    return RedirectResponse(f"/mypicks?day={day}&saved={len(picks)}", status_code=303)
 
 
 @app.get("/api/teams")
