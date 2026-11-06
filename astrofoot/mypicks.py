@@ -51,6 +51,13 @@ def won(code: str, gh: int, ga: int) -> bool:
     }[market]()
 
 
+def agree(code: str, engine_scores: dict) -> tuple[int, int]:
+    """How many classical engines' predicted scores agree with the outcome `code`: (agreeing, engines with a
+    score). For a match-result pick this is the Live record's agreement count."""
+    known = [s for s in (engine_scores or {}).values() if s is not None]
+    return sum(1 for s in known if won(code, s[0], s[1])), len(known)
+
+
 def score(picks: list[dict]) -> dict:
     """Settled, before-kickoff picks: hits vs the hit rate their probabilities implied."""
     s = [p for p in picks if p.get("hit") is not None and not p.get("late") and p.get("p") is not None]

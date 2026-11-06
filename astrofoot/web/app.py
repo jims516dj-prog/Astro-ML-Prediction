@@ -660,13 +660,15 @@ def _picks_view(c, games: list[dict], saved: list[dict], now_iso: str) -> list[d
         g = by_key.get(p["match_key"])
         res = g.get("result") if g else None
         hit = mypicks.won(p["selection"], res["goals_home"], res["goals_away"]) if res else None
+        n_agree, n_eng = mypicks.agree(p["selection"], g.get("ts_engine_scores")) if g else (None, None)
         out.append({**p, "late": p["picked_at"] >= p["kickoff_utc"], "result": res, "hit": hit,
-                    "status": g["status"] if g else "unknown", "started": p["kickoff_utc"] <= now_iso})
+                    "status": g["status"] if g else "unknown", "started": p["kickoff_utc"] <= now_iso,
+                    "opts": mypicks.options(g) if g else [], "agree": n_agree, "n_engines": n_eng})
     return out
 
 
 @app.get("/mypicks", response_class=HTMLResponse)
-def my_picks_page(request: Request, day: str = "", saved: int = 0):
+def my_picks_page(request: Request, day: str = "", added: int = -1, changed: int = -1, removed: int = -1):
     c = con()
     games = _all_games()
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -686,35 +688,68 @@ def my_picks_page(request: Request, day: str = "", saved: int = 0):
     day_picks = _picks_view(c, games, db.my_picks(c, day), now_iso)
     all_picks = _picks_view(c, games, db.my_picks(c), now_iso)
     return T.TemplateResponse(request, "mypicks.html", {
-        "day": day, "days": days, "rows": rows, "day_picks": day_picks, "saved": saved,
+        "day": day, "days": days, "rows": rows, "day_picks": day_picks,
+        "added": added, "changed": changed, "removed": removed,
         "score_day": mypicks.score(day_picks), "score_all": mypicks.score(all_picks),
         "all_win": mypicks.all_win(day_picks), "n_all": len(all_picks), "page": "mypicks"})
 
 
-@app.post("/mypicks")
-async def my_picks_save(request: Request):
+def _pick_from(g: dict, code: str, picked_at: str) -> dict | None:
+    opts = mypicks.options(g)
+    # no (or an unknown) outcome sent: the most likely one, as preselected on the page
+    opt = next((o for o in opts if o["code"] == code), opts[0] if opts and not code else None)
+    if opt is None:
+        return None
+    return {"match_key": g["match_key"], "kickoff_utc": g["kickoff_utc"], "home": g["home"], "away": g["away"],
+            "league": g["division"], "selection": opt["code"], "label": opt["label"], "p": opt["p"], "url": g["url"],
+            "picked_at": picked_at}
+
+
+@app.post("/mypicks/add")
+async def my_picks_add(request: Request):
+    """Add the ticked games (with their chosen outcomes) to the day's picks; earlier picks are kept."""
     form = await request.form()
     day = str(form.get("day", ""))
     c = con()
     games = {g["match_key"]: g for g in _all_games()}
-    before = {p["match_key"]: p for p in db.my_picks(c, day)}
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    picks = []
+    have = {p["match_key"] for p in db.my_picks(c)}
+    n = 0
     for key in form.getlist("game"):
         g = games.get(key)
-        if g is None or not form.get(f"sel_{key}"):
+        if g is None or not form.get(f"sel_{key}") or key in have:
             continue
-        code = str(form.get(f"out_{key}", ""))
-        opt = next((o for o in mypicks.options(g) if o["code"] == code), None)
-        if opt is None:
+        pick = _pick_from(g, str(form.get(f"out_{key}", "")), now_iso)
+        if pick:
+            db.upsert_my_pick(c, day, pick)
+            n += 1
+    return RedirectResponse(f"/mypicks?day={day}&added={n}#mine", status_code=303)
+
+
+@app.post("/mypicks/edit")
+async def my_picks_edit(request: Request):
+    """Change the outcome of saved picks, or remove them. An unchanged pick keeps its original time."""
+    form = await request.form()
+    day = str(form.get("day", ""))
+    c = con()
+    games = {g["match_key"]: g for g in _all_games()}
+    now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    changed = removed = 0
+    for p in db.my_picks(c, day):
+        key = p["match_key"]
+        if form.get(f"del_{key}"):
+            db.delete_my_pick(c, key)
+            removed += 1
             continue
-        old = before.get(key)
-        picks.append({"match_key": key, "kickoff_utc": g["kickoff_utc"], "home": g["home"], "away": g["away"],
-                      "league": g["division"], "selection": code, "label": opt["label"], "p": opt["p"], "url": g["url"],
-                      # an unchanged pick keeps its original time, so re-saving never makes it look late
-                      "picked_at": old["picked_at"] if old and old["selection"] == code else now_iso})
-    db.save_my_picks(c, day, picks)
-    return RedirectResponse(f"/mypicks?day={day}&saved={len(picks)}", status_code=303)
+        code = str(form.get(f"out_{key}", p["selection"]))
+        g = games.get(key)
+        if g is None or code == p["selection"]:
+            continue
+        pick = _pick_from(g, code, now_iso)
+        if pick:
+            db.upsert_my_pick(c, day, pick)
+            changed += 1
+    return RedirectResponse(f"/mypicks?day={day}&changed={changed}&removed={removed}#mine", status_code=303)
 
 
 @app.get("/api/teams")

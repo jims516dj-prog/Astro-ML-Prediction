@@ -288,8 +288,11 @@ each game's most likely bolder outcome. The note under the table shows which mar
 The **My picks** tab (next to Top picks): choose a day and its games load from the live record and your dataset
 (each once). Tick the games you want and choose an outcome for each from a list of every market's outcomes
 (home/draw/away, double chance, over/under 1.5 and 2.5, each team to score or not, both teams to score or not),
-each with its calibrated probability; the most likely one is preselected. **Save** stores the day's picks in
-your local database (`data/app.sqlite3`, table `my_picks`; saving again replaces that day's picks).
+each with its calibrated probability; the most likely one is preselected. **Add selected games** adds them to
+*Your picks* (earlier picks are kept), stored in your local database (`data/app.sqlite3`, table `my_picks`). In
+*Your picks* every outcome stays editable, a game can be removed, and **Save changes** applies both. The
+*Astrology agrees* column counts the classical engines whose predicted score agrees with your chosen outcome
+(for a match-result pick, the same count as the Live record).
 
 Played games are marked ✓/✗ and scored: hit rate vs the rate the picks' probabilities expected, for the day and
 all days, plus the chance that all of a day's picks come in. A pick made after kickoff is marked and not scored.

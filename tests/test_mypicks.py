@@ -40,3 +40,23 @@ def test_saving_replaces_the_days_picks(tmp_path):
     db.save_my_picks(c, "2026-11-09", [{**base, "match_key": "k2", "selection": "btts:no"}])
     assert [(p["match_key"], p["selection"]) for p in db.my_picks(c, "2026-11-09")] == [("k2", "btts:no")]
     assert len(db.my_picks(c)) == 2
+
+
+def test_astrology_agrees_with_the_chosen_outcome():
+    scores = {"rao": (2, 1), "chokoisky": (1, 1), "frawley": None}       # home first; Frawley disabled
+    assert mypicks.agree("result:home", scores) == (1, 2)
+    assert mypicks.agree("dc:1X", scores) == (2, 2)
+    assert mypicks.agree("btts:yes", scores) == (2, 2)
+    assert mypicks.agree("o25:over", scores) == (1, 2)
+    assert mypicks.agree("as:no", scores) == (0, 2)
+
+
+def test_add_keeps_earlier_picks_and_edit_changes_or_removes(tmp_path):
+    c = db.connect(tmp_path / "t.sqlite3")
+    base = {"kickoff_utc": "2026-11-09T15:00:00+00:00", "home": "A", "away": "B", "label": "x", "p": 0.5,
+            "picked_at": "2026-11-08T10:00:00+00:00"}
+    db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k1", "selection": "result:home"})
+    db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k2", "selection": "btts:yes"})
+    db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k1", "selection": "result:draw"})
+    db.delete_my_pick(c, "k2")
+    assert [(p["match_key"], p["selection"]) for p in db.my_picks(c, "2026-11-09")] == [("k1", "result:draw")]

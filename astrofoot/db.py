@@ -167,3 +167,16 @@ def save_my_picks(con, day: str, picks: list[dict]):
                     (p["match_key"], day, p["kickoff_utc"], p["home"], p["away"], p.get("league"), p["selection"],
                      p["label"], p.get("p"), p["picked_at"], p.get("url")))
     con.commit()
+
+
+def upsert_my_pick(con, day: str, p: dict):
+    con.execute("INSERT OR REPLACE INTO my_picks (match_key, day, kickoff_utc, home, away, league, selection, label, p,"
+                " picked_at, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                (p["match_key"], day, p["kickoff_utc"], p["home"], p["away"], p.get("league"), p["selection"],
+                 p["label"], p.get("p"), p["picked_at"], p.get("url")))
+    con.commit()
+
+
+def delete_my_pick(con, match_key: str):
+    con.execute("DELETE FROM my_picks WHERE match_key=?", (match_key,))
+    con.commit()
