@@ -33,6 +33,15 @@ per market, so they carry no betting value; this is a research tool, not betting
 {% if changed >= 0 %}<p class="callout small">Saved: {{ changed }} pick{{ "" if changed == 1 else "s" }} changed, {{ removed }} removed.</p>{% endif %}
 
 <h2 id="mine">Your picks for {{ day }}</h2>
+<form class="row noprint" method="get" action="/mypicks/report" target="_blank">
+  <span class="small"><strong>Presentation report</strong> (full detail, printable as PDF):</span>
+  <a class="btn ghost small" href="/mypicks/report?day={{ day }}" target="_blank">This day</a>
+  <a class="btn ghost small" href="/mypicks/report" target="_blank">All days</a>
+  <label class="inline">from<input type="date" name="date_from" value="{{ day }}"></label>
+  <label class="inline">to<input type="date" name="date_to" value="{{ day }}"></label>
+  <button class="btn ghost small">Open report</button>
+  <a class="small" href="/mypicks/export.csv?day={{ day }}">CSV (this day)</a> · <a class="small" href="/mypicks/export.csv">CSV (all days)</a>
+</form>
 {% if day_picks %}
 <form method="post" action="/mypicks/edit">
 <input type="hidden" name="day" value="{{ day }}">

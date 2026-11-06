@@ -60,3 +60,31 @@ def test_add_keeps_earlier_picks_and_edit_changes_or_removes(tmp_path):
     db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k1", "selection": "result:draw"})
     db.delete_my_pick(c, "k2")
     assert [(p["match_key"], p["selection"]) for p in db.my_picks(c, "2026-11-09")] == [("k1", "result:draw")]
+
+
+def test_report_and_csv_show_every_pick_in_full(tmp_path, monkeypatch):
+    import csv
+    import io
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    from test_merged import live_rec
+
+    g = live_rec("K1", "Alpha", "Beta", "2026-11-09T15:00:00+00:00")
+    g.update(sha256="ab" * 32, odds={"home": 1.8, "draw": 3.6, "away": 4.4}, odds_source="test book",
+             venue_lat=None, venue_lon=None, ts_engine_scores={"rao": (2, 1), "chokoisky": (1, 0), "frawley": None})
+    path = tmp_path / "t.sqlite3"
+    c = db.connect(path)
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [g])
+    db.upsert_my_pick(c, "2026-11-09", {"match_key": "K1", "kickoff_utc": g["kickoff_utc"], "home": "Alpha",
+                                        "away": "Beta", "selection": "o15:over", "label": "Over 1.5 goals", "p": 0.74,
+                                        "picked_at": "2026-11-09T09:00:00+00:00", "url": g["url"]})
+    client = TestClient(web.app)
+    html = client.get("/mypicks/report?day=2026-11-09").text
+    for text in ("Alpha v Beta", "Over 1.5 goals", "74.0%", "test book", "abababab", "2–1", "Method and caveats"):
+        assert text in html, text
+    rows = list(csv.DictReader(io.StringIO(client.get("/mypicks/export.csv?day=2026-11-09").text)))
+    assert len(rows) == 1 and rows[0]["pick"] == "Over 1.5 goals" and rows[0]["rao_predicted_score_home_first"] == "2-1"
+    assert rows[0]["rao_agrees"] == "yes" and rows[0]["astrology_agrees"] == "1" and rows[0]["engines_with_score"] == "2" and rows[0]["picked_after_kickoff"] == "no"

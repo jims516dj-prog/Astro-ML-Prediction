@@ -32,7 +32,8 @@ T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.
                      fmt_num=lambda x, d=4: "—" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x:+.{d}f}",
                      JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET),
                      league_name=lambda code: LEAGUE_NAMES.get(code, code),
-                     goal_markets=lambda a: goalmarkets.from_analysis(a))
+                     goal_markets=lambda a: goalmarkets.from_analysis(a),
+                     mypicks_market=lambda code: mypicks.MARKET_NAMES.get(code.split(":")[0], code))
 
 
 def _gm_live(r: dict) -> dict:
@@ -665,6 +666,128 @@ def _picks_view(c, games: list[dict], saved: list[dict], now_iso: str) -> list[d
                     "status": g["status"] if g else "unknown", "started": p["kickoff_utc"] <= now_iso,
                     "opts": mypicks.options(g) if g else [], "agree": n_agree, "n_engines": n_eng})
     return out
+
+
+ENGINE_NAMES = {"rao": "Rao", "chokoisky": "Chokoisky", "frawley": "Frawley"}
+
+
+def _local_kickoff(g: dict) -> tuple[str | None, str | None]:
+    """Kickoff in the venue's local time (nearest-city timezone), if the venue is known."""
+    from zoneinfo import ZoneInfo
+    from .. import geo
+    try:
+        tz = geo.timezone_at(float(g["venue_lat"]), float(g["venue_lon"]))
+        if tz:
+            ko = datetime.fromisoformat(g["kickoff_utc"]).astimezone(ZoneInfo(tz))
+            return ko.strftime("%a %d %b %Y %H:%M"), tz
+    except Exception:  # noqa: BLE001 - venue tables missing or coordinates unknown
+        pass
+    return None, None
+
+
+def _report(c, date_from: str, date_to: str) -> dict:
+    """Everything about My picks between two dates (inclusive; empty = open), for the presentation report and
+    the CSV: every pick with its game's full forecast, plus summary statistics. Nothing is filtered out."""
+    games = {g["match_key"]: g for g in _all_games(include_withdrawn=True)}
+    now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
+    picks = [p for p in db.my_picks(c) if (not date_from or p["day"] >= date_from) and (not date_to or p["day"] <= date_to)]
+    view = {v["match_key"]: v for v in _picks_view(c, list(games.values()), picks, now_iso)}
+    rows = []
+    for p in picks:
+        v, g = view[p["match_key"]], games.get(p["match_key"])
+        row = {**v, "game": g, "engines": [], "markets": [], "local": None, "tz": None}
+        if g:
+            row["local"], row["tz"] = _local_kickoff(g)
+            calls = g.get("dc_calls") or {}
+            for e, name in ENGINE_NAMES.items():
+                sc = (g.get("ts_engine_scores") or {}).get(e)
+                pred = g["predictions"].get(e) or {}
+                row["engines"].append({"name": name, "score": sc, "call": calls.get(e) or pred.get("winner"),
+                                       "confidence": pred.get("confidence"), "net": pred.get("net"),
+                                       "agrees": mypicks.won(p["selection"], sc[0], sc[1]) if sc else None})
+            grouped: dict[str, list] = {}
+            for o in mypicks.options(g, by_probability=False):
+                grouped.setdefault(o["market"], []).append(o)
+            order = list(mypicks.MARKET_NAMES.values())
+            row["markets"] = sorted(grouped.items(), key=lambda kv: order.index(kv[0]))
+        rows.append(row)
+    rows.sort(key=lambda r: (r["kickoff_utc"], r["home"]))
+    scored = [r for r in rows if r["hit"] is not None and not r["late"]]
+    pending = [r for r in rows if r["result"] is None and r["status"] != "void"]
+    by_agree = {}
+    for r in scored:
+        if r["n_engines"]:
+            by_agree.setdefault(f"{r['agree']}/{r['n_engines']}", []).append(r)
+    by_market = {}
+    for r in rows:
+        by_market.setdefault(mypicks.MARKET_NAMES[r["selection"].split(":")[0]], []).append(r)
+    tg = teamgoals.load()
+    research = {"Over/under 2.5": overunder.load().get("all"), "Home team to score": tg.get("all"),
+                "Away team to score": tg.get("all"), "Both teams to score": (tg.get("btts") or {}).get("all"),
+                "Over/under 1.5": (tg.get("over15") or {}).get("all"), "Double chance": doublechance.load().get("all")}
+    return {
+        "rows": rows, "generated": now_iso, "date_from": date_from, "date_to": date_to,
+        "days": sorted({r["day"] for r in rows}),
+        "summary": {"n": len(rows), "scored": mypicks.score(rows), "late": sum(r["late"] for r in rows),
+                    "pending": len(pending), "void": sum(r["status"] == "void" for r in rows),
+                    "all_pending_win": mypicks.all_win(pending)},
+        "by_agree": {k: mypicks.score(v) for k, v in sorted(by_agree.items())},
+        "by_market": {k: {**mypicks.score(v), "picks": len(v)} for k, v in by_market.items()},
+        "research": research,
+    }
+
+
+@app.get("/mypicks/report", response_class=HTMLResponse)
+def my_picks_report(request: Request, date_from: str = "", date_to: str = "", day: str = ""):
+    if day and not (date_from or date_to):
+        date_from = date_to = day
+    rep = _report(con(), date_from, date_to)
+    return T.TemplateResponse(request, "mypicks_report.html", {"r": rep, "engine_names": ENGINE_NAMES})
+
+
+@app.get("/mypicks/export.csv")
+def my_picks_csv(date_from: str = "", date_to: str = "", day: str = ""):
+    import csv
+    if day and not (date_from or date_to):
+        date_from = date_to = day
+    rep = _report(con(), date_from, date_to)
+    cols = ["day", "kickoff_utc", "kickoff_local", "venue_timezone", "league", "home", "away", "source", "seal_sha256",
+            "model_version", "odds_home", "odds_draw", "odds_away", "odds_source", "favourite", "pick_market", "pick",
+            "pick_probability", "astrology_agrees", "engines_with_score"]
+    cols += [f"{e}_{k}" for e in ENGINE_NAMES for k in ("predicted_score_home_first", "call", "confidence", "agrees")]
+    codes = ["result:home", "result:draw", "result:away", "dc:1X", "dc:X2", "dc:12", "o15:over", "o25:over",
+             "hs:yes", "as:yes", "btts:yes"]
+    cols += [f"p_{c.replace(':', '_')}" for c in codes]
+    cols += ["picked_at", "picked_after_kickoff", "status", "goals_home", "goals_away", "pick_won", "result_source"]
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(cols)
+    for r in rep["rows"]:
+        g = r["game"] or {}
+        odds = g.get("odds") or {}
+        probs = {o["code"]: o["p"] for o in (mypicks.options(g) if g else [])}
+        line = [r["day"], r["kickoff_utc"], r["local"] or "", r["tz"] or "", league_label(g.get("division")), r["home"],
+                r["away"], g.get("origin", ""), g.get("sha256") or "", g.get("model_version") or "",
+                odds.get("home"), odds.get("draw"), odds.get("away"), g.get("odds_source", ""), g.get("favourite", ""),
+                mypicks.MARKET_NAMES[r["selection"].split(":")[0]], r["label"], round(r["p"], 4) if r["p"] is not None else "",
+                r["agree"] if r["agree"] is not None else "", r["n_engines"] or ""]
+        for e in r["engines"] or [{}] * 3:
+            sc = e.get("score")
+            line += [f"{sc[0]}-{sc[1]}" if sc else "", e.get("call") or "", e.get("confidence") or "",
+                     "" if e.get("agrees") is None else ("yes" if e["agrees"] else "no")]
+        line += [round(probs[c], 4) if c in probs else "" for c in codes]
+        res = r["result"] or {}
+        line += [r["picked_at"], "yes" if r["late"] else "no", r["status"], res.get("goals_home", ""),
+                 res.get("goals_away", ""), "" if r["hit"] is None else ("yes" if r["hit"] else "no"),
+                 res.get("source", "")]
+        w.writerow(line)
+    name = f"my-picks-{date_from or 'start'}-to-{date_to or 'latest'}.csv"
+    return StreamingResponse(iter([buf.getvalue()]), media_type="text/csv",
+                             headers={"Content-Disposition": f'attachment; filename="{name}"'})
+
+
+def league_label(code: str | None) -> str:
+    return LEAGUE_NAMES.get(code, code or "")
 
 
 @app.get("/mypicks", response_class=HTMLResponse)

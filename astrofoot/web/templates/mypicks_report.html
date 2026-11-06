@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+{% set period = (r.date_from if r.date_from == r.date_to else ((r.date_from or "first pick") ~ " to " ~ (r.date_to or "latest pick"))) if (r.date_from or r.date_to) else "all days" %}
+<title>My picks report · {{ period }}</title>
+<link rel="stylesheet" href="/static/style.css">
+<style>
+  main { max-width: 1050px; }
+  .rep-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; align-items: baseline; border-bottom: 2px solid var(--ink); padding-bottom: 8px; }
+  .rep-head h1 { margin: 0; }
+  .meta { font: .85rem var(--sans); color: var(--ink-2); }
+  .pick { break-inside: avoid; background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 12px 16px; margin: 14px 0; }
+  .pick-top { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; align-items: baseline; }
+  .pick-top h3 { margin: 0; font: 600 1.05rem var(--sans); }
+  .verdict { font: 600 1rem var(--mono); }
+  .verdict.win { color: var(--ok); } .verdict.loss { color: var(--bad); }
+  .yourpick { margin: 8px 0; font-family: var(--sans); }
+  .yourpick strong { font-size: 1.1rem; }
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .kv { font: .82rem var(--sans); color: var(--ink-2); margin: 2px 0; }
+  .kv b { color: var(--ink); font-weight: 600; }
+  table.mini { width: 100%; border-collapse: collapse; font: .8rem var(--sans); }
+  table.mini td, table.mini th { padding: 3px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+  table.mini th { color: var(--ink-2); font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
+  table.mini td.num { text-align: right; font-family: var(--mono); }
+  tr.chosen td { font-weight: 700; background: var(--ok-bg); }
+  .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  .toolbar button.btn { color: #fff; font-family: var(--sans); }
+  @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
+  @media print {
+    .toolbar, .noprint { display: none !important; }
+    body { background: #fff; font-size: 9.5pt; }
+    h2 { margin: 1em 0 .4em; }
+    .pick { padding: 8px 12px; margin: 8px 0; }
+    .yourpick { margin: 4px 0; }
+    table.mini { font-size: 7.5pt; }
+    table.mini td, table.mini th { padding: 1px 5px; }
+    .kv { font-size: 7.5pt; margin: 1px 0; }
+    .pick .small { font-size: 7pt; }
+    .grid2 { grid-template-columns: 1fr 1.1fr; gap: 10px; }
+    main { max-width: none; padding: 0; }
+    .pick, .tile, table.data { background: #fff; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+<main>
+<div class="toolbar noprint">
+  <a class="btn ghost small" href="/mypicks{% if r.date_from and r.date_from == r.date_to %}?day={{ r.date_from }}{% endif %}">← Back to My picks</a>
+  <button class="btn small" onclick="window.print()">Print / save as PDF</button>
+  <a class="btn ghost small" href="/mypicks/export.csv?date_from={{ r.date_from }}&date_to={{ r.date_to }}">Download CSV</a>
+</div>
+
+<header class="rep-head">
+  <h1>My picks: {{ period }}</h1>
+  <div class="meta">Astro Football Lab · generated {{ r.generated[:16].replace("T", " ") }} UTC · {{ r.summary.n }} pick{{ "" if r.summary.n == 1 else "s" }}
+  {% if r.days|length > 1 %}over {{ r.days|length }} days{% endif %}</div>
+</header>
+
+<p class="banner" style="margin-top:12px">For astrological research and education only; not betting advice. Every probability below comes from
+bookmaker odds (recalibrated per market on past seasons), so a pick carries no betting value: the odds already price it.
+No astrological engine has shown predictive accuracy beyond the odds in the backtests.</p>
+
+<section class="tiles">
+  <div class="tile"><div class="k">Scored picks</div>
+    {% set S = r.summary.scored %}
+    {% if S.n %}<div class="v">{{ S.hits }} / {{ S.n }}</div>
+    <div class="s">hit rate {{ fmt_pct(S.hit_rate) }} vs {{ fmt_pct(S.expected) }} expected (± {{ fmt_pct(S.se) }})</div>
+    {% else %}<div class="v sm">none scored yet</div>{% endif %}</div>
+  <div class="tile"><div class="k">Still to play</div><div class="v">{{ r.summary.pending }}</div>
+    <div class="s">{% if r.summary.all_pending_win is not none %}chance all come in: {{ fmt_pct(r.summary.all_pending_win) }} (games treated as independent){% else %}none{% endif %}</div></div>
+  <div class="tile"><div class="k">Not scored</div><div class="v">{{ r.summary.late + r.summary.void }}</div>
+    <div class="s">{{ r.summary.late }} picked after kickoff · {{ r.summary.void }} void (postponed / abandoned)</div></div>
+</section>
+<p class="note">"Expected" is the average probability of the scored picks: a well-calibrated set hits at about that rate. Over a
+handful of picks the gap is noise; ± is one standard error.</p>
+
+{% if r.by_market %}
+<h2>By market</h2>
+<div class="scroll"><table class="data">
+<thead><tr><th>Market</th><th class="num">Picks</th><th class="num">Scored</th><th class="num">Hit rate</th><th class="num">Expected</th>
+<th class="num">Same market, historical backtest</th></tr></thead>
+<tbody>{% for m, s in r.by_market.items() %}{% set h = r.research.get(m) %}
+<tr><td>{{ m }}</td><td class="num">{{ s.picks }}</td><td class="num">{{ s.n }}</td>
+<td class="num">{{ fmt_pct(s.hit_rate) if s.n else "–" }}</td><td class="num">{{ fmt_pct(s.expected) if s.n else "–" }}</td>
+<td class="num">{% if h %}{{ fmt_pct(h.hit_rate) }} vs {{ fmt_pct(h.expected) }} over {{ "{:,}".format(h.n) }} picks{% else %}–{% endif %}</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="note">Historical backtest: the same market's picks over past seasons, hit rate vs expected. For "team to score" it
+covers picks of the likelier team to score.</p>
+{% endif %}
+
+{% if r.by_agree %}
+<h2>By astrology agreement</h2>
+<p class="small">Scored picks grouped by how many classical engines' predicted scores agreed with the pick.</p>
+<div class="scroll"><table class="data">
+<thead><tr><th>Engines agreeing</th><th class="num">Scored picks</th><th class="num">Hit rate</th><th class="num">Expected</th></tr></thead>
+<tbody>{% for k, s in r.by_agree.items() %}<tr><td>{{ k }}</td><td class="num">{{ s.n }}</td><td class="num">{{ fmt_pct(s.hit_rate) }}</td><td class="num">{{ fmt_pct(s.expected) }}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endif %}
+
+<h2>Every pick in full</h2>
+{% for p in r.rows %}{% set g = p.game %}
+<article class="pick">
+  <div class="pick-top">
+    <h3>{{ loop.index }}. {{ p.home }} v {{ p.away }}</h3>
+    <span class="verdict {{ 'win' if p.hit else 'loss' if p.hit is not none else '' }}">
+      {% if p.result %}{{ p.result.goals_home }}–{{ p.result.goals_away }} · {{ "WON" if p.hit else "LOST" }}{% elif p.status == "void" %}VOID{% else %}PENDING{% endif %}
+      {% if p.late %} · not scored (picked after kickoff){% endif %}</span>
+  </div>
+  <div class="kv">{{ league_name(g.division) if g else p.league }} · kickoff <b>{{ p.kickoff_utc[:16].replace("T", " ") }} UTC</b>
+    {% if p.local %} · local <b>{{ p.local }}</b> ({{ p.tz }}){% endif %}</div>
+  <div class="yourpick">Pick: <strong>{{ p.label }}</strong> <span class="small">({{ mypicks_market(p.selection) }})</span>
+    · probability <strong>{{ fmt_pct(p.p) }}</strong>
+    · astrology agrees <strong>{% if p.n_engines %}{{ p.agree }}/{{ p.n_engines }}{% else %}–{% endif %}</strong></div>
+  {% if g %}
+  <div class="grid2">
+    <div>
+      <table class="mini"><thead><tr><th>Engine</th><th>Predicted score (home first)</th><th>Result call</th><th>Agrees with pick</th></tr></thead>
+      <tbody>{% for e in p.engines %}<tr><td>{{ e.name }}</td><td class="num">{{ "%d–%d"|format(e.score[0], e.score[1]) if e.score else "none (disabled)" }}</td>
+        <td>{{ {"home": p.home ~ " win", "away": p.away ~ " win", "draw": "Draw"}.get(e.call, e.call or "–") }}{% if e.confidence %} <span class="small">({{ e.confidence }})</span>{% endif %}</td>
+        <td>{{ "yes" if e.agrees else "no" if e.agrees is not none else "–" }}</td></tr>{% endfor %}</tbody></table>
+      <p class="kv">Odds (home/draw/away): <b>{{ g.odds.home }} / {{ g.odds.draw }} / {{ g.odds.away }}</b> · {{ g.odds_source }}</p>
+      <p class="kv">Favourite: <b>{{ g.favourite }}</b> · venue {{ "%.3f"|format(g.venue_lat) if g.venue_lat is not none else "?" }}, {{ "%.3f"|format(g.venue_lon) if g.venue_lon is not none else "?" }} ({{ g.venue_source or "unknown" }})</p>
+      <p class="kv">{% if g.origin == "manual" %}Source: <b>added manually</b> (Analyze page), not sealed{% else %}Source: <b>live record</b>, sealed {{ g.committed_at[:16].replace("T", " ") }} UTC · SHA-256 <code>{{ (g.sha256 or "")[:16] }}…</code>{% endif %}
+        {% if g.model_version %} · model {{ g.model_version }}{% endif %}</p>
+      <p class="kv">Picked {{ p.picked_at[:16].replace("T", " ") }} UTC{% if p.result and p.result.source %} · result from {{ p.result.source }}{% endif %}</p>
+    </div>
+    <div>
+      <table class="mini"><thead><tr><th>Market</th><th>Outcome</th><th class="num">Probability</th></tr></thead>
+      <tbody>{% for m, opts in p.markets %}{% for o in opts %}
+        <tr class="{{ 'chosen' if o.code == p.selection }}"><td>{{ m if loop.first else "" }}</td><td>{{ o.label }}{% if o.code == p.selection %} ← pick{% endif %}</td><td class="num">{{ fmt_pct(o.p) }}</td></tr>
+      {% endfor %}{% endfor %}</tbody></table>
+    </div>
+  </div>
+  {% else %}<p class="kv">The game is no longer in the live record or your dataset; only the saved pick is shown.</p>{% endif %}
+</article>
+{% else %}
+<p>No picks in this period.</p>
+{% endfor %}
+
+<h2>Method and caveats</h2>
+<ul class="small">
+  <li><b>Probabilities.</b> Match result: the de-vigged bookmaker odds (power method). Double chance: sums of those. Over/under 2.5: the
+  bookmaker's over/under price, recalibrated. Over/under 1.5, each team to score and both teams to score: Poisson scoring rates implied
+  by the match odds, recalibrated. Every recalibration was fitted on past seasons and tested on later ones (the "historical backtest"
+  column above).</li>
+  <li><b>Astrology agrees</b> counts the classical engines (Rao, Chokoisky, Frawley) whose predicted score agrees with the pick.
+  Across tens of thousands of past matches, agreement has not improved hit rates beyond what the odds implied.</li>
+  <li><b>Scoring.</b> Results are after 90 minutes. Picks made after kickoff and void games are listed but not scored. The chance
+  that several picks all come in multiplies their probabilities, which assumes the games are independent.</li>
+  <li><b>Records.</b> Live-record forecasts are sealed before kickoff with a SHA-256 hash; games added manually are not sealed. Your
+  picks are stored on your own computer.</li>
+</ul>
+<p class="note">Generated by Astro Football Lab for research and education. Not betting advice.</p>
+</main>
+</body>
+</html>

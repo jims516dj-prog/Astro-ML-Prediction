@@ -294,6 +294,15 @@ each with its calibrated probability; the most likely one is preselected. **Add 
 *Astrology agrees* column counts the classical engines whose predicted score agrees with your chosen outcome
 (for a match-result pick, the same count as the Live record).
 
+**Presentation report** (`/mypicks/report`, buttons on My picks: this day, all days, or a date range): a
+print-ready page (Print → Save as PDF) with nothing left out: summary (scored hit rate vs expected, picks still
+to play and the chance they all come in, picks not scored and why), results by market next to the same market's
+historical backtest, results by astrology agreement, and every pick in full: kickoff in UTC and venue-local time,
+the pick and its probability, each engine's predicted score and call and whether it agrees, every market's
+probabilities with the pick highlighted, the odds and their source, venue, source (sealed live forecast with its
+SHA-256, or manual), model version, when the pick was made, the result and its source; then the method and
+caveats. **CSV** (`/mypicks/export.csv`): the same detail, one row per pick, 50 columns.
+
 Played games are marked ✓/✗ and scored: hit rate vs the rate the picks' probabilities expected, for the day and
 all days, plus the chance that all of a day's picks come in. A pick made after kickoff is marked and not scored.
 

@@ -10,8 +10,9 @@ MARKET_NAMES = {"result": "Match result", "dc": "Double chance", "o15": "Over/un
                 "hs": "Home team to score", "as": "Away team to score", "btts": "Both teams to score"}
 
 
-def options(r: dict) -> list[dict]:
-    """Every pickable outcome of one game (a joined live/manual record), most probable first."""
+def options(r: dict, by_probability: bool = True) -> list[dict]:
+    """Every pickable outcome of one game (a joined live/manual record): most probable first, or in natural
+    order (home, draw, away; over before under) with by_probability=False."""
     home, away = r["home"], r["away"]
     probs = r["predictions"].get("synthesis") or r["predictions"]["market"]
     fh = r["fav_is_home"]
@@ -33,7 +34,7 @@ def options(r: dict) -> list[dict]:
         out += [("btts:yes", "Both teams to score", r["bt_p_yes"]),
                 ("btts:no", "Not both teams to score", 1 - r["bt_p_yes"])]
     opts = [{"code": c, "market": MARKET_NAMES[c.split(":")[0]], "label": lab, "p": float(p)} for c, lab, p in out]
-    return sorted(opts, key=lambda o: -o["p"])
+    return sorted(opts, key=lambda o: -o["p"]) if by_probability else opts
 
 
 def won(code: str, gh: int, ga: int) -> bool:
