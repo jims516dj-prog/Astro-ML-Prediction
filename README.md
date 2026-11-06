@@ -288,20 +288,28 @@ each game's most likely bolder outcome. The note under the table shows which mar
 The **My picks** tab (next to Top picks): choose a day and its games load from the live record and your dataset
 (each once). Tick the games you want and choose an outcome for each from a list of every market's outcomes
 (home/draw/away, double chance, over/under 1.5 and 2.5, each team to score or not, both teams to score or not),
-each with its calibrated probability; the most likely one is preselected. **Add selected games** adds them to
-*Your picks* (earlier picks are kept), stored in your local database (`data/app.sqlite3`, table `my_picks`). In
-*Your picks* every outcome stays editable, a game can be removed, and **Save changes** applies both. The
+each with its calibrated probability; the most likely one is preselected.
+
+**Slips.** A day can have any number of slips ("Slip 1", "Slip 2", or a name you give; rename or delete them any
+time). Choose a slip, tick games and **Add selected games** to it (its earlier picks are kept). A game can be on
+several slips with different outcomes, once per slip. In the open slip every outcome stays editable, a game can be
+removed, and **Save changes** applies both. The day's slip table shows each slip's picks, the chance all its picks
+come in, picks won, and the slip's state: *won* only if every pick won, *lost* as soon as one loses (void picks
+are left out). Slips are stored in your local database (`data/app.sqlite3`, tables `my_slips` and
+`my_slip_picks`); picks saved before slips existed were moved into "Slip 1" of their day, and the old table is kept
+as `my_picks_v1_backup`. The
 *Astrology agrees* column counts the classical engines whose predicted score agrees with your chosen outcome
 (for a match-result pick, the same count as the Live record).
 
 **Presentation report** (`/mypicks/report`, buttons on My picks: this day, all days, or a date range): a
-print-ready page (Print → Save as PDF) with nothing left out: summary (scored hit rate vs expected, picks still
+print-ready page (Print → Save as PDF) with nothing left out: the slips (picks, chance all come in, result), summary (scored hit rate vs expected, picks still
 to play and the chance they all come in, picks not scored and why), results by market next to the same market's
 historical backtest, results by astrology agreement, and every pick in full: kickoff in UTC and venue-local time,
 the pick and its probability, each engine's predicted score and call and whether it agrees, every market's
 probabilities with the pick highlighted, the odds and their source, venue, source (sealed live forecast with its
 SHA-256, or manual), model version, when the pick was made, the result and its source; then the method and
-caveats. **CSV** (`/mypicks/export.csv`): the same detail, one row per pick, 50 columns.
+caveats; picks are grouped by slip. **CSV** (`/mypicks/export.csv`): the same detail, one row per pick (with its slip),
+51 columns.
 
 Played games are marked ✓/✗ and scored: hit rate vs the rate the picks' probabilities expected, for the day and
 all days, plus the chance that all of a day's picks come in. A pick made after kickoff is marked and not scored.

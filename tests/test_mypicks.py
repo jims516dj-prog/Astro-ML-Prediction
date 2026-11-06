@@ -30,16 +30,49 @@ def test_score_ignores_late_and_unsettled_and_all_win():
     assert abs(mypicks.all_win(picks) - 0.8 * 0.6 * 0.9 * 0.7) < 1e-12
 
 
-def test_saving_replaces_the_days_picks(tmp_path):
+def test_slips_hold_picks_once_per_game_and_a_game_can_be_on_several(tmp_path):
     c = db.connect(tmp_path / "t.sqlite3")
     base = {"kickoff_utc": "2026-11-09T15:00:00+00:00", "home": "A", "away": "B", "label": "A win", "p": 0.5,
             "picked_at": "2026-11-08T10:00:00+00:00"}
-    db.save_my_picks(c, "2026-11-09", [{**base, "match_key": "k1", "selection": "result:home"},
-                                       {**base, "match_key": "k2", "selection": "btts:yes"}])
-    db.save_my_picks(c, "2026-11-10", [{**base, "match_key": "k3", "selection": "o15:over"}])
-    db.save_my_picks(c, "2026-11-09", [{**base, "match_key": "k2", "selection": "btts:no"}])
-    assert [(p["match_key"], p["selection"]) for p in db.my_picks(c, "2026-11-09")] == [("k2", "btts:no")]
-    assert len(db.my_picks(c)) == 2
+    s1, s2 = db.create_slip(c, "2026-11-09"), db.create_slip(c, "2026-11-09")
+    assert [x["name"] for x in db.slips(c, "2026-11-09")] == ["Slip 1", "Slip 2"]
+    assert db.add_pick(c, s1, "2026-11-09", {**base, "match_key": "k1", "selection": "result:home"})
+    assert not db.add_pick(c, s1, "2026-11-09", {**base, "match_key": "k1", "selection": "btts:yes"})   # once per slip
+    assert db.add_pick(c, s2, "2026-11-09", {**base, "match_key": "k1", "selection": "btts:yes"})       # other slip: fine
+    assert [(p["slip_name"], p["selection"]) for p in db.my_picks(c, "2026-11-09")] == [("Slip 1", "result:home"),
+                                                                                       ("Slip 2", "btts:yes")]
+    db.rename_slip(c, s2, "Goals slip")
+    db.delete_slip(c, s1)
+    assert [(x["name"], x["n"]) for x in db.slips(c)] == [("Goals slip", 1)]
+    assert db.create_slip(c, "2026-11-09") and db.slips(c)[-1]["name"] == "Slip 1"         # first free number
+
+
+def test_old_picks_move_into_slip_1(tmp_path):
+    import sqlite3
+    path = tmp_path / "old.sqlite3"
+    old = sqlite3.connect(path)
+    old.execute("CREATE TABLE my_picks (match_key TEXT PRIMARY KEY, day TEXT NOT NULL, kickoff_utc TEXT NOT NULL, home TEXT "
+                "NOT NULL, away TEXT NOT NULL, league TEXT, selection TEXT NOT NULL, label TEXT NOT NULL, p REAL, "
+                "picked_at TEXT NOT NULL, url TEXT)")
+    for k, d in (("k1", "2026-11-01"), ("k2", "2026-11-01"), ("k3", "2026-11-02")):
+        old.execute("INSERT INTO my_picks VALUES (?,?,?,?,?,?,?,?,?,?,?)",
+                    (k, d, d + "T15:00:00+00:00", "A", "B", "E0", "result:home", "A win", 0.5, d + "T09:00:00+00:00", None))
+    old.commit()
+    old.close()
+    c = db.connect(path)
+    assert [(x["day"], x["name"], x["n"]) for x in db.slips(c)] == [("2026-11-01", "Slip 1", 2), ("2026-11-02", "Slip 1", 1)]
+    assert c.execute("SELECT COUNT(*) FROM my_picks_v1_backup").fetchone()[0] == 3
+    assert len(db.my_picks(db.connect(path))) == 3                                       # migration runs once
+
+
+def test_slip_result():
+    from astrofoot.web.app import _slip_summary
+    pk = lambda hit, status="settled", late=False: {"hit": hit, "status": status, "late": late, "p": 0.8}   # noqa: E731
+    assert _slip_summary([pk(True), pk(True)])["state"] == "won"
+    assert _slip_summary([pk(True), pk(None, "pending")])["state"] == "open"
+    assert _slip_summary([pk(False), pk(None, "pending")])["state"] == "lost"
+    assert _slip_summary([pk(True), pk(None, "void")])["state"] == "won"
+    assert _slip_summary([])["state"] == "empty"
 
 
 def test_astrology_agrees_with_the_chosen_outcome():
@@ -51,14 +84,16 @@ def test_astrology_agrees_with_the_chosen_outcome():
     assert mypicks.agree("as:no", scores) == (0, 2)
 
 
-def test_add_keeps_earlier_picks_and_edit_changes_or_removes(tmp_path):
+def test_edit_changes_or_removes_by_pick(tmp_path):
     c = db.connect(tmp_path / "t.sqlite3")
     base = {"kickoff_utc": "2026-11-09T15:00:00+00:00", "home": "A", "away": "B", "label": "x", "p": 0.5,
             "picked_at": "2026-11-08T10:00:00+00:00"}
-    db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k1", "selection": "result:home"})
-    db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k2", "selection": "btts:yes"})
-    db.upsert_my_pick(c, "2026-11-09", {**base, "match_key": "k1", "selection": "result:draw"})
-    db.delete_my_pick(c, "k2")
+    sid = db.create_slip(c, "2026-11-09")
+    db.add_pick(c, sid, "2026-11-09", {**base, "match_key": "k1", "selection": "result:home"})
+    db.add_pick(c, sid, "2026-11-09", {**base, "match_key": "k2", "selection": "btts:yes"})
+    p1, p2 = db.my_picks(c, slip_id=sid)
+    db.update_pick(c, p1["id"], "result:draw", "Draw", 0.3, "2026-11-08T11:00:00+00:00")
+    db.delete_pick(c, p2["id"])
     assert [(p["match_key"], p["selection"]) for p in db.my_picks(c, "2026-11-09")] == [("k1", "result:draw")]
 
 
@@ -78,15 +113,15 @@ def test_report_and_csv_show_every_pick_in_full(tmp_path, monkeypatch):
     c = db.connect(path)
     monkeypatch.setattr(web, "con", lambda: db.connect(path))
     monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [g])
-    db.upsert_my_pick(c, "2026-11-09", {"match_key": "K1", "kickoff_utc": g["kickoff_utc"], "home": "Alpha",
+    db.add_pick(c, db.create_slip(c, "2026-11-09", "Main slip"), "2026-11-09", {"match_key": "K1", "kickoff_utc": g["kickoff_utc"], "home": "Alpha",
                                         "away": "Beta", "selection": "o15:over", "label": "Over 1.5 goals", "p": 0.74,
                                         "picked_at": "2026-11-09T09:00:00+00:00", "url": g["url"]})
     client = TestClient(web.app)
     html = client.get("/mypicks/report?day=2026-11-09").text
-    for text in ("Alpha v Beta", "Over 1.5 goals", "74.0%", "test book", "abababab", "2–1", "Method and caveats"):
+    for text in ("Alpha v Beta", "Over 1.5 goals", "74.0%", "test book", "abababab", "2–1", "Method and caveats", "Main slip"):
         assert text in html, text
     rows = list(csv.DictReader(io.StringIO(client.get("/mypicks/export.csv?day=2026-11-09").text)))
-    assert len(rows) == 1 and rows[0]["pick"] == "Over 1.5 goals" and rows[0]["rao_predicted_score_home_first"] == "2-1"
+    assert len(rows) == 1 and rows[0]["slip"] == "Main slip" and rows[0]["pick"] == "Over 1.5 goals" and rows[0]["rao_predicted_score_home_first"] == "2-1"
     assert rows[0]["rao_agrees"] == "yes" and rows[0]["astrology_agrees"] == "1" and rows[0]["engines_with_score"] == "2" and rows[0]["picked_after_kickoff"] == "no"
 
 

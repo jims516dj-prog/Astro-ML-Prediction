@@ -138,3 +138,13 @@ label.chk { white-space: nowrap; }
 label.chk input { padding: 0; width: auto; min-width: 0; margin: 0; flex: none; }
 tr.started td { opacity: .75; }
 .sticky-save { position: sticky; bottom: 0; background: var(--bg); padding: 8px 0; border-top: 1px solid var(--line); }
+tr.chosen-row td { background: var(--ok-bg); }
+.slip-tools { gap: 10px 18px; }
+.slip-tools form { margin: 0; gap: 6px; }
+.slip-tools input { width: 12em; }
+/* .small (grey helper text) must not recolour small buttons */
+.btn.small { color: #fff; }
+.btn.ghost.small { color: var(--e4); }
+.btn.danger.small { color: var(--bad); }
+.slip-tools form { display: flex; flex-wrap: nowrap; align-items: center; }
+.slip-tools input { flex: 0 1 12em; }

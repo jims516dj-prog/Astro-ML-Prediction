@@ -41,9 +41,13 @@ CREATE TABLE IF NOT EXISTS team_charts (
 CREATE TABLE IF NOT EXISTS venues (
   name TEXT PRIMARY KEY, lat REAL NOT NULL, lon REAL NOT NULL, source TEXT NOT NULL, verified_at TEXT
 );
-CREATE TABLE IF NOT EXISTS my_picks (
-  match_key TEXT PRIMARY KEY, day TEXT NOT NULL, kickoff_utc TEXT NOT NULL, home TEXT NOT NULL, away TEXT NOT NULL,
-  league TEXT, selection TEXT NOT NULL, label TEXT NOT NULL, p REAL, picked_at TEXT NOT NULL, url TEXT
+CREATE TABLE IF NOT EXISTS my_slips (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT NOT NULL, name TEXT NOT NULL, created_at TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS my_slip_picks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, slip_id INTEGER NOT NULL, match_key TEXT NOT NULL, day TEXT NOT NULL,
+  kickoff_utc TEXT NOT NULL, home TEXT NOT NULL, away TEXT NOT NULL, league TEXT, selection TEXT NOT NULL,
+  label TEXT NOT NULL, p REAL, picked_at TEXT NOT NULL, url TEXT, UNIQUE (slip_id, match_key)
 );
 """
 
@@ -61,7 +65,27 @@ def connect(path=DB_PATH) -> sqlite3.Connection:
     con = sqlite3.connect(path)
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
+    _migrate_picks(con)
     return con
+
+
+def _migrate_picks(con):
+    """One-off: picks saved before slips existed (table my_picks, one per game) become "Slip 1" of their day.
+    The old table is kept, renamed my_picks_v1_backup."""
+    if not con.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='my_picks'").fetchone():
+        return
+    rows = [dict(r) for r in con.execute("SELECT * FROM my_picks").fetchall()]
+    slip_of = {}
+    for r in rows:
+        if r["day"] not in slip_of:
+            slip_of[r["day"]] = con.execute("INSERT INTO my_slips (day, name, created_at) VALUES (?,?,?)",
+                                            (r["day"], "Slip 1", r["picked_at"])).lastrowid
+        con.execute("INSERT OR IGNORE INTO my_slip_picks (slip_id, match_key, day, kickoff_utc, home, away, league, "
+                    "selection, label, p, picked_at, url) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                    (slip_of[r["day"]], r["match_key"], r["day"], r["kickoff_utc"], r["home"], r["away"], r.get("league"),
+                     r["selection"], r["label"], r.get("p"), r["picked_at"], r.get("url")))
+    con.execute("ALTER TABLE my_picks RENAME TO my_picks_v1_backup")
+    con.commit()
 
 
 def insert_match(con, rec: dict) -> str:
@@ -150,33 +174,76 @@ def team_charts(con):
     return [{**dict(r), "date_precision": "day"} for r in con.execute("SELECT * FROM team_charts ORDER BY team")]
 
 
-# ----------------------------------------------------------------------------- my picks
-def my_picks(con, day: str | None = None) -> list[dict]:
-    q, args = "SELECT * FROM my_picks", ()
+# ----------------------------------------------------------------------------- my picks (slips)
+def slips(con, day: str | None = None) -> list[dict]:
+    q, args = "SELECT s.*, (SELECT COUNT(*) FROM my_slip_picks p WHERE p.slip_id = s.id) AS n FROM my_slips s", ()
     if day:
-        q, args = q + " WHERE day=?", (day,)
-    return [dict(r) for r in con.execute(q + " ORDER BY kickoff_utc", args).fetchall()]
+        q, args = q + " WHERE s.day=?", (day,)
+    return [dict(r) for r in con.execute(q + " ORDER BY s.day, s.id", args).fetchall()]
 
 
-def save_my_picks(con, day: str, picks: list[dict]):
-    """Replace the picks for one day with `picks` (one per game)."""
-    con.execute("DELETE FROM my_picks WHERE day=?", (day,))
-    for p in picks:
-        con.execute("INSERT OR REPLACE INTO my_picks (match_key, day, kickoff_utc, home, away, league, selection, label, p,"
-                    " picked_at, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                    (p["match_key"], day, p["kickoff_utc"], p["home"], p["away"], p.get("league"), p["selection"],
-                     p["label"], p.get("p"), p["picked_at"], p.get("url")))
+def get_slip(con, slip_id) -> dict | None:
+    r = con.execute("SELECT * FROM my_slips WHERE id=?", (slip_id,)).fetchone()
+    return dict(r) if r else None
+
+
+def create_slip(con, day: str, name: str = "", created_at: str | None = None) -> int:
+    """A new slip for `day`; unnamed slips are called "Slip N" (the first free number)."""
+    taken = {s["name"] for s in slips(con, day)}
+    if not name.strip():
+        n = 1
+        while f"Slip {n}" in taken:
+            n += 1
+        name = f"Slip {n}"
+    sid = con.execute("INSERT INTO my_slips (day, name, created_at) VALUES (?,?,?)",
+                      (day, name.strip()[:60], created_at or utcnow())).lastrowid
+    con.commit()
+    return sid
+
+
+def rename_slip(con, slip_id, name: str):
+    if name.strip():
+        con.execute("UPDATE my_slips SET name=? WHERE id=?", (name.strip()[:60], slip_id))
+        con.commit()
+
+
+def delete_slip(con, slip_id):
+    con.execute("DELETE FROM my_slip_picks WHERE slip_id=?", (slip_id,))
+    con.execute("DELETE FROM my_slips WHERE id=?", (slip_id,))
     con.commit()
 
 
-def upsert_my_pick(con, day: str, p: dict):
-    con.execute("INSERT OR REPLACE INTO my_picks (match_key, day, kickoff_utc, home, away, league, selection, label, p,"
-                " picked_at, url) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
-                (p["match_key"], day, p["kickoff_utc"], p["home"], p["away"], p.get("league"), p["selection"],
-                 p["label"], p.get("p"), p["picked_at"], p.get("url")))
+def my_picks(con, day: str | None = None, slip_id=None) -> list[dict]:
+    """Picks with their slip's name; filtered by day and/or slip."""
+    q = "SELECT p.*, s.name AS slip_name FROM my_slip_picks p JOIN my_slips s ON s.id = p.slip_id"
+    cond, args = [], []
+    if day:
+        cond.append("p.day=?")
+        args.append(day)
+    if slip_id is not None:
+        cond.append("p.slip_id=?")
+        args.append(slip_id)
+    if cond:
+        q += " WHERE " + " AND ".join(cond)
+    return [dict(r) for r in con.execute(q + " ORDER BY p.kickoff_utc, p.home, s.id", args).fetchall()]
+
+
+def add_pick(con, slip_id, day: str, p: dict) -> bool:
+    """Add a game to a slip (one entry per game per slip). False if the slip already has it."""
+    cur = con.execute("INSERT OR IGNORE INTO my_slip_picks (slip_id, match_key, day, kickoff_utc, home, away, league, "
+                      "selection, label, p, picked_at, url) VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                      (slip_id, p["match_key"], day, p["kickoff_utc"], p["home"], p["away"], p.get("league"),
+                       p["selection"], p["label"], p.get("p"), p["picked_at"], p.get("url")))
+    con.commit()
+    return cur.rowcount == 1
+
+
+def update_pick(con, pick_id, selection: str, label: str, prob, picked_at: str):
+    con.execute("UPDATE my_slip_picks SET selection=?, label=?, p=?, picked_at=? WHERE id=?",
+                (selection, label, prob, picked_at, pick_id))
     con.commit()
 
 
-def delete_my_pick(con, match_key: str):
-    con.execute("DELETE FROM my_picks WHERE match_key=?", (match_key,))
+def delete_pick(con, pick_id):
+    con.execute("DELETE FROM my_slip_picks WHERE id=?", (pick_id,))
     con.commit()

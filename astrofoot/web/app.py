@@ -702,10 +702,9 @@ def _report(c, date_from: str, date_to: str) -> dict:
     games = {g["match_key"]: g for g in _all_games(include_withdrawn=True)}
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
     picks = [p for p in db.my_picks(c) if (not date_from or p["day"] >= date_from) and (not date_to or p["day"] <= date_to)]
-    view = {v["match_key"]: v for v in _picks_view(c, list(games.values()), picks, now_iso)}
     rows = []
-    for p in picks:
-        v, g = view[p["match_key"]], games.get(p["match_key"])
+    for v in _picks_view(c, list(games.values()), picks, now_iso):
+        g = games.get(v["match_key"])
         row = {**v, "game": g, "engines": [], "markets": [], "local": None, "tz": None}
         if g:
             row["local"], row["tz"] = _local_kickoff(g)
@@ -715,14 +714,21 @@ def _report(c, date_from: str, date_to: str) -> dict:
                 pred = g["predictions"].get(e) or {}
                 row["engines"].append({"name": name, "score": sc, "call": calls.get(e) or pred.get("winner"),
                                        "confidence": pred.get("confidence"), "net": pred.get("net"),
-                                       "agrees": mypicks.won(p["selection"], sc[0], sc[1]) if sc else None})
+                                       "agrees": mypicks.won(v["selection"], sc[0], sc[1]) if sc else None})
             grouped: dict[str, list] = {}
             for o in mypicks.options(g, by_probability=False):
                 grouped.setdefault(o["market"], []).append(o)
             order = list(mypicks.MARKET_NAMES.values())
             row["markets"] = sorted(grouped.items(), key=lambda kv: order.index(kv[0]))
         rows.append(row)
-    rows.sort(key=lambda r: (r["kickoff_utc"], r["home"]))
+    rows.sort(key=lambda r: (r["day"], r["slip_id"], r["kickoff_utc"], r["home"]))
+    slip_list = []
+    for x in db.slips(c):
+        if (date_from and x["day"] < date_from) or (date_to and x["day"] > date_to):
+            continue
+        mine = [r for r in rows if r["slip_id"] == x["id"]]
+        if mine:
+            slip_list.append({**x, **_slip_summary(mine), "rows": mine})
     scored = [r for r in rows if r["hit"] is not None and not r["late"]]
     pending = [r for r in rows if r["result"] is None and r["status"] != "void"]
     by_agree = {}
@@ -737,7 +743,7 @@ def _report(c, date_from: str, date_to: str) -> dict:
                 "Away team to score": tg.get("all"), "Both teams to score": (tg.get("btts") or {}).get("all"),
                 "Over/under 1.5": (tg.get("over15") or {}).get("all"), "Double chance": doublechance.load().get("all")}
     return {
-        "rows": rows, "generated": now_iso, "date_from": date_from, "date_to": date_to,
+        "rows": rows, "slips": slip_list, "generated": now_iso, "date_from": date_from, "date_to": date_to,
         "days": sorted({r["day"] for r in rows}),
         "summary": {"n": len(rows), "scored": mypicks.score(rows), "late": sum(r["late"] for r in rows),
                     "pending": len(pending), "void": sum(r["status"] == "void" for r in rows),
@@ -762,7 +768,7 @@ def my_picks_csv(date_from: str = "", date_to: str = "", day: str = ""):
     if day and not (date_from or date_to):
         date_from = date_to = day
     rep = _report(con(), date_from, date_to)
-    cols = ["day", "kickoff_utc", "kickoff_local", "venue_timezone", "league", "home", "away", "source", "seal_sha256",
+    cols = ["day", "slip", "kickoff_utc", "kickoff_local", "venue_timezone", "league", "home", "away", "source", "seal_sha256",
             "model_version", "odds_home", "odds_draw", "odds_away", "odds_source", "favourite", "pick_market", "pick",
             "pick_probability", "astrology_agrees", "engines_with_score"]
     cols += [f"{e}_{k}" for e in ENGINE_NAMES for k in ("predicted_score_home_first", "call", "confidence", "agrees")]
@@ -777,7 +783,7 @@ def my_picks_csv(date_from: str = "", date_to: str = "", day: str = ""):
         g = r["game"] or {}
         odds = g.get("odds") or {}
         probs = {o["code"]: o["p"] for o in (mypicks.options(g) if g else [])}
-        line = [r["day"], r["kickoff_utc"], r["local"] or "", r["tz"] or "", league_label(g.get("division")), r["home"],
+        line = [r["day"], r["slip_name"], r["kickoff_utc"], r["local"] or "", r["tz"] or "", league_label(g.get("division")), r["home"],
                 r["away"], g.get("origin", ""), g.get("sha256") or "", g.get("model_version") or "",
                 odds.get("home"), odds.get("draw"), odds.get("away"), g.get("odds_source", ""), g.get("favourite", ""),
                 mypicks.MARKET_NAMES[r["selection"].split(":")[0]], r["label"], round(r["p"], 4) if r["p"] is not None else "",
@@ -801,8 +807,19 @@ def league_label(code: str | None) -> str:
     return LEAGUE_NAMES.get(code, code or "")
 
 
+def _slip_summary(picks: list[dict]) -> dict:
+    """A slip wins only if every pick on it wins; it is lost as soon as one pick loses."""
+    live_picks = [p for p in picks if p["status"] != "void"]
+    lost = any(p["hit"] is False for p in live_picks)
+    done = bool(live_picks) and all(p["hit"] is not None for p in live_picks)
+    state = "lost" if lost else "won" if done else "open" if live_picks else "empty"
+    return {"n": len(picks), "state": state, "all_win": mypicks.all_win(live_picks), "score": mypicks.score(picks),
+            "late": sum(p["late"] for p in picks), "void": len(picks) - len(live_picks)}
+
+
 @app.get("/mypicks", response_class=HTMLResponse)
-def my_picks_page(request: Request, day: str = "", added: int = -1, changed: int = -1, removed: int = -1):
+def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -1, changed: int = -1,
+                  removed: int = -1, dup: int = 0):
     c = con()
     games = _all_games()
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -810,22 +827,35 @@ def my_picks_page(request: Request, day: str = "", added: int = -1, changed: int
     today = now_iso[:10]
     if not day:
         day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else today)
-    mine = {p["match_key"]: p for p in db.my_picks(c, day)}
+    day_slips = db.slips(c, day)
+    if not day_slips:                      # every day starts with one empty slip
+        db.create_slip(c, day)
+        day_slips = db.slips(c, day)
+    active = next((x for x in day_slips if x["id"] == slip), day_slips[-1] if not slip else day_slips[0])
+    day_view = _picks_view(c, games, db.my_picks(c, day), now_iso)
+    for x in day_slips:
+        x.update(_slip_summary([p for p in day_view if p["slip_id"] == x["id"]]))
+    slip_picks = [p for p in day_view if p["slip_id"] == active["id"]]
+    in_slip = {p["match_key"]: p for p in slip_picks}
+    in_any: dict[str, list[str]] = {}
+    for p in day_view:
+        in_any.setdefault(p["match_key"], []).append(p["slip_name"])
     todays = sorted((g for g in games if g["kickoff_utc"][:10] == day and g["status"] != "void"),
                     key=lambda g: (g["kickoff_utc"], g["home"]))
     rows = []
     for g in todays:
         opts = mypicks.options(g)
-        pick = mine.get(g["match_key"])
+        pick = in_slip.get(g["match_key"])
         rows.append({"g": g, "opts": opts, "pick": pick, "chosen": pick["selection"] if pick else opts[0]["code"],
-                     "started": g["kickoff_utc"] <= now_iso})
-    day_picks = _picks_view(c, games, db.my_picks(c, day), now_iso)
-    all_picks = _picks_view(c, games, db.my_picks(c), now_iso)
+                     "started": g["kickoff_utc"] <= now_iso,
+                     "elsewhere": [n for n in in_any.get(g["match_key"], []) if n != active["name"]]})
+    all_view = _picks_view(c, games, db.my_picks(c), now_iso)
     return T.TemplateResponse(request, "mypicks.html", {
-        "day": day, "days": days, "rows": rows, "day_picks": day_picks,
-        "added": added, "changed": changed, "removed": removed,
-        "score_day": mypicks.score(day_picks), "score_all": mypicks.score(all_picks),
-        "all_win": mypicks.all_win(day_picks), "n_all": len(all_picks), "page": "mypicks"})
+        "day": day, "days": days, "rows": rows, "slips": day_slips, "active": active,
+        "day_picks": slip_picks, "slip_sum": _slip_summary(slip_picks),
+        "added": added, "changed": changed, "removed": removed, "dup": dup,
+        "score_day": mypicks.score(day_view), "score_all": mypicks.score(all_view),
+        "n_all": len(all_view), "n_day": len(day_view), "page": "mypicks"})
 
 
 def _pick_from(g: dict, code: str, picked_at: str) -> dict | None:
@@ -839,51 +869,86 @@ def _pick_from(g: dict, code: str, picked_at: str) -> dict | None:
             "picked_at": picked_at}
 
 
-@app.post("/mypicks/add")
-async def my_picks_add(request: Request):
-    """Add the ticked games (with their chosen outcomes) to the day's picks; earlier picks are kept."""
+def _slip_or_404(c, slip_id) -> dict:
+    x = db.get_slip(c, slip_id)
+    if x is None:
+        raise HTTPException(404, "slip not found")
+    return x
+
+
+@app.post("/mypicks/slip/new")
+async def my_slip_new(request: Request):
     form = await request.form()
     day = str(form.get("day", ""))
+    sid = db.create_slip(con(), day, str(form.get("name", "")))
+    return RedirectResponse(f"/mypicks?day={day}&slip={sid}", status_code=303)
+
+
+@app.post("/mypicks/slip/rename")
+async def my_slip_rename(request: Request):
+    form = await request.form()
     c = con()
+    x = _slip_or_404(c, form.get("slip"))
+    db.rename_slip(c, x["id"], str(form.get("name", "")))
+    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}", status_code=303)
+
+
+@app.post("/mypicks/slip/delete")
+async def my_slip_delete(request: Request):
+    form = await request.form()
+    c = con()
+    x = _slip_or_404(c, form.get("slip"))
+    db.delete_slip(c, x["id"])
+    return RedirectResponse(f"/mypicks?day={x['day']}", status_code=303)
+
+
+@app.post("/mypicks/add")
+async def my_picks_add(request: Request):
+    """Add the ticked games (with their chosen outcomes) to the active slip; its earlier picks are kept."""
+    form = await request.form()
+    c = con()
+    x = _slip_or_404(c, form.get("slip"))
     games = {g["match_key"]: g for g in _all_games()}
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    have = {p["match_key"] for p in db.my_picks(c)}
-    n = 0
+    n = dup = 0
     for key in form.getlist("game"):
         g = games.get(key)
-        if g is None or not form.get(f"sel_{key}") or key in have:
+        if g is None or not form.get(f"sel_{key}"):
             continue
         pick = _pick_from(g, str(form.get(f"out_{key}", "")), now_iso)
         if pick:
-            db.upsert_my_pick(c, day, pick)
-            n += 1
-    return RedirectResponse(f"/mypicks?day={day}&added={n}#mine", status_code=303)
+            if db.add_pick(c, x["id"], x["day"], pick):
+                n += 1
+            else:
+                dup += 1
+    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&added={n}&dup={dup}#mine", status_code=303)
 
 
 @app.post("/mypicks/edit")
 async def my_picks_edit(request: Request):
-    """Change the outcome of saved picks, or remove them. An unchanged pick keeps its original time."""
+    """Change the outcome of the active slip's picks, or remove them. An unchanged pick keeps its time."""
     form = await request.form()
-    day = str(form.get("day", ""))
     c = con()
+    x = _slip_or_404(c, form.get("slip"))
     games = {g["match_key"]: g for g in _all_games()}
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
     changed = removed = 0
-    for p in db.my_picks(c, day):
-        key = p["match_key"]
-        if form.get(f"del_{key}"):
-            db.delete_my_pick(c, key)
+    for p in db.my_picks(c, slip_id=x["id"]):
+        pid = p["id"]
+        if form.get(f"del_{pid}"):
+            db.delete_pick(c, pid)
             removed += 1
             continue
-        code = str(form.get(f"out_{key}", p["selection"]))
-        g = games.get(key)
+        code = str(form.get(f"out_{pid}", p["selection"]))
+        g = games.get(p["match_key"])
         if g is None or code == p["selection"]:
             continue
-        pick = _pick_from(g, code, now_iso)
-        if pick:
-            db.upsert_my_pick(c, day, pick)
+        new = _pick_from(g, code, now_iso)
+        if new:
+            db.update_pick(c, pid, new["selection"], new["label"], new["p"], now_iso)
             changed += 1
-    return RedirectResponse(f"/mypicks?day={day}&changed={changed}&removed={removed}#mine", status_code=303)
+    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&changed={changed}&removed={removed}#mine",
+                            status_code=303)
 
 
 @app.get("/api/teams")

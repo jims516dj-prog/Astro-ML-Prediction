@@ -27,6 +27,7 @@
   table.mini td.num { text-align: right; font-family: var(--mono); }
   tr.chosen td { font-weight: 700; background: var(--ok-bg); }
   .toolbar { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; }
+  h3.slip-head { font: 600 1rem var(--sans); margin: 18px 0 4px; padding-bottom: 4px; border-bottom: 1px solid var(--line); }
   .toolbar button.btn { color: #fff; font-family: var(--sans); }
   @media (max-width: 700px) { .grid2 { grid-template-columns: 1fr; } }
   @media print {
@@ -78,6 +79,19 @@ No astrological engine has shown predictive accuracy beyond the odds in the back
 <p class="note">"Expected" is the average probability of the scored picks: a well-calibrated set hits at about that rate. Over a
 handful of picks the gap is noise; ± is one standard error.</p>
 
+{% if r.slips %}
+<h2>Slips</h2>
+<p class="small">A slip wins only if every pick on it wins (void picks are left out). "Chance all come in" multiplies the
+picks' probabilities, treating the games as independent.</p>
+<div class="scroll"><table class="data">
+<thead><tr><th>Day</th><th>Slip</th><th class="num">Picks</th><th class="num">Chance all come in</th><th class="num">Picks won</th><th>Slip result</th></tr></thead>
+<tbody>{% for x in r.slips %}<tr><td class="mono">{{ x.day }}</td><td>{{ x.name }}</td><td class="num">{{ x.n }}</td>
+<td class="num">{{ fmt_pct(x.all_win) if x.all_win is not none else "–" }}</td>
+<td class="num">{% if x.score.n %}{{ x.score.hits }} / {{ x.score.n }}{% else %}–{% endif %}</td>
+<td><strong>{{ {"won": "WON", "lost": "LOST", "open": "open", "empty": "empty"}[x.state] }}</strong>{% if x.late %} · {{ x.late }} picked after kickoff{% endif %}{% if x.void %} · {{ x.void }} void{% endif %}</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endif %}
+
 {% if r.by_market %}
 <h2>By market</h2>
 <div class="scroll"><table class="data">
@@ -103,6 +117,7 @@ covers picks of the likelier team to score.</p>
 
 <h2>Every pick in full</h2>
 {% for p in r.rows %}{% set g = p.game %}
+{% if loop.changed(p.slip_id) %}<h3 class="slip-head">{{ p.day }} · {{ p.slip_name }}</h3>{% endif %}
 <article class="pick">
   <div class="pick-top">
     <h3>{{ loop.index }}. {{ p.home }} v {{ p.away }}</h3>
