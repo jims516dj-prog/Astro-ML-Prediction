@@ -250,7 +250,7 @@ A.A. Lapalisse,club,1920-01-01,year,,Lapalisse,46.24944,3.63722,France,,0,wikida
 A.A.C. Eagles,club,1940-01-01,year,,Chicago,41.88194,-87.62778,United States,AAC Eagles|AAC Eagles Chicago Soccer Academy,4,wikidata:Q4647017,wikidata
 A.C. Ajaccio,club,1910-01-01,year,,Ajaccio,41.92556,8.73639,France,AC Ajaccio|Athletic Club Ajaccio,46,wikidata:Q270051,wikidata
 A.C. Ajax Tavros,club,1965-01-01,year,,Tavros,37.97040,23.69420,Greece,,1,wikidata:Q12872078,wikidata
-A.C. Ancona,club,1905-01-01,year,,Ancona,43.61667,13.51667,Italy,Associazione Calcio Ancona|Ancona Calcio|AC Ancona,6,wikidata:Q20706646,wikidata
+A.C. Ancona,club,1905-01-01,year,,Ancona,43.61667,13.51667,Italy,Associazione Calcio Ancona|Ancona Calcio|AC Ancona,7,wikidata:Q20706646,wikidata
 A.C. Arrentela,club,1926-01-01,year,,,,,Portugal,,1,wikidata:Q4647047,wikidata
 A.C. Barnechea City,club,1929-12-23,day,,Lo Barnechea,-33.35000,-70.51667,Chile,Athletic Club Barnechea City,12,wikidata:Q3542721,wikidata
 A.C. Bastia 1924,club,1924-01-01,year,,Bastia Umbra,43.06669,12.54890,Italy,,4,wikidata:Q748649,wikidata
@@ -1065,7 +1065,6 @@ Afif FC,club,1976-01-01,year,,,,,Saudi Arabia,,3,wikidata:Q25450580,wikidata
 Afjet Afyonspor,club,2013-01-01,year,,Afyonkarahisar,38.75806,30.53861,Turkey,,8,wikidata:Q21523894,wikidata
 AFK Atlantic Lázně Bohdaneč,club,1918-01-01,year,,Lázně Bohdaneč,50.07565,15.67985,Czech Republic,AFK Lázně Bohdaneč|Sokol Lázně Bohdaneč|Atlantic Lázně Bohdaneč|AFK Atlantic Lazne Bohdanec,9,wikidata:Q292056,wikidata
 AFK Union Žižkov,club,1907-01-01,year,,Prague,50.08750,14.42139,Czech Republic,,7,wikidata:Q164368,wikidata
-Africa Sport Club,club,1929-01-01,year,,Ceuta,35.88667,-5.30000,Spain,,0,wikidata:Q141566015,wikidata
 Africa Sports d'Abidjan,club,1947-04-24,day,,Abidjan,5.33639,-4.02667,Ivory Coast,Africa Sports National,27,wikidata:Q383943,wikidata
 African Club of Libya,club,1952-04-26,day,,Derna,32.76361,22.63611,Libya,,1,wikidata:Q12247431,wikidata
 African Lyon F.C.,club,2000-01-01,year,,Dar es Salaam,-6.81611,39.28028,Tanzania,African Lyon,3,wikidata:Q4689850,wikidata
@@ -1713,9 +1712,9 @@ América de Rancagua,club,1914-01-01,day,,Rancagua,-34.16539,-70.73981,Chile,Clu
 América Foot-Ball Club,club,1914-05-24,day,,Curitiba,-25.42972,-49.27194,Brazil,América Futebol Clube (PR)|America Foot-Ball Club,4,wikidata:Q4749628,en.wikipedia infobox (América Football Club (PR))
 América Football Club,club,1920-01-01,year,,Fortaleza,-3.72750,-38.52750,Brazil,América Foot-Ball Club (CE)|America Football Club,7,wikidata:Q2844823,wikidata
 América Football Club (Paraíba),club,1911-01-01,year,,,,,Brazil,,1,wikidata:Q16489706,wikidata
-América Futebol Clube,club,1912-04-30,day,,Belo Horizonte,-19.92806,-43.94194,Brazil,América Mineiro|América|América-MG|America Mineiro|America-MG,30,wikidata:Q338285,wikidata
-América Futebol Clube,club,1917-11-25,day,,Vila Velha,-20.33639,-40.29361,Brazil,América|America Futebol Clube|America,6,wikidata:Q2844826,en.wikipedia infobox (América Futebol Clube (Vitória))
 América Futebol Clube,club,1914-06-14,day,,Joinville,-26.30389,-48.84583,Brazil,América|América Futebol Clube (SC)|America Futebol Clube|America,8,wikidata:Q2844820,en.wikipedia infobox (América Futebol Clube (SC))
+América Futebol Clube,club,1917-11-25,day,,Vila Velha,-20.33639,-40.29361,Brazil,América|America Futebol Clube|America,6,wikidata:Q2844826,en.wikipedia infobox (América Futebol Clube (Vitória))
+América Futebol Clube,club,1912-04-30,day,,Belo Horizonte,-19.92806,-43.94194,Brazil,América Mineiro|América|América-MG|America Mineiro|America-MG,30,wikidata:Q338285,wikidata
 América Futebol Clube,club,1914-01-01,year,,Recife,-8.05389,-34.88083,Brazil,América|América-PE|America Futebol Clube|America|America-PE,8,wikidata:Q4749632,wikidata
 América Futebol Clube,club,1915-07-14,day,,Natal,-5.79500,-35.20889,Brazil,América de Natal|América|America Futebol Clube|America de Natal|America|América-RN,22,wikidata:Q482262,en.wikipedia infobox (América Futebol Clube (RN))
 América Futebol Clube,club,1929-01-01,year,,Três Rios,-22.11694,-43.20889,Brazil,América|América de Três Rios|América-TR|América (TR)|America Futebol Clube|America|America de Tres Rios|America-TR,3,wikidata:Q4749635,wikidata
@@ -2210,7 +2209,7 @@ ASC St. Louis Stars,club,1969-01-01,year,,Saint-Martin,18.07528,-63.06000,France
 ASC Xam-Xam,club,2001-11-01,month,,Hann Bel-Air,14.72458,-17.43003,Senegal,,4,wikidata:Q2868125,wikidata
 ASC Yeggo,club,1982-01-01,year,,Sicap-Liberté,14.72956,-17.46761,Senegal,,4,wikidata:Q15266355,wikidata
 ASCE La Linguère,club,1969-09-14,day,,Saint-Louis,16.03333,-16.50000,Senegal,ASCE La Linguere,11,wikidata:Q2189940,wikidata
-Ascoli Calcio 1898 FC,club,1898-01-01,year,,Ascoli Piceno,42.85472,13.57528,Italy,Ascoli Calcio 1898|Ascoli Calcio|Ascoli Picchio|Ascoli Football Club|Ascoli Calcio 1898 F.C.,46,wikidata:Q6630,wikidata
+Ascoli Calcio 1898 FC,club,1898-01-01,year,,Ascoli Piceno,42.85472,13.57528,Italy,Ascoli Calcio 1898|Ascoli Calcio|Ascoli Picchio|Ascoli Football Club|Ascoli Calcio 1898 F.C.,47,wikidata:Q6630,wikidata
 Ascot United F.C.,club,1965-01-01,year,,Ascot Racecourse,51.41610,-0.67694,United Kingdom,,3,wikidata:Q4804043,wikidata
 ASD Akragas 2018,club,1939-01-01,year,,Agrigento,37.31250,13.57500,Italy,,10,wikidata:Q3607383,wikidata
 ASD Calcio Zola Predosa,club,1991-01-01,year,,Zola Predosa,44.48833,11.21806,Italy,,1,wikidata:Q65130326,wikidata
@@ -2891,7 +2890,7 @@ Auxerre Lugoj,club,2002-01-01,year,,,,,Romania,,2,wikidata:Q18543716,wikidata
 AV Alta FC,club,2023-10-04,day,,Lancaster,34.68694,-118.15417,United States,,3,wikidata:Q126362350,wikidata
 Avaldsnes IL,club,1937-06-16,day,,Avaldsnes,59.35580,5.27790,Norway,Avaldsnes Idrettslag,14,wikidata:Q4827520,wikidata
 Avant-Garde caennaise,club,1906-01-01,year,,Caen,49.18139,-0.36361,France,,0,wikidata:Q117805553,wikidata
-Avatiu FC,club,1980-01-01,year,,Avatiu,-21.20583,-159.78639,New Zealand,,7,wikidata:Q790274,wikidata
+Avatiu FC,club,1980-01-01,year,,Avatiu,-21.20583,-159.78639,New Zealand,,8,wikidata:Q790274,wikidata
 Avaí Futebol Clube,club,1923-09-01,day,,Florianópolis,-27.59328,-48.55305,Brazil,Avai Futebol Clube,39,wikidata:Q374069,wikidata
 Aveley F.C.,club,1927-01-01,year,,,,,United Kingdom,Aveley Football Club,8,wikidata:Q4827991,wikidata
 Avenir Sportif de Sains-en-Amiénois,club,1971-01-01,year,,,,,France,,0,wikidata:Q141156202,wikidata
@@ -2900,15 +2899,15 @@ Avenues United FC,club,1974-01-01,year,,Kingstown,13.15527,-61.22742,Saint Vince
 Avesta AIK,club,1905-01-01,year,,Avesta,60.13899,16.18373,Sweden,,3,wikidata:Q790675,wikidata
 Avia Sports,club,1975-01-01,year,,,,,Central African Republic,,2,wikidata:Q790768,wikidata
 Avia Świdnik,club,1952-01-01,year,,,51.22564,22.69319,Poland,,4,wikidata:Q9162941,wikidata
-Avignon Foot 84,club,1931-01-01,year,,Avignon,43.94861,4.80833,France,,12,wikidata:Q790969,wikidata
-Aviron Bayonnais FC,club,1935-11-12,day,,Bayonne,43.49250,-1.47639,France,Bayonne|Bayonnais,17,wikidata:Q791128,wikidata
-Avispa Fukuoka,club,1982-01-01,year,,Fukuoka,33.59014,130.40172,Japan,,38,wikidata:Q791164,wikidata
+Avignon Foot 84,club,1931-01-01,year,,Avignon,43.94861,4.80833,France,,13,wikidata:Q790969,wikidata
+Aviron Bayonnais FC,club,1935-11-12,day,,Bayonne,43.49250,-1.47639,France,Bayonne|Bayonnais,18,wikidata:Q791128,wikidata
+Avispa Fukuoka,club,1982-01-01,year,,Fukuoka,33.59014,130.40172,Japan,,39,wikidata:Q791164,wikidata
 Avon United,club,1995-01-01,year,,,,,New Zealand,Avon United Football Club,2,wikidata:Q4829241,wikidata
 Avondale United FC,club,1972-01-01,year,,,,,Ireland,,2,wikidata:Q20311657,wikidata
 Avoniel F.C.,club,1880-01-01,year,,,,,United Kingdom,,1,wikidata:Q19870886,wikidata
 Avro F.C.,club,1936-01-01,year,,Whitebank Stadium,53.51854,-2.12175,United Kingdom,,3,wikidata:Q54818179,wikidata
-AVS Futebol SAD,club,2023-05-05,day,,,,,Portugal,AVS Futebol,21,wikidata:Q120775987,wikidata
-Avtomobilist Odesa,club,1957-01-01,year,,Odesa,46.48417,30.73250,Soviet Union,Avtomobilist,3,wikidata:Q9163082,wikidata
+AVS Futebol SAD,club,2023-05-05,day,,,,,Portugal,AVS Futebol,22,wikidata:Q120775987,wikidata
+Avtomobilist Odesa,club,1957-01-01,year,,Odesa,46.48417,30.73250,Soviet Union,Avtomobilist,4,wikidata:Q9163082,wikidata
 Avtomobilçi Yevlax FK,club,1990-01-01,year,,,,,Azerbaijan,,7,wikidata:Q12649820,wikidata
 Awassa City F.C.,club,1978-01-01,year,,Hawaasa,7.05000,38.46667,Ethiopia,Hawassa Kenema FC,13,wikidata:Q2630840,wikidata
 Axbergs IF,club,1932-03-01,month,,Axberg,59.36167,15.21472,Sweden,,2,wikidata:Q4830186,wikidata
@@ -3303,7 +3302,7 @@ Belediye Bingölspor,club,1981-01-01,year,,Bingöl,38.88611,40.50167,Turkey,,3,w
 Belgium,nation,1830-10-04,day,,Brussels,50.84667,4.35167,Belgium,Belgica|Belgium U19|Belgium national under-15 association football team|Belgium national under-15 football team|Belgium national under-16 association football team|Belgium national under-16 football team|Belgium national under-17 association football team|Belgium national under-17 football team|Belgium national under-18 football team|Belgium national under-19 football team|Belgium national under-20 football team|Belgium national under-21 football team|Belgium women's national under-17 football team,383,wikidata:Q31,wikidata
 Belgrano Athletic Club,club,1896-08-17,day,,Belgrano,-34.56250,-58.45833,Argentina,Belgrano AC,14,wikidata:Q2400665,wikidata
 Belgrano de San Nicolás,club,1927-01-01,year,,,,,Argentina,Belgrano de San Nicolas|Club Belgrano San Nicolas,4,wikidata:Q959351,wikidata
-Belize,nation,1981-09-21,day,,Belmopan,17.25000,-88.76750,Belize,Belize national under-20 football team,281,wikidata:Q242,wikidata
+Belize,nation,1981-09-21,day,,Belmopan,17.25000,-88.76750,Belize,Belize national under-20 football team,282,wikidata:Q242,wikidata
 Belize Defence Force FC,club,2007-01-01,year,,Belize City,17.49861,-88.18861,Belize,,8,wikidata:Q2836166,wikidata
 Bell Park Football Club,club,1959-01-01,year,,,,,Australia,,2,wikidata:Q16840029,wikidata
 Bell Post Hill Football Club,club,1976-01-01,year,,,,,Australia,,1,wikidata:Q4883232,wikidata
@@ -3322,12 +3321,12 @@ Belvedere F.C.,club,1971-01-01,year,,,,,Ireland,,2,wikidata:Q4884870,wikidata
 Bemerton Heath Harlequins F.C.,club,1989-01-01,year,,Salisbury,51.07400,-1.79360,United Kingdom,,3,wikidata:Q4885098,wikidata
 Benburb F.C.,club,1885-01-01,year,,Glasgow City,55.85000,-4.25000,United Kingdom,,2,wikidata:Q4886895,wikidata
 Bendel Insurance F.C.,club,1972-01-01,year,,Benin City,6.31760,5.61450,Nigeria,Bendel Insurance Football Club,18,wikidata:Q816763,wikidata
-Benevento Calcio,club,1929-01-01,year,,Benevento,41.13333,14.78333,Italy,Benevento Football Club|Benevento FC,48,wikidata:Q652516,wikidata
+Benevento Calcio,club,1929-01-01,year,,Benevento,41.13333,14.78333,Italy,Benevento Football Club|Benevento FC,49,wikidata:Q652516,wikidata
 Benevento Futsal Club,club,1985-01-01,year,,Bellona,41.16667,14.23333,Italy,Futsal Benevento|Benevento Calcio a 5|Benevento Calcio a Cinque|Benevento Futsal,1,wikidata:Q3638170,wikidata
 Benfica da Praia,club,2009-01-01,year,,Praia,14.91772,-23.50916,Cape Verde,,2,wikidata:Q30115960,wikidata
 Benfica de Santa Cruz,club,2005-01-01,year,,Santa Cruz,32.67495,-16.83088,Cape Verde,Grupo Desportivo Benfica,3,wikidata:Q16497769,wikidata
 Bengal Mumbai FC,club,1998-01-01,year,,,,,India,,1,wikidata:Q4887648,wikidata
-Bengaluru FC,club,2013-07-20,day,,Bengaluru,12.97912,77.59130,India,BFC|Blues|Bengaluru Football Club,29,wikidata:Q16243716,wikidata
+Bengaluru FC,club,2013-07-20,day,,Bengaluru,12.97912,77.59130,India,BFC|Blues|Bengaluru Football Club,30,wikidata:Q16243716,wikidata
 Bengeo Tigers FC,club,1973-01-01,year,,The Sele School,51.79890,-0.10250,United Kingdom,,1,wikidata:Q123015073,wikidata
 Bengkulu Putra F.C.,club,2006-01-01,year,,,,,Indonesia,,1,wikidata:Q124801156,wikidata
 Benidorm CF,club,1964-01-01,year,,Benidorm,38.53417,-0.13139,Spain,,11,wikidata:Q2423014,wikidata
@@ -3658,7 +3657,7 @@ Borens IK,club,1932-01-01,year,,,,,Sweden,,1,wikidata:Q4944936,wikidata
 Borensbergs IF,club,1924-01-01,year,,,,,Sweden,BIF,1,wikidata:Q10433073,wikidata
 Borgo FC,club,1978-01-01,year,,Borgo,42.55389,9.42750,France,,4,wikidata:Q430353,wikidata
 Borgosesia Calcio,club,1925-01-01,year,,Borgosesia,45.71694,8.27639,Italy,,7,wikidata:Q3642591,wikidata
-Borneo F.C. Samarinda,club,2014-03-07,day,,Samarinda,-0.50222,117.15361,Indonesia,,15,wikidata:Q16007952,en.wikipedia infobox (Borneo FC Samarinda)
+Borneo F.C. Samarinda,club,2014-03-07,day,,Samarinda,-0.50222,117.15361,Indonesia,,15,wikidata:Q16007952,en.wikipedia infobox (Borneo F.C. Samarinda)
 Borough United F.C.,club,1952-01-01,year,,Llandudno Junction,53.28000,-3.80000,United Kingdom,,10,wikidata:Q2277218,wikidata
 Borras Park Albion F.C.,club,1982-01-01,year,,Dean Road station,42.33762,-71.14249,United Kingdom,Borras Park Albion Football Club,1,wikidata:Q4946555,wikidata
 Borre IF,club,1933-07-01,day,,Borre,59.38083,10.45306,Norway,Borre Idrettsforening,3,wikidata:Q17750785,wikidata
@@ -4362,7 +4361,7 @@ CAM Timișoara,club,1911-01-01,year,,,,,Romania,,6,wikidata:Q1022794,wikidata
 Camaiore Calcio A.S.D.,club,1955-01-01,year,,Camaiore,43.93333,10.30000,Italy,,4,wikidata:Q3626854,wikidata
 Camaçari Futebol Clube,club,1968-11-08,day,,Camaçari,-12.69778,-38.32389,Brazil,,6,wikidata:Q2565650,wikidata
 Camberley Town F.C.,club,1895-01-01,year,,,,,United Kingdom,,3,wikidata:Q5025044,wikidata
-Cambodia,nation,1953-11-09,day,,Phnom Penh,11.56958,104.92103,Cambodia,Cambodia national under-17 football team|Cambodia national under-21 football team|Cambodia national under-23 football team,331,wikidata:Q424,wikidata
+Cambodia,nation,1953-11-09,day,,Phnom Penh,11.56958,104.92103,Cambodia,Cambodia national under-17 football team|Cambodia national under-21 football team|Cambodia national under-23 football team,332,wikidata:Q424,wikidata
 Cambodian Army Association F.C.,club,1982-01-01,year,,Phnom Penh,11.56958,104.92103,Cambodia,Royal Cambodian Armed Forces Football Club,9,wikidata:Q1976596,wikidata
 Camboriú Futebol Clube,club,2003-01-01,year,,Camboriú,-27.02500,-48.65389,Brazil,Camboriu Futebol Clube,5,wikidata:Q5025221,wikidata
 Cambrian United F.C.,club,1965-01-01,year,,,,,United Kingdom,Cambrian & Clydach Vale B.&G.C.|Cambrian & Clydach F.C.,8,wikidata:Q2934688,wikidata
@@ -4403,7 +4402,7 @@ Canberra White Eagles,club,1992-01-01,year,,,,,Australia,,1,wikidata:Q5031286,wi
 Cancún F.C.,club,2020-06-26,day,,Cancun,21.16142,-86.82481,Mexico,,8,wikidata:Q96676635,en.wikipedia infobox (Cancún F.C.)
 Candás CF,club,1948-01-01,year,,,,,Spain,Candas CF,4,wikidata:Q2367921,wikidata
 Canedo F.C.,club,1984-01-01,year,,,,,Portugal,,2,wikidata:Q5032244,wikidata
-Canet Roussillon Football Club,club,2002-01-01,year,,Canet-en-Roussillon,42.70556,3.00722,France,Canet Roussillon FC|Perpignan Canet Football Club|Perpignan Canet FC,13,wikidata:Q674263,wikidata
+Canet Roussillon Football Club,club,2002-01-01,year,,Canet-en-Roussillon,42.70556,3.00722,France,Canet Roussillon FC|Perpignan Canet Football Club|Perpignan Canet FC,12,wikidata:Q674263,wikidata
 Cangzhou Mighty Lions F.C.,club,2001-01-01,year,,Shijiazhuang,38.04250,114.51000,People's Republic of China,,17,wikidata:Q7561031,wikidata
 Canning City Soccer Club,club,1972-01-01,year,,,,,Australia,,1,wikidata:Q5032678,wikidata
 Canning Town F.C.,club,1948-01-01,year,,,,,United Kingdom,,1,wikidata:Q28401680,wikidata
@@ -4664,7 +4663,6 @@ CD Elgoibar,club,1917-01-01,year,,Elgoibar,43.21417,-2.41694,Spain,,9,wikidata:Q
 CD Elá Nguema,club,1976-01-01,year,,Malabo,3.75206,8.77370,Equatorial Guinea,CD Ela Nguema - Sony de Elá Nguema,14,wikidata:Q1023181,wikidata
 CD Ensidesa,club,1956-01-01,year,,Avilés,43.55611,-5.92222,Spain,,7,wikidata:Q756934,wikidata
 CD Erriberri,club,1928-09-25,day,,,,,Spain,,2,wikidata:Q17625480,wikidata
-CD Español de Valladolid,club,1924-01-01,year,,,,,Spain,,0,wikidata:Q141564518,wikidata
 CD Español del Alquián,club,1955-01-01,year,,,,,Spain,,1,wikidata:Q56291050,wikidata
 CD Estradense,club,1925-01-01,year,,A Estrada,42.68917,-8.48722,Spain,Club Deportivo Estradense,4,wikidata:Q2416689,wikidata
 CD Falcões do Norte,club,1960-08-19,day,,Estádio Municipal Adérito Sena,16.88250,-24.98528,Cape Verde,,1,wikidata:Q10279879,wikidata
@@ -5312,7 +5310,7 @@ Clipstone F.C.,club,1928-01-01,year,,,,,United Kingdom,Clipstone Welfare F.C.,3,
 Clitheroe F.C.,club,1877-01-01,year,,,,,United Kingdom,Clitheroe Football Club|Clitheroe FC|Clitheroe|The Blues|CFC,4,wikidata:Q18312,wikidata
 Clodiense S.S.D.,club,2011-01-01,year,,Chioggia,45.21891,12.27854,Italy,Union Clodiense Chioggia SSD|Union Chioggia Sottomarina|Union C.S.,6,wikidata:Q3625861,wikidata
 Clonduff F.C.,club,1968-01-01,year,,Clonduff,54.19649,-6.11826,,,2,wikidata:Q136469123,wikidata
-Club 12 de Octubre,club,1914-08-14,day,,Villa monica alritmo,-25.38333,-57.33333,Paraguay,Club 12 de Octubre de Itaugua,18,wikidata:Q1900225,wikidata
+Club 12 de Octubre,club,1914-08-14,day,,Villa monica alritmo,-25.38333,-57.33333,Paraguay,Club 12 de Octubre de Itaugua,17,wikidata:Q1900225,wikidata
 Club 12 de Octubre de Santo Domingo,club,1922-10-12,day,,Rafael Giménez Stadium,-25.27342,-57.58776,Paraguay,Club 12 de Octubre SD,3,wikidata:Q8459128,wikidata
 Club 29 de Setiembre,club,1942-04-30,day,,,-25.29567,-57.53171,Paraguay,,2,wikidata:Q5772919,wikidata
 Club 3 de Febrero,club,1919-01-01,year,,,,,Paraguay,,2,wikidata:Q5136094,wikidata
@@ -5579,7 +5577,7 @@ Club Deportivo Pan de Azúcar,club,1974-10-16,day,,,9.03068,-79.49860,Panama,Clu
 Club Deportivo Pantoja,club,2000-01-01,year,,Santo Domingo,18.46250,-69.93611,Dominican Republic,Atlético Pantoja,12,wikidata:Q5136212,wikidata
 Club Deportivo Papa Francisco,club,2013-01-01,year,,,,,Argentina,,1,wikidata:Q16837558,wikidata
 Club Deportivo Patria Aragón,club,1926-01-01,year,,Zaragoza,41.65000,-0.88333,Spain,,2,wikidata:Q29871399,wikidata
-Club Deportivo Petrolero,club,2000-03-24,day,,Yacuíba,-21.70000,-63.16667,Bolivia,Club Atletico Petrolero,8,wikidata:Q4361480,wikidata
+Club Deportivo Petrolero,club,2000-03-24,day,,Yacuiba,-21.70000,-63.16667,Bolivia,Club Atletico Petrolero,8,wikidata:Q4361480,wikidata
 Club Deportivo Platense - Zacatecoluca,club,1951-05-08,day,,Zacatecoluca,13.50729,-88.87021,El Salvador,,8,wikidata:Q2979887,wikidata
 Club Deportivo Plaza Amador,club,1955-04-25,day,,Panama City,8.97111,-79.53472,Panama,C.D. Plaza Amador|Plaza Amador,17,wikidata:Q1871928,wikidata
 Club Deportivo Politécnico,club,1951-01-01,year,,Estadio Olímpico Atahualpa,-0.17753,-78.47658,Ecuador,Club Deportivo Politecnico,1,wikidata:Q5136216,wikidata
@@ -5849,7 +5847,7 @@ Clube de Regatas Brasil,club,1912-01-01,year,,Maceió,-9.66583,-35.73500,Brazil,
 Clube de Regatas do Flamengo,club,1895-11-15,day,,Rio de Janeiro,-22.91111,-43.20556,Brazil,Flamengo|CR Flamengo|C.R. Flamengo|Flamengo Rio de Janeiro,91,wikidata:Q17479,wikidata
 Clube de Regatas Flamengo (RO),club,1955-11-15,day,,Porto Velho,-8.76194,-63.90389,Brazil,Flamengo de Rondônia|Flamengo de Porto Velho,7,wikidata:Q5136514,wikidata
 Clube de Regatas Guará,club,1967-01-09,day,,Guará,-15.82556,-47.98000,Brazil,Clube de Regatas Guara,9,wikidata:Q777267,wikidata
-Clube Desportivo das Aves,club,1930-11-12,day,,Vila das Aves,41.37012,-8.40838,Portugal,Desportivo das Aves|C.D. Aves|Aves,33,wikidata:Q1023163,wikidata
+Clube Desportivo das Aves,club,1930-11-12,day,,Vila das Aves,41.37012,-8.40838,Portugal,Desportivo das Aves|C.D. Aves|Aves,34,wikidata:Q1023163,wikidata
 Clube Desportivo dos Olivais e Moscavide,club,1912-01-01,year,,Loures,38.83333,-9.16667,Portugal,,6,wikidata:Q925147,wikidata
 Clube Desportivo Portosantense,club,1948-01-01,year,,,,,Portugal,C.D. Portosantense,5,wikidata:Q3393247,wikidata
 Clube Desportivo Primeiro de Agosto,club,1977-08-01,day,,Luanda,-8.83833,13.23444,Angola,Primeiro de Agosto Football,22,wikidata:Q1023214,en.wikipedia infobox (C.D. Primeiro de Agosto)
@@ -5931,8 +5929,8 @@ Cockburn City SC,club,1929-01-01,year,,,,,Australia,,1,wikidata:Q5139551,wikidat
 Cockfosters F.C.,club,1921-01-01,year,,,,,United Kingdom,,4,wikidata:Q5139610,wikidata
 Cockhill Celtic F.C.,club,1970-01-01,year,,,,,,,0,wikidata:Q5139609,wikidata
 Cocoa Expos,club,1993-01-01,year,,Cocoa,28.36944,-80.74389,United States,,3,wikidata:Q5139759,wikidata
-Cocodrilos de Tabasco,club,2017-01-01,year,,Estadio Olímpico de Villahermosa,17.97611,-92.94556,Mexico,,2,wikidata:Q48796354,wikidata
 Cocodrilos de Tabasco,club,2017-01-01,year,,,,,Mexico,,1,wikidata:Q35726680,wikidata
+Cocodrilos de Tabasco,club,2017-01-01,year,,Estadio Olímpico de Villahermosa,17.97611,-92.94556,Mexico,,2,wikidata:Q48796354,wikidata
 COD Meknès,club,1962-06-21,day,,Meknes,33.88333,-5.55000,Morocco,COD Meknes,17,wikidata:Q1023966,en.wikipedia infobox (COD Meknès)
 COD United Amazons F.C.,club,2013-01-01,year,,Lagos,6.45611,3.39361,Nigeria,COD United Ladies F.C,1,wikidata:Q28439752,wikidata
 Codicote F.C.,club,1913-01-01,year,,,,,United Kingdom,,1,wikidata:Q5140288,wikidata
@@ -6003,12 +6001,12 @@ Comercial Futebol Clube,club,1911-10-10,day,,Ribeirão Preto,-21.17763,-47.81010
 Comercial Futebol Clube,club,1939-01-01,year,,São Paulo,-23.55039,-46.63395,Brazil,,4,wikidata:Q9826646,wikidata
 Comercial Futebol Clube,club,1965-01-01,year,,Viçosa,-9.37139,-36.24083,Brazil,,2,wikidata:Q5151528,wikidata
 Comercio Central Unidos,club,1932-03-29,day,,Santiago del Estero,-27.78444,-64.26694,Argentina,Comercio Central Unidos|Comercio Central Unidos SdE|CCCU,1,wikidata:Q124622133,wikidata
-Comerciário Futebol Clube,club,2003-01-01,year,,Estádio Nhozinho Santos,-2.53629,-44.28914,Brazil,Comerciario Futebol Clube,4,wikidata:Q2985172,wikidata
+Comerciário Futebol Clube,club,2003-12-17,day,,Estádio Nhozinho Santos,-2.53629,-44.28914,Brazil,Comerciario Futebol Clube,4,wikidata:Q2985172,en.wikipedia infobox (Comerciário Futebol Clube)
 Comisión de Actividades Infantiles,club,1984-08-10,day,,Comodoro Rivadavia,-45.86667,-67.50000,Argentina,Comision de Actividades Infantiles|CAI,10,wikidata:Q1022771,wikidata
 Comminges Saint-Gaudens Football 2014,club,1940-11-05,day,,Saint-Gaudens,43.10806,0.72333,France,,0,wikidata:Q109507737,wikidata
 Commonwealth of Independent States,nation,1991-12-08,day,,Minsk,53.90225,27.56184,Commonwealth of Independent States,CIS national under-20 football team|Commonwealth of Independent States national under-20 football team,138,wikidata:Q7779,wikidata
 Commune FC,club,1977-01-01,year,,Ouagadougou,12.36861,-1.52750,Burkina Faso,,7,wikidata:Q969575,wikidata
-Como 1907,club,1907-05-25,day,,Como,45.81025,9.08614,Italy,Calcio Como|F.C. Como|Como Calcio|Como,57,wikidata:Q1120838,en.wikipedia infobox (Como 1907)
+Como 1907,club,1907-05-25,day,,Como,45.81025,9.08614,Italy,Calcio Como|F.C. Como|Como Calcio|Como,58,wikidata:Q1120838,en.wikipedia infobox (Como 1907)
 Comoros,nation,1975-07-06,day,,Moroni,-11.70361,43.25361,Comoros,Comores women's national under-20 football team,284,wikidata:Q970,wikidata
 Compañía Peruana de Teléfonos football team,club,1970-01-01,year,,Estadio Nacional del Perú (1897),-12.06714,-77.03372,Peru,,2,wikidata:Q30907092,wikidata
 Comprensorio Normanno,club,1908-01-01,year,,Paternò,37.56667,14.90000,Italy,,5,wikidata:Q3907380,wikidata
@@ -6167,7 +6165,7 @@ Crewe Alexandra F.C.,club,1877-01-01,year,,Crewe,53.09900,-2.44000,United Kingdo
 Crewe United F.C.,club,1961-01-01,year,,,,,United Kingdom,,2,wikidata:Q5184830,wikidata
 Criacao Shinjuku,club,2005-01-01,year,,Shinjuku,35.69389,139.70342,Japan,,6,wikidata:Q60997259,wikidata
 Cribbs Friends Life F.C.,club,1958-01-01,year,,,,,United Kingdom,,2,wikidata:Q5184887,wikidata
-Crichton F.C.,club,1972-01-01,year,,Dumfries and Galloway,55.07000,-3.60306,United Kingdom,,1,wikidata:Q5184924,wikidata
+Crichton F.C.,club,1972-01-01,year,,Dumfries and Galloway,55.07000,-3.60306,United Kingdom,,2,wikidata:Q5184924,wikidata
 Criciúma Esporte Clube,club,1947-05-13,day,,Criciúma,-28.67750,-49.36972,Brazil,Criciuma Esporte Clube,33,wikidata:Q598834,en.wikipedia infobox (Criciúma Esporte Clube)
 Cricket and Football Club of Madrid,club,1879-01-01,year,,Madrid,40.41694,-3.70333,Spain,,2,wikidata:Q30908841,wikidata
 Cricket Viktoria Magdeburg,club,1897-01-01,year,,,,,German Reich,,5,wikidata:Q320322,wikidata
@@ -6398,7 +6396,7 @@ Cwmamman United A.F.C.,club,1976-01-01,year,,,,,United Kingdom,,4,wikidata:Q5197
 Cwmbran Celtic F.C.,club,1925-01-01,year,,,,,United Kingdom,,4,wikidata:Q5197229,wikidata
 Cwmbrân Town A.F.C.,club,1951-01-01,year,,Cwmbrân,51.65300,-3.02100,United Kingdom,Cwmbran Town A.F.C.,22,wikidata:Q1146848,wikidata
 Cyncoed Ladies F.C.,club,2005-01-01,year,,,,,United Kingdom,,2,wikidata:Q55608738,wikidata
-Cyprus,nation,1960-08-16,day,,Nicosia,35.17250,33.36500,Cyprus,Cyprus U-21|Cyprus U21|Cyprus national under-17 association football team|Cyprus national under-17 football team|Cyprus national under-18 football team|Cyprus national under-19 football team|Cyprus national under-20 football team|Cyprus national under-21 football team|Cyprus under-16 international footballers,326,wikidata:Q229,wikidata
+Cyprus,nation,1960-08-16,day,,Nicosia,35.17250,33.36500,Cyprus,Cyprus U-21|Cyprus U21|Cyprus national under-17 association football team|Cyprus national under-17 football team|Cyprus national under-18 football team|Cyprus national under-19 football team|Cyprus national under-20 football team|Cyprus national under-21 football team|Cyprus under-16 international footballers,327,wikidata:Q229,wikidata
 Czarni Lwów,club,1903-01-01,year,,Lviv,49.84195,24.03159,Austria–Hungary,Czarni Lwow,8,wikidata:Q643727,wikidata
 Czarni Wierzchosławice,club,1953-01-01,year,,,,,Poland,,1,wikidata:Q5201590,wikidata
 Czarni Żagań,club,1957-01-01,year,,Żagań,51.61667,15.31667,Poland,Czarni Sagan,7,wikidata:Q1091780,wikidata
@@ -7146,9 +7144,9 @@ Douala Athletic Club,club,2000-01-01,year,,Stade de la Réunification,4.05556,9.
 Double Flower FA,club,1979-01-01,year,,Hong Kong,22.27833,114.15861,People's Republic of China,,8,wikidata:Q864207,wikidata
 Douglas and District F.C.,club,1996-01-01,year,,,,,United Kingdom,,2,wikidata:Q1909584,wikidata
 Douglas F.C.,club,1903-01-01,year,,,,,United Kingdom,,1,wikidata:Q5301451,wikidata
-Douglas High School Old Boys A.F.C.,club,1926-01-01,year,,Onchan,54.17361,-4.46667,United Kingdom,,3,wikidata:Q2275915,wikidata
+Douglas High School Old Boys A.F.C.,club,1926-01-01,year,,Onchan,54.17500,-4.45500,United Kingdom,,3,wikidata:Q2275915,wikidata
 Douglas Royal F.C.,club,1981-01-01,year,,,,,United Kingdom,,2,wikidata:Q2803245,wikidata
-Dovbuș Cernăuți,club,1920-01-01,year,,Chernivtsi,48.29083,25.93444,Romania,,5,wikidata:Q9210404,wikidata
+Dovbuș Cernăuți,club,1920-01-01,year,,Chernivtsi,48.29083,25.93444,Romania,,4,wikidata:Q9210404,wikidata
 Dover Athletic F.C.,club,1983-01-01,year,,Dover,51.12750,1.31222,United Kingdom,Dover Athletic Football Club|Dover Athletic FC|Dover Athletic|Dover|The Whites|Athletic|DAFC,21,wikidata:Q2658370,wikidata
 Dover F.C.,club,1894-01-01,year,,,,,United Kingdom,,5,wikidata:Q5302484,wikidata
 DOVO,club,1933-01-01,year,,Veenendaal,52.02500,5.55500,Netherlands,,3,wikidata:Q653600,wikidata
@@ -7411,7 +7409,7 @@ Edinburgh City F.C.,club,1928-01-01,year,,City of Edinburgh,55.94973,-3.19333,Un
 Edinburgh City F.C.,club,1966-01-01,year,,Edinburgh,55.95333,-3.18917,United Kingdom,,15,wikidata:Q2283783,wikidata
 Edinburgh Southern AFC,club,2001-01-01,year,,City of Edinburgh,55.94973,-3.19333,United Kingdom,,1,wikidata:Q5338260,wikidata
 Edinburgh United F.C.,club,1985-01-01,year,,City of Edinburgh,55.94973,-3.19333,United Kingdom,,2,wikidata:Q5338274,wikidata
-Edinburgh University A.F.C.,club,1878-01-01,year,,Edinburgh,55.95333,-3.18917,United Kingdom,,1,wikidata:Q5338273,wikidata
+Edinburgh University A.F.C.,club,1878-01-01,year,,Edinburgh,55.95333,-3.18917,United Kingdom,,2,wikidata:Q5338273,wikidata
 Eding Sport FC,club,2012-01-01,year,,Lekié,4.27611,11.26306,Cameroon,,9,wikidata:Q42788608,wikidata
 Edirnespor,club,1966-01-01,year,,Edirne,41.67304,26.57361,Turkey,,7,wikidata:Q5338338,wikidata
 EDMF Churra,club,2009-01-01,year,,,,,Spain,,2,wikidata:Q55639624,wikidata
@@ -7706,8 +7704,8 @@ ES Sains-Saint-Fuscien,club,1993-01-01,year,,,,,France,Entente Sains-Saint-Fussi
 ES Saint-Zacharie,club,1931-11-15,day,,Saint-Zacharie,43.38417,5.70667,France,,0,wikidata:Q118955348,wikidata
 ES Sétif,club,1958-01-01,year,,Sétif,36.19000,5.41000,Algeria,ES Setif|ES Setifienne|ESS|ES Sétifienne|Entente Sportive Sétifienne|Entente Sportive Setifienne|E.S.S|E.S. Sétif,32,wikidata:Q1059484,wikidata
 ES Thaon,club,1920-01-01,year,,Thaon-les-Vosges,48.25051,6.41946,France,,3,wikidata:Q3055044,wikidata
-ES Tighennif,club,1995-09-12,day,,,,,Algeria,l'Entente|EST,0,wikidata:Q110861077,wikidata
 ES Tighennif,club,1995-09-12,day,,Tighennif,35.41670,0.33300,Algeria,وفاق تيغنيف,3,wikidata:Q111096630,wikidata
+ES Tighennif,club,1995-09-12,day,,,,,Algeria,l'Entente|EST,0,wikidata:Q110861077,wikidata
 ES Troyes AC,club,1986-06-28,day,,Troyes,48.29889,4.07806,France,Troyes AC|ES Troyes|ESTAC,46,wikidata:Q501693,wikidata
 ES Uzès Pont du Gard,club,2005-06-09,day,,Uzès,44.01250,4.41972,France,ES Uzes Pont du Gard,5,wikidata:Q1276059,wikidata
 ES Vertus-Villeneuve,club,1982-06-05,day,,Vertus,48.90444,4.00333,France,,0,wikidata:Q119519769,wikidata
@@ -8094,8 +8092,8 @@ F.C. Hound Dogs,club,2012-01-01,year,,Victoria Stadium,36.14936,-5.35034,United 
 F.C. Hégenheim,club,1911-01-01,year,,Hégenheim,47.56194,7.52556,France,,1,wikidata:Q109507597,wikidata
 F.C. Ideale,club,1924-01-01,year,,,,,Italy,Ideale,0,wikidata:Q57171585,wikidata
 F.C. Illhaeusern,club,1954-01-01,year,,Illhaeusern,48.18444,7.43500,France,,0,wikidata:Q109507598,wikidata
-F.C. Indiana,club,2000-01-01,year,,Lafayette,40.41720,-86.87860,United States,,2,wikidata:Q5423692,wikidata
 F.C. Indiana,club,2000-01-01,year,,,,,United States,,2,wikidata:Q5423694,wikidata
+F.C. Indiana,club,2000-01-01,year,,Lafayette,40.41720,-86.87860,United States,,2,wikidata:Q5423692,wikidata
 F.C. Ironi Or Yehuda,club,2005-01-01,year,,,,,Israel,,2,wikidata:Q18354488,wikidata
 F.C. Issy-les-Moulineaux,club,1987-05-27,day,,Issy-les-Moulineaux,48.82306,2.26917,France,,0,wikidata:Q109507600,wikidata
 F.C. Jojo,club,1974-01-01,year,,Grenoble,45.18694,5.72639,France,,1,wikidata:Q18745189,wikidata
@@ -8293,7 +8291,7 @@ Farleigh Rovers F.C.,club,1922-01-01,year,,,,,United Kingdom,,2,wikidata:Q533013
 Farnborough F.C.,club,2007-01-01,year,,Farnborough,51.29000,-0.75000,United Kingdom,Farnborough Football Club,14,wikidata:Q2978308,wikidata
 Farnborough North End F.C.,club,1967-01-01,year,,,,,United Kingdom,,1,wikidata:Q5435980,wikidata
 Farnham Town F.C.,club,1906-01-01,year,,,,,United Kingdom,,3,wikidata:Q5327741,wikidata
-Faroe Islands,nation,1948-04-01,day,,Tórshavn,62.00981,-6.77135,Faroe Islands,Faroe Islands national under-17 football team|Faroe Islands national under-18 football team|Faroe Islands national under-19 football team|Faroe Islands national under-20 football team|Faroe Islands national under-21 football team|Faroe Islands women's national football team|Faroe Islands women's national under-17 football team|Faroe Islands women's national under-19 association football team|The Faroe Islands U17 National Team,214,wikidata:Q4628,wikidata
+Faroe Islands,nation,1948-04-01,day,,Tórshavn,62.00981,-6.77135,Faroe Islands,Faroe Islands national under-17 football team|Faroe Islands national under-18 football team|Faroe Islands national under-19 football team|Faroe Islands national under-20 football team|Faroe Islands national under-21 football team|Faroe Islands women's national football team|Faroe Islands women's national under-17 football team|Faroe Islands women's national under-19 association football team|The Faroe Islands U17 National Team,213,wikidata:Q4628,wikidata
 Faroe Islands women's national football team,national_team,1986-06-25,day,,Tórsvøllur,62.01917,-6.77806,Faroe Islands,,27,wikidata:Q620771,wikidata
 Faros Acropoleos,club,1961-10-01,day,,Nicosia,35.17250,33.36500,Cyprus,,1,wikidata:Q18761276,wikidata
 Farsley Celtic F.C.,club,1908-01-01,year,,Farsley,53.81160,-1.67180,United Kingdom,Farsley Celtic Football Club|Farsley Celtic FC|Farsley Celtic Association Football Club|Farsley Celtic A.F.C.|Farsley Celtic AFC|Farsley Association Football Club|Farsley A.F.C.|Farsley AFC|Farsley|FCFC|FCAFC,12,wikidata:Q18316,wikidata
@@ -8445,7 +8443,6 @@ FC Amsham,club,1961-01-01,year,,,,,Germany,,0,wikidata:Q122952073,wikidata
 FC Amsterdam,club,1972-01-01,year,,Amsterdam,52.36667,4.88333,Netherlands,,18,wikidata:Q386241,wikidata
 FC Anadolu Bayern München,club,1982-01-01,year,,,,,Germany,,0,wikidata:Q122949024,wikidata
 FC Anadoluspor Coburg,club,1980-01-01,year,,,,,Germany,,0,wikidata:Q122953002,wikidata
-FC Andorra,club,1942-10-15,day,,Andorra la Vella,42.50722,1.52222,Andorra,Football Club Andorra|Andorra Football Club|Andorra FC|president Ferran Vilaseca,34,wikidata:Q1386854,wikidata
 FC Andorra Veterans,club,1996-01-01,year,,Andorra la Vella,42.50722,1.52222,Andorra,,6,wikidata:Q301973,wikidata
 FC Angusht Nazran,club,1993-01-01,year,,Nazran,43.21667,44.76667,Russia,,10,wikidata:Q2558097,wikidata
 FC Aninoasa,club,1985-01-01,year,,Aninoasa,44.97252,25.45119,Romania,Pucioasa,1,wikidata:Q39058326,wikidata
@@ -8483,6 +8480,7 @@ FC Arsenal-Kyivshchyna Bila Tserkva,club,2006-01-01,year,,Bila Tserkva,49.79556,
 FC Arsenali Tbilisi,club,1940-01-01,year,,Tbilisi,41.72250,44.79250,Soviet Union,,5,wikidata:Q12649184,wikidata
 FC Aschheim,club,1956-01-01,year,,Aschheim,48.17333,11.71778,Germany,,0,wikidata:Q114049774,wikidata
 FC Ascó,club,2010-01-01,year,,Asco,42.45361,9.03250,Spain,FC Asco,5,wikidata:Q2033195,wikidata
+FC ASESINOS FC,club,1942-10-15,day,,Andorra la Vella,42.50722,1.52222,Andorra,Football Club Andorra|Andorra Football Club|Andorra FC|president Ferran Vilaseca,35,wikidata:Q1386854,wikidata
 FC Asia Talas,club,2025-01-01,year,,Talas,42.51667,72.23333,Kyrgyzstan,,2,wikidata:Q138648174,wikidata
 FC Assens,club,1945-07-01,day,,,,,Switzerland,,0,wikidata:Q122982583,wikidata
 FC Assent,club,1974-01-01,year,,,,,Belgium,,2,wikidata:Q1949710,wikidata
@@ -8509,10 +8507,10 @@ FC Avangard Kursk,club,1937-01-01,year,,Kursk,51.73722,36.18722,Russia,,21,wikid
 FC Avanhard Kramatorsk,club,1955-01-01,year,,Kramatorsk,48.73917,37.58389,Ukraine,,11,wikidata:Q2078847,wikidata
 FC Avanhard Rovenky,club,1924-01-01,year,,Rovenky,48.08333,39.36667,Ukraine,,4,wikidata:Q4055327,wikidata
 FC Avanhard Ternopil,club,1959-01-01,year,,Ternopil,49.56667,25.60000,Ukraine,,4,wikidata:Q5424833,wikidata
-FC Avenir Beggen,club,1915-07-01,day,,Luxembourg,49.61139,6.13000,Luxembourg,,23,wikidata:Q1333583,en.wikipedia infobox (FC Avenir Beggen)
+FC Avenir Beggen,club,1915-07-01,day,,Luxembourg,49.61139,6.13000,Luxembourg,,24,wikidata:Q1333583,en.wikipedia infobox (FC Avenir Beggen)
 FC Avirons,club,1957-01-01,year,,Les Avirons,-21.24194,55.33333,France,,2,wikidata:Q3063070,wikidata
-FC Avtodor Vladikavkaz,club,1983-01-01,year,,Vladikavkaz,43.04000,44.67750,Russia,,7,wikidata:Q1975398,wikidata
-FC Avtozapchast Baksan,club,1991-01-01,year,,,,,Russia,,2,wikidata:Q4056248,wikidata
+FC Avtodor Vladikavkaz,club,1983-01-01,year,,Vladikavkaz,43.04000,44.67750,Russia,,8,wikidata:Q1975398,wikidata
+FC Avtozapchast Baksan,club,1991-01-01,year,,,,,Russia,,3,wikidata:Q4056248,wikidata
 FC Azadi München,club,2008-01-01,year,,,,,Germany,,0,wikidata:Q122948919,wikidata
 FC Azhar,club,1992-01-01,year,,,,,Kazakhstan,,7,wikidata:Q1046348,wikidata
 FC Azzurri 90 Lausanne,club,1962-01-01,year,,Lausanne,46.53333,6.63333,Switzerland,Azzurri 90 Lausanne|FC Azzuri 90 Lausanne|FC Azzurri 90 LS,1,wikidata:Q16269677,wikidata
@@ -9039,7 +9037,7 @@ FC Girondins de Bordeaux,club,1881-10-01,day,,Bordeaux,44.83778,-0.57944,France,
 FC Gland,club,1920-01-01,year,,,,,Switzerland,,2,wikidata:Q5424936,wikidata
 FC Glarus,club,1912-07-01,day,,Canton of Glarus,46.98333,9.06667,Switzerland,,3,wikidata:Q1387123,wikidata
 FC Gloria Buzău,club,1973-06-16,day,,Buzău,45.15167,26.81667,Romania,Sport Club Municipal Gloria Buzău,14,wikidata:Q944169,en.wikipedia infobox (FC Gloria Buzău)
-FC Goa,club,2014-08-26,day,,Goa,15.40194,74.04333,India,Football Club Goa,30,wikidata:Q16839398,en.wikipedia infobox (FC Goa)
+FC Goa,club,2014-08-26,day,,Goa,15.40194,74.04333,India,Football Club Goa,31,wikidata:Q16839398,en.wikipedia infobox (FC Goa)
 FC Gollhofen,club,1961-01-01,year,,,,,Germany,,0,wikidata:Q122954673,wikidata
 FC Gomel,club,1959-01-01,year,,Gomel,52.44167,30.98333,Belarus,Gomel FC|Homel|Homel FC|FC Homel|Gomel|FC Homieĺ,40,wikidata:Q726285,wikidata
 FC Gorki,club,2003-01-01,year,,Horki,54.28333,30.98333,Belarus,FC Horki|Football Club Gorki|Gorki,5,wikidata:Q48970835,wikidata
@@ -9515,7 +9513,7 @@ FC Matera,club,1933-01-01,year,,Matera,40.66667,16.60000,Italy,History of F.C. M
 FC Mauerwerk,club,2014-08-02,day,,Vienna,48.20833,16.37250,Austria,FC Karabakh Wien,6,wikidata:Q25338968,en.wikipedia infobox (FC Mauerwerk)
 FC Maxhütte-Haidhof,club,1923-01-01,year,,Maxhütte-Haidhof,49.20000,12.10000,Germany,,1,wikidata:Q26929422,wikidata
 FC Maxline Viciebsk,club,2021-01-01,year,,Rahachow,53.08278,30.05250,Belarus,ML Viciebsk,19,wikidata:Q281780,wikidata
-FC Mecklenburg Schwerin,club,2013-05-28,day,,Schwerin,53.62889,11.41500,Germany,,10,wikidata:Q693383,en.wikipedia infobox (FC Mecklenburg Schwerin)
+FC Mecklenburg Schwerin,club,2013-05-28,day,,Schwerin,53.62889,11.41500,Germany,,10,wikidata:Q693383,wikidata
 FC Medyk Morshyn,club,1979-01-01,year,,Morshyn,49.15500,23.87250,Ukraine,,4,wikidata:Q12122209,wikidata
 FC Megasport,club,2005-01-01,year,,Almaty,43.24000,76.91500,Kazakhstan,,9,wikidata:Q420609,wikidata
 FC Melsbroek,club,1953-01-01,year,,,,,Belgium,,1,wikidata:Q114560122,wikidata
@@ -10560,7 +10558,7 @@ FE Grama,club,2013-07-02,day,,Santa Coloma de Gramenet,41.45389,2.21111,Spain,,3
 Feckenham F.C.,club,1881-01-01,year,,,,,United Kingdom,,1,wikidata:Q5439873,wikidata
 Federal Football Netball Club,club,1892-01-01,year,,,,,Australia,,1,wikidata:Q5440226,wikidata
 Federal Triangles Soccer Club,club,1990-01-01,year,,,,,United States,,2,wikidata:Q28402804,wikidata
-Federated States of Micronesia,nation,1986-11-03,day,,Palikir,6.91778,158.18500,Federated States of Micronesia,Federated States of Micronesia national under-23 football team,223,wikidata:Q702,wikidata
+Federated States of Micronesia,nation,1986-11-03,day,,Palikir,6.91778,158.18500,Federated States of Micronesia,Federated States of Micronesia national under-23 football team,224,wikidata:Q702,wikidata
 Feildians Athletic Association,club,1899-01-01,year,,,,,Canada,,2,wikidata:Q24190895,wikidata
 Feira Futebol Clube,club,2026-02-05,day,,Feira de Santana,-12.26694,-38.96694,Brazil,,2,wikidata:Q138507602,wikidata
 Feirense Futebol Clube,club,2007-01-01,year,,Santo Antônio de Jesus,-12.96919,-39.26108,Brazil,,7,wikidata:Q3068028,wikidata
@@ -10590,8 +10588,8 @@ Feriköy SK,club,1927-01-01,year,,,,,Turkey,,10,wikidata:Q1406334,wikidata
 Fernandópolis Futebol Clube,club,1961-11-15,day,,Fernandópolis,-20.28389,-50.24583,Brazil,Fernandopolis Futebol Clube,5,wikidata:Q5445031,wikidata
 Ferring F.C.,club,1951-01-01,year,,,,,United Kingdom,,0,wikidata:Q5445363,wikidata
 Ferro Carril Oeste,club,1904-07-28,day,,Buenos Aires,-34.59972,-58.38194,Argentina,Club Ferro Carril Oeste,26,wikidata:Q910444,wikidata
-Ferroviário Atlético Clube,club,1937-05-01,day,,Maceió,-9.66583,-35.73500,Brazil,Ferroviario Atletico Clube,5,wikidata:Q3069743,wikidata
 Ferroviário Atlético Clube,club,1933-05-09,day,,Fortaleza,-3.72750,-38.52750,Brazil,Ferroviario Atletico Clube,12,wikidata:Q2667793,wikidata
+Ferroviário Atlético Clube,club,1937-05-01,day,,Maceió,-9.66583,-35.73500,Brazil,Ferroviario Atletico Clube,5,wikidata:Q3069743,wikidata
 Ferroviário Atlético Clube,club,1943-07-10,day,,Porto Velho,-8.76194,-63.90389,Brazil,Ferroviario Atletico Clube|Ferroviario Atlético Clube|Ferroviário,8,wikidata:Q5445452,wikidata
 Ferroviário de Nova Lisboa,club,1930-01-01,year,,Huambo,-12.76667,15.73333,Portugal,,5,wikidata:Q16839149,wikidata
 Ferroviário Esporte Clube,club,1941-01-01,year,,São Luís,-2.53000,-44.30278,Brazil,Ferroviario Esporte Clube,7,wikidata:Q3069745,wikidata
@@ -10681,7 +10679,7 @@ FK Atletik,club,2018-12-01,month,,,,,Bulgaria,,1,wikidata:Q111781525,wikidata
 FK Atmosfera,club,2012-03-01,day,,Mažeikiai,56.31111,22.33611,Lithuania,,20,wikidata:Q61382287,en.wikipedia infobox (FK Atmosfera (2012))
 FK Auda,club,1969-01-01,year,,Riga,56.94750,24.10694,Latvia,,27,wikidata:Q1388798,wikidata
 FK Austria Wien,club,1911-03-15,day,,Vienna,48.20833,16.37250,Austria,Fußballklub Austria Wien|Austria Vienna,58,wikidata:Q131209,wikidata
-FK Avei Agstafa,club,1990-01-01,year,,,,,Azerbaijan,,8,wikidata:Q11039891,wikidata
+FK Avei Agstafa,club,1990-01-01,year,,,,,Azerbaijan,,9,wikidata:Q11039891,wikidata
 FK Babi,club,1994-01-01,year,,Gradski stadion Štip,41.74280,22.19060,North Macedonia,,1,wikidata:Q5426048,wikidata
 FK Babrungas,club,1935-01-01,year,,Plungė,55.91667,21.85000,Lithuania,,26,wikidata:Q12654292,wikidata
 FK Babuna,club,1971-01-01,year,,,,,North Macedonia,,1,wikidata:Q5426049,wikidata
@@ -10889,7 +10887,7 @@ FK Karlskrona,club,2012-01-01,year,,Karlskrona,56.19221,15.63084,Sweden,,4,wikid
 FK Karpaty Limbach,club,1950-01-01,year,,,,,Slovakia,,1,wikidata:Q5426196,wikidata
 FK Karvan,club,2004-01-01,year,,Yevlakh,40.61722,47.15000,Azerbaijan,,17,wikidata:Q679317,wikidata
 FK Kauno jėgeriai,club,1993-01-01,year,,,,,Lithuania,,2,wikidata:Q6378843,wikidata
-FK Kauno Žalgiris,club,2005-01-01,year,,Kaunas,54.90000,23.93333,Lithuania,Kauno Žalgiris|FK Spyris Kaunas|Spyris Kaunas|FK Spyris,80,wikidata:Q12654411,wikidata
+FK Kauno Žalgiris,club,2005-01-01,year,,Kaunas,54.90000,23.93333,Lithuania,Kauno Žalgiris|FK Spyris Kaunas|Spyris Kaunas|FK Spyris,81,wikidata:Q12654411,wikidata
 FK Keşla-2,club,2018-01-01,year,,ASK Arena,40.41099,49.89771,Azerbaijan,,2,wikidata:Q56071324,wikidata
 FK Khazar Sumgayit,club,1960-01-01,year,,Sumgait,40.59611,49.67000,Azerbaijan,,10,wikidata:Q2500160,wikidata
 FK Khiva,club,1977-01-01,year,,Khiva,41.38139,60.36111,Uzbekistan,,7,wikidata:Q5426198,wikidata
@@ -11064,7 +11062,6 @@ FK Phönix Regensburg,club,1982-01-01,year,,,,,Germany,,0,wikidata:Q122952449,wi
 FK Pirmasens,club,1903-01-01,year,,Pirmasens,49.20000,7.60000,Germany,FK 03 Pirmasens,16,wikidata:Q700053,wikidata
 FK Pitu Guli,club,1945-01-01,year,,,,,North Macedonia,,4,wikidata:Q5426315,wikidata
 FK Plavi Dunav,club,1932-01-01,year,,,,,Serbia,,3,wikidata:Q5426318,wikidata
-FK Plavi Put,club,2008-01-01,year,,,,,Bosnia and Herzegovina,,0,wikidata:Q24944654,wikidata
 FK Plačkovica,club,1942-01-01,year,,,,,North Macedonia,,2,wikidata:Q5426314,wikidata
 FK Pljevlja 1997,club,1997-01-01,year,,Gradski stadion,43.36235,19.36225,Montenegro,,3,wikidata:Q18125732,wikidata
 FK Pobeda,club,1941-01-01,year,,Prilep,41.34639,21.55417,North Macedonia,,28,wikidata:Q222874,wikidata
@@ -11143,7 +11140,7 @@ FK Senja,club,1949-01-01,year,,,,,Norway,,4,wikidata:Q5426391,wikidata
 FK Senta,club,1905-01-01,year,,,,,Serbia,,6,wikidata:Q5426394,wikidata
 FK Sevojno,club,1950-01-01,year,,Sevojno,43.84500,19.89860,Serbia,,16,wikidata:Q266890,wikidata
 FK Shakhrikhon,club,1967-01-01,year,,Shahrixon,40.71667,72.05000,Soviet Union,,6,wikidata:Q19916138,wikidata
-FK Shakhtyor-2 Salihorsk,club,2020-01-01,year,,Pietrykaŭ,52.13333,28.50000,Belarus,FK Shakhtyor Petrikov|FC Šachcior Pietrykaŭ|FK Shakhtyor Petrykaw,5,wikidata:Q91081182,wikidata
+FK Shakhtyor-2 Salihorsk,club,2020-01-01,year,,Pietrykaŭ,52.12556,28.49611,Belarus,FK Shakhtyor Petrikov|FC Šachcior Pietrykaŭ|FK Shakhtyor Petrykaw,5,wikidata:Q91081182,wikidata
 FK Shamkir,club,1954-01-01,year,,Şəmkir,40.85639,46.01722,Azerbaijan,,22,wikidata:Q603407,wikidata
 FK Shemshova 1984,club,1984-01-01,year,,,,,North Macedonia,KF Shemshova 1984,1,wikidata:Q19892470,wikidata
 FK Shkupi,club,2012-01-01,year,,Skopje,41.99611,21.43167,North Macedonia,Football Club Shkupi,29,wikidata:Q16839383,wikidata
@@ -11214,7 +11211,7 @@ FK Sveikata,club,1919-01-01,year,,Kybartai,54.63889,22.75556,Lithuania,,11,wikid
 FK Svit,club,1936-01-01,year,,,,,Slovakia,,3,wikidata:Q5426429,wikidata
 FK Sykkylven,club,2002-12-09,day,,Sykkylven,62.39250,6.58333,Norway,Fotballklubben Sykkylven|Sykkylven Fotballklubb|Sykkylven FK,1,wikidata:Q17773743,wikidata
 FK Sørøy Glimt,club,1987-01-01,year,,,,,Norway,,2,wikidata:Q5426434,wikidata
-FK Sūduva,club,1968-01-01,year,,Marijampolė,54.55667,23.35444,Lithuania,Futbolo Klubas Sūduva Marijampolė,80,wikidata:Q757104,wikidata
+FK Sūduva,club,1968-01-01,year,,Marijampolė,54.55667,23.35444,Lithuania,Futbolo Klubas Sūduva Marijampolė,81,wikidata:Q757104,wikidata
 FK Tachov,club,1950-01-01,year,,,,,Czech Republic,,3,wikidata:Q5426432,wikidata
 FK Takovo,club,1911-01-01,year,,,,,Serbia,,3,wikidata:Q5426438,wikidata
 FK Tatra Kisač,club,1929-01-01,year,,,,,Serbia,,1,wikidata:Q16851895,wikidata
@@ -11234,7 +11231,7 @@ FK Tiverija,club,1923-01-01,year,,Stadion Mladost,41.44620,22.63771,North Macedo
 FK TJ Štěchovice,club,1926-01-01,year,,,,,Czech Republic,,2,wikidata:Q16837059,wikidata
 FK Tomori,club,1923-11-25,day,,Berat,40.70494,19.94967,Albania,,24,wikidata:Q1344978,wikidata
 FK Torlak,club,1962-01-01,year,,,,,Serbia,,1,wikidata:Q55611375,wikidata
-FK Transinvest,club,2022-01-01,year,,FK Transinvest stadium,54.80660,25.16500,Lithuania,,54,wikidata:Q117206645,wikidata
+FK Transinvest,club,2022-01-01,year,,FK Transinvest stadium,54.80660,25.16500,Lithuania,,55,wikidata:Q117206645,wikidata
 FK Trepča,club,1932-01-01,year,,Mitrovica,42.88333,20.86667,Serbia,FK Partizan Kosovska Mitrovica,8,wikidata:Q5426301,wikidata
 FK Trgovački,club,1950-01-01,year,,,,,Serbia,,0,wikidata:Q5426445,wikidata
 FK TSC,club,1913-02-10,day,,Bačka Topola,45.80889,19.63500,Serbia,Fudbalski klub TSC|FK TSC Bačka Topola|TSC Bačka Topola|FK Bačka Topola|Fudbalski Klub Topolya Sport Club|TSC|TSC Backa Topola,36,wikidata:Q828297,en.wikipedia infobox (FK TSC)
@@ -11861,8 +11858,8 @@ Gahar Zagros F.C.,club,2006-01-01,year,,,,,Iran,Gahar Dorud,7,wikidata:Q2655544,
 Gainare Tottori,club,1983-01-01,year,,Yonago,35.42817,133.33089,Japan,,25,wikidata:Q957420,wikidata
 Gainsborough Trinity F.C.,club,1873-01-01,year,,Gainsborough,53.40160,-0.77320,United Kingdom,Gainsborough Trinity Football Club|Gainsborough Trinity FC|Gainsborough Trinity|Gainsborough|Trinity|GTFC,20,wikidata:Q1491327,wikidata
 Gairdoch F.C.,club,1886-01-01,year,,Carronshore,56.02796,-3.77737,United Kingdom,,1,wikidata:Q16838217,wikidata
-GAIS,club,1894-03-11,day,,Gothenburg,57.70750,11.96750,Sweden,Göteborgs Atlet- och Idrottssällskap,38,wikidata:Q391789,wikidata
 GAIS,club,1894-03-11,day,,,,,Sweden,,1,wikidata:Q49094928,wikidata
+GAIS,club,1894-03-11,day,,Gothenburg,57.70750,11.96750,Sweden,Göteborgs Atlet- och Idrottssällskap,38,wikidata:Q391789,wikidata
 Gakunan F Mosuperio,club,1987-01-01,year,,Fuji,35.16133,138.67628,Japan,Fujine Club,1,wikidata:Q117091185,wikidata
 Gala Fairydean F.C.,club,2013-01-01,year,,Galashiels,55.62056,-2.81889,United Kingdom,,3,wikidata:Q5517754,wikidata
 Gala FC,club,2007-01-01,year,,,,,Macau,Gala Football Club,3,wikidata:Q125294319,wikidata
@@ -13098,7 +13095,7 @@ Hommelvik IL,club,1924-09-15,day,,Hommelvik,63.41139,10.79472,Norway,Hommelvik I
 Honda FC,club,1971-01-01,year,,Hamamatsu,34.71089,137.72619,Japan,,18,wikidata:Q2031858,wikidata
 Honduras,nation,1821-01-01,year,,Tegucigalpa,14.10578,-87.20471,Honduras,Honduras U-20|Honduras national under-15 football team|Honduras national under-17 football team|Honduras national under-20 football team|Honduras national under-20 soccer team|Honduras national under-23 football team|Honduras under-20|Honduras women's national under-20 football team,300,wikidata:Q783,wikidata
 Honduras Salzburg,club,1980-01-01,year,,Estadio Humberto Micheletti,15.40067,-87.81529,Honduras,,2,wikidata:Q5893067,wikidata
-Hong Kong,nation,1841-01-26,day,,Victoria,22.27833,114.17444,Hong Kong,Hong Kong national under-17 football team|Hong Kong national under-20 football team|Hong Kong national under-23 football team|Hong Kong women's national under-17 football team,303,wikidata:Q8646,wikidata
+Hong Kong,nation,1841-01-26,day,,Victoria,22.27833,114.17444,Hong Kong,Hong Kong national under-17 football team|Hong Kong national under-20 football team|Hong Kong national under-23 football team|Hong Kong women's national under-17 football team,304,wikidata:Q8646,wikidata
 Hong Kong 08,club,2002-01-01,year,,,,,People's Republic of China,,2,wikidata:Q3140040,wikidata
 Hong Kong C Team,club,2007-01-01,year,,,,,People's Republic of China,,2,wikidata:Q5894315,wikidata
 Hong Kong Football Club,club,1886-02-12,day,,Happy Valley,22.26670,114.18300,People's Republic of China,HKFC|Natixis HKFC,1,wikidata:Q19404048,wikidata
@@ -13387,6 +13384,7 @@ IFK Kalmar,club,1970-01-01,year,,Gröndal,59.31667,18.00833,Sweden,,7,wikidata:Q
 IFK Karlshamn,club,1906-01-01,year,,Karlshamn,56.17480,14.85820,Sweden,,3,wikidata:Q1653502,wikidata
 IFK Kiruna,club,1907-01-01,year,,,,,Sweden,,2,wikidata:Q1653500,wikidata
 IFK Klagshamn,club,1921-01-01,year,,Malmö,55.58333,13.00000,Sweden,,6,wikidata:Q3289869,wikidata
+IFK Kristinehamn,club,1906-01-01,year,,,,,Sweden,,2,wikidata:Q10532815,wikidata
 IFK Lane,club,1935-01-01,year,,,,,Sweden,,2,wikidata:Q5970738,wikidata
 IFK Lidingö,club,1932-01-01,year,,Lidingö,59.36415,18.13105,Sweden,,4,wikidata:Q1653508,wikidata
 IFK Lidingö FK,club,1932-01-01,year,,,,,Sweden,,2,wikidata:Q5970741,wikidata
@@ -13469,6 +13467,7 @@ IK Myran,club,1921-01-01,year,,Nedervetil,63.70000,23.33333,Finland,,1,wikidata:
 IK Oddevold,club,1932-07-03,day,,Uddevalla,58.34917,11.93806,Sweden,IKO,13,wikidata:Q1483030,wikidata
 IK Reif,club,1950-01-01,year,,Jönköping,57.78333,14.16667,Sweden,,0,wikidata:Q103756252,wikidata
 IK Sirius FK,club,1907-08-09,day,,Uppsala,59.84976,17.63895,Sweden,,26,wikidata:Q1471336,en.wikipedia infobox (IK Sirius Fotboll)
+IK Skovbakken,club,2016-07-01,day,,Aarhus Municipality,56.16670,10.25000,Denmark,VSK Aarhus,5,wikidata:Q16838955,en.wikipedia infobox (VSK Aarhus)
 IK Sleipner,club,1903-04-27,day,,Norrköping,58.57933,16.14932,Sweden,,21,wikidata:Q772310,wikidata
 IK Sport,club,1935-11-24,day,,Hofors Municipality,60.55000,16.28333,Sweden,,0,wikidata:Q132710381,wikidata
 IK Start,club,1905-09-19,day,,Kristiansand,58.14671,7.99560,Norway,Idrettsklubben Start|ik,28,wikidata:Q737947,wikidata
@@ -13658,7 +13657,7 @@ Inter Youth Sector,club,1908-03-09,day,,Milan,45.46694,9.19000,Italy,FC Internaz
 Interclub de Brazzaville,club,1967-09-01,month,,Brazzaville,-4.26944,15.27111,Republic of the Congo,,11,wikidata:Q1665826,wikidata
 Interior FC,club,2002-01-01,year,,Serekunda,13.44500,-16.67500,The Gambia,,2,wikidata:Q1666110,wikidata
 Internacional de Bogotá,club,2025-12-10,day,,,,,Colombia,,6,wikidata:Q137324985,wikidata
-Internacional de Madrid CF,club,2002-01-01,year,,Villaviciosa de Odón,40.35833,-3.90333,Spain,Inter de Madrid|Internacional de Madrid,11,wikidata:Q9008987,wikidata
+Internacional de Madrid CF,club,2002-01-01,year,,Villaviciosa de Odón,40.35833,-3.90333,Spain,Inter de Madrid|Internacional de Madrid,12,wikidata:Q9008987,wikidata
 Internacional de Toronto,club,2014-01-01,year,,Lamport Stadium,43.63890,-79.42310,Canada,,1,wikidata:Q18167912,wikidata
 Internacional F.C. de Palmira,club,2024-01-10,day,,Palmira,3.53472,-76.29556,Colombia,,4,wikidata:Q124247895,wikidata
 Internacional Foot-ball Club,club,1903-01-01,year,,,,,Spain,,2,wikidata:Q48781395,wikidata
@@ -13831,7 +13830,7 @@ Jakarta FC 1928,club,2010-01-01,year,,Wilis Stadium,-7.63100,111.53000,Indonesia
 Jakarta United F.C.,club,2005-01-01,year,,GOR Ciracas Stadium,-6.32524,106.86564,Indonesia,,2,wikidata:Q6124491,wikidata
 Jakobstads BK,club,1944-01-01,year,,Jakobstad,63.66667,22.70000,Finland,,3,wikidata:Q4356829,wikidata
 Jalkapalloseura Airport City,club,1998-01-01,year,,Myyrmäen jalkapallostadion,60.26210,24.83818,Finland,,2,wikidata:Q6126878,wikidata
-Jamaica,nation,1962-01-01,year,,Kingston,17.97139,-76.79306,Jamaica,Jamaica national under-20 football team|Jamaica under-17 football team,282,wikidata:Q766,wikidata
+Jamaica,nation,1962-01-01,year,,Kingston,17.97139,-76.79306,Jamaica,Jamaica national under-20 football team|Jamaica under-17 football team,283,wikidata:Q766,wikidata
 James King Blisworth F.C.,club,1898-01-01,year,,,,,United Kingdom,,1,wikidata:Q6137355,wikidata
 Jamhuri FC,club,1953-01-01,year,,Zanzibar Islands,-5.90000,39.30000,Tanzania,,6,wikidata:Q618456,wikidata
 Jamina SE,club,1945-01-01,year,,Békéscsaba,46.68333,21.08333,Hungary,,1,wikidata:Q141304876,wikidata
@@ -14081,6 +14080,7 @@ José María Arguedas de Andahuaylas,club,2004-01-01,year,,Estadio Los Chankas,-
 José Pardo de Tumán,club,1919-01-01,year,,,,,Peru,Jose Pardo de Tuman,4,wikidata:Q932836,wikidata
 Joutsan Seudun Pallo,club,1975-01-01,year,,Joutsa,61.74167,26.11528,Finland,JoSePa,1,wikidata:Q58820817,wikidata
 Joué-lès-Tours FCT,club,2008-06-30,day,,Joué-lès-Tours,47.35056,0.66167,France,Joué-lès-Tours Football Club Touraine,3,wikidata:Q6296613,wikidata
+JS Azazga,club,1946-01-01,year,,,,,Algeria,,2,wikidata:Q141202624,wikidata
 JS Baco,club,1957-01-01,year,,Koné,-21.06667,164.86667,France,,7,wikidata:Q180559,wikidata
 JS Bordj Ménaïel,club,1932-01-01,year,,Bordj Menaïel,36.74167,3.72306,Algeria,,5,wikidata:Q3178156,wikidata
 JS Canton de Pont-de-Veyle,club,2003-05-14,day,,Saint-André-d'Huiriat,46.21333,4.91222,France,,1,wikidata:Q109803042,wikidata
@@ -14747,7 +14747,7 @@ Korson Palloseura,club,1980-01-01,year,,,,,Finland,,2,wikidata:Q6432676,wikidata
 Korsvoll IL,club,1899-03-05,day,,Korsvoll,59.96268,10.75132,Norway,Korsvoll Idrettslag,4,wikidata:Q6432681,wikidata
 Korsør Boldklub,club,1903-01-01,year,,Korsør,55.32830,11.13970,Denmark,,2,wikidata:Q12322756,wikidata
 Kortedala IF,club,1956-01-01,year,,,,,Sweden,,2,wikidata:Q6432695,wikidata
-Kosovo,nation,2008-02-17,day,,Pristina,42.66667,21.16667,Kosovo,Kosovo national under-17 football team|Kosovo national under-19 football team|Kosovo national under-21 association football team|Kosovo national under-21 football team|Kosovo national under-u19 football team,283,wikidata:Q1246,wikidata
+Kosovo,nation,2008-02-17,day,,Pristina,42.66667,21.16667,Kosovo,Kosovo national under-17 football team|Kosovo national under-19 football team|Kosovo national under-21 association football team|Kosovo national under-21 football team|Kosovo national under-u19 football team,284,wikidata:Q1246,wikidata
 Kota Ranger FC,club,1978-01-01,year,,Bandar Seri Begawan,4.91667,114.91667,Brunei,,7,wikidata:Q30115816,wikidata
 Kotkan Työväen Palloilijat,club,1927-09-22,day,,Kotka,60.46667,26.94583,Finland,,20,wikidata:Q368117,wikidata
 Kotwica Kołobrzeg,club,1946-08-15,day,,Kołobrzeg,54.17611,15.57611,Poland,,7,wikidata:Q1343899,en.wikipedia infobox (Kotwica Kołobrzeg)
@@ -14866,7 +14866,7 @@ Kuusalu JK Rada,club,1994-01-01,year,,Kuusalu,59.44556,25.43667,Estonia,,2,wikid
 Kuusamon Pallo-Karhut,club,1966-01-01,year,,Kuusamo,65.96667,29.18333,Finland,PaKa,2,wikidata:Q3200714,wikidata
 Kuusankosken Kumu,club,1964-01-01,year,,,,,Finland,,2,wikidata:Q10513660,wikidata
 Kuwait,nation,1991-02-26,day,,Kuwait City,29.37500,47.98000,Kuwait,Kuwait national under-17 football team|Kuwait national under-20 football team|Kuwait national under-21 football team|Kuwait national under-23 football team,306,wikidata:Q817,wikidata
-Kuwait SC,club,1960-10-20,day,,Kuwait City,29.37500,47.98000,Kuwait,Al Kuwait Sports Club|Kuwait Sporting Club,29,wikidata:Q812716,en.wikipedia infobox (Kuwait SC)
+Kuwait SC,club,1960-10-20,day,,Kuwait City,29.37500,47.98000,Kuwait,Al Kuwait Sports Club|Kuwait Sporting Club,30,wikidata:Q812716,en.wikipedia infobox (Kuwait SC)
 Kuşadasıspor,club,1934-01-01,year,,Kuşadası,37.86324,27.26687,Turkey,,4,wikidata:Q6053876,wikidata
 KV Eendracht Aalter,club,1946-01-01,year,,Aalter,51.08333,3.45000,Belgium,,3,wikidata:Q2215155,wikidata
 KV Mechelen,club,1904-01-01,year,,Mechelen,51.02806,4.48028,Belgium,Y.R. K.V. Mechelen|K.V. Mechelen|YR KV Mechelen,49,wikidata:Q113000,wikidata
@@ -15033,7 +15033,7 @@ Laredo Heat,club,2004-01-01,year,,Laredo,27.50611,-99.50722,United States,,4,wik
 Largs Thistle F.C.,club,1889-01-01,year,,North Ayrshire,55.66667,-4.78333,United Kingdom,,3,wikidata:Q6489315,wikidata
 Larisaikos F.C.,club,1930-01-01,year,,Larissa,39.63849,22.41306,Greece,,2,wikidata:Q25535771,wikidata
 Larkhall Athletic F.C.,club,1914-01-01,year,,,,,United Kingdom,,4,wikidata:Q6416691,wikidata
-Larkhall Thistle F.C.,club,1878-01-01,year,,,,,United Kingdom,,1,wikidata:Q6489592,wikidata
+Larkhall Thistle F.C.,club,1878-01-01,year,,,,,United Kingdom,,2,wikidata:Q6489592,wikidata
 Larkollen IL,club,1937-03-18,day,,Larkollen,59.32917,10.66778,Norway,Larkollen Idrettslag,1,wikidata:Q19378984,wikidata
 Larne F.C.,club,1889-01-01,year,,Larne,54.85167,-5.81333,United Kingdom,Larne Football Club|Larne FC|Larne|LFC,31,wikidata:Q2373463,wikidata
 Larne Technical Old Boys F.C.,club,1950-01-01,year,,,,,United Kingdom,,2,wikidata:Q6489709,wikidata
@@ -15098,7 +15098,7 @@ Lechia Zielona Góra,club,1946-01-01,year,,Zielona Góra,51.93972,15.50500,Polan
 Lechia-Polonia Gdańsk,club,1998-01-01,year,,,,,Poland,,2,wikidata:Q11753563,wikidata
 Ledbury Town F.C.,club,1893-01-01,year,,,,,United Kingdom,,5,wikidata:Q6512568,wikidata
 Ledøje-Smørum Fodbold,club,1911-01-01,year,,Egedal Municipality,55.76861,12.21278,Denmark,,3,wikidata:Q12324126,wikidata
-Lee Man FC,club,2017-01-01,year,,Hong Kong,22.27833,114.15861,Hong Kong,Lee Man Football Club,15,wikidata:Q33124133,wikidata
+Lee Man FC,club,2017-01-01,year,,Hong Kong,22.27833,114.15861,Hong Kong,Lee Man Football Club,16,wikidata:Q33124133,wikidata
 Leeds A.F.C.,club,1894-01-01,year,,,,,United Kingdom,,1,wikidata:Q22097892,wikidata
 Leeds Adel Carnegie Hockey Club,club,1960-01-01,year,,,,,United Kingdom,,1,wikidata:Q6515827,wikidata
 Leeds Carnegie F.C.,club,1970-01-01,year,,The Citadel,53.80971,-1.66421,United Kingdom,,1,wikidata:Q6515856,wikidata
@@ -15128,7 +15128,7 @@ Leiknir Reykjavík,club,1973-05-17,day,,Reykjavík,64.14750,-21.93500,Iceland,Le
 Leipziger BC 1893,club,1893-01-01,year,,,,,German Reich,,5,wikidata:Q480000,wikidata
 Leirvík ÍF,club,1928-12-01,day,,,,,Faroe Islands,Leirvik IF,14,wikidata:Q1065266,en.wikipedia infobox (LÍF Leirvík)
 Leiston F.C.,club,1880-01-01,year,,,,,United Kingdom,,10,wikidata:Q6416901,wikidata
-Leith Athletic F.C.,club,1996-01-01,year,,Leith,55.98010,-3.17005,United Kingdom,,9,wikidata:Q2841225,wikidata
+Leith Athletic F.C.,club,1996-01-01,year,,Leith,55.98010,-3.17005,United Kingdom,,10,wikidata:Q2841225,wikidata
 Leixlip United F.C.,club,1969-01-01,year,,,,,Ireland,,1,wikidata:Q6520475,wikidata
 Leixões S.C.,club,1907-11-28,day,,Matosinhos,41.18667,-8.68444,Portugal,Leixões S.C.|Leixões SC|Leixões,35,wikidata:Q623730,en.wikipedia infobox (Leixões S.C.)
 Leknes FK,club,1989-01-01,year,,,,,Norway,,2,wikidata:Q11983689,wikidata
@@ -15157,7 +15157,7 @@ Lerums IS,club,1927-01-01,year,,,,,Sweden,,2,wikidata:Q6529092,wikidata
 Les Herbiers VF,club,1919-01-01,year,,Les Herbiers,46.87111,-1.01361,France,,12,wikidata:Q3555460,wikidata
 Les Marseillaises,club,1920-01-01,year,,Marseille,43.29667,5.37639,France,Olympique de Marseille,10,wikidata:Q2378143,wikidata
 Lesjöfors IF,club,1924-01-01,year,,,,,Sweden,,3,wikidata:Q10559658,wikidata
-Lesmahagow F.C.,club,1885-01-01,year,,,,,United Kingdom,,1,wikidata:Q6531276,wikidata
+Lesmahagow F.C.,club,1885-01-01,year,,,,,United Kingdom,,2,wikidata:Q6531276,wikidata
 Lesotho,nation,1966-01-01,year,,Maseru,-29.31000,27.48000,Lesotho,Lesotho U20|Lesotho national under-20 football team|Lesotho national under-20 soccer team|Lesotho women's national under-20 football team,281,wikidata:Q1013,wikidata
 Lesotho Defence Force F.C.,club,1974-01-01,year,,Maseru,-29.31000,27.48000,Lesotho,,10,wikidata:Q15978411,wikidata
 Letcombe F.C.,club,1990-01-01,year,,,,,United Kingdom,,2,wikidata:Q6416796,wikidata
@@ -15275,7 +15275,7 @@ Lingfield F.C.,club,1893-01-01,year,,,,,United Kingdom,,3,wikidata:Q6416953,wiki
 Linhares Esporte Clube,club,1991-03-15,day,,Linhares,-19.39866,-40.06506,Brazil,,9,wikidata:Q3241573,en.wikipedia infobox (Linhares Esporte Clube)
 Linhares Futebol Clube,club,2001-08-16,day,,Linhares,-19.39866,-40.06506,Brazil,,7,wikidata:Q3241574,en.wikipedia infobox (Linhares Futebol Clube)
 Linköpings AIK,club,1908-10-22,day,,Linköping,58.40942,15.62566,Sweden,,3,wikidata:Q10562763,wikidata
-Linlithgow Rose F.C.,club,1889-01-01,year,,Linlithgow,55.97528,-3.61056,United Kingdom,,2,wikidata:Q6554477,wikidata
+Linlithgow Rose F.C.,club,1889-01-01,year,,Linlithgow,55.97528,-3.61056,United Kingdom,,3,wikidata:Q6554477,wikidata
 Linthouse F.C.,club,1881-01-01,year,,Linthouse,55.86330,-4.32967,United Kingdom,,4,wikidata:Q2338961,wikidata
 Lioli F.C.,club,1934-01-01,year,,Teyateyaneng,-29.15000,27.73333,Lesotho,,12,wikidata:Q6555302,wikidata
 Lion City Sailors F.C.,club,1995-01-01,year,,Singapore,1.30000,103.80000,Singapore,Home United F.C.|Police SA,25,wikidata:Q1140598,wikidata
@@ -15314,7 +15314,7 @@ Liverpool Warriors,club,2013-01-01,year,,,,,United States,,1,wikidata:Q16843955,
 Liversedge F.C.,club,1910-01-01,year,,,,,United Kingdom,,4,wikidata:Q6658677,wikidata
 Liverton United F.C.,club,1902-01-01,year,,,,,United Kingdom,,3,wikidata:Q18677,wikidata
 Livingston F.C.,club,1943-01-01,year,,Livingston,55.88340,-3.51570,United Kingdom,Livingston Football Club|Livingston FC|Livingston|LFC|Livi|The Lions,34,wikidata:Q867921,wikidata
-Livingston United F.C.,club,1970-01-01,year,,,,,United Kingdom,,1,wikidata:Q6659688,wikidata
+Livingston United F.C.,club,1970-01-01,year,,,,,United Kingdom,,2,wikidata:Q6659688,wikidata
 Lixouri Nautical Sports Cultural Club,club,1991-05-27,day,,Lixouri,38.20000,20.43333,Greece,,1,wikidata:Q66619479,wikidata
 Ljungby IF,club,1914-01-01,year,,Ljungby,56.83539,13.94100,Sweden,,3,wikidata:Q6660997,wikidata
 Ljungskile SK,club,1926-05-16,day,,Ljungskile,58.21002,11.90534,Sweden,LSK,23,wikidata:Q259029,wikidata
@@ -15357,9 +15357,9 @@ Lobos de Tlaxcala,club,1973-01-01,year,,,,,Mexico,,3,wikidata:Q1701024,wikidata
 Lobos Marinos de La Paz,club,2019-02-23,day,,La Paz,24.14861,-110.30667,Mexico,,3,wikidata:Q65054411,wikidata
 Lobos Prepa,club,2007-01-01,year,,Estadio Olímpico de C.U.,18.99722,-98.19750,Mexico,,1,wikidata:Q35396374,wikidata
 Lochar Thistle F.C.,club,1969-01-01,year,,,,,United Kingdom,,1,wikidata:Q17510043,wikidata
-Lochee Harp F.C.,club,1904-01-01,year,,,,,United Kingdom,,3,wikidata:Q6665084,wikidata
-Lochee United F.C.,club,1892-01-01,year,,,,,United Kingdom,Lochee United Football Club|Lochee United FC|Lochee United|Lochee|LUFC,2,wikidata:Q6665085,wikidata
-Lochgelly Albert F.C.,club,1926-01-01,year,,Lochgelly,56.12820,-3.31109,United Kingdom,,1,wikidata:Q6665101,wikidata
+Lochee Harp F.C.,club,1904-01-01,year,,,,,United Kingdom,,4,wikidata:Q6665084,wikidata
+Lochee United F.C.,club,1892-01-01,year,,,,,United Kingdom,Lochee United Football Club|Lochee United FC|Lochee United|Lochee|LUFC,3,wikidata:Q6665085,wikidata
+Lochgelly Albert F.C.,club,1926-01-01,year,,Lochgelly,56.12820,-3.31109,United Kingdom,,2,wikidata:Q6665101,wikidata
 Lochgelly United F.C.,club,1890-01-01,year,,Lochgelly,56.12820,-3.31109,United Kingdom,,4,wikidata:Q1985255,wikidata
 Lochgilphead F.C.,club,1887-01-01,year,,Lochgilphead,56.04000,-5.44000,United Kingdom,,1,wikidata:Q15844904,wikidata
 Lochore Welfare F.C.,club,1934-01-01,year,,Crosshill,56.15112,-3.32268,United Kingdom,,2,wikidata:Q9180093,wikidata
@@ -15401,7 +15401,7 @@ Long Melford F.C.,club,1868-01-01,year,,,,,United Kingdom,,2,wikidata:Q6416743,w
 Long Sutton Athletic F.C.,club,1983-01-01,year,,,,,United Kingdom,,1,wikidata:Q6673261,wikidata
 Longford Town F.C.,club,1924-01-01,year,,Longford,53.72700,-7.79980,Ireland,Longford Town Football Club,24,wikidata:Q1478917,wikidata
 Longlevens A.F.C.,club,1954-01-01,year,,,,,United Kingdom,,1,wikidata:Q19577240,wikidata
-Longside F.C.,club,1933-01-01,year,,,,,United Kingdom,,1,wikidata:Q9179565,wikidata
+Longside F.C.,club,1933-01-01,year,,,,,United Kingdom,,2,wikidata:Q9179565,wikidata
 Longwell Green Sports F.C.,club,1966-01-01,year,,,,,United Kingdom,,2,wikidata:Q6416758,wikidata
 Looktabfah F.C.,club,2009-01-01,year,,Sai Mai,13.91917,100.64583,Thailand,Looktabfah Football Club|Grakcu Sai Mai United Football Club,3,wikidata:Q4717525,wikidata
 Loos IF,club,1914-01-01,year,,Ljusdal Municipality,61.83333,16.08333,Sweden,,0,wikidata:Q132685315,wikidata
@@ -15428,7 +15428,7 @@ Los Caimanes de Puerto Etén,club,1957-05-22,day,,Estadio Municipal César Flore
 Los Espartanos de Pacasmayo,club,1924-01-01,year,,Pacasmayo,-7.40028,-79.57000,Peru,,3,wikidata:Q6682718,wikidata
 Los Molinos CF,club,1973-01-01,year,,,,,Spain,,1,wikidata:Q56063996,wikidata
 Los Tigres de Iquitos,club,2005-01-01,year,,Estadio Max Augustín,-3.74361,-73.25278,Peru,,1,wikidata:Q6683300,wikidata
-Lossiemouth F.C.,club,1945-01-01,year,,Lossiemouth,57.71670,-3.28333,United Kingdom,,3,wikidata:Q9185917,wikidata
+Lossiemouth F.C.,club,1945-01-01,year,,Lossiemouth,57.71670,-3.28333,United Kingdom,,4,wikidata:Q9185917,wikidata
 Lossiemouth United F.C.,club,1949-01-01,year,,,,,United Kingdom,,2,wikidata:Q6683759,wikidata
 Lota Schwager,club,1966-05-10,day,,Coronel,-37.01667,-73.13333,Chile,,15,wikidata:Q2242745,wikidata
 Lothian Thistle Hutchison Vale F.C.,club,1969-01-01,year,,Edinburgh,55.95333,-3.18917,United Kingdom,,2,wikidata:Q6684764,wikidata
@@ -15493,7 +15493,7 @@ Luleå FF,club,2000-01-01,year,,,,,Sweden,,1,wikidata:Q10570631,wikidata
 Luleå SK,club,1915-01-01,year,,,,,Sweden,LSK,3,wikidata:Q1686823,wikidata
 Luminárias Futebol Clube,club,1916-01-01,year,,Luminárias,-21.51083,-44.90278,Brazil,,0,wikidata:Q105407949,wikidata
 Lumplee F.C.,club,2016-01-01,year,,,,,Thailand,,1,wikidata:Q28447969,wikidata
-Luncarty F.C.,club,1886-01-01,year,,,,,United Kingdom,,1,wikidata:Q6703943,wikidata
+Luncarty F.C.,club,1886-01-01,year,,,,,United Kingdom,,2,wikidata:Q6703943,wikidata
 Lundby IF,club,1919-01-01,year,,Gothenburg,57.70750,11.96750,Sweden,,3,wikidata:Q1877404,wikidata
 Lunden ÖBK,club,2007-10-15,day,,Lunden,57.71080,12.01297,Sweden,,2,wikidata:Q115484068,wikidata
 Lundens AIS,club,1922-01-01,year,,Gothenburg,57.70750,11.96750,Sweden,,1,wikidata:Q6704127,wikidata
@@ -15767,7 +15767,7 @@ Mangotsfield F.C.,club,1888-01-01,year,,,,,United Kingdom,,1,wikidata:Q16844593,
 Mangotsfield United F.C.,club,1951-01-01,year,,,,,United Kingdom,Mangotsfield United Football Club,4,wikidata:Q3657272,wikidata
 Maniema FC,club,1963-01-01,year,,Intwari Stadium,-3.38333,29.37378,Burundi,,8,wikidata:Q2324968,wikidata
 Manila All-Japan F.C.,club,2009-01-01,year,,Marikina Sports Complex,14.63461,121.09842,Philippines,Japan Philippines Voltes Football Club|JP Voltes Football Club,5,wikidata:Q2784872,wikidata
-Manila Digger F.C.,club,2018-01-01,year,,Taguig,14.51667,121.05000,Philippines,,14,wikidata:Q120498793,wikidata
+Manila Digger F.C.,club,2018-01-01,year,,Taguig,14.51667,121.05000,Philippines,,15,wikidata:Q120498793,wikidata
 Manila Jeepney F.C.,club,2013-01-01,year,,,,,Philippines,,2,wikidata:Q16844605,wikidata
 Manila Lions F.C.,club,1949-01-01,year,,,,,Philippines,,4,wikidata:Q6749695,wikidata
 Manila Nomads F.C.,club,1914-01-01,year,,,,,Philippines,,5,wikidata:Q1849713,wikidata
@@ -15852,7 +15852,7 @@ Marston Shelton Rovers F.C.,club,1898-01-01,year,,,,,United Kingdom,,1,wikidata:
 Martapura F.C.,club,2009-01-01,year,,Demang Lehman Stadium,-3.43658,114.87678,Indonesia,Martapura Football Club|Laskar Sultan Adam|Sultan Adam Warriors,1,wikidata:Q14917241,wikidata
 Martinique,nation,1946-03-21,day,,Fort-de-France,14.60000,-61.06667,Martinique,Martinique national under-20 football team,187,wikidata:Q17054,wikidata
 Martos CD,club,1970-01-01,year,,,,,Spain,,1,wikidata:Q16844691,wikidata
-Maryhill F.C.,club,1884-01-01,year,,Lochburn Park,55.89110,-4.28910,United Kingdom,,1,wikidata:Q6781195,wikidata
+Maryhill F.C.,club,1884-01-01,year,,Lochburn Park,55.89110,-4.28910,United Kingdom,,2,wikidata:Q6781195,wikidata
 Maryhill Hibernians F.C.,club,1923-01-01,year,,East Dunbartonshire,55.93333,-4.21667,United Kingdom,,1,wikidata:Q18736920,wikidata
 Maryland Bobcats FC,club,2010-01-01,year,,New York City,40.71278,-74.00611,United States,World Class Premier Elite|WCPE|Maryland Bobcats,4,wikidata:Q74122812,wikidata
 Marymont Warszawa,club,1911-01-01,year,,,,,Poland,,2,wikidata:Q11770897,wikidata
@@ -15886,7 +15886,7 @@ MatSu United FC,club,2011-01-01,year,,Palmer High School,61.60540,-149.13800,Uni
 Matsumoto Yamaga FC,club,2004-11-18,day,,Matsumoto,36.23800,137.97197,Japan,,28,wikidata:Q1145693,wikidata
 Matsushita Electric FC,club,1980-01-01,year,,,,,Japan,,1,wikidata:Q11529002,wikidata
 Mauchline F.C.,club,1873-01-01,year,,East Ayrshire,55.50000,-4.25000,United Kingdom,,1,wikidata:Q6792186,wikidata
-Maud F.C.,club,1973-01-01,year,,,,,United Kingdom,,1,wikidata:Q6792216,wikidata
+Maud F.C.,club,1973-01-01,year,,,,,United Kingdom,,2,wikidata:Q6792216,wikidata
 Maunabo Leones,club,1960-01-01,year,,Maunabo,18.00694,-65.89917,United States,,2,wikidata:Q6792517,wikidata
 Mauritania,nation,1960-11-28,day,,Nouakchott,18.08581,-15.97850,Mauritania,Mauritania national under-20 football team,306,wikidata:Q1025,wikidata
 Mauritius,nation,1968-03-12,day,,Port Louis,-20.16194,57.49889,Mauritius,Mauritius national under-17 football team|Mauritius national under-20 football team,284,wikidata:Q1027,wikidata
@@ -16328,7 +16328,7 @@ Mosul FC,club,1957-01-01,year,,Mosul,36.34167,43.12917,Iraq,,10,wikidata:Q261280
 Motagua New Orleans,club,1984-01-01,year,,New Orleans,29.97611,-90.07833,United States,,2,wikidata:Q22023327,wikidata
 Motala AIF,club,1907-01-01,year,,Motala,58.54417,15.03687,Sweden,,10,wikidata:Q1949611,wikidata
 Mother City F.C.,club,1999-01-01,year,,Cape Town,-33.92528,18.42389,South Africa,,2,wikidata:Q6917313,wikidata
-Motherwell F.C.,club,1886-05-17,day,,Motherwell,55.78917,-3.99556,United Kingdom,Motherwell|Well|MFC,50,wikidata:Q216523,en.wikipedia infobox (Motherwell F.C.)
+Motherwell F.C.,club,1886-05-17,day,,Motherwell,55.78917,-3.99556,United Kingdom,Motherwell|Well|MFC,51,wikidata:Q216523,en.wikipedia infobox (Motherwell F.C.)
 Motlakase Power Dynamos,club,1988-01-01,year,,Palapye,-22.55000,27.13333,Botswana,,4,wikidata:Q2362265,wikidata
 Moto Club de São Luís,club,1937-09-13,day,,São Luís,-2.53000,-44.30278,Brazil,,16,wikidata:Q2663087,wikidata
 Moto Esporte Clube,club,1952-05-13,day,,Porto Velho,-8.76194,-63.90389,Brazil,,7,wikidata:Q6917962,wikidata
@@ -16359,7 +16359,7 @@ MPPJ Selangor FC,club,1992-01-01,year,,Petaling Jaya Stadium,3.09871,101.59377,M
 Mpumalanga Black Aces F.C.,club,1937-01-01,year,,Johannesburg,-26.20436,28.04164,South Africa,Mpumalanga Black Aces Football Club,16,wikidata:Q965994,wikidata
 Mqabba F.C.,club,1957-01-01,year,,Mqabba,35.84417,14.46694,Malta,,11,wikidata:Q1179672,wikidata
 MRKS Czechowice-Dziedzice,club,1921-01-01,year,,,49.89943,19.01144,Poland,,1,wikidata:Q11765035,wikidata
-MSE Târgu Mureș,club,2008-01-01,year,,Târgu Mureș,46.54972,24.55972,Romania,ACS Târgu Mureș|Marosvásárhelyi SE|ACS Tg. Mureș 1898,1,wikidata:Q55618946,wikidata
+MSE Târgu Mureș,club,2008-01-01,year,,Târgu Mureș,46.54972,24.55972,Romania,ACS Târgu Mureș|Marosvásárhelyi SE|ACS Tg. Mureș 1898,2,wikidata:Q55618946,wikidata
 Msida Saint-Joseph F.C.,club,1906-01-01,year,,Msida,35.89778,14.48944,Malta,Msida Saint-Joseph FC,13,wikidata:Q262161,wikidata
 MSK Břeclav,club,2005-01-01,year,,,,,Czech Republic,,2,wikidata:Q6717802,wikidata
 MSP Batna,club,1962-03-01,month,,Batna,35.55000,6.16667,Algeria,,7,wikidata:Q3325921,wikidata
@@ -16591,7 +16591,7 @@ Nantong Haimen Codion F.C.,club,2011-01-01,year,,,,,People's Republic of China,N
 Nantong Zhiyun F.C.,club,2014-01-01,year,,People's Republic of China,35.84472,103.45194,People's Republic of China,,7,wikidata:Q19828930,wikidata
 Nantwich Town F.C.,club,1884-01-01,year,,,,,United Kingdom,Nantwich Town Football Club|Nantwich Town FC|Nantwich Town|Nantwich|The Dabbers|Town|NTFC,10,wikidata:Q18300,wikidata
 Napier City Rovers,club,1973-01-01,year,,Napier,-39.49028,176.91778,New Zealand,,11,wikidata:Q3178058,wikidata
-Naples Foot-Ball Club,club,1904-01-01,year,,Naples,40.83583,14.24861,Italy,,8,wikidata:Q1110712,wikidata
+Naples Foot-Ball Club,club,1904-01-01,year,,Naples,40.83583,14.24861,Italy,,7,wikidata:Q1110712,wikidata
 Napoli Beach Soccer,club,2009-01-01,year,,Naples,40.83583,14.24861,Italy,,3,wikidata:Q3870307,wikidata
 Naprzód Jędrzejów,club,1928-01-01,year,,,50.64810,20.29406,Poland,,2,wikidata:Q6965131,wikidata
 Naprzód Rydułtowy,club,1923-04-24,day,,,,,Poland,,1,wikidata:Q11789577,wikidata
@@ -16673,7 +16673,7 @@ Neftochimic Burgas 1986,club,1962-01-01,year,,Lazur Stadium,42.51250,27.47028,Bu
 Nefyn United F.C.,club,1932-01-01,year,,,,,United Kingdom,,3,wikidata:Q6987069,wikidata
 Negambo Youth,club,1962-01-01,year,,Colombo,6.92667,79.86056,Sri Lanka,,6,wikidata:Q17052366,wikidata
 Negeri Sembilan FA,club,1923-01-01,year,,Seremban,2.72972,101.93806,Malaysia,,14,wikidata:Q288031,wikidata
-Neilston Juniors F.C.,club,1945-01-01,year,,Neilston,55.78470,-4.42340,United Kingdom,,1,wikidata:Q6989618,wikidata
+Neilston Juniors F.C.,club,1945-01-01,year,,Neilston,55.78470,-4.42340,United Kingdom,,2,wikidata:Q6989618,wikidata
 Nejmeh SC,club,1945-03-10,day,,Beirut,33.88694,35.51306,Lebanon,Nejmeh Sporting Club|Nejmeh Club,21,wikidata:Q812738,en.wikipedia infobox (Nejmeh SC)
 Nelson Eastern Suburbs FC,club,1977-01-01,year,,,,,Australia,,1,wikidata:Q18922789,wikidata
 Nelson F.C.,club,1881-01-01,year,,Seedhill Football Ground,53.84269,-2.22185,United Kingdom,Nelson FC,11,wikidata:Q2649979,wikidata
@@ -16766,11 +16766,11 @@ New York Pancyprian-Freedoms,club,1974-01-01,year,,New York City,40.71278,-74.00
 New York Ramblers,club,1980-01-01,year,,,,,United States,,1,wikidata:Q7013910,wikidata
 New York Soccer Club,club,1923-01-01,year,,,,,United States,,2,wikidata:Q14884143,wikidata
 New York Yankees,club,1930-01-01,year,,New York City,40.71278,-74.00611,United States,,2,wikidata:Q16845944,wikidata
-New Zealand,nation,1841-05-03,day,,Wellington,-41.28889,174.77722,New Zealand,Junior All Whites|New Zealand national under-17 football team|New Zealand national under-20 football team|New Zealand national under-23 football team|New Zealand women's national under-17 football team|New Zealand women's national under-20 football team,351,wikidata:Q664,wikidata
+New Zealand,nation,1841-05-03,day,,Wellington,-41.28889,174.77722,New Zealand,Junior All Whites|New Zealand national under-17 football team|New Zealand national under-20 football team|New Zealand national under-23 football team|New Zealand women's national under-17 football team|New Zealand women's national under-20 football team,352,wikidata:Q664,wikidata
 Newark Town F.C.,club,1991-01-01,year,,,,,United Kingdom,,1,wikidata:Q7016764,wikidata
 Newark Ukrainian Sitch,club,1924-01-01,year,,Newark,40.73556,-74.17222,United States,,3,wikidata:Q7016787,wikidata
 Newbridge Town F.C.,club,1969-01-01,year,,Station Road,53.18508,-6.81068,Ireland,,1,wikidata:Q7017105,wikidata
-Newburgh F.C.,club,1887-01-01,year,,,,,United Kingdom,,2,wikidata:Q7017165,wikidata
+Newburgh F.C.,club,1887-01-01,year,,,,,United Kingdom,,3,wikidata:Q7017165,wikidata
 Newbury F.C.,club,2002-01-01,year,,,,,United Kingdom,,1,wikidata:Q7017230,wikidata
 Newbury Forest F.C.,club,2003-01-01,year,,,,,United Kingdom,,1,wikidata:Q22098038,wikidata
 Newbury Town F.C.,club,1887-01-01,year,,,,,United Kingdom,,1,wikidata:Q7017246,wikidata
@@ -17375,7 +17375,7 @@ Odder Fodbold,club,1899-01-01,year,,Odder,55.97250,10.14972,Denmark,Odder Fodbol
 Odds BK,club,1894-03-31,day,,Skien,59.20962,9.60897,Norway,Odd Grenland BK,42,wikidata:Q215302,wikidata
 Odense Boldklub,club,1887-07-12,day,,Odense,55.40000,10.38333,Denmark,,44,wikidata:Q211912,wikidata
 ODIN '59,club,1959-12-17,day,,Heemskerk,52.51083,4.67278,Netherlands,HSV ODIN '59,5,wikidata:Q4513664,en.wikipedia infobox (ODIN '59)
-Odisha FC,club,2014-10-14,day,,Bhubaneswar,20.29500,85.82500,India,Delhi Dynamos Football Club|Delhi Dynamos FC,31,wikidata:Q16838244,en.wikipedia infobox (Odisha FC)
+Odisha FC,club,2014-10-14,day,,Bhubaneswar,20.29500,85.82500,India,Delhi Dynamos Football Club|Delhi Dynamos FC,32,wikidata:Q16838244,en.wikipedia infobox (Odisha FC)
 Odivelas F.C.,club,1939-01-01,year,,Odivelas,38.80000,-9.18333,Portugal,,6,wikidata:Q3349296,wikidata
 Odlew Poznań,club,2002-01-01,year,,,,,Poland,,2,wikidata:Q20744114,wikidata
 Odra Opole,club,1945-06-16,day,,Opole,50.66667,17.92417,Poland,,17,wikidata:Q958856,en.wikipedia infobox (Odra Opole)
@@ -17647,6 +17647,7 @@ Orzeł Kolno,club,1929-01-01,year,,,,,Poland,,2,wikidata:Q5617494,wikidata
 Os IL,club,1899-02-09,day,,Os,62.49647,11.22326,Norway,Os Idrettslag,1,wikidata:Q23878251,wikidata
 OS Maladrerie Caen,club,1965-01-01,year,,Caen,49.18139,-0.36361,France,,0,wikidata:Q109507650,wikidata
 Os TF,club,1905-07-30,day,,Os Municipality,60.22694,5.47583,Norway,Os Turnforening|Os Turn Fotball,8,wikidata:Q1783649,wikidata
+Osaka City SC,club,2020-01-01,year,,Higashinari-ku,34.67000,135.54111,Japan,,1,wikidata:Q141993082,wikidata
 OSAKA KOREAN FC,club,1967-01-01,year,,Ikuno-ku,34.65278,135.53944,Japan,,1,wikidata:Q28683363,wikidata
 Osaka University of Health and Sport Sciences Alumni Association Soccer Club,club,1965-01-01,year,,Kumatori,34.40139,135.35583,Japan,,2,wikidata:Q109452764,wikidata
 Osasco Futebol Clube,club,1992-01-01,year,,,-23.51111,-46.77611,Brazil,,3,wikidata:Q4392758,wikidata
@@ -17731,7 +17732,7 @@ P.A.S. Lamia 1964,club,1964-06-01,day,,Lamia,38.89722,22.43111,Greece,P.A.S. Lam
 P.A.S. Leonidas Sparta,club,1965-01-01,year,,Sparta,37.07389,22.42944,Greece,,2,wikidata:Q28092926,wikidata
 P.A.S. Oropos,club,1947-01-01,year,,Oropos,38.30278,23.75444,Greece,Oropos F.C.,1,wikidata:Q12882411,wikidata
 P.A.S. Patraikos,club,1993-01-01,year,,Patras,38.24638,21.73491,Greece,Patraikos F.C.|Panathinaikos Skagiopouleiou Patron,2,wikidata:Q12882412,wikidata
-P.A.S. Pyrgos,club,1968-01-01,year,,,37.67300,21.43950,Greece,P.A.S. Pyrgos 1968,3,wikidata:Q25535620,wikidata
+P.A.S. Pyrgos,club,2025-07-20,day,,,37.67300,21.43950,Greece,P.A.S. Pyrgos 1968,3,wikidata:Q25535620,wikidata
 P.A.S.A. Irodotos F.C.,club,1932-01-01,year,,Nea Alikarnassos,35.32861,25.16444,Greece,,5,wikidata:Q16328632,wikidata
 P.C.C. San José,club,1996-01-01,year,,Rosario,-32.95750,-60.63944,Argentina,,0,wikidata:Q120974102,wikidata
 P.D. Castellarano,club,2000-01-01,year,,,,,Italy,,2,wikidata:Q7116974,wikidata
@@ -17768,7 +17769,7 @@ Paimion Haka,club,1955-01-01,year,,Paimio,60.45694,22.68611,Finland,PaiHa,1,wiki
 Paissandu Atlético Clube,club,1872-08-15,day,,Rio de Janeiro,-22.91111,-43.20556,Brazil,Paissandu Atletico Clube,7,wikidata:Q3360648,en.wikipedia infobox (Paissandu Atlético Clube)
 Pajala IF,club,1930-01-01,year,,,,,Sweden,PIF,3,wikidata:Q10615164,wikidata
 Pajamäen Pallo-Veikot,club,1969-01-01,year,,,,,Finland,,2,wikidata:Q5400963,wikidata
-Paju Frontier FC,club,2012-02-16,day,,Paju,37.83278,126.81694,South Korea,Paju Citizen FC,6,wikidata:Q7125327,wikidata
+Paju Frontier FC,club,2012-02-16,day,,Paju,37.83278,126.81694,South Korea,Paju Citizen FC,7,wikidata:Q7125327,wikidata
 Pak Chong City F.C.,club,2014-01-01,year,,,,,Thailand,,2,wikidata:Q25542189,wikidata
 Pakhtakor Tashkent FK,club,1956-04-08,day,,Tashkent,41.31111,69.27972,Uzbekistan,FC Pakhtakor Tashkent|F.C. Pakhtakor Tashkent,42,wikidata:Q732106,en.wikipedia infobox (Pakhtakor FC)
 Pakistan,nation,1947-08-14,day,,Islamabad,33.69889,73.03694,Pakistan,Pakistan national under-17 football team|Pakistan national under-20 football team|Pakistan national under-23 football team,356,wikidata:Q843,wikidata
@@ -17846,7 +17847,8 @@ Paniliakos F.C.,club,1957-06-01,day,,,37.67300,21.43950,Greece,,9,wikidata:Q2661
 Panionios F.C.,club,1890-09-14,day,,Nea Smyrni,37.94333,23.71056,Greece,Panionios G.S.S.|Panionios,37,wikidata:Q460494,wikidata
 Panlefkadios F.C.,club,1986-01-01,year,,Lefkada,38.83028,20.70444,Greece,,2,wikidata:Q47005732,wikidata
 Panmovriakos F.C.,club,1975-01-01,year,,,,,Greece,,1,wikidata:Q60776308,wikidata
-Pannaxiakos F.C.,club,1960-01-01,year,,Naxos,37.10194,25.37944,Greece,,2,wikidata:Q16847168,wikidata
+Pannaxiakos A.O.,club,1960-01-01,year,,Naxos,37.10194,25.37944,Greece,,3,wikidata:Q12883163,wikidata
+Pannaxiakos F.C.,club,1960-01-01,year,,Naxos,37.10194,25.37944,Greece,,3,wikidata:Q16847168,wikidata
 Pannemeatikos,club,1928-01-01,year,,,37.81950,22.66297,Greece,,1,wikidata:Q25535300,wikidata
 Panopoulo FC,club,2007-01-01,year,,,37.82000,21.69028,Greece,,2,wikidata:Q16328648,wikidata
 Panserraikos F.C.,club,1964-05-31,day,,Serres,41.08333,23.55000,Greece,Panserraikos,26,wikidata:Q1417287,wikidata
@@ -17938,7 +17940,7 @@ Paterna CF,club,1934-01-01,year,,,,,Spain,,3,wikidata:Q21039269,wikidata
 Pathum Thani F.C.,club,2010-01-01,year,,,,,Thailand,,2,wikidata:Q6897139,wikidata
 Pato Branco Esporte Clube,club,1979-11-05,day,,Os Pioneiros Stadium,-26.21122,-52.67953,Brazil,,2,wikidata:Q7145138,wikidata
 Patraikos O.F.,club,1959-09-01,day,,Patras,38.24638,21.73491,Greece,,1,wikidata:Q16332437,wikidata
-Patria FC,club,1925-01-01,day,,,,,Spain,,1,wikidata:Q141438468,wikidata
+Patria FC,club,1925-01-01,day,,,,,Spain,,0,wikidata:Q141438468,wikidata
 Patriotas de Córdoba,club,2000-01-01,year,,,,,Mexico,Patriotas de Cordoba,3,wikidata:Q1535026,wikidata
 Patronage Olier,club,1895-01-01,year,,6th arrondissement of Paris,48.85053,2.33223,France,,6,wikidata:Q477321,wikidata
 Pattana F.C.,club,2014-01-01,year,,,,,Thailand,,2,wikidata:Q28448000,wikidata
@@ -18609,7 +18611,7 @@ PSTS Tanjungbalai,club,1954-01-01,year,,,,,Indonesia,,2,wikidata:Q16848127,wikid
 PSV 90 Dessau-Anhalt,club,1990-03-26,day,,Dessau,51.83417,12.24611,Germany,,1,wikidata:Q97102015,wikidata
 PSV Braunschweig,club,1921-01-01,year,,Brunswick,52.26917,10.52111,Germany,Polizeisportverein Braunschweig,1,wikidata:Q2044722,wikidata
 PSV Concordia Gropiusstadt,club,1991-01-01,year,,Berlin,52.51667,13.38333,Germany,,2,wikidata:Q114266,wikidata
-PSV Eindhoven,club,1913-08-31,day,,Eindhoven,51.43444,5.48417,Netherlands,Philips Sport Vereniging|PSV|Eindhoven Football Club,84,wikidata:Q11938,wikidata
+PSV Eindhoven,club,1913-08-31,day,,Eindhoven,51.43444,5.48417,Netherlands,Philips Sport Vereniging|Eindhoven Football Club,84,wikidata:Q11938,wikidata
 PSV München,club,1926-01-01,year,,Munich,48.13750,11.57500,Germany,,1,wikidata:Q2044741,wikidata
 PSV Neustrelitz,club,1990-07-04,day,,Neustrelitz,53.36472,13.06361,Germany,Polizeisportverein Neustrelitz,1,wikidata:Q63088685,wikidata
 PSV Nickerie,club,2000-10-20,day,,,,,Suriname,,3,wikidata:Q24952902,wikidata
@@ -18963,7 +18965,6 @@ Q10532192,club,1925-01-01,year,,,,,Sweden,,1,wikidata:Q10532192,wikidata
 Q10532251,club,1966-01-01,year,,,,,Sweden,,1,wikidata:Q10532251,wikidata
 Q1053236,club,1959-01-01,year,,Kostrzyn nad Odrą,52.58833,14.66667,Poland,,2,wikidata:Q1053236,wikidata
 Q10532811,club,1908-01-01,year,,,,,Sweden,,1,wikidata:Q10532811,wikidata
-Q10532815,club,1906-01-01,year,,,,,Sweden,,2,wikidata:Q10532815,wikidata
 Q10532822,club,1907-01-01,year,,,,,Sweden,,1,wikidata:Q10532822,wikidata
 Q10532826,club,1946-01-01,year,,,,,Sweden,,1,wikidata:Q10532826,wikidata
 Q10532840,club,1904-01-01,year,,,,,Sweden,,1,wikidata:Q10532840,wikidata
@@ -19478,7 +19479,7 @@ Q11794272,club,1972-01-01,year,,,,,Poland,,1,wikidata:Q11794272,wikidata
 Q11796269,club,1946-01-01,year,,,,,Poland,,1,wikidata:Q11796269,wikidata
 Q11797970,club,1946-04-15,day,,,,,Poland,,1,wikidata:Q11797970,wikidata
 Q11797975,club,1952-01-01,year,,,,,Poland,,2,wikidata:Q11797975,wikidata
-Q11798064,club,1908-01-01,year,,,,,Argentina,,1,wikidata:Q11798064,wikidata
+Q11798064,club,1908-01-01,year,,,,,Argentina,,2,wikidata:Q11798064,wikidata
 Q11799190,club,1975-01-01,year,,,,,Poland,,1,wikidata:Q11799190,wikidata
 Q11799284,club,1961-01-01,year,,,,,Poland,,1,wikidata:Q11799284,wikidata
 Q11799411,club,1945-01-01,year,,,,,Poland,,1,wikidata:Q11799411,wikidata
@@ -21069,6 +21070,8 @@ Q141880266,club,1948-01-01,year,,Loipersbach im Burgenland,47.69583,16.47222,Aus
 Q141911518,club,1981-09-11,day,,Córdoba,-31.41667,-64.18333,Argentina,,0,wikidata:Q141911518,wikidata
 Q141921232,club,1928-01-01,year,,Vännäs,63.90585,19.74493,Sweden,,0,wikidata:Q141921232,wikidata
 Q141967190,club,1932-01-01,year,,Markt St. Martin,47.56222,16.42667,Austria,,1,wikidata:Q141967190,wikidata
+Q141990575,club,1947-01-01,year,,Favoriten,48.15780,16.35920,Austria,,1,wikidata:Q141990575,wikidata
+Q142065257,club,1927-01-01,year,,Hirm,47.78778,16.45556,Austria,,1,wikidata:Q142065257,wikidata
 Q1421364,club,1901-01-01,year,,Eimsbüttel,53.57444,9.95944,Germany,,1,wikidata:Q1421364,wikidata
 Q1421625,club,1863-01-01,year,,,,,Germany,,1,wikidata:Q1421625,wikidata
 Q1423013,club,1998-01-01,year,,Radebeul,51.10333,13.67000,Germany,,2,wikidata:Q1423013,wikidata
@@ -21337,7 +21340,7 @@ Q1653516,club,1907-01-01,year,,Tidaholm,58.17944,13.95993,Sweden,,2,wikidata:Q16
 Q1653517,club,1908-01-01,year,,Sunne,59.84122,13.14243,Sweden,,2,wikidata:Q1653517,wikidata
 Q1653579,club,1946-01-01,year,,Tönning,54.31722,8.94278,Germany,,1,wikidata:Q1653579,wikidata
 Q16543023,club,1915-06-20,day,,,,,Chile,,2,wikidata:Q16543023,wikidata
-Q1654527,club,1926-01-01,year,,Esens,53.64694,7.61278,Germany,,1,wikidata:Q1654527,wikidata
+Q1654527,club,1926-01-01,year,,Esens,53.64694,7.61278,Germany,,2,wikidata:Q1654527,wikidata
 Q1654823,club,1931-01-01,year,,Neckargerach,49.39944,9.07194,Germany,,1,wikidata:Q1654823,wikidata
 Q16549785,club,1966-01-01,year,,,,,Spain,,1,wikidata:Q16549785,wikidata
 Q16549807,club,1933-01-01,year,,,,,Spain,,1,wikidata:Q16549807,wikidata
@@ -21767,7 +21770,7 @@ Q19310892,club,1930-01-01,year,,Hückelhoven,51.06083,6.21972,Germany,,1,wikidat
 Q19375440,club,1924-03-23,day,,Krossen,59.69473,8.06306,Norway,,1,wikidata:Q19375440,wikidata
 Q19375443,club,1919-01-01,year,,Bergen,60.39250,5.32333,Norway,,1,wikidata:Q19375443,wikidata
 Q19375464,club,1886-10-20,day,,,,,Norway,,2,wikidata:Q19375464,wikidata
-Q19378605,club,2010-11-07,day,,,,,Norway,,1,wikidata:Q19378605,wikidata
+Q19378605,club,2010-07-07,day,,,,,Norway,,1,wikidata:Q19378605,wikidata
 Q19384807,club,1892-01-01,year,,,,,Norway,,1,wikidata:Q19384807,wikidata
 Q19388843,club,1896-01-01,year,,,,,Norway,,1,wikidata:Q19388843,wikidata
 Q19388876,club,1927-01-01,year,,Skiptvet Municipality,59.48056,11.14444,Norway,,1,wikidata:Q19388876,wikidata
@@ -21798,7 +21801,7 @@ Q19602739,club,1927-01-01,year,,,,,Czech Republic,,1,wikidata:Q19602739,wikidata
 Q19608916,club,2007-01-01,year,,Manaus,-3.11889,-60.02167,Brazil,,1,wikidata:Q19608916,wikidata
 Q19608927,club,1925-01-01,year,,Belém,-1.45583,-48.50389,Brazil,,1,wikidata:Q19608927,wikidata
 Q19609034,club,1919-01-01,year,,Colatina,-19.53889,-40.63083,Brazil,,1,wikidata:Q19609034,wikidata
-Q19613026,club,1976-01-01,year,,,,,Soviet Union,,2,wikidata:Q19613026,wikidata
+Q19613026,club,1976-01-01,year,,,,,Soviet Union,,3,wikidata:Q19613026,wikidata
 Q19614827,club,1977-01-01,year,,Kashira,54.83333,38.15000,Soviet Union,,2,wikidata:Q19614827,wikidata
 Q1961500,club,1939-01-01,year,,,,,Germany,,2,wikidata:Q1961500,wikidata
 Q19616251,club,1950-01-01,year,,Türkmenabat,39.10000,63.56667,Turkmenistan,,5,wikidata:Q19616251,wikidata
@@ -23036,7 +23039,7 @@ Q4023543,club,1979-01-01,year,,,,,,,1,wikidata:Q4023543,wikidata
 Q4024096,club,1985-01-01,year,,Skopje,41.99611,21.43167,North Macedonia,,2,wikidata:Q4024096,wikidata
 Q4025526,club,2007-01-01,year,,Budapest,47.49833,19.04083,Hungary,,1,wikidata:Q4025526,wikidata
 Q4025691,club,1994-01-01,year,,Bratislava,48.15170,17.10931,Slovakia,,2,wikidata:Q4025691,wikidata
-Q4055971,club,2004-01-01,year,,Khojavend,39.79528,47.11306,Azerbaijan,,3,wikidata:Q4055971,wikidata
+Q4055971,club,2004-01-01,year,,Khojavend,39.79528,47.11306,Azerbaijan,,4,wikidata:Q4055971,wikidata
 Q4072208,club,1979-01-01,year,,Volgodonsk,47.51667,42.15000,Russia,,2,wikidata:Q4072208,wikidata
 Q4073929,club,2012-01-01,year,,,,,Kazakhstan,,2,wikidata:Q4073929,wikidata
 Q4077192,club,2002-01-01,year,,Urartu Stadium,40.17143,44.44994,,,2,wikidata:Q4077192,wikidata
@@ -24165,7 +24168,6 @@ Racing de Trelew,club,1920-01-01,year,,,,,Argentina,,4,wikidata:Q7279705,wikidat
 Racing F.C. Bafoussam,club,1950-01-01,year,,Bafoussam,5.46667,10.41667,Cameroon,Racing Club Bafoussam|Racing FC Bafoussam|Racing Club de Bafoussam,15,wikidata:Q2900046,wikidata
 Racing FC,club,1962-04-07,day,,Gonaïves,19.44556,-72.68833,Haiti,Racing Football Club,8,wikidata:Q3094730,en.wikipedia infobox (Racing FC (Haiti))
 Racing FC Union Luxembourg,club,2005-05-12,day,,Luxembourg,49.61139,6.13000,Luxembourg,RFC Union Luxembourg|Racing Football Club Union Luxembourg|RFCU Luxembourg|Racing FCU,29,wikidata:Q693092,wikidata
-Racing galette,club,2008-01-01,year,,,,,,,0,wikidata:Q7279708,wikidata
 Racing Lermeño,club,1969-01-01,year,,,,,Spain,,2,wikidata:Q7279686,wikidata
 Racing Libertas Club,club,1911-01-01,year,,Milan,45.46694,9.19000,Italy,Libertas Milano,3,wikidata:Q643418,wikidata
 Racing Universitaire d'Alger,club,1927-01-01,year,,Algiers,36.77639,3.05861,Algeria,,5,wikidata:Q3416291,wikidata
@@ -24270,7 +24272,7 @@ Rayo Cantabria,club,1926-01-01,year,,,,,Spain,Racing de Santander B,10,wikidata:
 Rayo Sadense,club,1988-01-01,year,,Sada,43.34731,-8.27690,Spain,,0,wikidata:Q130359496,wikidata
 Rayo Vallecano,club,1924-05-29,day,,Madrid,40.41694,-3.70333,Spain,Rayo Vallecano de Madrid|Rayo Football|Rayo Vellecano Football|Rayo Vellecano Soccer Club|Rayo|Vallecano,70,wikidata:Q10300,wikidata
 Rayo Vallecano B,club,1956-01-01,year,,Madrid,40.41694,-3.70333,Spain,"Rayo Vallecano de Madrid B, S.A.D.|Rayo B",10,wikidata:Q1908962,wikidata
-Rayon Sports F.C.,club,1968-05-01,month,,Nyanza,-2.78718,29.73357,Rwanda,"Southern province,",14,wikidata:Q2635703,wikidata
+Rayon Sports F.C.,club,1968-05-01,month,,Nyanza,-2.78718,29.73357,Rwanda,,14,wikidata:Q2635703,wikidata
 Rayong F.C.,club,2008-01-01,year,,Rayong,12.67417,101.27889,Thailand,,13,wikidata:Q6640728,wikidata
 Rayong United F.C.,club,2005-01-01,year,,Rayong,12.67417,101.27889,Thailand,,6,wikidata:Q1387500,wikidata
 RB Fortuna Fürth,club,2011-01-01,year,,,,,Germany,,0,wikidata:Q122953963,wikidata
@@ -24310,7 +24312,6 @@ RCD Carabanchel,club,1916-01-01,year,,Madrid,40.41694,-3.70333,Spain,,11,wikidat
 RCD Córdoba,club,1929-01-01,year,,Estadio Nuevo Arcángel,37.87229,-4.76464,Spain,RCD Cordoba,4,wikidata:Q1244017,wikidata
 RCD Espanyol B,club,1981-01-01,year,,Barcelona,41.38250,2.17694,Spain,"Reial Club Deportiu Espanyol de Barcelona B, S.A.D.|Reial Club Deportiu Espanyol de Barcelona ""B""",15,wikidata:Q32537,wikidata
 RCD Espanyol de Barcelona,club,1900-10-28,day,,Cornellà de Llobregat,41.35500,2.07111,Spain,RCDE|RCD Espanyol|Reial Club Deportiu Espanyol de Barcelona|Espanyol|R.C.D. Espanyol de Barcelona|R.C.D. Espanyol of Barcelona|R.C.D. Espanyol|RCD Espanyol of Barcelona|Espanyol of Barcelona|Espanyol Barcelona,82,wikidata:Q8780,en.wikipedia infobox (RCD Espanyol)
-RCD Extremeño,club,1917-01-01,year,,,,,Spain,,0,wikidata:Q141438433,wikidata
 RCD Mallorca,club,1916-03-05,day,,Palma,39.56667,2.64972,Spain,Real Club Deportivo Mallorca|Mallorca|R.C.D. Mallorca,70,wikidata:Q8835,wikidata
 RCG Oran,club,1947-01-01,year,,Oran,35.69694,-0.63306,Algeria,,5,wikidata:Q15614027,wikidata
 RCH,club,1911-02-25,day,,Heemstede,52.35280,4.62000,Netherlands,Racing Club Heemstede|Racing Club Haarlem,13,wikidata:Q2039916,en.wikipedia infobox (Racing Club Heemstede)
@@ -24986,6 +24987,7 @@ Saba Qom F.C.,club,2008-01-01,year,,Qom,34.64000,50.87639,Iran,Saba Qom Football
 Sabah F.C.,club,1963-01-01,year,,Kota Kinabalu,5.97500,116.07250,Malaysia,Sabah FA|Sabah Football Club|Sabah FC|Sabah Football Club Sdn Bhd|Persatuan Bola Sepak Sabah,21,wikidata:Q3099791,wikidata
 Sabah Football Club,club,2018-01-01,year,,Bank Respublika Arena,40.48619,49.76626,Azerbaijan,Sabah FK|Sabah FC,37,wikidata:Q43082535,wikidata
 Sabaria FC,club,1912-01-01,year,,Szombathely,47.23333,16.63333,Hungary,Szombathelyi AK,6,wikidata:Q20730414,wikidata
+Sabaria SE,club,1957-01-01,year,,,,,Hungary,,1,wikidata:Q142023734,wikidata
 Sabiá Futebol Clube,club,2011-01-01,year,,Caxias,-4.85889,-43.35583,Brazil,Sabia Futebol Clube,2,wikidata:Q7396234,wikidata
 Sable FC,club,1995-01-01,year,,Batié,5.28333,10.28330,Cameroon,,10,wikidata:Q1951107,wikidata
 Sablé FC,club,1986-05-12,day,,Sablé-sur-Sarthe,47.84000,-0.33417,France,Sable FC,3,wikidata:Q3460632,wikidata
@@ -25760,7 +25762,6 @@ SD Ceuta,club,1932-01-01,year,,Estadio Alfonso Murube,35.88540,-5.32790,Spain,,5
 SD Chantada,club,1969-01-01,year,,,,,Spain,,2,wikidata:Q3392383,wikidata
 SD Ciudad de Santiago,club,1978-01-01,year,,Santiago de Compostela,42.88333,-8.53333,Spain,,6,wikidata:Q2683624,wikidata
 SD Colloto,club,1987-01-01,year,,Colloto,43.37700,-5.79800,Spain,,4,wikidata:Q3326358,wikidata
-SD Compostela,club,1928-07-01,day,,Santiago de Compostela,42.88333,-8.53333,Spain,,64,wikidata:Q929753,wikidata
 SD Deusto,club,1913-01-01,year,,Deusto,43.27222,-2.94583,Spain,,5,wikidata:Q5857189,wikidata
 SD Eibar,club,1940-11-30,day,,Eibar,43.18428,-2.47327,Spain,"SD Eibar Soccer|Eibar Soccer Team|Eibar Football Club|SD Eibar Club|Sociedad Deportiva Eibar, S.A.D.",58,wikidata:Q770740,en.wikipedia infobox (SD Eibar)
 SD Eibar B,club,1994-01-01,year,,Eibar,43.18428,-2.47327,Spain,,6,wikidata:Q668243,wikidata
@@ -26293,7 +26294,7 @@ Sitora Dushanbe,club,1990-01-01,year,,Dushanbe,38.57306,68.78639,Soviet Union,,1
 Sitra Club,club,1957-01-01,year,,Sitra,26.15000,50.61667,Bahrain,,7,wikidata:Q3480681,wikidata
 Sittingbourne Community F.C.,club,2002-01-01,year,,,,,United Kingdom,Woodstock Park F.C.,2,wikidata:Q18706,wikidata
 Sittingbourne F.C.,club,1886-01-01,year,,Kent,51.19000,0.73000,United Kingdom,Sittingbourne Football Club,5,wikidata:Q5213294,wikidata
-Siumut Amerdlok Kunuk,club,1951-01-01,year,,Sisimiut,66.93889,-53.67222,Greenland,,10,wikidata:Q3449567,wikidata
+Siumut Amerdlok Kunuk,club,1951-01-01,year,,Sisimiut,66.93889,-53.67222,Greenland,,9,wikidata:Q3449567,wikidata
 Sivas Dört Eylül Belediyespor,club,1934-01-01,year,,Sivas,39.75000,37.01667,Turkey,,5,wikidata:Q6036237,wikidata
 Sivasspor,club,1967-01-01,year,,Sivas,39.75000,37.01667,Turkey,,48,wikidata:Q372599,wikidata
 Sivutsa Stars F.C.,club,2009-01-01,year,,KaNyamazane Stadium,-25.46490,31.18190,South Africa,,1,wikidata:Q7532511,wikidata
@@ -26538,7 +26539,7 @@ Social Atlético Televisión,club,2017-11-14,day,,Moreno,-34.65762,-58.78724,Arg
 Social Futebol Clube,club,1944-10-01,day,,Coronel Fabriciano,-19.51889,-42.62889,Brazil,,15,wikidata:Q1416904,en.wikipedia infobox (Social Futebol Clube)
 Sociedad Deportiva Atlético Nacional,club,2001-01-01,year,,Estadio Javier Cruz,8.98778,-79.53417,Panama,Sociedad Deportiva Atletico Nacional,3,wikidata:Q9078466,wikidata
 Sociedad Deportiva Aucas,club,1845-02-06,day,,Quito,-0.22000,-78.51250,Ecuador,SD Aucas,22,wikidata:Q2476133,wikidata
-Sociedad Deportiva Compostela,club,1962-01-01,year,,Estadio Multiusos de San Lázaro,42.88277,-8.51601,Spain,,1,wikidata:Q56876249,wikidata
+Sociedad Deportiva Compostela,club,1928-07-01,day,,Santiago de Compostela,42.88333,-8.53333,Spain,Sociedade Deportiva Compostela|SD Compostela,64,wikidata:Q929753,wikidata
 Sociedad Deportiva España,club,1951-01-01,year,,Quito,-0.22000,-78.51250,Ecuador,,2,wikidata:Q9078470,wikidata
 Sociedad Deportiva Flamengo,club,1923-01-01,year,,Estadio La Cocha,-0.92427,-78.61456,Ecuador,,2,wikidata:Q585921,wikidata
 Sociedad Deportiva Huesca,club,1922-01-01,year,,Huesca,42.14010,-0.40890,Spain,"Sociedad Deportiva Huesca, S.A.D.|SD Huesca Soccer|SD Huesca Football|Huesca Football Club",50,wikidata:Q11971,wikidata
@@ -26759,7 +26760,7 @@ Soyapango F.C.,club,1987-01-01,year,,,,,El Salvador,,2,wikidata:Q65167389,wikida
 Soyombiin Baarsuud,club,2009-01-01,year,,,,,Mongolia,,3,wikidata:Q21162674,wikidata
 SP Castilblanco,club,1999-01-01,year,,Castilblanco,39.30556,-5.11028,Spain,,2,wikidata:Q7392702,wikidata
 SP Milizac,club,1935-11-05,day,,Milizac-Guipronvel,48.49111,-4.57306,France,,1,wikidata:Q109507685,wikidata
-Spain,nation,1812-03-19,day,,Madrid,40.41694,-3.70333,Spain,Spain U15|Spain U18|Spain U21|Spain national under-15 association football team|Spain national under-15 football team|Spain national under-18 football team|Spain national under-19 football team|Spain national under-20 football team|Spain national under-21 association football team|Spain national under-23 football team|Spain women's national under-15 association football team|Spain women's national under-17 association football team|Spain women's national under-17 football team|Spain women's national under-19 association football team|Spain women's national under-19 football team|Spain women's national under-20 association football team|Spain women's national under-20 football team|Spain women's national under-23 football team,396,wikidata:Q29,wikidata
+Spain,nation,1812-03-19,day,,Madrid,40.41694,-3.70333,Spain,Spain U15|Spain U18|Spain U21|Spain national under-15 association football team|Spain national under-15 football team|Spain national under-18 football team|Spain national under-19 football team|Spain national under-20 football team|Spain national under-21 association football team|Spain national under-23 football team|Spain women's national under-15 association football team|Spain women's national under-17 association football team|Spain women's national under-17 football team|Spain women's national under-19 association football team|Spain women's national under-19 football team|Spain women's national under-20 association football team|Spain women's national under-20 football team|Spain women's national under-23 football team,397,wikidata:Q29,wikidata
 Spalding United F.C.,club,1921-01-01,year,,,,,United Kingdom,,5,wikidata:Q5330540,wikidata
 Spandauer SV,club,1894-01-01,year,,Berlin,52.51667,13.38333,Germany,,9,wikidata:Q639574,wikidata
 Spangereid IL,club,1972-04-13,day,,Spangereid,58.04528,7.14167,Norway,Spangereid Idrettslag,1,wikidata:Q125217328,wikidata
@@ -27275,7 +27276,7 @@ SS Turris Calcio,club,1944-01-01,year,,Torre del Greco,40.78528,14.39528,Italy,T
 SS- und Polizeisportgemeinschaft Warschau,club,1940-01-01,year,,Warsaw,52.23000,21.01111,Germany,,3,wikidata:Q1725299,wikidata
 SSB La Grand-Combe,club,1912-01-01,year,,La Grand-Combe,44.21111,4.02944,France,,0,wikidata:Q109507690,wikidata
 SSC Ancona,club,1905-01-01,year,,Ancona,43.61667,13.51667,Italy,Piano San Lazzaro|Unione Sportiva Ancona 1905|U.S. Anconitana|Anconitana|Ancona 1905|U.S. Ancona|US Ancona|S.S.C. Ancona,31,wikidata:Q289029,wikidata
-SSC Bari,club,1908-01-15,day,,Bari,41.12528,16.86667,Italy,Società Sportiva Calcio Bari|Football Club Bari|FC Bari|S.S.C. Bari|AS Bari|A.S. Bari|F.C. Bari|Bari Calcio,49,wikidata:Q6641,en.wikipedia infobox (SSC Bari)
+SSC Bari,club,1908-01-15,day,,Bari,41.12528,16.86667,Italy,Società Sportiva Calcio Bari|Football Club Bari|FC Bari|S.S.C. Bari|AS Bari|A.S. Bari|F.C. Bari|Bari Calcio,50,wikidata:Q6641,en.wikipedia infobox (SSC Bari)
 SSC Dreieckmoar-Lackenhäuser,club,1947-01-01,year,,,,,Germany,,0,wikidata:Q122952235,wikidata
 SSC Farul Constanța,club,1920-11-12,day,,Constanța,44.17672,28.65076,Romania,,29,wikidata:Q368104,en.wikipedia infobox (FCV Farul Constanța)
 SSC Napoli,club,1926-08-25,day,,Naples,40.83583,14.24861,Italy,Società Sportiva Calcio Napoli|Societa Sportiva Calcio Napoli|Napoli|SSCN|SSC Naples|S.S.C. Napoli|S.S.C.N.,118,wikidata:Q2641,en.wikipedia infobox (SSC Napoli)
@@ -27510,8 +27511,8 @@ Steinkjer FK,club,1910-01-01,year,,Steinkjer Municipality,64.01306,11.49694,Norw
 Stella Club d'Adjamé,club,1953-01-01,year,,Abidjan,5.33639,-4.02667,Ivory Coast,,16,wikidata:Q1897533,wikidata
 Stella Maris F.C.,club,1943-01-01,year,,,,,Ireland,,2,wikidata:Q23013899,wikidata
 Stellenbosch F.C.,club,2019-08-03,day,,Stellenbosch,-33.93667,18.86139,South Africa,Stellenbosch|Stellenbosch Football Club,11,wikidata:Q28129381,wikidata
-Stenhousemuir F.C.,club,1884-01-01,year,,Stenhousemuir,56.02800,-3.80600,United Kingdom,Stenhousemuir Football Club,22,wikidata:Q1140392,wikidata
 Stenhousemuir F.C.,club,1881-01-01,year,,Larbert,56.02142,-3.83063,United Kingdom,,1,wikidata:Q117790054,wikidata
+Stenhousemuir F.C.,club,1884-01-01,year,,Stenhousemuir,56.02800,-3.80600,United Kingdom,Stenhousemuir Football Club,22,wikidata:Q1140392,wikidata
 Stenkullens GoIK,club,1926-01-01,year,,,,,Sweden,SGoIK,2,wikidata:Q17448338,wikidata
 Stenløse BK,club,1911-01-01,year,,,,,Denmark,,4,wikidata:Q583376,wikidata
 Stensätra IF,club,1943-01-01,year,,,,,Sweden,,1,wikidata:Q7607931,wikidata
@@ -27582,8 +27583,8 @@ Stranraer Athletic F.C.,club,1995-01-01,year,,Dumfries and Galloway,55.07000,-3.
 Stranraer F.C.,club,1870-01-01,year,,Stranraer,54.90139,-5.03500,United Kingdom,Stranraer Football Club,19,wikidata:Q1090661,wikidata
 Stratford Town F.C.,club,1941-01-01,year,,,,,United Kingdom,Stratford Town Football Club|Stratford Town FC|Stratford Town|Town|Stratford|STFC,5,wikidata:Q7621995,wikidata
 Strathclyde F.C.,club,1894-01-01,year,,Glasgow City,55.85000,-4.25000,United Kingdom,,1,wikidata:Q18128453,wikidata
-Strathmore F.C.,club,1874-01-01,year,,Carolina Port,56.46600,-2.93400,United Kingdom,,2,wikidata:Q16850896,wikidata
 Strathmore F.C.,club,1879-01-01,year,,Angus,56.66667,-2.91667,United Kingdom,,1,wikidata:Q16850891,wikidata
+Strathmore F.C.,club,1874-01-01,year,,Carolina Port,56.46600,-2.93400,United Kingdom,,2,wikidata:Q16850896,wikidata
 Strathspey Thistle F.C.,club,1993-01-01,year,,Seafield Park,57.33240,-3.60092,United Kingdom,,3,wikidata:Q7622175,wikidata
 Street F.C.,club,1880-01-01,year,,,,,United Kingdom,,3,wikidata:Q7622826,wikidata
 Strickland Brothers Lepea,club,2000-01-01,year,,,,,Samoa,,4,wikidata:Q7623590,wikidata
@@ -27620,7 +27621,7 @@ Sucre F.C.,club,2011-01-01,year,,Sincelejo,9.29944,-75.39583,Colombia,,3,wikidat
 Sud América,club,1914-02-15,day,,Montevideo,-34.90592,-56.19131,Uruguay,IASA,15,wikidata:Q392091,wikidata
 Sud FC,club,1989-01-01,year,,Sainte-Lucie-de-Porto-Vecchio,41.69889,9.34944,France,,0,wikidata:Q119519500,wikidata
 Sud Nivernais Imphy Decize,club,2003-06-24,day,,Imphy,46.92833,3.26111,France,,4,wikidata:Q427436,wikidata
-Sudan,nation,1956-01-01,day,,Khartoum,15.60308,32.52654,Sudan,Sudan national under-17 football team|Sudan national under-20 football team,334,wikidata:Q1049,wikidata
+Sudan,nation,1956-01-01,day,,Khartoum,15.60308,32.52654,Sudan,Sudan national under-17 football team|Sudan national under-20 football team,335,wikidata:Q1049,wikidata
 Sudbury Town F.C.,club,1885-01-01,year,,,,,United Kingdom,,1,wikidata:Q7633536,wikidata
 Sudbury Wanderers F.C.,club,1958-01-01,year,,,,,United Kingdom,,1,wikidata:Q7633537,wikidata
 Sudet,club,1912-01-01,year,,Kouvola,60.86806,26.70417,Finland,Sudet jalkapallo,2,wikidata:Q31088803,wikidata
@@ -28968,7 +28969,7 @@ Tangerang Wolves F.C.,club,2010-01-01,year,,Benteng Stadium,-6.17372,106.63857,I
 Tangmoen IL,club,1978-01-01,year,,,,,Norway,,2,wikidata:Q12005181,wikidata
 Tanjong Pagar United FC,club,1975-01-01,year,,Singapore,1.30000,103.80000,Singapore,Tanjong Pagar United,18,wikidata:Q1029258,wikidata
 Tanta FC,club,1920-01-01,year,,,,,Egypt,Tanta|Tanta SC,8,wikidata:Q7683788,wikidata
-Tanzania,nation,1964-04-26,day,,Dodoma,-6.18350,35.74600,Tanzania,Tanzania national under-17 football team|Tanzania national under-20 football team|Tanzania women's national under-17 football team|Tanzania women's national under-20 football team,320,wikidata:Q924,wikidata
+Tanzania,nation,1964-04-26,day,,Dodoma,-6.18350,35.74600,Tanzania,Tanzania national under-17 football team|Tanzania national under-20 football team|Tanzania women's national under-17 football team|Tanzania women's national under-20 football team,321,wikidata:Q924,wikidata
 TaPa,club,1921-07-22,day,,Tampere,61.49806,23.76000,Finland,,6,wikidata:Q4348859,en.wikipedia infobox (Tampereen Palloilijat)
 Tapajós Futebol Clube,club,2012-01-01,year,,Santarém,-2.44278,-54.70778,Brazil,,3,wikidata:Q18577949,wikidata
 Taplow United FC,club,1923-01-01,year,,,,,United Kingdom,,2,wikidata:Q7684715,wikidata
@@ -29196,6 +29197,7 @@ Thyella Filotas F.C.,club,1952-01-01,year,,Filotas,40.62472,21.70750,Greece,,1,w
 Thyella Kamari F.C.,club,1970-01-01,year,,Kamari,36.37411,25.48203,Greece,Thyella Kamari,2,wikidata:Q60776317,wikidata
 Thyella Katsikas F.C.,club,1948-01-01,year,,Katsikas,39.62278,20.88750,Greece,P.A.S. Thyella Katsika,2,wikidata:Q48319535,wikidata
 Thyella Patras F.C.,club,1930-06-14,day,,Patras,38.24638,21.73491,Greece,,3,wikidata:Q7799598,wikidata
+Thyella Pyrgos F.C.,club,1968-01-01,year,,,37.97453,21.27153,Greece,Thyella Katarrachiou Pyrgos,1,wikidata:Q142027561,wikidata
 Thể Công–Viettel FC,club,1954-09-23,day,,Hanoi,21.02450,105.84117,Vietnam,Viettel FC|Viettel F.C.|Thể Công,28,wikidata:Q406796,en.wikipedia infobox (Thể Công–Viettel FC)
 Tianjin Dongli,club,2006-01-01,year,,,,,People's Republic of China,,3,wikidata:Q7800191,wikidata
 Tianjin Jinmen Tiger F.C.,club,1998-01-01,year,,Tianjin,39.14667,117.20556,People's Republic of China,,30,wikidata:Q537552,wikidata
@@ -29450,7 +29452,7 @@ Township Rollers F.C.,club,1959-01-01,year,,Gaborone,-24.65694,25.90861,Botswana
 Toxotis Larissa,club,1943-01-01,year,,Larissa,39.63849,22.41306,Greece,,3,wikidata:Q65274396,wikidata
 Toyama Shinjo Club,club,1968-01-01,year,,Toyama,36.69592,137.21369,Japan,,2,wikidata:Q11456425,wikidata
 Toyo Kogyo Soccer Club,club,1938-01-01,year,,,,,Japan,,2,wikidata:Q11527652,wikidata
-Toyota Industries SC,club,1946-01-01,year,,Kariya,34.98928,137.00214,Japan,,6,wikidata:Q9187467,wikidata
+Toyota Industries SC,club,1946-01-01,year,,Kariya,34.98928,137.00214,Japan,,7,wikidata:Q9187467,wikidata
 TP Mazembe,club,1932-01-01,year,,Lubumbashi,-11.66417,27.48278,Democratic Republic of the Congo,Tout Puissant Mazembe,38,wikidata:Q695340,wikidata
 TP USCA Bangui,club,1970-01-01,year,,Barthélemy Boganda Stadium,4.37442,18.56439,Central African Republic,Tout Puissant Union Sportive Centrafricaine de Bangui,8,wikidata:Q2384724,wikidata
 TP-47,club,1947-01-01,year,,,,,Finland,Tornion Pallo-47,7,wikidata:Q1817924,wikidata
@@ -30476,7 +30478,7 @@ Tuspo Nürnberg,club,1888-01-01,year,,Nuremberg,49.45389,11.07750,Germany,,1,wik
 TuSpo Obernburg 1879,club,1879-01-01,year,,,,,Germany,,0,wikidata:Q122954405,wikidata
 Tuspo Roßtal,club,1926-01-01,year,,,,,Germany,,0,wikidata:Q122953655,wikidata
 Tuusulan Palloseura,club,1971-01-01,year,,,,,Finland,TuPS,2,wikidata:Q7857097,wikidata
-Tuvalu,nation,1978-10-01,day,,Funafuti,-8.50478,179.11736,Tuvalu,Tuvalu women's national football team,252,wikidata:Q672,wikidata
+Tuvalu,nation,1978-10-01,day,,Funafuti,-8.50478,179.11736,Tuvalu,Tuvalu women's national football team,253,wikidata:Q672,wikidata
 Tuvalu Wellington FC,club,2018-01-01,year,,,,,New Zealand,,1,wikidata:Q141459535,wikidata
 Tuxtla Fútbol Club,club,2017-01-01,year,,Estadio Víctor Manuel Reyna,16.76278,-93.09637,Mexico,,1,wikidata:Q33354186,wikidata
 Tuz FC,club,1990-01-01,year,,,,,Iraq,,3,wikidata:Q16858537,wikidata
@@ -30633,7 +30635,7 @@ U.S. Alta Vallagarina,club,2001-01-01,year,,,,,Italy,,3,wikidata:Q7863042,wikida
 U.S. Angri Calcio 1927 A.S.D.,club,1927-01-01,year,,Angri,40.74306,14.56944,Italy,,5,wikidata:Q4004989,wikidata
 U.S. Arzanese,club,1924-01-01,year,,Arzano,40.91528,14.26806,Italy,,5,wikidata:Q2866115,wikidata
 U.S. Auchelloise Nouvelle,club,1920-01-01,year,,Auchel,50.50833,2.47361,France,,1,wikidata:Q3550011,wikidata
-U.S. Avellino 1912,club,1912-12-12,day,,Avellino,40.91528,14.78972,Italy,Unione Sportiva Avellino|US Avellino|U S Avellino|U. S. Avellino|U.S. Avellino|Avellino Calcio 12 S.S.D.|Avellino Calcio 1912|Associazione Sportiva Avellino 1912|Unione Sportiva Avellino 1912,37,wikidata:Q298217,en.wikipedia infobox (US Avellino 1912)
+U.S. Avellino 1912,club,1912-12-12,day,,Avellino,40.91528,14.78972,Italy,Unione Sportiva Avellino|US Avellino|U S Avellino|U. S. Avellino|U.S. Avellino|Avellino Calcio 12 S.S.D.|Avellino Calcio 1912|Associazione Sportiva Avellino 1912|Unione Sportiva Avellino 1912,39,wikidata:Q298217,en.wikipedia infobox (US Avellino 1912)
 U.S. Bagnères-de-Luchon Sports Cierp-Gaud-Marignac,club,1922-12-18,day,,Bagnères-de-Luchon,42.79056,0.59389,France,,0,wikidata:Q109507533,wikidata
 U.S. Bassin Minier,club,1937-12-16,day,,Brassac-les-Mines,45.41417,3.32889,France,,0,wikidata:Q109507552,wikidata
 U.S. Bavans,club,1946-04-23,day,,Bavans,47.48167,6.73056,France,,0,wikidata:Q109507706,wikidata
@@ -30912,7 +30914,7 @@ Uhrik Truckers,club,1933-01-01,year,,Philadelphia,39.95278,-75.16361,United Stat
 UiTM United,club,2008-01-01,year,,Shah Alam,3.08333,101.53333,Malaysia,UiTM F.C.|Universiti Teknologi MARA Football Club|UiTM FC,6,wikidata:Q7878038,wikidata
 UJA Maccabi Paris Métropole,club,1926-01-01,year,,12th arrondissement of Paris,48.84081,2.38818,France,UJA Maccabi Paris Metropole,12,wikidata:Q528226,wikidata
 Ukraina Lwów,club,1911-01-01,year,,Lviv,49.84195,24.03159,Second Polish Republic,Ukraina Lwow,6,wikidata:Q2034141,wikidata
-Ukraine,nation,1917-11-20,day,,Kyiv,50.45000,30.52361,Ukraine,Ukraine Olympic football team|Ukraine national under-16 association football team|Ukraine national under-16 football team|Ukraine national under-17 association football team|Ukraine national under-17 football team|Ukraine national under-18 association football team|Ukraine national under-18 football team|Ukraine national under-19 football team|Ukraine national under-20 football team|Ukraine women's national football team|Ukraine women's national under-17 football team,389,wikidata:Q212,wikidata
+Ukraine,nation,1917-11-20,day,,Kyiv,50.45000,30.52361,Ukraine,Ukraine Olympic football team|Ukraine national under-16 association football team|Ukraine national under-16 football team|Ukraine national under-17 association football team|Ukraine national under-17 football team|Ukraine national under-18 association football team|Ukraine national under-18 football team|Ukraine national under-19 football team|Ukraine national under-20 football team|Ukraine women's national football team|Ukraine women's national under-17 football team,390,wikidata:Q212,wikidata
 Ukraine women's national football team,national_team,1992-06-30,day,,,,,Ukraine,,31,wikidata:Q847476,wikidata
 Ukrainian Sports Club NY,club,1947-01-01,year,,,,,United States,New York Ukrainians,3,wikidata:Q7014790,wikidata
 UKS SMS Łódź,club,1999-01-01,year,,,,,Poland,,3,wikidata:Q7864795,wikidata
@@ -31071,7 +31073,7 @@ United Ploiești,club,1906-01-01,year,,Ploiești,44.94111,26.02250,Romania,,5,wi
 United S.C.,club,1894-01-01,year,,Paris,48.85667,2.35222,France,,2,wikidata:Q47541557,wikidata
 United Services Portsmouth F.C.,club,1962-01-01,year,,,,,United Kingdom,,2,wikidata:Q6418543,wikidata
 United Sikkim F.C.,club,2011-01-01,year,,Gangtok,27.33000,88.62000,India,United Sikkim Football Club,9,wikidata:Q3550723,wikidata
-United States,nation,1784-05-12,day,,"Washington, D.C.",38.89500,-77.03667,United States,American Women's Soccer|American women's national soccer|American women's national soccer team|American women's soccer team|Team USA soccer|The Stars and Stripes|The Yanks|US men's u23|US olympic football team|US women's soccer team|USA women's national soccer team|USA women's soccer team|USA womens soccer team|USWNT|United States U-17 men's national soccer team|United States U-20 men's national soccer team|United States Under-15 Boys|United States Under-17|United States Under-20|United States boys' national under-15 association football team|United States boys' national under-15 soccer team|United States boys' national under-16 soccer team|United States men's national under-15 soccer team|United States men's national under-16 soccer team|United States men's national under-17 association football team|United States men's national under-17 soccer team|United States men's national under-18 soccer team|United States men's national under-19 soccer team|United States men's national under-20 association football team|United States men's national under-20 soccer team|United States men's national under-21 soccer team|United States men's national under-23 association football team|United States men's national under-23 soccer team|United States women's national soccer team|United States women's national under-17 soccer team|United States women's national under-18 soccer team|United States women's national under-19 soccer team|United States women's national under-20 association football team|United States women's national under-20 soccer team|United States women's national under-23 soccer team,427,wikidata:Q30,wikidata
+United States,nation,1784-05-12,day,,"Washington, D.C.",38.89500,-77.03667,United States,American Women's Soccer|American women's national soccer|American women's national soccer team|American women's soccer team|Team USA soccer|The Stars and Stripes|The Yanks|US men's u23|US olympic football team|US women's soccer team|USA women's national soccer team|USA women's soccer team|USA womens soccer team|USWNT|United States U-17 men's national soccer team|United States U-20 men's national soccer team|United States Under-15 Boys|United States Under-17|United States Under-20|United States boys' national under-15 association football team|United States boys' national under-15 soccer team|United States boys' national under-16 soccer team|United States men's national under-15 soccer team|United States men's national under-16 soccer team|United States men's national under-17 association football team|United States men's national under-17 soccer team|United States men's national under-18 soccer team|United States men's national under-19 soccer team|United States men's national under-20 association football team|United States men's national under-20 soccer team|United States men's national under-21 soccer team|United States men's national under-23 association football team|United States men's national under-23 soccer team|United States women's national soccer team|United States women's national under-17 soccer team|United States women's national under-18 soccer team|United States women's national under-19 soccer team|United States women's national under-20 association football team|United States women's national under-20 soccer team|United States women's national under-23 soccer team,426,wikidata:Q30,wikidata
 United States men's Paralympic soccer team,national_team,1913-01-01,year,,,,,United States,,1,wikidata:Q7892549,wikidata
 United States Virgin Islands,nation,1917-03-31,day,,Charlotte Amalie,18.35000,-64.95000,United States Virgin Islands,United States Virgin Islands national under-20 soccer team,155,wikidata:Q11703,wikidata
 United States women's national soccer team,national_team,1985-08-18,day,,,,,United States,Team USA soccer|US women's soccer team|USWNT|USA women's national soccer team|USA women's soccer team|USA womens soccer team|The Stars and Stripes|The Yanks|American Women's Soccer|American women's national soccer team|American women's soccer team|American women's national soccer,54,wikidata:Q334526,wikidata
@@ -31180,7 +31182,7 @@ Unión Santa María,club,2009-01-01,year,,Estadio Municipal de Los Ángeles,-37.
 Unión Santiago,club,1982-12-19,day,,Santiago del Estero,-27.78444,-64.26694,Argentina,Unión Santiago|Club Atlético Unión Santiago|CA Unión Santiago|CAUS|Atlético Unión Santiago|Club Unión Santiago,2,wikidata:Q123418593,wikidata
 Unión SC,club,1922-01-01,year,,"Lavadores, Vigo",42.22999,-8.69067,Spain,Union SC,4,wikidata:Q6157123,wikidata
 Unión Sport Club,club,1925-01-01,year,,Estadio Olímpico,10.49128,-66.88549,Venezuela,Union Sport Club,6,wikidata:Q7896917,wikidata
-Unión Sporting Club (Madrid),club,1913-01-01,year,,Madrid,40.41694,-3.70333,Spain,,3,wikidata:Q17632400,wikidata
+Unión Sporting Club (Madrid),club,1913-01-01,year,,Madrid,40.41694,-3.70333,Spain,,2,wikidata:Q17632400,wikidata
 Unión Supe,club,1954-10-12,day,,,,,Peru,Union Supe,2,wikidata:Q7896918,wikidata
 Unión Tarapoto,club,1955-01-01,year,,Estadio Carlos Vidaurre García,-11.10100,-77.60450,Peru,Union Tarapoto,2,wikidata:Q7896919,wikidata
 Unión Tarija,club,1980-04-08,day,,Tarija,-21.53389,-64.73417,Bolivia,Union Tarija,6,wikidata:Q2471954,en.wikipedia infobox (Unión Tarija)
@@ -31263,7 +31265,7 @@ US Lecce,club,1908-03-17,day,,Lecce,40.35201,18.16914,Italy,Unione Sportiva Lecc
 US Lesquin,club,1920-01-01,year,,Lesquin,50.58972,3.11111,France,,2,wikidata:Q3550553,wikidata
 US Livorno 1915,club,1915-01-01,year,,Livorno,43.55000,10.31667,Italy,U.S.L 1915|USL 1915|U.S. Livorno|Unione Sportiva Livorno 1915|US Livorno|U.S. Livorno 1915,52,wikidata:Q6767,wikidata
 US Longwy,club,1921-01-01,year,,Longwy,49.51972,5.76056,France,CS Longwy,1,wikidata:Q16681619,wikidata
-US Lormont,club,1947-08-01,day,,Lormont,44.88014,-0.52311,France,,0,wikidata:Q23708947,wikidata
+US Lormont,club,1947-08-01,day,,Neuilly-sur-Seine,44.88014,-0.52311,France,,0,wikidata:Q23708947,wikidata
 US Lusitanos Saint-Maur,club,1966-01-01,year,,Saint-Maur-des-Fossés,48.80250,2.48556,France,,8,wikidata:Q3547509,wikidata
 US Luzenac,club,1936-08-20,day,,Luzenac,42.76361,1.76361,France,,17,wikidata:Q799185,wikidata
 US Macouria,club,2000-01-01,year,,Macouria,5.01361,-52.47389,France,,5,wikidata:Q2299970,wikidata
@@ -31277,8 +31279,8 @@ US Monastir,club,1923-03-17,day,,Monastir,35.77799,10.82617,Tunisia,,18,wikidata
 US Mondorf-les-Bains,club,1915-01-01,year,,Mondorf-les-Bains,49.50694,6.28056,Luxembourg,,16,wikidata:Q1119349,wikidata
 US Montagnarde,club,1937-07-19,day,,Inzinzac-Lochrist,47.84361,-3.26694,France,Union Sportive Montagnarde Inzinzac-Lochrist,3,wikidata:Q2471679,wikidata
 US Nœux-les-Mines,club,1909-01-01,year,,Nœux-les-Mines,50.47972,2.66472,France,,6,wikidata:Q1408655,wikidata
-US Orléans,club,1970-01-01,year,,Orléans,47.90222,1.90417,France,Union sportive Orléans Loiret,2,wikidata:Q3550498,wikidata
 US Orléans,club,1976-01-01,year,,Orléans,47.90222,1.90417,France,US Orleans|Orléans,21,wikidata:Q369349,wikidata
+US Orléans,club,1970-01-01,year,,Orléans,47.90222,1.90417,France,Union sportive Orléans Loiret,2,wikidata:Q3550498,wikidata
 US Ouagadougou,club,1961-01-01,year,,Ouagadougou,12.36861,-1.52750,Burkina Faso,,11,wikidata:Q2004292,wikidata
 US Ouakam,club,1951-01-01,year,,Dakar,14.67256,-17.43200,Senegal,,11,wikidata:Q2552928,wikidata
 US Panda B52,club,1952-01-01,year,,Likasi,-10.98333,26.73333,Democratic Republic of the Congo,Union sportive Panda B52,4,wikidata:Q111029801,wikidata
@@ -31332,7 +31334,6 @@ USCO Banfora,club,1985-01-01,year,,Banfora,10.63083,-4.75889,Burkina Faso,,5,wik
 USD Mazara,club,1946-01-01,year,,Mazara del Vallo,37.65166,12.58751,Italy,,3,wikidata:Q3777430,wikidata
 USD Osimana,club,1922-01-01,year,,Osimo,43.48608,13.48210,Italy,Unione Sportiva Osimana|US Osimana,1,wikidata:Q4005298,wikidata
 USE Avoine,club,1963-01-01,year,,Avoine,47.20500,0.18306,France,,4,wikidata:Q7866396,wikidata
-USF Bordj Bou Arreridj,club,2001-01-01,year,,Stade 20 Août 1955,36.06670,4.76667,Algeria,,0,wikidata:Q22032050,wikidata
 USF Fécamp,club,1903-01-01,year,,Fécamp,49.75750,0.37917,France,,2,wikidata:Q3550571,wikidata
 USFAS Bamako,club,1965-01-01,year,,Bamako,12.64583,-7.99222,Mali,,6,wikidata:Q3550574,wikidata
 USJA Carquefou,club,1939-01-01,year,,Carquefou,47.29694,-1.49278,France,Union Sportive Jeanne D'Arc Carquefou,9,wikidata:Q1622419,wikidata
@@ -31441,7 +31442,7 @@ Vansbro AIK FK,club,1920-01-01,year,,Vansbro,60.51003,14.22727,Sweden,,1,wikidat
 Vanspor,club,1974-01-01,year,,Van,38.50194,43.41667,Turkey,Vanspor AS,10,wikidata:Q6080023,wikidata
 Vantaan Jalkapalloseura,club,1970-01-01,year,,Vantaa,60.29444,25.04028,Finland,VJS,1,wikidata:Q11900390,wikidata
 Vantaan Veturi,club,1987-01-01,year,,Vantaa,60.29444,25.04028,Finland,,1,wikidata:Q11900396,wikidata
-Vanuatu,nation,1980-07-30,day,,Port Vila,-17.73333,168.31667,Vanuatu,Vanuatu national under-15 football team|Vanuatu national under-17 football team|Vanuatu national under-20 football team|Vanuatu national under-23 football team|Vanuatu women's national under-17 football team|Vanuatu women's national under-20 football team,263,wikidata:Q686,wikidata
+Vanuatu,nation,1980-07-30,day,,Port Vila,-17.73333,168.31667,Vanuatu,Vanuatu national under-15 football team|Vanuatu national under-17 football team|Vanuatu national under-20 football team|Vanuatu national under-23 football team|Vanuatu women's national under-17 football team|Vanuatu women's national under-20 football team,264,wikidata:Q686,wikidata
 Vanylven FK,club,1997-11-05,day,,Eidså,62.11467,5.67304,Norway,Vanylven FC|Vanylven Football Club|Vanylven Fotballklubb,1,wikidata:Q102394561,wikidata
 Vaqueros de Ixtlan CF,club,2004-01-01,year,,,,,Mexico,,4,wikidata:Q1356350,wikidata
 Vaqueros Reynosa F.C.,club,2001-01-01,year,,Estadio Adolfo López Mateos,26.07882,-98.31229,Mexico,,2,wikidata:Q6159646,wikidata
@@ -31475,7 +31476,7 @@ Vauxhall Motors F.C.,club,1963-01-01,year,,,,,United Kingdom,Vauxhall Motors Foo
 VB Addu FC,club,1987-01-01,year,,Malé,4.17500,73.50833,Maldives,VB Sports Club|VB Addu Football Club,15,wikidata:Q2304830,wikidata
 VB Vágur,club,1905-01-01,year,,Vágur,61.47306,-6.80972,Faroe Islands,VB Vagur,9,wikidata:Q1933928,wikidata
 VCD Athletic F.C.,club,1916-01-01,year,,Crayford,51.44910,0.18120,United Kingdom,,4,wikidata:Q5290925,wikidata
-VCP Chinandega,club,2006-08-01,day,,Chinandega,12.63105,-87.13474,Nicaragua,Vicente de la Cruz Padilla Chinandega|VCP|VCP Chinandega FC,2,wikidata:Q7906637,wikidata
+VCP Chinandega,club,2006-01-01,year,,Chinandega,12.63105,-87.13474,Nicaragua,Vicente de la Cruz Padilla Chinandega|VCP|VCP Chinandega FC,2,wikidata:Q7906637,wikidata
 VCU Rams men's soccer,club,1978-01-01,year,,,,,United States,,1,wikidata:Q7906655,wikidata
 VdS Spardorf,club,1966-01-01,year,,,,,Germany,,0,wikidata:Q122953791,wikidata
 Vear IF,club,1965-05-14,day,,Vear,59.25940,10.36690,Norway,Vear Idrettsforening,1,wikidata:Q12009136,wikidata
@@ -31663,8 +31664,8 @@ VfL Mürsbach,club,1947-01-01,year,,,,,Germany,,0,wikidata:Q122952937,wikidata
 VfL Neckarau,club,1921-01-01,year,,Mannheim,49.48778,8.46611,Germany,,8,wikidata:Q542692,wikidata
 VfL Nord Berlin,club,1896-01-01,year,,Berlin,52.51667,13.38333,Germany,,3,wikidata:Q200609,wikidata
 VfL Nürnberg,club,1949-01-01,year,,Nuremberg,49.45389,11.07750,Germany,,2,wikidata:Q2521545,wikidata
-VfL Oldenburg,club,1894-01-01,year,,,,,,,10,wikidata:Q63349571,wikidata
 VfL Oldenburg,club,1894-01-01,year,,Oldenburg,53.14389,8.21389,Germany,BfS Oldenburg|Verein für Leibesübungen Oldenburg e.V.,1,wikidata:Q537474,wikidata
+VfL Oldenburg,club,1894-01-01,year,,,,,,,10,wikidata:Q63349571,wikidata
 VfL Osnabrück,club,1899-01-01,year,,Osnabrück,52.27889,8.04306,Germany,,33,wikidata:Q160530,wikidata
 VfL Oythe,club,1947-01-01,year,,Vechta,52.73056,8.28861,Germany,,2,wikidata:Q2521563,wikidata
 VfL Pfullingen,club,1862-01-01,year,,Pfullingen,48.46556,9.22611,Germany,,3,wikidata:Q1729409,wikidata
@@ -32423,7 +32424,6 @@ Xinjiang Xiyu Grand Begonia,club,2010-05-28,day,,,,,People's Republic of China,,
 Xuan Thanh Sai Gon F.C.,club,2010-01-01,year,,Ho Chi Minh City,10.77556,106.70194,Vietnam,Xi măng Xuân Thành Sài Gòn Football Club,10,wikidata:Q1116650,wikidata
 Xuventú Sanxenxo,club,1983-01-01,year,,Sanxenxo,42.39946,-8.80679,Spain,Xuventu Sanxenxo,4,wikidata:Q3392484,wikidata
 Xylofagou FC,club,2022-05-10,day,,Xylofagou,34.97672,33.84959,Cyprus,,0,wikidata:Q112146142,wikidata
-Yabuco Isabela FC,club,2016-01-01,year,,,,,United States,,0,wikidata:Q24890487,wikidata
 Yabuco SUAL FC,club,2014-01-01,year,,,,,United States,Yabuco Segunda Unidad Asunción Lugo FC,2,wikidata:Q19578329,wikidata
 Yabucoa Borikén,club,2008-01-01,year,,,,,United States,Yabucoa Boriken,2,wikidata:Q8046392,wikidata
 Yadanarbon F.C.,club,2009-04-10,day,,Mandalay,21.98306,96.08444,Myanmar,,19,wikidata:Q169340,en.wikipedia infobox (Yadanarbon F.C.)
@@ -32527,7 +32527,7 @@ Ytterby IS,club,1947-01-01,year,,Kungälv,57.87235,11.97578,Sweden,,4,wikidata:Q
 Ytterhogdals IK,club,1921-01-01,year,,,,,Sweden,YIK,3,wikidata:Q10394747,wikidata
 Yuen Long FC,club,1958-01-01,year,,Yuen Long District,22.44560,114.02200,People's Republic of China,Yuen Long District SA|Yuen Long Football Club|YL FC,11,wikidata:Q3573106,wikidata
 Yugend-Erziehung-Sport München,club,1999-01-01,year,,,,,Germany,,0,wikidata:Q122949171,wikidata
-Yugoslavia,nation,1918-12-01,day,,Belgrade,44.81778,20.45694,Yugoslavia,Yugoslavia Olympic football team|Yugoslavia national under-16 football team|Yugoslavia national under-18 football team|Yugoslavia national under-20 football team|Yugoslavia national under-21 football team|Yugoslavia national under-23 football team,182,wikidata:Q36704,wikidata
+Yugoslavia,nation,1918-12-01,day,,Belgrade,44.81778,20.45694,Yugoslavia,Yugoslavia Olympic football team|Yugoslavia national under-16 football team|Yugoslavia national under-18 football team|Yugoslavia national under-20 football team|Yugoslavia national under-21 football team|Yugoslavia national under-23 football team,183,wikidata:Q36704,wikidata
 Yunak Gymnastic Society,club,1895-01-01,year,,Sofia,42.69789,23.32173,Bulgaria,,4,wikidata:Q12299547,wikidata
 Yunnan Feihu F.C.,club,2012-01-01,year,,People's Republic of China,35.84472,103.45194,People's Republic of China,Lijiang Jiayunhao F.C.,5,wikidata:Q15943996,wikidata
 Yunnan Hongta F.C.,club,1996-01-01,year,,Kunming,25.04333,102.70611,People's Republic of China,,8,wikidata:Q2501712,wikidata
