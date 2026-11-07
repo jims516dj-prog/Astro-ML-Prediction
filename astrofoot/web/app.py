@@ -621,8 +621,24 @@ def live_sync_status():
     return JSONResponse(SYNC)
 
 
+FORM_AGREE = [("", "2/3 or 3/3"), ("=0", "0/3"), ("=1", "1/3"), ("=2", "2/3"), ("=3", "3/3")]
+
+
+def _form_rows(r: dict, hist, agree: str) -> list[dict]:
+    """Form checks for one game under the engines filter: '' = the team 2+ engines back; '=k' = every team exactly
+    k engines call to win (with 0/3 both teams can qualify, e.g. when every engine predicts a draw)."""
+    if agree in ("=0", "=1", "=2", "=3"):
+        k = int(agree[1])
+        return [form.analyse(r, hist, side) for side, n in form.side_counts(r).items() if n == k]
+    a = form.analyse(r, hist)
+    return [a] if a["qualifies"] else []
+
+
 def _form_page(request: Request, day: str, agree: str, role: str, xg: str = ""):
-    """Top picks → Form check: games where 2+ classical engines back the same team, with that team's scoring form."""
+    """Top picks → Form check: a team's scoring form, for the teams the chosen number of engines back."""
+    if agree == "3":                         # older links: "3/3 only"
+        agree = "=3"
+    agree = agree if agree in dict(FORM_AGREE) else ""
     recs = [r for r in _all_games() if r["status"] != "void"]
     hist = form.history(recs)
     days = sorted({r["kickoff_utc"][:10] for r in recs}, reverse=True)
@@ -633,31 +649,26 @@ def _form_page(request: Request, day: str, agree: str, role: str, xg: str = ""):
         xg_min = float(xg) if xg else 0.0
     except ValueError:
         xg, xg_min = "", 0.0
-    want = lambda a: (a["qualifies"] and (agree != "3" or a["agree"] == 3) and (not role or a["role"] == role)  # noqa: E731
-                      and a["lam_market"] >= xg_min)
+    want = lambda a: (not role or a["role"] == role) and a["lam_market"] >= xg_min     # noqa: E731
     rows = []
     for r in sorted((r for r in recs if r["kickoff_utc"][:10] == day), key=lambda r: (r["kickoff_utc"], r["home"])):
-        a = form.analyse(r, hist)
-        if want(a):
-            rows.append({"r": r, "a": a})
-    # live record so far: every settled qualifying game, all days (same filters)
-    done = []
-    for r in recs:
-        if r.get("result") and r["pre_kickoff"]:
-            a = form.analyse(r, hist)
-            if want(a) and a["scored_hit"] is not None:
-                done.append(a)
+        rows += [{"r": r, "a": a} for a in _form_rows(r, hist, agree) if want(a)]
+    # live record so far: every settled game under the same filters, all days
+    done = [a for r in recs if r.get("result") and r["pre_kickoff"]
+            for a in _form_rows(r, hist, agree) if want(a) and a["scored_hit"] is not None]
     n = len(done)
     so_far = {"n": n, "scored": sum(a["scored_hit"] for a in done),
               "market": sum(a["p_market"] for a in done) / n if n else None,
               "form": (sum(a["p_form"] for a in done if a["p_form"] is not None) /
                        max(1, sum(a["p_form"] is not None for a in done))) if n else None}
+    research = form.load_research()
+    steps = research.get("by_agree", {}).get(agree[1]) if agree else research.get("by_xg")
     return T.TemplateResponse(request, "form.html", {
-        "day": day, "days": days, "rows": rows, "agree": agree, "role": role, "so_far": so_far, "xg": xg,
-        "xg_steps": [t for t in form.XG_STEPS if t > 0],
-        "xg_hist": next((b for b in form.load_research().get("by_xg", []) if abs(b["min"] - xg_min) < 1e-9), None)
-                   if xg_min > 0 else None,
-        "research": form.load_research(), "markets": TOP_MARKETS, "market": "form", "page": "top"})
+        "day": day, "days": days, "rows": rows, "agree": agree, "agree_choices": FORM_AGREE,
+        "agree_label": dict(FORM_AGREE)[agree], "role": role, "so_far": so_far, "xg": xg,
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "xg_table": steps or [],
+        "xg_hist": next((b for b in steps or [] if abs(b["min"] - xg_min) < 1e-9), None) if xg_min > 0 else None,
+        "research": research, "markets": TOP_MARKETS, "market": "form", "page": "top"})
 
 
 TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Double chance"), ("o15", "Over/under 1.5"),
@@ -667,9 +678,14 @@ TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Doubl
 
 @app.get("/top", response_class=HTMLResponse)
 def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "",
-             m: list[str] = Query(default=[]), role: str = "", xg: str = ""):
+             m: list[str] = Query(default=[]), role: str = "", xg: str = "", xg_for: str = "either"):
     if market == "form":
         return _form_page(request, day, agree, role, xg)
+    xg_for = xg_for if xg_for in XG_FOR else "either"
+    try:
+        xg_min = float(xg) if xg else 0.0
+    except ValueError:
+        xg, xg_min = "", 0.0
     market = market if market in live.PICK_KEYS else "summary"
     chosen = [x for x in m if x in live.SUMMARY_MARKETS] or list(live.SUMMARY_MARKETS)
     try:
@@ -686,7 +702,8 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
         day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
     hit_key, p_key, agree_key = live.PICK_KEYS[market]
     agree, ok_agree = _agree_test(agree)
-    keep = lambda ps: [p for p in ps if ok_agree(p.get(agree_key) or 0) and p[p_key] >= mp]   # noqa: E731
+    keep = lambda ps: [p for p in ps if ok_agree(p.get(agree_key) or 0) and p[p_key] >= mp      # noqa: E731
+                       and _xg_pass(p, xg_min, xg_for)]
     picks = keep(tp.get(day, []))
     all_picks = keep([p for ps in tp.values() for p in ps])
     by_agree = {k: live.score_picks([p for p in all_picks if (p.get(agree_key) or 0) == k], market) for k in range(4)}
@@ -699,6 +716,8 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
                 "dc": doublechance.load()}.get(market)
     return T.TemplateResponse(request, "top.html", {
         "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p,
+        "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR, "xg_steps": [t for t in form.XG_STEPS if t > 0],
+        "keep": _xg_keep(xg, xg_for),
         "markets": TOP_MARKETS, "n_day_all": len(tp.get(day, [])), "chosen": chosen,
         "summary_names": dict(TOP_MARKETS),
         "summary_mix": {k: sum(1 for p in picks if p.get("sum_market") == k) for k in live.SUMMARY_MARKETS},
@@ -870,6 +889,19 @@ def _xg(g: dict) -> tuple[float, float]:
     p_home, p_away = (mk["fav"], mk["dog"]) if g["fav_is_home"] else (mk["dog"], mk["fav"])
     lh, la = teamgoals.rates(p_home, p_away)
     return float(lh[0]), float(la[0])
+
+
+def _xg_pass(g: dict, xg_min: float, xg_for: str) -> bool:
+    """Expected-goals filter (from the odds) for a game: either team, home, away, or the team backed by 2+ engines.
+    Stores the figures on the record (g['xg_home'], g['xg_away']) for display."""
+    if "xg_home" not in g:
+        g["xg_home"], g["xg_away"] = _xg(g)
+    if xg_min <= 0:
+        return True
+    side, _, _ = form.backed_side(g)
+    val = {"either": max(g["xg_home"], g["xg_away"]), "home": g["xg_home"], "away": g["xg_away"],
+           "backed": None if side is None else g["xg_home" if side == "home" else "xg_away"]}[xg_for]
+    return val is not None and val >= xg_min
 
 
 def _xg_keep(xg: str, xg_for: str) -> str:

@@ -86,3 +86,42 @@ def test_expected_goals_filter_on_form_check(monkeypatch):
     c = TestClient(web.app)
     count = lambda q: c.get("/top?market=form&day=2026-11-09" + q).text.count('class="form-detail"')   # noqa: E731
     assert count("") == 2 and count("&xg=1.5") == 1 and count("&xg=9") == 0 and count("&xg=junk") == 2
+
+
+def test_form_check_any_number_of_engines(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    games = []
+    for k, winners in enumerate([("fav", "fav", "dog"), ("draw", "draw", "draw"), ("fav", "fav", "fav")]):
+        r = rec(f"H{k}", f"A{k}", "2026-11-09T15:00:00+00:00", winners=winners)
+        r.update(match_key=f"k{k}", url=f"/live/match/k{k}", status="pending", pre_kickoff=True)
+        games.append(r)
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: games)
+    monkeypatch.setattr(form, "history", lambda recs: {})
+    c = TestClient(web.app)
+    n = lambda q: c.get("/top?market=form&day=2026-11-09" + q).text.count('class="form-detail"')   # noqa: E731
+    # game 0: home 2/3, away 1/3; game 1: both 0/3 (all draws); game 2: home 3/3, away 0/3
+    assert n("") == 2 and n("&agree=%3D2") == 1 and n("&agree=%3D3") == 1 and n("&agree=3") == 1
+    assert n("&agree=%3D1") == 1 and n("&agree=%3D0") == 3
+    assert form.side_counts(games[1]) == {"home": 0, "away": 0}
+    a = form.analyse(games[0], {}, "away")
+    assert a["qualifies"] and a["agree"] == 1 and a["team"] == "A0"
+
+
+def test_top_picks_expected_goals_filter(monkeypatch):
+    import re
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    from test_merged import live_rec
+    strong = live_rec("S1", "Strong", "Weak", "2026-11-09T15:00:00+00:00")
+    strong["predictions"]["market"] = strong["predictions"]["synthesis"] = {"fav": 0.75, "draw": 0.15, "dog": 0.10}
+    even = live_rec("S2", "Even", "Match", "2026-11-09T17:00:00+00:00")
+    even["predictions"]["market"] = even["predictions"]["synthesis"] = {"fav": 0.38, "draw": 0.30, "dog": 0.32}
+    from astrofoot import live
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [live.join(strong, None), live.join(even, None)])
+    c = TestClient(web.app)
+    rows = lambda q: len(re.findall(r"<tr><td>\d+</td>", c.get("/top?market=result&day=2026-11-09" + q).text))   # noqa: E731
+    assert rows("") == 2 and rows("&xg=1.5") == 1 and rows("&xg=1.5&xg_for=away") == 0 and rows("&xg=x") == 2

@@ -186,10 +186,21 @@ def form_lambda(att_venue, att_all, att_h2h, def_venue, def_all) -> float | None
     return float(min(max(lam, 0.05), 5.0))
 
 
-def analyse(rec: dict, hist: dict[str, list[tuple]]) -> dict:
-    """Form check for one game. `qualifies` is False unless 2+ engines back the same team."""
+def side_counts(rec: dict) -> dict[str, int]:
+    """How many of the 3 classical engines call each side to win: {'home': n, 'away': n}."""
+    _, _, calls = backed_side(rec)
+    return {s: sum(1 for c in calls.values() if c == s) for s in ("home", "away")}
+
+
+def analyse(rec: dict, hist: dict[str, list[tuple]], side: str | None = None) -> dict:
+    """Form check for one game. By default the team backed by 2+ engines (`qualifies` is False if none);
+    with `side` ('home'/'away'), that team whatever its engine support (`agree` = engines calling it to win)."""
     from . import teamgoals
-    side, n_back, calls = backed_side(rec)
+    backed, n_back, calls = backed_side(rec)
+    if side is not None:
+        n_back = sum(1 for c in calls.values() if c == side)
+    else:
+        side = backed
     out = {"qualifies": side is not None, "agree": n_back, "calls": calls}
     if side is None:
         return out
@@ -273,6 +284,12 @@ def backtest(matches: pd.DataFrame, engines: pd.DataFrame) -> dict:
     backed = (L.agree >= 2).to_numpy()
     out["by_xg"] = [{"min": t, "n": int((backed & (lam_mkt >= t)).sum()),
                      "scored": float(L.y.to_numpy()[backed & (lam_mkt >= t)].mean())} for t in XG_STEPS]
+    # the same for each exact number of engines calling the team to win (0, 1, 2, 3 of 3)
+    agree, yv = L.agree.to_numpy(), L.y.to_numpy()
+    out["by_agree"] = {str(k): [{"min": t, "n": int(((agree == k) & (lam_mkt >= t)).sum()),
+                                 "scored": float(yv[(agree == k) & (lam_mkt >= t)].mean())
+                                 if ((agree == k) & (lam_mkt >= t)).any() else None} for t in XG_STEPS]
+                       for k in range(4)}
     for name, sub in (("all", L), ("backed", L[L.agree >= 2])):
         y = sub.y.to_numpy()
         res = {}
