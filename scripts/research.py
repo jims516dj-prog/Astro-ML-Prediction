@@ -22,7 +22,7 @@ import pandas as pd
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 
 from astrofoot import classical_batch, codex, dataset, lattice, models, overunder, pipeline, teamgoals  # noqa: E402
-from astrofoot import doublechance  # noqa: E402
+from astrofoot import doublechance, form  # noqa: E402
 from astrofoot import sky as skymod  # noqa: E402
 from astrofoot.config import LATTICE_VERSION, LIVING, MODELS, WORK  # noqa: E402
 
@@ -260,3 +260,7 @@ if __name__ == "__main__":
         doublechance.write(dc)
         log(f"double chance: picks hit {dc['all']['hit_rate']:.3f} vs {dc['all']['expected']:.3f} expected; "
             f"over 1.5 picks hit {tg['over15']['all']['hit_rate']:.3f} vs {tg['over15']['all']['expected']:.3f}")
+        fm = form.backtest(pd.read_parquet(WORK / "matches.parquet"), pd.read_parquet(WORK / "engines_real.parquet"))
+        form.write(fm)
+        log(f"form check: log loss market {fm['all']['log_loss']['mkt']:.4f}, market+form "
+            f"{fm['all']['log_loss']['mkt+form']:.4f} (form weight {fm['all']['coef_form']:+.3f})")

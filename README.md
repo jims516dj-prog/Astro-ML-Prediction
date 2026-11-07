@@ -314,6 +314,29 @@ caveats; picks are grouped by slip. **CSV** (`/mypicks/export.csv`): the same de
 Played games are marked ✓/✗ and scored: hit rate vs the rate the picks' probabilities expected, for the day and
 all days, plus the chance that all of a day's picks come in. A pick made after kickoff is marked and not scored.
 
+## Top picks: Form check
+
+For every game where **at least 2 of the 3 classical engines back the same team to win** (favourite or underdog), the
+**Form check** tab (and a section on the game's page) analyses how that team has been scoring, using only games
+before kickoff:
+
+- its last 5 **home** games if it plays at home, or last 5 **away** games if away;
+- its last 5 games **overall**;
+- its last 3 **meetings with this opponent**;
+- and, for context, how the **opponent** has been conceding (last 5 at its venue type, last 5 overall).
+
+Each window shows goals per game, games scored in, 2+ goals, W/D/L and every game behind the numbers. A transparent
+blend of these gives a form estimate of the team's expected goals, P(scores) and P(2+), beside the market's calibrated
+P(scores); the result is marked once played. Filters: day, 2/3 or 3/3 engines, backed team is favourite or underdog.
+
+**Honest finding** (`research.py overunder` → `data/models/form.json`): over 201,138 historical team-games, walk-forward,
+adding the form estimate to the market does not improve the prediction of whether a team scores (log loss 0.5602 both
+ways; form alone 0.5780), and the same holds for teams backed by 2+ engines. When form says a team should score much more
+than the odds imply, it scored *less* often. The page shows this: the form figures are context, not an edge.
+
+Data: the research corpus, plus every result of the current and previous season from football-data.co.uk (the cycle
+refreshes `ledger/recent_results.csv` daily, because the corpus lags), plus settled live games.
+
 ## One list of games: manual and automatic, no duplicates
 
 - **Live record and Top picks** list the games you add on the Analyze page alongside the automatic forecasts,

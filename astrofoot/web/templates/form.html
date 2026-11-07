@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% from "_form.html" import detail, window_line %}
+{% block title %}Form check · Top picks · Astro Football Lab{% endblock %}
+{% block body %}
+<h1>Top picks</h1>
+<nav class="seg" aria-label="Market">
+  {% for k, label in markets %}<a href="/top?market={{ k }}{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
+</nav>
+
+<p class="lede">Games where at least <strong>2 of the 3 classical engines back the same team to win</strong>, favourite or
+underdog, with that team's scoring form: its last 5 home games if it is at home (last 5 away games if away), its last 5
+games overall, its last 3 meetings with this opponent, and how the opponent has been conceding. From these comes a form
+estimate of the team's chance to score, shown beside the market's.</p>
+
+{% set R = research %}
+{% if R and R.all %}
+<div class="callout small"><strong>What the history says about form.</strong> Over {{ "{:,}".format(R.all.n) }} team-games
+(walk-forward, each season predicted from earlier ones), adding this form estimate to the market's probability did not
+improve the prediction of whether a team scores (log loss {{ "%.4f"|format(R.all.log_loss["mkt"]) }} with the market alone,
+{{ "%.4f"|format(R.all.log_loss["mkt+form"]) }} with form added; form alone {{ "%.4f"|format(R.all.log_loss["form"]) }}, worse).
+The same holds for teams backed by 2+ engines ({{ "{:,}".format(R.backed.n) }} team-games). When form says a team should
+score much more than the odds imply, it actually scored <em>less</em> often ({{ fmt_pct(R.all.by_form_vs_market[-1].scored) }}
+vs {{ fmt_pct(R.all.by_form_vs_market[0].scored) }} where form is most below the odds): recent runs regress, and the odds
+already price them. Read the form figures as context, not as an edge.</div>
+{% endif %}
+
+<form method="get" class="filters">
+  <input type="hidden" name="market" value="form">
+  <label>Day<select name="day" onchange="this.form.submit()">
+    {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
+  <label>Engines backing the team<select name="agree" onchange="this.form.submit()">
+    <option value="" {{ "selected" if not agree }}>2/3 or 3/3</option><option value="3" {{ "selected" if agree == "3" }}>3/3 only</option></select></label>
+  <label>Backed team is<select name="role" onchange="this.form.submit()"><option value="">favourite or underdog</option>
+    {% for v in ("favourite", "underdog") %}<option value="{{ v }}" {{ "selected" if role == v }}>the {{ v }}</option>{% endfor %}</select></label>
+</form>
+
+<section class="tiles">
+  <div class="tile"><div class="k">This day</div><div class="v">{{ rows|length }}</div><div class="s">game{{ "" if rows|length == 1 else "s" }} where 2+ engines back a team</div></div>
+  <div class="tile"><div class="k">So far (all days, same filters)</div>
+    {% if so_far.n %}<div class="v">{{ so_far.scored }} / {{ so_far.n }}</div>
+    <div class="s">backed teams scored · market said {{ fmt_pct(so_far.market) }}, form said {{ fmt_pct(so_far.form) }}</div>
+    {% else %}<div class="v sm">no settled games yet</div>{% endif %}</div>
+</section>
+
+<div class="scroll"><table class="data">
+<thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Backed team</th><th class="num">Engines</th>
+<th>Last 5 at venue</th><th>Last 5 overall</th><th>Last 3 H2H</th><th>Opponent concedes</th>
+<th class="num">Form: scores</th><th class="num">Market: scores</th><th>Result</th></tr></thead>
+<tbody>{% for row in rows %}{% set r = row.r %}{% set a = row.a %}
+<tr><td class="mono">{{ r.kickoff_utc[11:16] }}<br><span class="small">{{ league_name(r.division) }}</span></td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a></td>
+<td><strong>{{ a.team }}</strong><br><span class="badge {{ 'ok' if a.role == 'favourite' else 'warn' }}">{{ a.role }}</span> <span class="small">{{ a.venue_word }}</span></td>
+<td class="num">{{ a.agree }}/3</td>
+<td class="small">{% if a.team_venue.n %}{{ "%.1f"|format(a.team_venue.gf) }} gpg · scored {{ a.team_venue.scored }}/{{ a.team_venue.n }}{% else %}–{% endif %}</td>
+<td class="small">{% if a.team_all.n %}{{ "%.1f"|format(a.team_all.gf) }} gpg · scored {{ a.team_all.scored }}/{{ a.team_all.n }}{% else %}–{% endif %}</td>
+<td class="small">{% if a.h2h.n %}{{ "%.1f"|format(a.h2h.gf) }} gpg · scored {{ a.h2h.scored }}/{{ a.h2h.n }}{% else %}none{% endif %}</td>
+<td class="small">{% if a.opp_venue.n %}{{ "%.1f"|format(a.opp_venue.ga) }} conceded pg ({{ "away" if a.venue_word == "home" else "home" }}){% else %}–{% endif %}</td>
+<td class="num">{% if a.p_form is not none %}{{ fmt_pct(a.p_form, 0) }}<br><span class="small">2+: {{ fmt_pct(a.p_form2, 0) }}</span>{% else %}–{% endif %}</td>
+<td class="num">{{ fmt_pct(a.p_market, 0) }}<br><span class="small">2+: {{ fmt_pct(a.p_market2, 0) }}</span></td>
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} {{ "✓" if a.scored_hit else "✗" }}{% else %}pending{% endif %}</td></tr>
+<tr class="form-detail"><td colspan="11"><details><summary class="small">Every game behind these numbers</summary>{{ detail(a) }}</details></td></tr>
+{% else %}<tr><td colspan="11">No games on {{ day }} where 2+ engines back the same team{% if agree or role %} with these filters{% endif %}.</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="note">gpg = goals per game. ✓/✗: did the backed team score. Windows use only games before kickoff, from the research
+corpus and the live record. "Form: scores" blends the team's scoring (venue, overall and, with three meetings, head-to-head)
+with the opponent's conceding; "2+" is the chance of two or more goals.</p>
+{% endblock %}

@@ -1,0 +1,48 @@
+{# Form check details. a = form.analyse() output (qualifying). #}
+{% macro window_line(w, what) -%}
+{% if w.n %}{{ "%.1f"|format(w[what]) }} per game · {% if what == "gf" %}scored in {{ w.scored }}/{{ w.n }}, 2+ in {{ w.scored2 }}/{{ w.n }}{% else %}conceded in {{ w.conceded_any }}/{{ w.n }}, {{ w.clean_sheets }} clean sheet{{ "" if w.clean_sheets == 1 else "s" }}{% endif %} · {{ w.w }}W {{ w.d }}D {{ w.l }}L{% else %}no games on record{% endif %}
+{%- endmacro %}
+
+{% macro games_table(w, team) %}
+{% if w.n %}<table class="mini"><thead><tr><th>Date</th><th>H/A</th><th>Opponent</th><th class="num">Score ({{ team }} first)</th><th></th></tr></thead>
+<tbody>{% for g in w.games %}<tr><td class="mono">{{ g.date }}</td><td>{{ g.venue }}</td><td>{{ g.opponent }}</td>
+<td class="num">{{ g.gf }}–{{ g.ga }}</td><td>{{ g.res }}{% if g.gf == 0 %} · no goal{% endif %}</td></tr>{% endfor %}</tbody></table>
+{% else %}<p class="small">No games on record.</p>{% endif %}
+{% endmacro %}
+
+{% macro detail(a) %}
+<div class="form-grid">
+  <div>
+    <h4>{{ a.team }}: last {{ a.team_venue.n }} {{ a.venue_word }} game{{ "" if a.team_venue.n == 1 else "s" }}</h4>
+    <p class="small">{{ window_line(a.team_venue, "gf") }}</p>{{ games_table(a.team_venue, a.team) }}
+  </div>
+  <div>
+    <h4>{{ a.team }}: last {{ a.team_all.n }} game{{ "" if a.team_all.n == 1 else "s" }} overall</h4>
+    <p class="small">{{ window_line(a.team_all, "gf") }}</p>{{ games_table(a.team_all, a.team) }}
+  </div>
+  <div>
+    <h4>Last {{ a.h2h.n }} meeting{{ "" if a.h2h.n == 1 else "s" }} with {{ a.opponent }}</h4>
+    <p class="small">{{ window_line(a.h2h, "gf") }}</p>{{ games_table(a.h2h, a.team) }}
+  </div>
+  <div>
+    <h4>{{ a.opponent }} conceding: last {{ a.opp_venue.n }} {{ "away" if a.venue_word == "home" else "home" }} · last {{ a.opp_all.n }} overall</h4>
+    <p class="small">{{ "away" if a.venue_word == "home" else "home" }}: {{ window_line(a.opp_venue, "ga") }}</p>
+    <p class="small">overall: {{ window_line(a.opp_all, "ga") }}</p>
+    {{ games_table(a.opp_venue, a.opponent) }}
+  </div>
+</div>
+{% endmacro %}
+
+{% macro verdict(a) %}
+<div class="tiles">
+  <div class="tile"><div class="k">Form estimate for {{ a.team }}</div>
+    {% if a.lam_form is not none %}<div class="v">{{ fmt_pct(a.p_form) }}</div>
+    <div class="s">to score · 2+ goals {{ fmt_pct(a.p_form2) }} · expected goals {{ "%.2f"|format(a.lam_form) }}</div>
+    {% else %}<div class="v sm">not enough history</div><div class="s">needs 3+ games in each window</div>{% endif %}</div>
+  <div class="tile"><div class="k">Market (calibrated)</div><div class="v">{{ fmt_pct(a.p_market) }}</div>
+    <div class="s">to score · 2+ goals {{ fmt_pct(a.p_market2) }} · expected goals {{ "%.2f"|format(a.lam_market) }}</div></div>
+  <div class="tile"><div class="k">Result</div>
+    {% if a.goals is not none %}<div class="v">{{ a.goals }} goal{{ "" if a.goals == 1 else "s" }} {{ "✓" if a.scored_hit else "✗" }}</div>
+    <div class="s">{{ a.team }} {{ "scored" if a.scored_hit else "did not score" }}</div>{% else %}<div class="v sm">not played yet</div>{% endif %}</div>
+</div>
+{% endmacro %}

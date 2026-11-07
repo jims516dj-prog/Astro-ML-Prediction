@@ -148,3 +148,10 @@ tr.chosen-row td { background: var(--ok-bg); }
 .btn.danger.small { color: var(--bad); }
 .slip-tools form { display: flex; flex-wrap: nowrap; align-items: center; }
 .slip-tools input { flex: 0 1 12em; }
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px 20px; margin: 8px 0; }
+.form-grid h4 { font: 600 .88rem var(--sans); margin: 6px 0 2px; }
+table.mini { width: 100%; border-collapse: collapse; font: .8rem var(--sans); }
+table.mini td, table.mini th { padding: 3px 6px; border-bottom: 1px solid var(--line); text-align: left; }
+table.mini th { color: var(--ink-2); font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
+table.mini td.num { text-align: right; font-family: var(--mono); }
+tr.form-detail td { border-top: 0; padding-top: 0; }

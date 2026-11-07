@@ -19,7 +19,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import fixtures2, geo, live, results2, results_espn, venues  # noqa: E402
+from astrofoot import fixtures2, form, geo, live, results2, results_espn, venues  # noqa: E402
 
 
 def european_pool(fixtures: list[dict], preds: list[dict]) -> set[str]:
@@ -231,6 +231,10 @@ def main():
         res, latest = load_results(a, now)
         n = live.settle(res, now, a.ledger, latest=latest)
         print(f"settled {n} match(es)")
+    if a.cmd == "cycle" and not a.fixtures:
+        # every result of this and last season, for the form checks (daily; the research corpus lags)
+        leagues = [d for d in live.LEAGUE_NAMES if d not in live.EUROPEAN and d != "MANUAL"]
+        form.refresh_recent(now, live.fetch_csv, leagues, a.ledger / "recent_results.csv")
     if a.cmd in ("cycle", "commit"):
         r = live.commit(load_fixtures(a, now), now, a.horizon, a.ledger)
         print(f"committed {r['committed']} prediction(s)")

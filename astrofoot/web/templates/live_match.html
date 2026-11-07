@@ -75,6 +75,24 @@
   <p class="note">Historically, neither engine's calls on who scores beat the market (<a href="/top?market=score">backtest</a>).</p>
 </section>
 
+{% from "_form.html" import detail as form_detail, verdict as form_verdict %}
+<section class="card">
+  <h2>Form check</h2>
+  {% if fc.qualifies %}
+  <p class="small">{{ fc.agree }}/3 classical engines back <strong>{{ fc.team }}</strong> ({{ fc.role }}, {{ fc.venue_word }}).
+  Its scoring form: last 5 {{ fc.venue_word }} games, last 5 overall, last 3 meetings with {{ fc.opponent }}, and how
+  {{ fc.opponent }} has been conceding.</p>
+  {{ form_verdict(fc) }}
+  {{ form_detail(fc) }}
+  {% if fc_research and fc_research.all %}<p class="note">Historically, adding this form estimate to the market did not improve
+  the prediction of whether a team scores (log loss {{ "%.4f"|format(fc_research.all.log_loss["mkt"]) }} vs
+  {{ "%.4f"|format(fc_research.all.log_loss["mkt+form"]) }}, {{ "{:,}".format(fc_research.all.n) }} team-games): context, not an edge.
+  <a href="/top?market=form&day={{ r.kickoff_utc[:10] }}">All form checks for this day</a>.</p>{% endif %}
+  {% else %}
+  <p class="small">Not analysed: no team is backed by 2 or more of the 3 classical engines (at most {{ fc.agree }}/3 agree on a winner).</p>
+  {% endif %}
+</section>
+
 <h2>Full analysis</h2>
 <p class="note">Recomputed from the same inputs as the sealed forecast (kickoff, venue, odds). Founding charts are not used in live forecasts.</p>
 {% include "_analysis.html" %}
