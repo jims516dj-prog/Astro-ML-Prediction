@@ -292,8 +292,9 @@ each with its calibrated probability; the most likely one is preselected.
 
 **Expected-goals filter.** Above the day's games: *Expected goals (from the odds)* any / 0.8+ / 1.0+ / 1.2+ / 1.5+ / 2.0+,
 *for* either team, the home team, the away team or the team backed by 2+ engines. Each game shows both teams' expected
-goals (the qualifying one in bold) and which team 2+ engines back. The filter only narrows the games list (never your
-slips) and stays set while you switch slips, add games or save.
+goals (the qualifying one in bold) and how many engines call each team to win. **Engines backing a team** (any, 2/3 or 3/3,
+3/3, 2/3, 1/3, 0/3) keeps games where one of the teams has that many of the 3 engines behind it. Filters only narrow the
+games list (never your slips) and stay set while you switch slips, add games or save.
 
 **Slips.** A day can have any number of slips ("Slip 1", "Slip 2", or a name you give; rename or delete them any
 time). Choose a slip, tick games and **Add selected games** to it (its earlier picks are kept). A game can be on
@@ -340,7 +341,7 @@ implied by the match odds, the factor that best predicts whether a backed team s
 engines agreeing and the engines' strength made no difference: at every expected-goals level, teams with 0, 1, 2 or 3
 engines behind them scored at the same rate within about a point (`by_agree` in `data/models/form.json`, shown on the tab).
 
-The other Top picks tabs (Summary and every market) have the same **expected goals** filter, for either team, the home
+The **Live record** and the other Top picks tabs (Summary and every market) have the same **expected goals** filter, for either team, the home
 team, the away team or the team backed by 2+ engines; each game then shows both teams' expected goals.
 
 **Honest finding** (`research.py overunder` → `data/models/form.json`): over 201,138 historical team-games, walk-forward,

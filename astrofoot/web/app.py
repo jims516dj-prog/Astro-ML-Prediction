@@ -484,23 +484,31 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
 @app.get("/live", response_class=HTMLResponse)
 def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
               team: str = "", engine: str = "", hit: str = "", agree: str = "", page_no: int = 1, msg: str = "",
-              syncing: int = 0, origin: str = ""):
+              syncing: int = 0, origin: str = "", xg: str = "", xg_for: str = "either"):
     recs = _all_games(include_withdrawn=status == "void")   # withdrawn duplicates: only under "void"
     rep = live.report() if any(r["origin"] == "live" for r in recs) else None
-    rows = _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree, origin)
+    xg_for = xg_for if xg_for in XG_FOR else "either"
+    try:
+        xg_min = float(xg) if xg else 0.0
+    except ValueError:
+        xg, xg_min = "", 0.0
+    rows = [r for r in _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree, origin)
+            if _xg_pass(r, xg_min, xg_for)]
     subset = live.score_picks([r for r in rows if r["pre_kickoff"]])
     per = 50
     pages = max(1, math.ceil(len(rows) / per))
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
-         "engine": engine, "hit": hit, "agree": agree, "origin": origin}
+         "engine": engine, "hit": hit, "agree": agree, "origin": origin, "xg": xg,
+         "xg_for": xg_for if xg else ""}
     shown = rows[(page_no - 1) * per: page_no * per]
     for r in shown:
         r["gm"] = _gm_live(r)
     return T.TemplateResponse(request, "live.html", {
         "rows": shown, "n": len(rows), "page_no": page_no, "pages": pages,
         "q": q, "qs": "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in q.items() if v), "subset": subset, "syncing": bool(syncing) or SYNC["running"], "has_token": sync.token() is not None,
-        "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "page": "live"})
+        "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "xg_for_names": XG_FOR,
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "page": "live"})
 
 
 @app.get("/live/match/{key}", response_class=HTMLResponse)
@@ -904,15 +912,29 @@ def _xg_pass(g: dict, xg_min: float, xg_for: str) -> bool:
     return val is not None and val >= xg_min
 
 
-def _xg_keep(xg: str, xg_for: str) -> str:
-    """Query-string tail that keeps the games-list filter across slip and day changes."""
-    return (f"&xg={urllib.parse.quote(xg)}" if xg else "") + (f"&xg_for={xg_for}" if xg and xg_for else "")
+def _xg_keep(xg: str, xg_for: str, eng: str = "") -> str:
+    """Query-string tail that keeps the games-list filters across slip and day changes."""
+    return ((f"&xg={urllib.parse.quote(xg)}" if xg else "") + (f"&xg_for={xg_for}" if xg and xg_for else "")
+            + (f"&eng={urllib.parse.quote(eng)}" if eng in dict(ENG_CHOICES) and eng else ""))
+
+
+ENG_CHOICES = [("", "any"), ("2+", "2/3 or 3/3"), ("=3", "3/3"), ("=2", "2/3"), ("=1", "1/3"), ("=0", "0/3")]
+
+
+def _eng_pass(counts: dict, eng: str) -> bool:
+    """Engines filter for a game: one of its teams has that many of the 3 engines calling it to win."""
+    if eng == "2+":
+        return max(counts.values()) >= 2
+    if eng in ("=0", "=1", "=2", "=3"):
+        return int(eng[1]) in counts.values()
+    return True
 
 
 @app.get("/mypicks", response_class=HTMLResponse)
 def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -1, changed: int = -1,
-                  removed: int = -1, dup: int = 0, xg: str = "", xg_for: str = "either"):
+                  removed: int = -1, dup: int = 0, xg: str = "", xg_for: str = "either", eng: str = ""):
     c = con()
+    eng = eng if eng in dict(ENG_CHOICES) else ""
     xg_for = xg_for if xg_for in XG_FOR else "either"
     try:
         xg_min = float(xg) if xg else 0.0
@@ -943,7 +965,11 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
     for g in todays:
         lh, la = _xg(g)
         side, n_back, _ = form.backed_side(g)
+        counts = form.side_counts(g)
         backed_xg = None if side is None else (lh if side == "home" else la)
+        if not _eng_pass(counts, eng):
+            hidden += 1
+            continue
         if xg_min > 0:
             val = {"either": max(lh, la), "home": lh, "away": la, "backed": backed_xg}[xg_for]
             if val is None or val < xg_min:
@@ -954,6 +980,7 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
         rows.append({"g": g, "opts": opts, "pick": pick, "chosen": pick["selection"] if pick else opts[0]["code"],
                      "started": g["kickoff_utc"] <= now_iso, "xg_home": lh, "xg_away": la,
                      "backed": None if side is None else (g["home"] if side == "home" else g["away"]), "n_back": n_back,
+                     "eng_home": counts["home"], "eng_away": counts["away"],
                      "elsewhere": [n for n in in_any.get(g["match_key"], []) if n != active["name"]]})
     all_view = _picks_view(c, games, db.my_picks(c), now_iso)
     return T.TemplateResponse(request, "mypicks.html", {
@@ -962,7 +989,8 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
         "added": added, "changed": changed, "removed": removed, "dup": dup,
         "score_day": mypicks.score(day_view), "score_all": mypicks.score(all_view),
         "n_all": len(all_view), "n_day": len(day_view), "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR,
-        "xg_steps": [t for t in form.XG_STEPS if t > 0], "hidden": hidden, "keep": _xg_keep(xg, xg_for),
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "hidden": hidden, "keep": _xg_keep(xg, xg_for, eng),
+        "eng": eng, "eng_choices": ENG_CHOICES,
         "page": "mypicks"})
 
 
@@ -989,7 +1017,7 @@ async def my_slip_new(request: Request):
     form = await request.form()
     day = str(form.get("day", ""))
     sid = db.create_slip(con(), day, str(form.get("name", "")))
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")))
     return RedirectResponse(f"/mypicks?day={day}&slip={sid}{keep}", status_code=303)
 
 
@@ -999,7 +1027,7 @@ async def my_slip_rename(request: Request):
     c = con()
     x = _slip_or_404(c, form.get("slip"))
     db.rename_slip(c, x["id"], str(form.get("name", "")))
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}{keep}", status_code=303)
 
 
@@ -1009,7 +1037,7 @@ async def my_slip_delete(request: Request):
     c = con()
     x = _slip_or_404(c, form.get("slip"))
     db.delete_slip(c, x["id"])
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}{keep}", status_code=303)
 
 
@@ -1032,7 +1060,7 @@ async def my_picks_add(request: Request):
                 n += 1
             else:
                 dup += 1
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&added={n}&dup={dup}{keep}#mine", status_code=303)
 
 
@@ -1059,7 +1087,7 @@ async def my_picks_edit(request: Request):
         if new:
             db.update_pick(c, pid, new["selection"], new["label"], new["p"], now_iso)
             changed += 1
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&changed={changed}&removed={removed}{keep}#mine",
                             status_code=303)
 

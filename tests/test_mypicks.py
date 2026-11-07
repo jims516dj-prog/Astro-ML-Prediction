@@ -158,3 +158,32 @@ def test_my_picks_expected_goals_filter(tmp_path, monkeypatch):
     assert games("&xg=1.5") == ["S1"] and games("&xg=1.5&xg_for=home") == ["S1"] and games("&xg=1.5&xg_for=away") == []
     assert games("&xg=1.5&xg_for=backed") == ["S1"]          # live_rec: all three engines back the favourite
     assert games("&xg=nonsense") == ["S1", "S2"]
+
+
+def test_engines_filter_rule():
+    from astrofoot.web.app import _eng_pass, _xg_keep
+    assert _eng_pass({"home": 2, "away": 1}, "2+") and not _eng_pass({"home": 1, "away": 1}, "2+")
+    assert _eng_pass({"home": 0, "away": 3}, "=0") and _eng_pass({"home": 0, "away": 3}, "=3")
+    assert not _eng_pass({"home": 1, "away": 2}, "=0") and _eng_pass({"home": 1, "away": 2}, "")
+    assert _xg_keep("", "either", "=1") == "&eng=%3D1" and _xg_keep("1.5", "home", "bogus") == "&xg=1.5&xg_for=home"
+
+
+def test_live_record_expected_goals_filter(monkeypatch):
+    import re
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot import live
+    from astrofoot.web import app as web
+    from test_merged import live_rec
+    strong = live_rec("S1", "Strong", "Weak", "2026-11-09T15:00:00+00:00")
+    strong["predictions"]["market"] = {"fav": 0.75, "draw": 0.15, "dog": 0.10}
+    even = live_rec("S2", "Even", "Match", "2026-11-09T17:00:00+00:00")
+    even["predictions"]["market"] = {"fav": 0.38, "draw": 0.30, "dog": 0.32}
+    for g in (strong, even):
+        g.update(sha256="ab" * 32, odds={"home": 2.0, "draw": 3.4, "away": 3.6}, odds_source="test", division="E0")
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [live.join(strong, None), live.join(even, None)])
+    monkeypatch.setattr(live, "report", lambda *a, **k: None)
+    c = TestClient(web.app)
+    shown = lambda q: int(re.search(r"\((\d+) shown\)", c.get("/live?" + q).text).group(1))   # noqa: E731
+    assert shown("") == 2 and shown("xg=1.5") == 1 and shown("xg=1.5&xg_for=away") == 0 and shown("xg=?") == 2
