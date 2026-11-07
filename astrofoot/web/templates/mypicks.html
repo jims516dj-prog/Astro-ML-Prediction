@@ -115,7 +115,7 @@ team scores (see Top picks → Form check). "Engines backing a team" keeps games
     <td>{{ league_name(g.division) }}</td>
     <td><a href="{{ g.url }}">{{ g.home }} v {{ g.away }}</a>{% if g.origin == "manual" %} <span class="badge">manual</span>{% endif %}
       {% if row.elsewhere %}<br><span class="small">also on {{ row.elsewhere|join(", ") }}</span>{% endif %}
-      {% if row.backed %}<br><span class="small" title="engines calling each team to win: {{ g.home }} {{ row.eng_home }}/3 · {{ g.away }} {{ row.eng_away }}/3">{{ row.n_back }}/3 engines back <strong>{{ row.backed }}</strong> ({{ row.backed_role }})</span>{% endif %}</td>
+      {% if row.backed %}<br><span class="small" title="engines calling each team to win: {{ g.home }} {{ row.eng_home }}/3 · {{ g.away }} {{ row.eng_away }}/3">{{ row.n_back }}/3 engines back {{ row.backed }}</span>{% endif %}</td>
     <td class="num mono" style="white-space:nowrap">{% set hi_h = xg and (xg_for in ("either", "home") or (xg_for == "backed" and row.backed == g.home)) and row.xg_home >= xg|float %}{% set hi_a = xg and (xg_for in ("either", "away") or (xg_for == "backed" and row.backed == g.away)) and row.xg_away >= xg|float %}
       {% if hi_h %}<strong>{{ "%.2f"|format(row.xg_home) }}</strong>{% else %}{{ "%.2f"|format(row.xg_home) }}{% endif %} · {% if hi_a %}<strong>{{ "%.2f"|format(row.xg_away) }}</strong>{% else %}{{ "%.2f"|format(row.xg_away) }}{% endif %}</td>
     <td>{% if row.pick %}<span class="small">{{ row.pick.label }} (on {{ active.name }})</span>{% else %}<select name="out_{{ k }}" onchange="document.getElementById('sel_{{ k }}').checked = true; count()" aria-label="outcome for {{ g.home }} v {{ g.away }}">
