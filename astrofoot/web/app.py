@@ -981,6 +981,8 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
                      "started": g["kickoff_utc"] <= now_iso, "xg_home": lh, "xg_away": la,
                      "backed": None if side is None else (g["home"] if side == "home" else g["away"]), "n_back": n_back,
                      "eng_home": counts["home"], "eng_away": counts["away"],
+                     "backed_role": None if side is None else
+                     ("favourite" if (side == "home") == bool(g["fav_is_home"]) else "underdog"),
                      "elsewhere": [n for n in in_any.get(g["match_key"], []) if n != active["name"]]})
     all_view = _picks_view(c, games, db.my_picks(c), now_iso)
     return T.TemplateResponse(request, "mypicks.html", {

@@ -292,7 +292,8 @@ each with its calibrated probability; the most likely one is preselected.
 
 **Expected-goals filter.** Above the day's games: *Expected goals (from the odds)* any / 0.8+ / 1.0+ / 1.2+ / 1.5+ / 2.0+,
 *for* either team, the home team, the away team or the team backed by 2+ engines. Each game shows both teams' expected
-goals (the qualifying one in bold) and how many engines call each team to win. **Engines backing a team** (any, 2/3 or 3/3,
+goals (the qualifying one in bold) and, where 2 or 3 of the engines back the same team, which team and whether it is the
+favourite or the underdog (hover for both teams' counts). **Engines backing a team** (any, 2/3 or 3/3,
 3/3, 2/3, 1/3, 0/3) keeps games where one of the teams has that many of the 3 engines behind it. Filters only narrow the
 games list (never your slips) and stay set while you switch slips, add games or save.
 
