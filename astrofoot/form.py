@@ -24,6 +24,7 @@ from __future__ import annotations
 
 import json
 import math
+from datetime import datetime
 from functools import lru_cache
 from pathlib import Path
 
@@ -71,10 +72,15 @@ def refresh_recent(now, fetch_csv, leagues, path: Path = RECENT, log=print, forc
     from datetime import timedelta
 
     from . import live
-    if not force and path.exists():
-        age_h = (now.timestamp() - path.stat().st_mtime) / 3600
-        if age_h < RECENT_EVERY_HOURS:
-            return -1
+    meta = path.with_suffix(".meta.json")
+    if not force and path.exists() and meta.exists():
+        # the refresh time is stored in the file (a fresh git checkout resets modification times)
+        try:
+            done = datetime.fromisoformat(json.loads(meta.read_text())["generated_at"])
+            if (now - done).total_seconds() < RECENT_EVERY_HOURS * 3600:
+                return -1
+        except (OSError, ValueError, KeyError):
+            pass
     rows, failed = [], []
     urls = set()
     for div in leagues:
@@ -84,7 +90,7 @@ def refresh_recent(now, fetch_csv, leagues, path: Path = RECENT, log=print, forc
         try:
             df = fetch_csv(url)
         except Exception as e:  # noqa: BLE001 - a missing file (new season not started, league renamed) is fine
-            failed.append(f"{div}: {type(e).__name__}")
+            failed.append(f"{url.rsplit('/', 2)[-2]}/{url.rsplit('/', 1)[-1]} ({type(e).__name__})")
             continue
         for _, r in df.iterrows():
             if live._div(r) != div:
@@ -103,8 +109,10 @@ def refresh_recent(now, fetch_csv, leagues, path: Path = RECENT, log=print, forc
     out = pd.DataFrame(rows).drop_duplicates(subset=["kickoff_utc", "home", "away"]).sort_values(["kickoff_utc", "home"])
     path.parent.mkdir(parents=True, exist_ok=True)
     out.to_csv(path, index=False)
+    meta.write_text(json.dumps({"generated_at": now.isoformat(timespec="seconds"), "games": len(out),
+                                "unavailable": failed}, indent=1) + "\n")
     log(f"recent results: {len(out)} games from {out.division.nunique()} leagues for form checks"
-        + (f" ({len(failed)} file(s) unavailable)" if failed else ""))
+        + (f"; unavailable: {', '.join(failed)}" if failed else ""))
     return len(out)
 
 

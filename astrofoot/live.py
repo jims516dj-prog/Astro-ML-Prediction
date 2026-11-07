@@ -74,9 +74,13 @@ def season_code(kickoff_utc: datetime) -> str:
     return f"{y % 100:02d}{(y + 1) % 100:02d}"
 
 
+# football-data.co.uk's own file names where they differ from our division codes
+EXTRA_FILE = {"DEN": "DNK", "JAP": "JPN", "SUI": "SWZ"}
+
+
 def results_url(div: str, kickoff_utc: datetime) -> str:
     if div in EXTRA_LEAGUES:
-        return f"{FD}/new/{div}.csv"
+        return f"{FD}/new/{EXTRA_FILE.get(div, div)}.csv"
     return f"{FD}/mmz4281/{season_code(kickoff_utc)}/{div}.csv"
 
 

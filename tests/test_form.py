@@ -59,3 +59,13 @@ def test_refresh_recent_writes_both_seasons(tmp_path):
     out = pd.read_csv(path)
     assert n == 2 and set(out.home) == {"A", "B"}                                       # unplayed game left out
     assert form.refresh_recent(now, lambda url: 1 / 0, ["E0"], path, log=lambda *a: None) == -1   # fresh: skipped
+    later = datetime(2026, 11, 8, 6, 0, tzinfo=timezone.utc)                                       # a day on: refreshed
+    assert form.refresh_recent(later, lambda url: files[url.split("/")[-2]], ["E0"], path, log=lambda *a: None) == 2
+
+
+def test_extra_league_file_names():
+    from astrofoot import live
+    when = datetime(2026, 11, 7, tzinfo=timezone.utc)
+    assert live.results_url("DEN", when).endswith("/new/DNK.csv") and live.results_url("JAP", when).endswith("/new/JPN.csv")
+    assert live.results_url("SUI", when).endswith("/new/SWZ.csv")
+    assert live.results_url("BRA", when).endswith("/new/BRA.csv") and live.results_url("E0", when).endswith("/2627/E0.csv")
