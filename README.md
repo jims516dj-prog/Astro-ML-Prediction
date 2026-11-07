@@ -327,7 +327,11 @@ before kickoff:
 
 Each window shows goals per game, games scored in, 2+ goals, W/D/L and every game behind the numbers. A transparent
 blend of these gives a form estimate of the team's expected goals, P(scores) and P(2+), beside the market's calibrated
-P(scores); the result is marked once played. Filters: day, 2/3 or 3/3 engines, backed team is favourite or underdog.
+P(scores); the result is marked once played. Filters: day, 2/3 or 3/3 engines, backed team is favourite or underdog,
+and **expected goals (from the odds)**: 0.8+, 1.0+, 1.2+, 1.5+ or 2.0+. Expected goals is the backed team's scoring rate
+implied by the match odds, the factor that best predicts whether a backed team scores; historically backed teams scored
+71.7% overall, 78.2% at 1.0+, 86.4% at 1.5+ and 91.6% at 2.0+ (`by_xg` in `data/models/form.json`), while the number of
+engines agreeing and the engines' strength made no difference.
 
 **Honest finding** (`research.py overunder` → `data/models/form.json`): over 201,138 historical team-games, walk-forward,
 adding the form estimate to the market does not improve the prediction of whether a team scores (log loss 0.5602 both

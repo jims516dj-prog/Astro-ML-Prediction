@@ -32,7 +32,14 @@ already price them. Read the form figures as context, not as an edge.</div>
     <option value="" {{ "selected" if not agree }}>2/3 or 3/3</option><option value="3" {{ "selected" if agree == "3" }}>3/3 only</option></select></label>
   <label>Backed team is<select name="role" onchange="this.form.submit()"><option value="">favourite or underdog</option>
     {% for v in ("favourite", "underdog") %}<option value="{{ v }}" {{ "selected" if role == v }}>the {{ v }}</option>{% endfor %}</select></label>
+  <label>Expected goals (from the odds)<select name="xg" onchange="this.form.submit()"><option value="">any</option>
+    {% for t in xg_steps %}<option value="{{ t }}" {{ "selected" if xg and xg|float == t }}>{{ "%.1f"|format(t) }} or more</option>{% endfor %}</select></label>
 </form>
+{% if research and research.by_xg %}<p class="note">Expected goals is the backed team's scoring rate implied by the match odds:
+the factor that best predicted whether a backed team scores ({{ "{:,}".format(research.by_xg[0].n) }} past team-games).
+Historically, backed teams scored
+{% for b in research.by_xg %}{{ fmt_pct(b.scored, 0) }} with {{ "any expected goals" if b.min == 0 else "%.1f+"|format(b.min) }}{{ "; " if not loop.last else "." }}{% endfor %}
+{% if xg_hist %}<strong>With this filter ({{ "%.1f"|format(xg_hist.min) }}+): {{ fmt_pct(xg_hist.scored) }} of {{ "{:,}".format(xg_hist.n) }} scored.</strong>{% endif %}</p>{% endif %}
 
 <section class="tiles">
   <div class="tile"><div class="k">This day</div><div class="v">{{ rows|length }}</div><div class="s">game{{ "" if rows|length == 1 else "s" }} where 2+ engines back a team</div></div>
@@ -45,7 +52,7 @@ already price them. Read the form figures as context, not as an edge.</div>
 <div class="scroll"><table class="data">
 <thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Backed team</th><th class="num">Engines</th>
 <th>Last 5 at venue</th><th>Last 5 overall</th><th>Last 3 H2H</th><th>Opponent concedes</th>
-<th class="num">Form: scores</th><th class="num">Market: scores</th><th>Result</th></tr></thead>
+<th class="num">Form: scores</th><th class="num">Market: scores</th><th class="num">Expected goals</th><th>Result</th></tr></thead>
 <tbody>{% for row in rows %}{% set r = row.r %}{% set a = row.a %}
 <tr><td class="mono">{{ r.kickoff_utc[11:16] }}<br><span class="small">{{ league_name(r.division) }}</span></td>
 <td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a></td>
@@ -57,9 +64,10 @@ already price them. Read the form figures as context, not as an edge.</div>
 <td class="small">{% if a.opp_venue.n %}{{ "%.1f"|format(a.opp_venue.ga) }} conceded pg ({{ "away" if a.venue_word == "home" else "home" }}){% else %}–{% endif %}</td>
 <td class="num">{% if a.p_form is not none %}{{ fmt_pct(a.p_form, 0) }}<br><span class="small">2+: {{ fmt_pct(a.p_form2, 0) }}</span>{% else %}–{% endif %}</td>
 <td class="num">{{ fmt_pct(a.p_market, 0) }}<br><span class="small">2+: {{ fmt_pct(a.p_market2, 0) }}</span></td>
+<td class="num"><strong>{{ "%.2f"|format(a.lam_market) }}</strong></td>
 <td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} {{ "✓" if a.scored_hit else "✗" }}{% else %}pending{% endif %}</td></tr>
-<tr class="form-detail"><td colspan="11"><details><summary class="small">Every game behind these numbers</summary>{{ detail(a) }}</details></td></tr>
-{% else %}<tr><td colspan="11">No games on {{ day }} where 2+ engines back the same team{% if agree or role %} with these filters{% endif %}.</td></tr>{% endfor %}</tbody>
+<tr class="form-detail"><td colspan="12"><details><summary class="small">Every game behind these numbers</summary>{{ detail(a) }}</details></td></tr>
+{% else %}<tr><td colspan="12">No games on {{ day }} where 2+ engines back the same team{% if agree or role or xg %} with these filters{% endif %}.</td></tr>{% endfor %}</tbody>
 </table></div>
 <p class="note">gpg = goals per game. ✓/✗: did the backed team score. Windows use only games before kickoff, from the research
 corpus and the live record. "Form: scores" blends the team's scoring (venue, overall and, with three meetings, head-to-head)

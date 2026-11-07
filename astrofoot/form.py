@@ -38,6 +38,7 @@ RECENT = ROOT / "ledger" / "recent_results.csv"
 RECENT_EVERY_HOURS = 20
 ENGINES = ("rao", "chokoisky", "frawley")
 N_VENUE, N_ALL, N_H2H = 5, 5, 3
+XG_STEPS = (0.0, 0.8, 1.0, 1.2, 1.5, 2.0)      # expected-goals filter thresholds on the Form check tab
 
 
 def load_research() -> dict:
@@ -267,6 +268,11 @@ def backtest(matches: pd.DataFrame, engines: pd.DataFrame) -> dict:
     lg = lambda p: np.log(np.clip(p, 0.01, 0.99) / (1 - np.clip(p, 0.01, 0.99)))  # noqa: E731
     seasons = sorted(L.season.unique())
     out = {"windows": {"venue": N_VENUE, "overall": N_ALL, "h2h": N_H2H}}
+    # the factor that does sort them: the team's expected goals implied by the odds (backed teams)
+    lam_mkt = np.where(L.venue == "H", L.lh, L.la)
+    backed = (L.agree >= 2).to_numpy()
+    out["by_xg"] = [{"min": t, "n": int((backed & (lam_mkt >= t)).sum()),
+                     "scored": float(L.y.to_numpy()[backed & (lam_mkt >= t)].mean())} for t in XG_STEPS]
     for name, sub in (("all", L), ("backed", L[L.agree >= 2])):
         y = sub.y.to_numpy()
         res = {}

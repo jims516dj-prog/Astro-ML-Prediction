@@ -69,3 +69,20 @@ def test_extra_league_file_names():
     assert live.results_url("DEN", when).endswith("/new/DNK.csv") and live.results_url("JAP", when).endswith("/new/JPN.csv")
     assert live.results_url("SUI", when).endswith("/new/SWZ.csv")
     assert live.results_url("BRA", when).endswith("/new/BRA.csv") and live.results_url("E0", when).endswith("/2627/E0.csv")
+
+
+def test_expected_goals_filter_on_form_check(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    games = []
+    for k, (fav, dog) in enumerate([(0.75, 0.10), (0.45, 0.28)]):            # strong favourite, modest one
+        r = rec(f"H{k}", f"A{k}", "2026-11-09T15:00:00+00:00", winners=("fav", "fav", "fav"))
+        r.update(match_key=f"k{k}", url=f"/live/match/k{k}", status="pending", pre_kickoff=True,
+                 predictions={**r["predictions"], "market": {"fav": fav, "draw": 1 - fav - dog, "dog": dog}})
+        games.append(r)
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: games)
+    monkeypatch.setattr(form, "history", lambda recs: {})
+    c = TestClient(web.app)
+    count = lambda q: c.get("/top?market=form&day=2026-11-09" + q).text.count('class="form-detail"')   # noqa: E731
+    assert count("") == 2 and count("&xg=1.5") == 1 and count("&xg=9") == 0 and count("&xg=junk") == 2

@@ -621,7 +621,7 @@ def live_sync_status():
     return JSONResponse(SYNC)
 
 
-def _form_page(request: Request, day: str, agree: str, role: str):
+def _form_page(request: Request, day: str, agree: str, role: str, xg: str = ""):
     """Top picks → Form check: games where 2+ classical engines back the same team, with that team's scoring form."""
     recs = [r for r in _all_games() if r["status"] != "void"]
     hist = form.history(recs)
@@ -629,7 +629,12 @@ def _form_page(request: Request, day: str, agree: str, role: str):
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     if not day or day not in days:
         day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else today)
-    want = lambda a: a["qualifies"] and (agree != "3" or a["agree"] == 3) and (not role or a["role"] == role)  # noqa: E731
+    try:
+        xg_min = float(xg) if xg else 0.0
+    except ValueError:
+        xg, xg_min = "", 0.0
+    want = lambda a: (a["qualifies"] and (agree != "3" or a["agree"] == 3) and (not role or a["role"] == role)  # noqa: E731
+                      and a["lam_market"] >= xg_min)
     rows = []
     for r in sorted((r for r in recs if r["kickoff_utc"][:10] == day), key=lambda r: (r["kickoff_utc"], r["home"])):
         a = form.analyse(r, hist)
@@ -648,7 +653,10 @@ def _form_page(request: Request, day: str, agree: str, role: str):
               "form": (sum(a["p_form"] for a in done if a["p_form"] is not None) /
                        max(1, sum(a["p_form"] is not None for a in done))) if n else None}
     return T.TemplateResponse(request, "form.html", {
-        "day": day, "days": days, "rows": rows, "agree": agree, "role": role, "so_far": so_far,
+        "day": day, "days": days, "rows": rows, "agree": agree, "role": role, "so_far": so_far, "xg": xg,
+        "xg_steps": [t for t in form.XG_STEPS if t > 0],
+        "xg_hist": next((b for b in form.load_research().get("by_xg", []) if abs(b["min"] - xg_min) < 1e-9), None)
+                   if xg_min > 0 else None,
         "research": form.load_research(), "markets": TOP_MARKETS, "market": "form", "page": "top"})
 
 
@@ -659,9 +667,9 @@ TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Doubl
 
 @app.get("/top", response_class=HTMLResponse)
 def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "",
-             m: list[str] = Query(default=[]), role: str = ""):
+             m: list[str] = Query(default=[]), role: str = "", xg: str = ""):
     if market == "form":
-        return _form_page(request, day, agree, role)
+        return _form_page(request, day, agree, role, xg)
     market = market if market in live.PICK_KEYS else "summary"
     chosen = [x for x in m if x in live.SUMMARY_MARKETS] or list(live.SUMMARY_MARKETS)
     try:
