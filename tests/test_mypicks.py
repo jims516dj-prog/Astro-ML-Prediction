@@ -135,3 +135,26 @@ def test_day_labels():
     assert _day_label((today + timedelta(days=1)).isoformat()) == "Tomorrow"
     other = (today - timedelta(days=5)).isoformat()
     assert _day_label(other) == other and _day_label("not a date") == "not a date"
+
+
+def test_my_picks_expected_goals_filter(tmp_path, monkeypatch):
+    import re
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    from test_merged import live_rec
+    strong = live_rec("S1", "Strong", "Weak", "2026-11-09T15:00:00+00:00")
+    strong["predictions"]["market"] = {"fav": 0.75, "draw": 0.15, "dog": 0.10}
+    even = live_rec("S2", "Even", "Match", "2026-11-09T17:00:00+00:00")
+    even["predictions"]["market"] = {"fav": 0.38, "draw": 0.30, "dog": 0.32}
+    path = tmp_path / "t.sqlite3"
+    db.connect(path)
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [strong, even])
+    c = TestClient(web.app)
+    games = lambda q: re.findall(r'name="game" value="([^"]+)"', c.get("/mypicks?day=2026-11-09" + q).text)   # noqa: E731
+    assert games("") == ["S1", "S2"]
+    assert games("&xg=1.5") == ["S1"] and games("&xg=1.5&xg_for=home") == ["S1"] and games("&xg=1.5&xg_for=away") == []
+    assert games("&xg=1.5&xg_for=backed") == ["S1"]          # live_rec: all three engines back the favourite
+    assert games("&xg=nonsense") == ["S1", "S2"]

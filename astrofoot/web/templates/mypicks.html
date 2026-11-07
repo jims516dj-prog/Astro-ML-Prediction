@@ -12,7 +12,8 @@ slips, once per slip. Everything is scored once the games are played.</p>
   <label>Day<select name="day" onchange="this.form.submit()">
     {% if day not in days %}<option value="{{ day }}" selected title="{{ day }}">{{ day_label(day) }}</option>{% endif %}
     {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
-  <label>Or any date<input type="date" value="{{ day }}" onchange="location.href='/mypicks?day='+this.value"></label>
+  <label>Or any date<input type="date" value="{{ day }}" onchange="location.href='/mypicks?day='+this.value+'{{ keep }}'"></label>
+  {% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}
 </form>
 
 <section class="tiles">
@@ -34,19 +35,19 @@ per market, so they carry no betting value; this is a research tool, not betting
 <div class="scroll"><table class="data">
 <thead><tr><th>Slip</th><th class="num">Picks</th><th class="num">Chance all come in</th><th class="num">Picks won</th><th>Slip</th><th></th></tr></thead>
 <tbody>{% for x in slips %}
-<tr class="{{ 'chosen-row' if x.id == active.id }}"><td>{% if x.id == active.id %}<strong>{{ x.name }}</strong> <span class="badge ok">open below</span>{% else %}<a href="/mypicks?day={{ day }}&slip={{ x.id }}">{{ x.name }}</a>{% endif %}</td>
+<tr class="{{ 'chosen-row' if x.id == active.id }}"><td>{% if x.id == active.id %}<strong>{{ x.name }}</strong> <span class="badge ok">open below</span>{% else %}<a href="/mypicks?day={{ day }}&slip={{ x.id }}{{ keep }}">{{ x.name }}</a>{% endif %}</td>
 <td class="num">{{ x.n }}</td><td class="num">{{ fmt_pct(x.all_win) if x.all_win is not none else "–" }}</td>
 <td class="num">{% if x.score.n %}{{ x.score.hits }} / {{ x.score.n }}{% else %}–{% endif %}</td>
 <td><span class="badge {{ STATE[x.state][0] }}">{{ STATE[x.state][1] }}</span>{% if x.late %} <span class="small">{{ x.late }} after kickoff</span>{% endif %}</td>
-<td>{% if x.id != active.id %}<a class="small" href="/mypicks?day={{ day }}&slip={{ x.id }}">open</a>{% endif %}</td></tr>
+<td>{% if x.id != active.id %}<a class="small" href="/mypicks?day={{ day }}&slip={{ x.id }}{{ keep }}">open</a>{% endif %}</td></tr>
 {% endfor %}</tbody></table></div>
 <div class="row slip-tools">
-  <form method="post" action="/mypicks/slip/new" class="row"><input type="hidden" name="day" value="{{ day }}">
+  <form method="post" action="/mypicks/slip/new" class="row"><input type="hidden" name="day" value="{{ day }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}
     <input name="name" placeholder="name (optional)" aria-label="new slip name" maxlength="60"><button class="btn small">+ New slip</button></form>
-  <form method="post" action="/mypicks/slip/rename" class="row"><input type="hidden" name="slip" value="{{ active.id }}">
+  <form method="post" action="/mypicks/slip/rename" class="row"><input type="hidden" name="slip" value="{{ active.id }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}
     <input name="name" value="{{ active.name }}" aria-label="rename {{ active.name }}" maxlength="60"><button class="btn ghost small">Rename</button></form>
   <form method="post" action="/mypicks/slip/delete" onsubmit="return confirm('Delete {{ active.name }} and its {{ active.n }} pick(s)?')">
-    <input type="hidden" name="slip" value="{{ active.id }}"><button class="btn danger small" style="margin:0">Delete {{ active.name }}</button></form>
+    {% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}<input type="hidden" name="slip" value="{{ active.id }}"><button class="btn danger small" style="margin:0">Delete {{ active.name }}</button></form>
 </div>
 
 {% if added >= 0 %}<p class="callout small">Added {{ added }} game{{ "" if added == 1 else "s" }} to {{ active.name }}{% if dup %}; {{ dup }} already on it{% endif %}.</p>{% endif %}
@@ -64,7 +65,7 @@ per market, so they carry no betting value; this is a research tool, not betting
 </form>
 {% if day_picks %}
 <form method="post" action="/mypicks/edit">
-<input type="hidden" name="slip" value="{{ active.id }}">
+<input type="hidden" name="slip" value="{{ active.id }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}
 <div class="scroll"><table class="data">
 <thead><tr><th>Kickoff (UTC)</th><th>Match</th><th>Your pick</th><th class="num">Probability</th>
 <th class="num" title="how many of the three classical engines' predicted scores agree with your pick">Astrology agrees</th><th>Result</th><th>Remove</th></tr></thead>
@@ -86,22 +87,34 @@ per market, so they carry no betting value; this is a research tool, not betting
 <p class="small">{{ active.name }} is empty: tick games below and add them.</p>
 {% endif %}
 
-<h2>Games on {{ day }} <span class="small">({{ rows|length }})</span></h2>
+<h2>Games on {{ day }} <span class="small">({{ rows|length }}{% if hidden %} shown, {{ hidden }} hidden by the filter{% endif %})</span></h2>
+<form method="get" class="filters" action="/mypicks">
+  <input type="hidden" name="day" value="{{ day }}"><input type="hidden" name="slip" value="{{ active.id }}">
+  <label>Expected goals (from the odds)<select name="xg" onchange="this.form.submit()"><option value="">any</option>
+    {% for t in xg_steps %}<option value="{{ t }}" {{ "selected" if xg and xg|float == t }}>{{ "%.1f"|format(t) }} or more</option>{% endfor %}</select></label>
+  <label>For<select name="xg_for" onchange="this.form.submit()">
+    {% for k, label in xg_for_names.items() %}<option value="{{ k }}" {{ "selected" if xg_for == k }}>{{ label }}</option>{% endfor %}</select></label>
+</form>
+<p class="note">Expected goals is each team's scoring rate implied by the match odds, the factor that best predicts whether a
+team scores (see Top picks → Form check). The filter only narrows this list; your slips are never filtered.</p>
 {% if rows %}
 <form method="post" action="/mypicks/add" id="picks">
-  <input type="hidden" name="slip" value="{{ active.id }}">
+  <input type="hidden" name="slip" value="{{ active.id }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}
   <div class="row"><button type="button" class="btn ghost small" onclick="tick(true)">Select all</button>
     <button type="button" class="btn ghost small" onclick="tick(false)">Clear all</button>
     <span class="small" id="count"></span></div>
   <div class="scroll"><table class="data">
-  <thead><tr><th>Pick</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Outcome</th><th>Result</th></tr></thead>
+  <thead><tr><th>Pick</th><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num" title="expected goals from the odds: home · away">xG home · away</th><th>Outcome</th><th>Result</th></tr></thead>
   <tbody>{% for row in rows %}{% set g = row.g %}{% set k = g.match_key %}
   <tr class="{{ 'started' if row.started }}">
     <td><input type="hidden" name="game" value="{{ k }}">{% if row.pick %}<span class="badge ok" title="already on {{ active.name }}: edit it above">added</span>{% else %}<input type="checkbox" name="sel_{{ k }}" id="sel_{{ k }}" aria-label="pick {{ g.home }} v {{ g.away }}">{% endif %}</td>
     <td class="mono">{{ g.kickoff_utc[11:16] }}{% if row.started %}<br><span class="badge" title="picking now counts as after kickoff">started</span>{% endif %}</td>
     <td>{{ league_name(g.division) }}</td>
     <td><a href="{{ g.url }}">{{ g.home }} v {{ g.away }}</a>{% if g.origin == "manual" %} <span class="badge">manual</span>{% endif %}
-      {% if row.elsewhere %}<br><span class="small">also on {{ row.elsewhere|join(", ") }}</span>{% endif %}</td>
+      {% if row.elsewhere %}<br><span class="small">also on {{ row.elsewhere|join(", ") }}</span>{% endif %}
+      {% if row.backed %}<br><span class="small">{{ row.n_back }}/3 engines back {{ row.backed }}</span>{% endif %}</td>
+    <td class="num mono" style="white-space:nowrap">{% set hi_h = xg and (xg_for in ("either", "home") or (xg_for == "backed" and row.backed == g.home)) and row.xg_home >= xg|float %}{% set hi_a = xg and (xg_for in ("either", "away") or (xg_for == "backed" and row.backed == g.away)) and row.xg_away >= xg|float %}
+      {% if hi_h %}<strong>{{ "%.2f"|format(row.xg_home) }}</strong>{% else %}{{ "%.2f"|format(row.xg_home) }}{% endif %} · {% if hi_a %}<strong>{{ "%.2f"|format(row.xg_away) }}</strong>{% else %}{{ "%.2f"|format(row.xg_away) }}{% endif %}</td>
     <td>{% if row.pick %}<span class="small">{{ row.pick.label }} (on {{ active.name }})</span>{% else %}<select name="out_{{ k }}" onchange="document.getElementById('sel_{{ k }}').checked = true; count()" aria-label="outcome for {{ g.home }} v {{ g.away }}">
       {% for o in row.opts %}<option value="{{ o.code }}" {{ "selected" if o.code == row.chosen }}>{{ fmt_pct(o.p, 0) }} · {{ o.label }}{% if loop.first %} (most likely){% endif %}</option>{% endfor %}
     </select>{% endif %}</td>

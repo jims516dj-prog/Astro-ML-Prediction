@@ -861,10 +861,31 @@ def _slip_summary(picks: list[dict]) -> dict:
             "late": sum(p["late"] for p in picks), "void": len(picks) - len(live_picks)}
 
 
+XG_FOR = {"either": "either team", "home": "home team", "away": "away team", "backed": "team backed by 2+ engines"}
+
+
+def _xg(g: dict) -> tuple[float, float]:
+    """Each team's expected goals implied by the match odds (the Poisson rates behind the market)."""
+    mk = g["predictions"]["market"]
+    p_home, p_away = (mk["fav"], mk["dog"]) if g["fav_is_home"] else (mk["dog"], mk["fav"])
+    lh, la = teamgoals.rates(p_home, p_away)
+    return float(lh[0]), float(la[0])
+
+
+def _xg_keep(xg: str, xg_for: str) -> str:
+    """Query-string tail that keeps the games-list filter across slip and day changes."""
+    return (f"&xg={urllib.parse.quote(xg)}" if xg else "") + (f"&xg_for={xg_for}" if xg and xg_for else "")
+
+
 @app.get("/mypicks", response_class=HTMLResponse)
 def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -1, changed: int = -1,
-                  removed: int = -1, dup: int = 0):
+                  removed: int = -1, dup: int = 0, xg: str = "", xg_for: str = "either"):
     c = con()
+    xg_for = xg_for if xg_for in XG_FOR else "either"
+    try:
+        xg_min = float(xg) if xg else 0.0
+    except ValueError:
+        xg, xg_min = "", 0.0
     games = _all_games()
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
     days = sorted({g["kickoff_utc"][:10] for g in games}, reverse=True)
@@ -886,12 +907,21 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
         in_any.setdefault(p["match_key"], []).append(p["slip_name"])
     todays = sorted((g for g in games if g["kickoff_utc"][:10] == day and g["status"] != "void"),
                     key=lambda g: (g["kickoff_utc"], g["home"]))
-    rows = []
+    rows, hidden = [], 0
     for g in todays:
+        lh, la = _xg(g)
+        side, n_back, _ = form.backed_side(g)
+        backed_xg = None if side is None else (lh if side == "home" else la)
+        if xg_min > 0:
+            val = {"either": max(lh, la), "home": lh, "away": la, "backed": backed_xg}[xg_for]
+            if val is None or val < xg_min:
+                hidden += 1
+                continue
         opts = mypicks.options(g)
         pick = in_slip.get(g["match_key"])
         rows.append({"g": g, "opts": opts, "pick": pick, "chosen": pick["selection"] if pick else opts[0]["code"],
-                     "started": g["kickoff_utc"] <= now_iso,
+                     "started": g["kickoff_utc"] <= now_iso, "xg_home": lh, "xg_away": la,
+                     "backed": None if side is None else (g["home"] if side == "home" else g["away"]), "n_back": n_back,
                      "elsewhere": [n for n in in_any.get(g["match_key"], []) if n != active["name"]]})
     all_view = _picks_view(c, games, db.my_picks(c), now_iso)
     return T.TemplateResponse(request, "mypicks.html", {
@@ -899,7 +929,9 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
         "day_picks": slip_picks, "slip_sum": _slip_summary(slip_picks),
         "added": added, "changed": changed, "removed": removed, "dup": dup,
         "score_day": mypicks.score(day_view), "score_all": mypicks.score(all_view),
-        "n_all": len(all_view), "n_day": len(day_view), "page": "mypicks"})
+        "n_all": len(all_view), "n_day": len(day_view), "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR,
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "hidden": hidden, "keep": _xg_keep(xg, xg_for),
+        "page": "mypicks"})
 
 
 def _pick_from(g: dict, code: str, picked_at: str) -> dict | None:
@@ -925,7 +957,8 @@ async def my_slip_new(request: Request):
     form = await request.form()
     day = str(form.get("day", ""))
     sid = db.create_slip(con(), day, str(form.get("name", "")))
-    return RedirectResponse(f"/mypicks?day={day}&slip={sid}", status_code=303)
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    return RedirectResponse(f"/mypicks?day={day}&slip={sid}{keep}", status_code=303)
 
 
 @app.post("/mypicks/slip/rename")
@@ -934,7 +967,8 @@ async def my_slip_rename(request: Request):
     c = con()
     x = _slip_or_404(c, form.get("slip"))
     db.rename_slip(c, x["id"], str(form.get("name", "")))
-    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}", status_code=303)
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}{keep}", status_code=303)
 
 
 @app.post("/mypicks/slip/delete")
@@ -943,7 +977,8 @@ async def my_slip_delete(request: Request):
     c = con()
     x = _slip_or_404(c, form.get("slip"))
     db.delete_slip(c, x["id"])
-    return RedirectResponse(f"/mypicks?day={x['day']}", status_code=303)
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    return RedirectResponse(f"/mypicks?day={x['day']}{keep}", status_code=303)
 
 
 @app.post("/mypicks/add")
@@ -965,7 +1000,8 @@ async def my_picks_add(request: Request):
                 n += 1
             else:
                 dup += 1
-    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&added={n}&dup={dup}#mine", status_code=303)
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&added={n}&dup={dup}{keep}#mine", status_code=303)
 
 
 @app.post("/mypicks/edit")
@@ -991,7 +1027,8 @@ async def my_picks_edit(request: Request):
         if new:
             db.update_pick(c, pid, new["selection"], new["label"], new["p"], now_iso)
             changed += 1
-    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&changed={changed}&removed={removed}#mine",
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")))
+    return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&changed={changed}&removed={removed}{keep}#mine",
                             status_code=303)
 
 

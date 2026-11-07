@@ -290,6 +290,11 @@ The **My picks** tab (next to Top picks): choose a day and its games load from t
 (home/draw/away, double chance, over/under 1.5 and 2.5, each team to score or not, both teams to score or not),
 each with its calibrated probability; the most likely one is preselected.
 
+**Expected-goals filter.** Above the day's games: *Expected goals (from the odds)* any / 0.8+ / 1.0+ / 1.2+ / 1.5+ / 2.0+,
+*for* either team, the home team, the away team or the team backed by 2+ engines. Each game shows both teams' expected
+goals (the qualifying one in bold) and which team 2+ engines back. The filter only narrows the games list (never your
+slips) and stays set while you switch slips, add games or save.
+
 **Slips.** A day can have any number of slips ("Slip 1", "Slip 2", or a name you give; rename or delete them any
 time). Choose a slip, tick games and **Add selected games** to it (its earlier picks are kept). A game can be on
 several slips with different outcomes, once per slip. In the open slip every outcome stays editable, a game can be
