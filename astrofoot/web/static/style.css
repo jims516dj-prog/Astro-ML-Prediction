@@ -155,3 +155,9 @@ table.mini td, table.mini th { padding: 3px 6px; border-bottom: 1px solid var(--
 table.mini th { color: var(--ink-2); font-weight: 600; font-size: .72rem; text-transform: uppercase; letter-spacing: .04em; }
 table.mini td.num { text-align: right; font-family: var(--mono); }
 tr.form-detail td { border-top: 0; padding-top: 0; }
+.guide > summary { font-family: var(--sans); padding: 6px 0; }
+.guide-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 10px 22px; margin: 6px 0 4px; }
+.guide-grid h4 { font: 600 .9rem var(--sans); margin: 8px 0 4px; }
+tr.g-good td { background: var(--ok-bg); }
+tr.g-poor td { color: var(--ink-2); }
+td.g-best { background: var(--ok-bg); font-weight: 700; }

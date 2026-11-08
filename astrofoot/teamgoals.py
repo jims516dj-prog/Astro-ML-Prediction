@@ -305,3 +305,58 @@ def _btts_backtest(d, lh, la, calls, seasons, per_day) -> dict:
 
 def write(result: dict):
     CAL_FILE.write_text(json.dumps(result, indent=1, sort_keys=True) + "\n")
+
+
+# ----------------------------------------------------------------------------- quick guide
+GUIDE_FILE = MODELS / "scoring_guide.json"
+ODDS_BANDS = [(1.0, 1.3, "under 1.30"), (1.3, 1.5, "1.30–1.49"), (1.5, 1.7, "1.50–1.69"), (1.7, 2.0, "1.70–1.99"),
+              (2.0, 2.5, "2.00–2.49"), (2.5, 3.0, "2.50–2.99"), (3.0, 4.0, "3.00–3.99"), (4.0, 6.0, "4.00–5.99"),
+              (6.0, 1e9, "6.00+")]
+
+
+def load_guide() -> dict:
+    try:
+        return json.loads(GUIDE_FILE.read_text())
+    except (OSError, ValueError):
+        return {}
+
+
+def scoring_guide(matches: pd.DataFrame) -> dict:
+    """Plain-odds rules for "home team scores" / "away team scores", from the historical corpus (Home or away goal
+    tab → Quick guide). Fair over-2.5 odds are 1 / de-vigged P(over 2.5)."""
+    from .dataset import LEAGUE_NAMES
+    m = matches[matches.goals_home.notna() & matches.odds_home.notna() & matches.p_home.notna()].copy()
+    m["hs"], m["as_"] = (m.goals_home > 0).astype(float), (m.goals_away > 0).astype(float)
+    lh, la = rates(m.p_home.to_numpy(), m.p_away.to_numpy())
+
+    def rate(sel, col):
+        n = int(sel.sum())
+        return {"n": n, "scored": float(m.loc[sel, col].mean()) if n else None}
+    odds = [{"band": lab, "home": rate((m.odds_home >= lo) & (m.odds_home < hi), "hs"),
+             "away": rate((m.odds_away >= lo) & (m.odds_away < hi), "as_")} for lo, hi, lab in ODDS_BANDS]
+    fair_over = 1 / m.p_over25
+    over_cols = [(0, 1.8, "under 1.80"), (1.8, 2.1, "1.80–2.09"), (2.1, 1e9, "2.10+")]
+    combos = []
+    for side, col, ocol, rows in (("Home", "hs", "odds_home", [(1, 1.7, "under 1.70"), (1.7, 2.5, "1.70–2.49"), (2.5, 1e9, "2.50+")]),
+                                  ("Away", "as_", "odds_away", [(1, 2.5, "under 2.50"), (2.5, 4.0, "2.50–3.99"), (4.0, 1e9, "4.00+")])):
+        for lo, hi, lab in rows:
+            cells = [rate((m[ocol] >= lo) & (m[ocol] < hi) & (fair_over >= a) & (fair_over < b), col) for a, b, _ in over_cols]
+            combos.append({"side": side, "band": lab, "cells": cells})
+    xg = np.r_[lh, la]
+    y = np.r_[m.hs, m.as_]
+    xg_rule = [{"min": t, "n": int((xg >= t).sum()), "share": float((xg >= t).mean()), "scored": float(y[xg >= t].mean())}
+               for t in (0.8, 1.0, 1.2, 1.5, 2.0)]
+    low = {"n": int((xg < 0.8).sum()), "scored": float(y[xg < 0.8].mean())}
+    lg = m.groupby("division").agg(n=("hs", "size"), home=("hs", "mean"), away=("as_", "mean"))
+    lg = lg[lg.n > 1500].sort_values("away")
+    pick = lambda d: [{"league": LEAGUE_NAMES.get(i, i), "home": float(r.home), "away": float(r.away), "n": int(r.n)}  # noqa: E731
+                      for i, r in d.iterrows()]
+    m["res"] = m.as_ - (1 - np.exp(-la))
+    return {"n_matches": int(len(m)), "home_rate": float(m.hs.mean()), "away_rate": float(m.as_.mean()),
+            "odds": odds, "over_cols": [c[2] for c in over_cols], "combos": combos, "xg": xg_rule, "xg_low": low,
+            "leagues_low": pick(lg.head(3)), "leagues_high": pick(lg.tail(2)),
+            "league_spread_at_same_xg": float(m.groupby("division").res.mean().std())}
+
+
+def write_guide(result: dict):
+    GUIDE_FILE.write_text(json.dumps(result, indent=1, sort_keys=True) + "\n")

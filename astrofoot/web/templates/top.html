@@ -91,6 +91,47 @@ is. It comes from the total scoring rate implied by the match odds, recalibrated
 {{ fmt_pct(research.rate, 0) if research else "74%" }} of matches have 2+ goals, so the picks are almost always "over"; a
 confident "under" is rare. "Astrology agrees" counts the engines whose predicted score has the same side of 1.5.</p>
 {% endif %}
+{% if scorer and guide and guide.odds %}{% set G = guide %}
+<details class="card guide" open>
+<summary><strong>Quick guide: will the home or away team score?</strong>
+  <span class="small">from {{ "{:,}".format(G.n_matches) }} past matches · home teams scored {{ fmt_pct(G.home_rate, 0) }}, away teams {{ fmt_pct(G.away_rate, 0) }}</span></summary>
+<div class="guide-grid">
+  <div>
+    <h4>1 · Look at the team's win odds first</h4>
+    <table class="mini"><thead><tr><th>Team's win odds</th><th class="num">Home team scored</th><th class="num">Away team scored</th></tr></thead>
+    <tbody>{% for o in G.odds %}<tr class="{{ 'g-good' if o.home.scored >= 0.85 else 'g-poor' if o.home.scored < 0.62 else '' }}"><td>{{ o.band }}</td>
+      <td class="num">{{ fmt_pct(o.home.scored, 0) }}</td><td class="num">{{ fmt_pct(o.away.scored, 0) }}</td></tr>{% endfor %}</tbody></table>
+    <p class="small">Home and away behave almost the same at the same odds: strength, not venue, drives it. Under <b>1.70</b>
+    ≈ 85%+ to score; <b>4.00+</b> is close to a coin flip.</p>
+  </div>
+  <div>
+    <h4>2 · Tie-breaker: the over/under 2.5 price</h4>
+    <table class="mini"><thead><tr><th>Win odds</th>{% for c in G.over_cols %}<th class="num">Over 2.5 {{ c }}</th>{% endfor %}</tr></thead>
+    <tbody>{% for c in G.combos %}<tr><td>{{ c.side }} {{ c.band }}</td>{% for x in c.cells %}<td class="num {{ 'g-best' if x.scored and x.scored >= 0.87 else '' }}">{{ fmt_pct(x.scored, 0) if x.scored is not none else "–" }}</td>{% endfor %}</tr>{% endfor %}</tbody></table>
+    <p class="small">A low over-2.5 price means an open game and lifts the chances (fair odds, margin removed; a bookmaker's quote
+    is a little lower). Big away underdogs (4.00+) stay near 59% whatever the price.</p>
+  </div>
+  <div>
+    <h4>3 · In this app: expected goals combines both</h4>
+    <table class="mini"><thead><tr><th>Team's expected goals</th><th class="num">Scored</th><th class="num">Share of teams</th></tr></thead>
+    <tbody>{% for x in G.xg %}<tr class="{{ 'g-good' if x.scored >= 0.85 else '' }}"><td>{{ "%.1f"|format(x.min) }} or more</td><td class="num">{{ fmt_pct(x.scored) }}</td><td class="num">{{ fmt_pct(x.share, 0) }}</td></tr>{% endfor %}
+    <tr class="g-poor"><td>under 0.8</td><td class="num">{{ fmt_pct(G.xg_low.scored) }}</td><td></td></tr></tbody></table>
+    <p class="small">Quickest routes: set <b>Expected goals 1.5+</b> above (or in My picks, with "For" = home or away team),
+    or <b>Minimum probability 85%+</b> on this tab.</p>
+  </div>
+  <div>
+    <h4>4 · League, and what not to rely on</h4>
+    <p class="small">Away teams score least in {% for l in G.leagues_low %}<b>{{ l.league }}</b> ({{ fmt_pct(l.away, 0) }}){{ ", " if not loop.last }}{% endfor %},
+    most in {% for l in G.leagues_high %}<b>{{ l.league }}</b> ({{ fmt_pct(l.away, 0) }}){{ " and " if not loop.last }}{% endfor %}. At the same expected
+    goals the leagues differ by only about {{ "%.1f"|format(100 * G.league_spread_at_same_xg) }} points, so be slightly more careful with
+    away teams in South America and second divisions.</p>
+    <p class="small"><b>Not useful:</b> how many engines agree or how strongly (teams backed by 0, 1, 2 or 3 engines score at the same
+    rate), and recent form, venue form or head-to-heads, over 5 or 10 games (nothing beyond the odds; see Form check).</p>
+    <p class="small">These are the most reliable signs that a team scores, but bookmakers price them in: likelihood, not value.</p>
+  </div>
+</div>
+</details>
+{% endif %}
 <p class="note">Because these probabilities come from bookmaker odds, these picks carry no betting value: the odds already
 price them. This is a research view of which matches are most predictable, not betting advice.</p>
 

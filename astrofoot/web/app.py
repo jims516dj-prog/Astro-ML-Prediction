@@ -732,7 +732,8 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
         "score_all": live.score_picks(all_picks, market), "score_day": live.score_picks(picks, market),
         "by_agree": by_agree, "live_bands": live_bands, "research": research,
         "ou": overunder.load() if market == "goals" else None,
-        "ts": tg if market in ("score", "btts") else None, "page": "top"})
+        "ts": tg if market in ("score", "btts") else None,
+        "guide": teamgoals.load_guide() if market == "score" else None, "page": "top"})
 
 
 def _picks_view(c, games: list[dict], saved: list[dict], now_iso: str) -> list[dict]:

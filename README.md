@@ -220,6 +220,15 @@ The third tab ranks up to 10 matches a day by the team likelier to **score at le
   four comparisons, is a hypothesis for the live record, not an edge. Frawley: live only.
 - Rebuilt with the over/under step: `python scripts/research.py overunder` (writes `data/models/teamgoals.json`).
 
+## Home or away goal: quick guide
+
+The **Home or away goal** tab opens with a *Quick guide* panel (collapsible) of plain-odds rules for whether the home or
+away team scores, computed from the historical corpus (`research.py overunder` → `data/models/scoring_guide.json`,
+refreshed weekly): (1) how often a team scored by its **win odds** (home and away alike: under 1.70 ≈ 85%+, 4.00+ close
+to a coin flip); (2) the **over/under 2.5** price as a tie-breaker (home under 1.70 with over 2.5 under 1.80: 92%; away
+under 2.50: 87%); (3) **expected goals** (1.5+: 87%, 2.0+: 92%, under 0.8: 55%) and the quickest app routes; (4) the
+leagues where away teams score least or most, and what not to rely on (engine agreement, form windows).
+
 ## Top picks: both teams to score, and goal predictions everywhere
 
 The fourth tab ranks up to 10 matches a day by whether **both teams score** (yes or no) is most probable. It uses

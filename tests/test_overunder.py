@@ -130,3 +130,21 @@ def test_top_picks_has_no_daily_cap_and_min_probability():
              "classical_agree": 0, "pick_hit": None} for i in range(25)]
     assert len(live.top_picks(recs)["2026-11-04"]) == 25
     assert len(live.top_picks(recs, min_p=0.6)["2026-11-04"]) == 5
+
+
+def test_scoring_guide_tables():
+    from astrofoot import teamgoals
+    rng = np.random.default_rng(1)
+    n = 4000
+    oh = rng.uniform(1.2, 7.0, n)
+    p_home = 1 / oh / 1.05
+    p_away = np.clip(0.75 - p_home, 0.05, 0.9)
+    m = pd.DataFrame({"odds_home": oh, "odds_away": 1.05 / p_away, "p_home": p_home, "p_away": p_away,
+                      "p_over25": rng.uniform(0.35, 0.7, n), "division": "E0",
+                      "goals_home": (rng.uniform(size=n) < 1 - np.exp(-2 * p_home - 0.3)).astype(int),
+                      "goals_away": (rng.uniform(size=n) < 0.65).astype(int)})
+    g = teamgoals.scoring_guide(m)
+    assert g["n_matches"] == n and len(g["odds"]) == len(teamgoals.ODDS_BANDS) and len(g["combos"]) == 6
+    shorter, longer = g["odds"][1]["home"]["scored"], g["odds"][-1]["home"]["scored"]
+    assert shorter > longer                                       # shorter win odds → scores more often
+    assert [x["min"] for x in g["xg"]] == [0.8, 1.0, 1.2, 1.5, 2.0]

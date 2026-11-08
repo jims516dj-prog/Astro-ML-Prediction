@@ -256,6 +256,9 @@ if __name__ == "__main__":
         teamgoals.write(tg)
         log(f"team to score: top picks hit {tg['top']['hit_rate']:.3f} vs {tg['top']['expected']:.3f} expected; "
             f"Rao lift {tg['engines']['rao']['lift']:+.4f}, Chokoisky lift {tg['engines']['chokoisky']['lift']:+.4f}")
+        guide = teamgoals.scoring_guide(pd.read_parquet(WORK / "matches.parquet"))
+        teamgoals.write_guide(guide)
+        log(f"scoring guide: home scored {guide['home_rate']:.3f}, away {guide['away_rate']:.3f} of {guide['n_matches']:,}")
         dc = doublechance.backtest(pd.read_parquet(WORK / "matches.parquet"), pd.read_parquet(WORK / "engines_real.parquet"))
         doublechance.write(dc)
         log(f"double chance: picks hit {dc['all']['hit_rate']:.3f} vs {dc['all']['expected']:.3f} expected; "
