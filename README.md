@@ -343,7 +343,9 @@ engines agreeing and the engines' strength made no difference: at every expected
 engines behind them scored at the same rate within about a point (`by_agree` in `data/models/form.json`, shown on the tab).
 
 The **Live record** and the other Top picks tabs (Summary and every market) have the same **expected goals** filter, for either team, the home
-team, the away team or the team backed by 2+ engines; each game then shows both teams' expected goals.
+team, the away team or the team backed by 2+ engines; each game then shows both teams' expected goals. Every game in the Live record and in the Top picks
+tables also shows an **xG home · away** column and, beneath the game, which team 2 or 3 of the engines back (e.g. "2/3
+engines back Juarez"; hover for both teams' counts), as in My picks.
 
 **Honest finding** (`research.py overunder` → `data/models/form.json`): over 201,138 historical team-games, walk-forward,
 adding the form estimate to the market does not improve the prediction of whether a team scores (log loss 0.5602 both

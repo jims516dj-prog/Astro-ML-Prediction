@@ -95,10 +95,10 @@ football-data.co.uk later confirms or corrects them.</p>
 from its own probabilities (± {{ fmt_pct(subset.se) }}). A gap well beyond ± over hundreds of matches would mean the filter adds
 something; within it, it doesn't.</p>{% endif %}
 <div class="scroll"><table class="data small">
-<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Favourite</th><th class="num">Market F/D/U</th><th class="num">Engine 4 F/D/U</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num" title="classical engines agreeing with the outlook's call">Agree</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th><th>Seal</th></tr></thead>
+<thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num">xG home · away</th><th>Favourite</th><th class="num">Market F/D/U</th><th class="num">Engine 4 F/D/U</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num" title="classical engines agreeing with the outlook's call">Agree</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th><th>Seal</th></tr></thead>
 <tbody>{% for r in rows %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
-<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if q.xg %}<br><span class="small mono" title="expected goals from the odds: home · away">xG {{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</span>{% endif %}{% if r.origin == "manual" %} <span class="badge" title="added by hand on the Analyze page">manual</span>{% elif r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}</td><td>{{ r.favourite }}</td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.origin == "manual" %} <span class="badge" title="added by hand on the Analyze page">manual</span>{% elif r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}</td><td class="num mono" style="white-space:nowrap" title="expected goals from the odds: home · away">{{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</td><td>{{ r.favourite }}</td>
 <td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td>
 <td class="num">{% if p.engine4 %}{{ fmt_pct(p.engine4.fav,0) }}/{{ fmt_pct(p.engine4.draw,0) }}/{{ fmt_pct(p.engine4.dog,0) }}{% else %}—{% endif %}</td>
 {% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ W[p[k].winner] }}</td>{% endfor %}
@@ -106,7 +106,7 @@ something; within it, it doesn't.</p>{% endif %}
 <td>{{ gm_badges(r.gm) }}</td>
 <td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }} ({{ W[r.outcome] }}){% elif r.status == "void" %}<span title="{{ r.void_reason or 'postponed or abandoned' }}">{{ "withdrawn" if r.withdrawn else "void" }}</span>{% else %}pending{% endif %}</td>
 <td class="mono" title="committed {{ r.committed_at }}{% if r.sha256 %} · sha256 {{ r.sha256 }}{% endif %}">{% if r.origin == "manual" %}<span class="small">not sealed{{ "" if r.pre_kickoff else " · after kickoff" }}</span>{% else %}{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}{% endif %}</td></tr>
-{% else %}<tr><td colspan="13">No forecasts match these filters.</td></tr>{% endfor %}</tbody></table></div>
+{% else %}<tr><td colspan="14">No forecasts match these filters.</td></tr>{% endfor %}</tbody></table></div>
 <p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no-1 }}">← newer</a>{% endif %}
 <span>page {{ page_no }} / {{ pages }}</span>
 {% if page_no < pages %}<a href="?{{ qs }}&page_no={{ page_no+1 }}">older →</a>{% endif %}</p>

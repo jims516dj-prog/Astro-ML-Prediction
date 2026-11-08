@@ -904,6 +904,11 @@ def _xg_pass(g: dict, xg_min: float, xg_for: str) -> bool:
     Stores the figures on the record (g['xg_home'], g['xg_away']) for display."""
     if "xg_home" not in g:
         g["xg_home"], g["xg_away"] = _xg(g)
+        # the engines note shown beneath each game: the team 2 or 3 of the engines back, and both counts
+        side, n, _ = form.backed_side(g)
+        counts = form.side_counts(g)
+        g.update(eng_backed=None if side is None else g["home" if side == "home" else "away"], eng_n=n,
+                 eng_home=counts["home"], eng_away=counts["away"])
     if xg_min <= 0:
         return True
     side, _, _ = form.backed_side(g)
