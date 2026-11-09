@@ -51,6 +51,8 @@ SPORT_DIV = {
     "soccer_england_efl_cup": "EFLC", "soccer_fa_cup": "FAC", "soccer_germany_dfb_pokal": "DFB",
     "soccer_spain_copa_del_rey": "CDR",
     "soccer_korea_kleague1": "KOR", "soccer_saudi_arabia_pro_league": "KSA", "soccer_africa_cup_of_nations": "AFCON",
+    "soccer_germany_liga3": "D3", "soccer_sweden_superettan": "SWE2", "soccer_france_coupe_de_france": "CDF",
+    "soccer_italy_coppa_italia": "CIT",
 }
 
 
@@ -279,3 +281,53 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
     for s in skipped:
         log("  skipped:", s)
     return out
+
+
+# ----------------------------------------------------------------------------- results
+SCORES_EVERY_HOURS = 12
+
+
+def scores_results(pending: list[dict], now: datetime, ledger: Path, client: Client, log=print) -> dict[str, dict]:
+    """Results for competitions only The Odds API covers (no ESPN or football-data.org feed): its /scores endpoint
+    (2 credits a call: completed games of the last 3 days), at most every SCORES_EVERY_HOURS per competition and only
+    while a forecast there is waiting for its result."""
+    from .results2 import pair
+    from .results_espn import slug_of
+    state_path = ledger / "odds_api_state.json"
+    try:
+        state = json.loads(state_path.read_text())
+    except (OSError, ValueError):
+        state = {}
+    sport_of = {d: k for k, d in SPORT_DIV.items()}
+    by_div: dict[str, list[dict]] = {}
+    for r in pending:
+        if r["division"] in sport_of and r["division"] in NO_PRIMARY and not slug_of(r["division"]):
+            by_div.setdefault(r["division"], []).append(r)
+    found = {}
+    for div, recs in sorted(by_div.items()):
+        sport = sport_of[div]
+        last = state.get("scores:" + sport)
+        if last and now - datetime.fromisoformat(last) < timedelta(hours=SCORES_EVERY_HOURS):
+            continue
+        try:
+            games = client.get(f"/sports/{sport}/scores", daysFrom=3)
+        except Exception as e:  # noqa: BLE001
+            log(f"  the-odds-api.com scores {div}: unavailable ({type(e).__name__})")
+            continue
+        state["scores:" + sport] = now.isoformat(timespec="seconds")
+        norm = []
+        for g in games:
+            if not g.get("completed"):
+                continue
+            sc = {x.get("name"): x.get("score") for x in (g.get("scores") or [])}
+            try:
+                gh, ga = int(sc[g["home_team"]]), int(sc[g["away_team"]])
+            except (KeyError, TypeError, ValueError):
+                continue
+            norm.append({"division": div, "utc": g["commence_time"], "home": [g["home_team"]], "away": [g["away_team"]],
+                         "goals_home": gh, "goals_away": ga})
+        f, _ = pair(recs, norm, SOURCE)
+        found.update(f)
+        log(f"the-odds-api.com scores {div}: {len(f)} of {len(recs)} pending result(s) found")
+    state_path.write_text(json.dumps(state, indent=1, sort_keys=True) + "\n")
+    return found

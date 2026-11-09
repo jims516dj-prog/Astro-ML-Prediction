@@ -222,6 +222,9 @@ def load_results(a, now) -> tuple[dict, dict]:
         print(f"espn.com: {len(found)} of {len(rest)} remaining pending result(s) found")
         for n in notes:
             print("  unmatched:", n)
+    rest = [r for r in waiting if r["match_key"] not in res]
+    if rest and fixtures2.token():
+        res.update(fixtures2.scores_results(rest, now, a.ledger, fixtures2.Client(fixtures2.token())))
     return res, latest
 
 
@@ -486,7 +489,6 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
-        probe_europe(now)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())

@@ -158,3 +158,25 @@ def test_canonical_name_needs_a_distinctive_word():
     assert fixtures2.canonical_name("Nottingham Forest", known) == "Nott'm Forest"
     assert fixtures2.canonical_name("Sheffield Wednesday", known) == "Sheffield Weds"
     assert fixtures2.canonical_name("Wolverhampton Wanderers", known) == "Wolves"
+
+
+def test_scores_for_competitions_only_the_odds_api_covers(tmp_path):
+    from datetime import timedelta
+
+    class C:
+        calls = []
+
+        def get(self, path, **kw):
+            self.calls.append(path)
+            return [{"completed": True, "home_team": "SV Waldhof Mannheim", "away_team": "1860 Munich",
+                     "commence_time": "2026-11-08T13:00:00Z",
+                     "scores": [{"name": "SV Waldhof Mannheim", "score": "2"}, {"name": "1860 Munich", "score": "1"}]}]
+    pending = [{"match_key": "d3", "division": "D3", "home": "SV Waldhof Mannheim", "away": "1860 Munich",
+                "kickoff_utc": "2026-11-08T13:00:00+00:00"},
+               {"match_key": "col", "division": "COL", "home": "A", "away": "B", "kickoff_utc": "2026-11-08T13:00:00+00:00"}]
+    c = C()
+    got = fixtures2.scores_results(pending, NOW + timedelta(days=5), tmp_path, c, log=lambda *a: None)
+    assert got == {"d3": {"goals_home": 2, "goals_away": 1, "source": "the-odds-api.com"}}
+    assert c.calls == ["/sports/soccer_germany_liga3/scores"]          # COL has ESPN results: no credits spent
+    fixtures2.scores_results(pending, NOW + timedelta(days=5, hours=1), tmp_path, c, log=lambda *a: None)
+    assert len(c.calls) == 1                                             # not again within 12 hours

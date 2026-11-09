@@ -286,6 +286,13 @@ men's competition ESPN lists (about 185) and remembers each one that shows home/
 Expansión MX, Chile and Colombia's second divisions, the EFL Trophy, the Nations League). These appear as their own
 leagues (division codes such as `X:bol.1`). Youth (U21, U23…) and women's sides are left out.
 
+**More of Europe.** ESPN adds the Dutch Eerste Divisie and the KNVB Cup, Taça de Portugal, Scottish Cup, League Cup and
+Challenge Cup; The Odds API adds Germany's 3. Liga and Sweden's Superettan and also prices the Coupe de France and Coppa
+Italia. Results for competitions only The Odds API covers (3. Liga, Superettan) come from its scores endpoint (2 credits a
+call, at most every 12 hours per competition and only while a forecast waits). No free source found prices the Czech,
+Croatian, Serbian, Hungarian, Bulgarian, Slovak, Ukrainian, Cypriot or Israeli leagues; national-team games come only
+from ESPN (which gives the venue).
+
 **Asia and Africa.** Free odds are scarce here. Japan and China come from football-data.co.uk; The Odds API prices the
 K League 1, Saudi Pro League and Africa Cup of Nations (used automatically whenever they are in season); ESPN lists many
 Asian and African competitions (AFC and CAF cups and qualifiers, India, South Africa, Saudi Arabia) but, as of November

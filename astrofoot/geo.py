@@ -28,7 +28,8 @@ DIVISION_COUNTRY = {
     "IRL": "IE", "JAP": "JP", "MEX": "MX", "NOR": "NO", "POL": "PL", "ROM": "RO",
     "RUS": "RU", "SUI": "CH", "SWE": "SE", "USA": "US",
     "COL": "CO", "ECU": "EC", "PAR": "PY", "PER": "PE", "URU": "UY", "CHI": "CL", "AUS": "AU", "BRA2": "BR",
-    "KSA": "SA", "KOR": "KR", "FAC": "GB", "EFLC": "GB", "CDR": "ES", "DFB": "DE", "CIT": "IT", "CDF": "FR",
+    "KSA": "SA", "KOR": "KR", "N2": "NL", "D3": "DE", "SWE2": "SE", "KNVB": "NL", "TACA": "PT", "SCUP": "GB",
+    "SLC": "GB", "SCC": "GB", "FAC": "GB", "EFLC": "GB", "CDR": "ES", "DFB": "DE", "CIT": "IT", "CDF": "FR",
 }
 # Country names as ESPN writes them in venue addresses → ISO codes of the cities table
 COUNTRY_CODE = {

@@ -26,7 +26,9 @@ LEAGUE_SLUG = {
     "RUS": "rus.1", "SUI": "sui.1", "SWE": "swe.1", "USA": "usa.1",
     "UCL": "uefa.champions", "UEL": "uefa.europa", "UECL": "uefa.europa.conf",
     "COL": "col.1", "ECU": "ecu.1", "PAR": "par.1", "PER": "per.1", "URU": "uru.1", "CHI": "chi.1", "AUS": "aus.1",
-    "BRA2": "bra.2", "KSA": "ksa.1", "KOR": "kor.1", "AFCON": "caf.nations", "FAC": "eng.fa", "EFLC": "eng.league_cup", "CDR": "esp.copa_del_rey",
+    "BRA2": "bra.2", "KSA": "ksa.1", "KOR": "kor.1", "AFCON": "caf.nations",
+    "N2": "ned.2", "KNVB": "ned.cup", "TACA": "por.taca.portugal", "SCUP": "sco.tennents", "SLC": "sco.cis",
+    "SCC": "sco.challenge", "FAC": "eng.fa", "EFLC": "eng.league_cup", "CDR": "esp.copa_del_rey",
     "DFB": "ger.dfb_pokal", "CIT": "ita.coppa_italia", "CDF": "fra.coupe_de_france",
     "LIB": "conmebol.libertadores", "SUD": "conmebol.sudamericana", "CCC": "concacaf.champions",
 }

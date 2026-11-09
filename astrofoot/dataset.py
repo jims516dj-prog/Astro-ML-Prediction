@@ -32,6 +32,9 @@ LEAGUE_NAMES.update({
     "COL": "Colombia Primera A", "ECU": "Ecuador LigaPro", "PAR": "Paraguay Primera", "PER": "Peru Liga 1",
     "URU": "Uruguay Primera", "CHI": "Chile Primera", "AUS": "Australia A-League", "BRA2": "Brazil Serie B",
     "KSA": "Saudi Pro League", "KOR": "South Korea K League 1", "AFCON": "Africa Cup of Nations",
+    "N2": "Netherlands Eerste Divisie", "D3": "Germany 3. Liga", "SWE2": "Sweden Superettan",
+    "KNVB": "Netherlands KNVB Cup", "TACA": "Portugal Taça de Portugal", "SCUP": "Scotland Scottish Cup",
+    "SLC": "Scotland League Cup", "SCC": "Scotland Challenge Cup",
     "FAC": "England FA Cup", "EFLC": "England EFL Cup", "CDR": "Spain Copa del Rey", "DFB": "Germany DFB-Pokal",
     "CIT": "Italy Coppa Italia", "CDF": "France Coupe de France", "LIB": "Copa Libertadores",
     "SUD": "Copa Sudamericana", "CCC": "CONCACAF Champions Cup",
@@ -40,9 +43,9 @@ LEAGUE_NAMES.update({
 # secondary sources only (fixtures2, fixtures_espn, results2, results_espn).
 EUROPEAN = {"UCL", "UEL", "UECL"}
 # Cups with clubs from several divisions (or countries): names are matched strictly, grounds looked up.
-CUPS = {"FAC", "EFLC", "CDR", "DFB", "CIT", "CDF", "LIB", "SUD", "CCC", "AFCON"}
+CUPS = {"FAC", "EFLC", "CDR", "DFB", "CIT", "CDF", "LIB", "SUD", "CCC", "AFCON", "KNVB", "TACA", "SCUP", "SLC", "SCC"}
 # Leagues football-data.co.uk does not cover (fixtures, odds and results from ESPN / The Odds API only).
-EXTRA_SECONDARY = {"COL", "ECU", "PAR", "PER", "URU", "CHI", "AUS", "BRA2", "KSA", "KOR"}
+EXTRA_SECONDARY = {"COL", "ECU", "PAR", "PER", "URU", "CHI", "AUS", "BRA2", "KSA", "KOR", "N2", "D3", "SWE2"}
 MULTI_CLUB = EUROPEAN | CUPS
 DISCOVERED = "X:"          # prefix of competitions found on ESPN by discovery, e.g. "X:bol.1" (fixtures_espn.py)
 
