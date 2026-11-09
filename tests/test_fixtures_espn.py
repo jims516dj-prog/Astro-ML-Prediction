@@ -22,6 +22,19 @@ def local_date(ko):
     return ko.astimezone(timezone.utc).strftime("%Y-%m-%d")
 
 
+def test_moneyline_block_and_null_odds():
+    e = ev("A", "B", "2026-11-09T19:00Z")
+    o = e["competitions"][0]["odds"][0]
+    for k in ("homeTeamOdds", "awayTeamOdds"):
+        o.pop(k)
+    o["moneyline"] = {"home": {"open": {"odds": "-210"}, "close": {"odds": "-185"}},
+                      "away": {"close": {"odds": "+390"}}, "draw": {"close": {"odds": "+310"}}}
+    g = fixtures_espn.parse_event(e)
+    assert abs(g["odds"][0] - (1 + 100 / 185)) < 1e-9 and g["odds"][2] == 4.9 and g["odds"][1] == 4.1
+    e["competitions"][0]["odds"] = [None]
+    assert fixtures_espn.parse_event(e) is None
+
+
 def test_american_odds_and_parse():
     assert abs(fixtures_espn.american_to_decimal(-150) - 1.6667) < 1e-3
     assert fixtures_espn.american_to_decimal("+260") == 3.6 and fixtures_espn.american_to_decimal(0) is None

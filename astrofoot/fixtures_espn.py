@@ -52,10 +52,19 @@ def parse_event(ev: dict) -> dict | None:
     side = {c.get("homeAway"): c for c in comp.get("competitors", [])}
     if "home" not in side or "away" not in side:
         return None
-    odds = (comp.get("odds") or [{}])[0]
-    h = american_to_decimal(((odds.get("homeTeamOdds") or {}).get("moneyLine")))
-    a = american_to_decimal(((odds.get("awayTeamOdds") or {}).get("moneyLine")))
-    d = american_to_decimal(((odds.get("drawOdds") or {}).get("moneyLine")))
+    odds = next((o for o in (comp.get("odds") or []) if isinstance(o, dict)), None)
+    if not odds:                                     # no odds published yet (ESPN lists null)
+        return None
+    ml = odds.get("moneyline") or {}
+
+    def price(side: str, old_key: str):
+        """Closing (else opening) moneyline from the "moneyline" block; older payloads use homeTeamOdds etc."""
+        blk = ml.get(side) or {}
+        v = (blk.get("close") or {}).get("odds") or (blk.get("open") or {}).get("odds")
+        if v is None:
+            v = (odds.get(old_key) or {}).get("moneyLine")
+        return american_to_decimal(v)
+    h, d, a = price("home", "homeTeamOdds"), price("draw", "drawOdds"), price("away", "awayTeamOdds")
     if not (h and d and a and min(h, d, a) > 1):
         return None
     p_over = None
