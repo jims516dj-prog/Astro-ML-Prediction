@@ -72,11 +72,24 @@ class Client:
 
 
 # ----------------------------------------------------------------------------- team names
+# Words many clubs share: two names agreeing only on these are not the same club ("Leicester City" / "Man City")
+GENERIC = {"city", "united", "town", "county", "athletic", "atletico", "rovers", "wanderers", "albion", "real",
+           "sporting", "club", "deportivo", "deportes", "racing", "olympic", "olympique", "dynamo", "dinamo", "fc",
+           "sc", "ac", "sport", "sports", "football", "calcio", "stade", "borough", "rangers", "villa", "palace",
+           "hotspur", "orient", "argyle", "alexandra", "stanley", "vale", "academy"}
+
+
+def _distinctive_overlap(a: str, b: str) -> bool:
+    from .results2 import _tokens
+    return bool((_tokens(a) & _tokens(b)) - GENERIC)
+
+
 def canonical_name(name: str, known: set[str]) -> str | None:
-    """football-data.co.uk spelling of `name`, or None when no single known team is a clear match."""
+    """football-data.co.uk spelling of `name`, or None when no single known team is a clear match. The two names
+    must share a distinctive word, not only a generic one like "City" or "United"."""
     if name in known:
         return name
-    scored = sorted(((similarity(name, k), k) for k in known), reverse=True)
+    scored = sorted(((similarity(name, k), k) for k in known if _distinctive_overlap(name, k)), reverse=True)
     if not scored or scored[0][0] < 0.6:
         return None
     if len(scored) > 1 and scored[0][0] - scored[1][0] < 0.15:

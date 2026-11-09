@@ -148,3 +148,13 @@ def test_european_game_not_forecast_twice_under_another_spelling(tmp_path):
                                                  venue_of=lambda t, **kw: (51.0, 7.0, "x"), european_pool=set())
     assert run(earlier) == []
     assert len(run([])) == 1
+
+
+def test_canonical_name_needs_a_distinctive_word():
+    known = {"Man City", "Man United", "Burnley", "Wolves", "Nott'm Forest", "Sheffield United", "Sheffield Weds"}
+    assert fixtures2.canonical_name("Leicester City", known) is None          # only "City" in common
+    assert fixtures2.canonical_name("Bromley", known) is None                 # looks like Burnley, is not
+    assert fixtures2.canonical_name("Manchester City", known) == "Man City"
+    assert fixtures2.canonical_name("Nottingham Forest", known) == "Nott'm Forest"
+    assert fixtures2.canonical_name("Sheffield Wednesday", known) == "Sheffield Weds"
+    assert fixtures2.canonical_name("Wolverhampton Wanderers", known) == "Wolves"

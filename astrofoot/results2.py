@@ -31,7 +31,8 @@ _DROP = {"fc", "cf", "afc", "sc", "ac", "as", "ss", "ssc", "sl", "sv", "vfb", "v
          "sad", "clube", "fk", "bk", "if", "ec", "se", "esporte", "bc", "pfc", "nk", "sk", "aif", "kf", "tc", "ff", "jk"}
 _EXPAND = {"man": "manchester", "utd": "united", "nottm": "nottingham", "sp": "sporting", "ath": "atletico",
            "st": "saint", "wolves": "wolverhampton", "spurs": "tottenham", "psg": "paris saint germain",
-           "inter": "internazionale", "sociedad": "real sociedad", "betis": "real betis", "qpr": "queens park rangers"}
+           "inter": "internazionale", "sociedad": "real sociedad", "betis": "real betis", "qpr": "queens park rangers",
+           "weds": "wednesday", "nott": "nottingham"}
 
 
 def token() -> str | None:
