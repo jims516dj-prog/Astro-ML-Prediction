@@ -189,13 +189,17 @@ def probe_sources(now):
     tot_ev = tot_odds = 0
     sample = None
     for slug in PROBE_ESPN:
-        url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={d0:%Y%m%d}-{d1:%Y%m%d}"
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (astro-football-research)"})
-            with urllib.request.urlopen(req, timeout=20) as r:
-                evs = json.loads(r.read()).get("events", [])
-        except Exception as e:  # noqa: BLE001
-            print(f"ESPN {slug}: unavailable ({type(e).__name__})")
+        evs, err = [], None
+        for day in (d0, d0 + timedelta(days=1)):          # ESPN refuses date ranges: one day at a time
+            url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={day:%Y%m%d}"
+            try:
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (astro-football-research)"})
+                with urllib.request.urlopen(req, timeout=20) as r:
+                    evs += json.loads(r.read()).get("events", [])
+            except Exception as e:  # noqa: BLE001
+                err = f"{type(e).__name__} {getattr(e, 'code', '')}"
+        if err and not evs:
+            print(f"ESPN {slug}: unavailable ({err})")
             continue
         upcoming = [e for e in evs if (e.get("status") or {}).get("type", {}).get("state") == "pre"]
         with_odds = [e for e in upcoming if (e.get("competitions") or [{}])[0].get("odds")]
