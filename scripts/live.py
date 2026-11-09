@@ -307,8 +307,9 @@ EUROPE = ("england", "english", "scotland", "scottish", "wales", "welsh", "north
           "kazakh", "belarus", "latvia", "lithuania", "eston", "malta", "luxembourg", "moldova", "faroe", "kosovo")
 
 
-def probe_europe(now, days: int = 10):
-    """Diagnose only: European competitions on The Odds API and ESPN that we do not use yet, and whether they have odds."""
+def probe_region(now, words, label, days: int = 10):
+    """Diagnose only: competitions of a region (name keywords) on The Odds API and ESPN that we do not use yet,
+    and whether they have upcoming games with odds."""
     import json
     import re
     import urllib.request
@@ -324,7 +325,7 @@ def probe_europe(now, days: int = 10):
             allsp = fixtures2.Client(key).get("/sports", all="true")
             unused = [(x["key"], x.get("title"), x.get("active")) for x in allsp if x["key"].startswith("soccer")
                       and x["key"] not in fixtures2.SPORT_DIV]
-            print("ODDS API UNUSED (all, incl. out of season):", unused)
+            print(f"ODDS API UNUSED ({label}):", [u for u in unused if any(t in (u[0] + " " + str(u[1])).lower() for t in words)])
         except Exception as e:  # noqa: BLE001
             print("ODDS API all sports unavailable:", type(e).__name__, e)
     used = set(results_espn.LEAGUE_SLUG.values()) | set(fixtures_espn.discovered_names())
@@ -353,7 +354,13 @@ def probe_europe(now, days: int = 10):
                         k += fixtures_espn.parse_event(e) is not None
                     except Exception:  # noqa: BLE001
                         pass
-        print(f"ESPN EUROPE {slug} | {name} | {n} upcoming in {days} days, {k} with odds")
+        print(f"ESPN {label} {slug} | {name} | {n} upcoming in {days} days, {k} with odds")
+
+
+AMERICAS = ("usa", "united states", "mls", "usl", "canad", "mexic", "liga mx", "expansi", "costa ric", "hondur",
+            "guatemal", "salvador", "panam", "jamaic", "nicaragu", "trinidad", "haiti", "concacaf", "brazil", "brasil",
+            "argentin", "chile", "colombi", "ecuador", "paragua", "peru", "urugua", "bolivi", "venezuel", "conmebol",
+            "libertadores", "sudamericana", "copa do brasil", "recopa", "leagues cup", "open cup")
 
 
 def probe_sources(now):
@@ -489,6 +496,7 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
+        probe_region(now, AMERICAS, "AMERICAS")
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
