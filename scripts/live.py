@@ -295,6 +295,64 @@ def probe_asia_africa(now, days: int = 10):
         print(f"ESPN ASIA/AFRICA {slug} | {name} | {n} upcoming in {days} days, {k} with odds")
 
 
+EUROPE = ("england", "english", "scotland", "scottish", "wales", "welsh", "northern ireland", "irish", "germany",
+          "german", "bundesliga", "italy", "italian", "serie", "spain", "spanish", "laliga", "primera rfef", "france",
+          "french", "ligue", "national", "netherlands", "dutch", "eerste", "belgi", "portug", "turk", "greek", "greece",
+          "austria", "swiss", "switzerland", "denmark", "danish", "norw", "swed", "finland", "finnish", "poland", "polish",
+          "romania", "russia", "czech", "slovak", "sloven", "croatia", "serbia", "hungar", "bulgaria", "ukrain", "cyprus",
+          "israel", "iceland", "bosnia", "montenegro", "albania", "macedonia", "georgia", "armenia", "azerbaijan",
+          "kazakh", "belarus", "latvia", "lithuania", "eston", "malta", "luxembourg", "moldova", "faroe", "kosovo")
+
+
+def probe_europe(now, days: int = 10):
+    """Diagnose only: European competitions on The Odds API and ESPN that we do not use yet, and whether they have odds."""
+    import json
+    import re
+    import urllib.request
+    from datetime import timedelta
+    ua = {"User-Agent": "Mozilla/5.0 (astro-football-research)"}
+
+    def get(url):
+        with urllib.request.urlopen(urllib.request.Request(url, headers=ua), timeout=20) as r:
+            return json.loads(r.read())
+    key = fixtures2.token()
+    if key:
+        try:
+            allsp = fixtures2.Client(key).get("/sports", all="true")
+            unused = [(x["key"], x.get("title"), x.get("active")) for x in allsp if x["key"].startswith("soccer")
+                      and x["key"] not in fixtures2.SPORT_DIV]
+            print("ODDS API UNUSED (all, incl. out of season):", unused)
+        except Exception as e:  # noqa: BLE001
+            print("ODDS API all sports unavailable:", type(e).__name__, e)
+    used = set(results_espn.LEAGUE_SLUG.values()) | set(fixtures_espn.discovered_names())
+    items = get("https://sports.core.api.espn.com/v2/sports/soccer/leagues?limit=1000").get("items", [])
+    slugs = sorted({m.group(1) for it in items for m in [re.search(r"/leagues/([^/?]+)", it.get("$ref", ""))] if m})
+    for slug in slugs:
+        if fixtures_espn.NOT_MEN.search(slug) or slug in used:
+            continue
+        try:
+            first = get(f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard")
+        except Exception:  # noqa: BLE001
+            continue
+        name = ((first.get("leagues") or [{}])[0].get("name") or "")
+        if not any(t in (slug + " " + name).lower() for t in EUROPE) or re.match(r"(fifa|uefa\.(euro|nations|w))", slug):
+            continue
+        n = k = 0
+        for d in range(days):
+            try:
+                evs = get(f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={(now + timedelta(days=d)):%Y%m%d}").get("events", [])
+            except Exception:  # noqa: BLE001
+                break
+            for e in evs:
+                if ((e.get("status") or {}).get("type") or {}).get("state") == "pre":
+                    n += 1
+                    try:
+                        k += fixtures_espn.parse_event(e) is not None
+                    except Exception:  # noqa: BLE001
+                        pass
+        print(f"ESPN EUROPE {slug} | {name} | {n} upcoming in {days} days, {k} with odds")
+
+
 def probe_sources(now):
     """Diagnose only: which free sources could list more fixtures *with odds* (a forecast needs odds)."""
     import json
@@ -428,6 +486,7 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
+        probe_europe(now)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
