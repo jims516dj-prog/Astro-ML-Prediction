@@ -9,6 +9,11 @@
   "lon": 9.66721,
   "source": "manual"
  },
+ "Atlético Junior": {
+  "lat": 10.96854,
+  "lon": -74.78132,
+  "source": "city: Barranquilla"
+ },
  "Bayer Leverkusen": {
   "lat": 51.03833333,
   "lon": 7.00222222,
@@ -64,6 +69,11 @@
   "lon": 7.415614,
   "source": "stadium"
  },
+ "Mushuc Runa": {
+  "lat": -1.30888889,
+  "lon": -78.72777778,
+  "source": "wikipedia: Estadio COAC Mushuc Runa"
+ },
  "NEC Nijmegen": {
   "lat": 51.8225,
   "lon": 5.83666667,
@@ -73,6 +83,11 @@
   "lat": 37.98376,
   "lon": 23.72784,
   "source": "manual"
+ },
+ "Plymouth Parkway": {
+  "lat": 50.38333,
+  "lon": -4.13333,
+  "source": "city: Plymouth"
  },
  "Plymouth Parkway FC": {
   "lat": 50.40777778,
@@ -94,6 +109,16 @@
   "lon": -1.973617,
   "source": "stadium"
  },
+ "Sportivo Luqueño": {
+  "lat": -25.27222222,
+  "lon": -57.49305556,
+  "source": "wikipedia: Estadio Feliciano Cáceres"
+ },
+ "Sportivo San Lorenzo": {
+  "lat": -25.33968,
+  "lon": -57.50879,
+  "source": "city"
+ },
  "St Truiden": {
   "lat": 50.81679,
   "lon": 5.18647,
@@ -108,5 +133,10 @@
   "lat": 41.0,
   "lon": 39.72,
   "source": "manual"
+ },
+ "Técnico Universitario": {
+  "lat": -1.24472222,
+  "lon": -78.62305556,
+  "source": "wikipedia: Estadio Bellavista"
  }
 }
