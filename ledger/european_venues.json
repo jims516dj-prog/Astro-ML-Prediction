@@ -79,6 +79,11 @@
   "lon": 34.77936111,
   "source": "wikipedia: Turner Stadium"
  },
+ "Internacional de Bogotá": {
+  "lat": 4.6234294,
+  "lon": -74.1354175,
+  "source": "openstreetmap: Estadio Metropolitano de Techo, Carrera 71D, Nueva Marsella, UPZs de Bogotá, Localidad Kennedy, Bogotá ciudad, Bogotá, Distrito Capital, RAP (Especial) Central, 110831, Colombia"
+ },
  "KuPS Kuopio": {
   "lat": 62.88463,
   "lon": 27.6718,
@@ -123,6 +128,11 @@
   "lat": 52.23527778,
   "lon": -0.93333333,
   "source": "wikipedia: Sixfields Stadium"
+ },
+ "Once Caldas": {
+  "lat": 5.06889,
+  "lon": -75.51738,
+  "source": "city: Manizales"
  },
  "Oxford United": {
   "lat": 51.71638889,
