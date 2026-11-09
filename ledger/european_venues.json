@@ -14,6 +14,11 @@
   "lon": -74.78132,
   "source": "city: Barranquilla"
  },
+ "Aurora": {
+  "lat": -17.3793,
+  "lon": -66.1618,
+  "source": "wikipedia: Estadio Félix Capriles"
+ },
  "Barnet": {
   "lat": 51.6026,
   "lon": -0.2918,
