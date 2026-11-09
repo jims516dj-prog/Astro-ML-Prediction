@@ -84,7 +84,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
     known_of(div) -> football-data.co.uk names for one of our leagues; multi_pool: names for cups/European ties."""
     busy = {(f["division"], f["kickoff_utc"][:10], t) for f in primary for t in (f["home"], f["away"])}
     have = {f["match_key"] for f in primary} | {r["match_key"] for r in ledger_preds}
-    out, skipped, per = [], [], {}
+    out, skipped, per, bad = [], [], {}, []
     for div, slug in sorted(LEAGUE_SLUG.items()):
         known = None
         for k in range(DAYS_AHEAD):
@@ -93,7 +93,12 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             except Exception:  # noqa: BLE001 - unknown slug or no games: nothing to add
                 continue
             for ev in events:
-                g = parse_event(ev)
+                try:
+                    g = parse_event(ev)
+                except Exception as e:  # noqa: BLE001 - one odd event never stops the rest
+                    import traceback
+                    bad.append(f"{slug}: {type(e).__name__} at {traceback.extract_tb(e.__traceback__)[-1].line}")
+                    continue
                 if g is None or not (now < g["kickoff"] <= now + timedelta(days=horizon_days)):
                     continue
                 if div in MULTI_CLUB:
@@ -129,4 +134,6 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
     log(f"espn.com: {len(out)} extra fixture(s)" + (": " + ", ".join(f"{d} {n}" for d, n in sorted(per.items())) if per else ""))
     for s_ in skipped:
         log("  skipped:", s_)
+    if bad:
+        log(f"  {len(bad)} event(s) unreadable, e.g. {bad[0]}")
     return out

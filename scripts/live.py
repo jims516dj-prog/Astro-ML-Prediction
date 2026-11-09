@@ -133,7 +133,9 @@ def load_fixtures(a, now) -> list[dict]:
         out += fixtures_espn.extra_fixtures(out, now, a.horizon, live.match_key, local_date, preds, known_of,
                                             european_pool(out, preds, a.ledger), grounds)
     except Exception as e:  # noqa: BLE001 - an unofficial feed: never block the cycle
-        print(f"espn.com fixtures unavailable: {type(e).__name__}: {e}", file=sys.stderr)
+        import traceback
+        print(f"espn.com fixtures unavailable: {type(e).__name__}: {e}\n" + "".join(traceback.format_exc(limit=4)),
+              file=sys.stderr)
     key = fixtures2.token()
     if key:
         out += fixtures2.extra_fixtures(out, now, a.horizon, a.ledger, fixtures2.Client(key), live.fetch_csv,
