@@ -214,6 +214,53 @@ PROBE_ESPN = ["eng.1", "eng.2", "eng.3", "eng.4", "eng.5", "sco.1", "sco.2", "ge
               "conmebol.sudamericana", "concacaf.champions", "fifa.friendly", "uefa.nations"]
 
 
+def discover_espn(now, days: int = 4):
+    """Diagnose only: every ESPN football competition, and which list upcoming games with home/draw/away odds."""
+    import json
+    import re
+    import urllib.request
+    from datetime import timedelta
+    ua = {"User-Agent": "Mozilla/5.0 (astro-football-research)"}
+
+    def get(url):
+        with urllib.request.urlopen(urllib.request.Request(url, headers=ua), timeout=20) as r:
+            return json.loads(r.read())
+    try:
+        items = get("https://sports.core.api.espn.com/v2/sports/soccer/leagues?limit=1000").get("items", [])
+    except Exception as e:  # noqa: BLE001
+        print("ESPN DISCOVER: league list unavailable:", type(e).__name__, e)
+        return
+    slugs = sorted({m.group(1) for it in items for m in [re.search(r"/leagues/([^/?]+)", it.get("$ref", ""))] if m})
+    skip = re.compile(r"(^|\.)(w|u\d+)(\.|$)|women|wom|fem|youth|olympic|\.w\.")
+    slugs = [s_ for s_ in slugs if not skip.search(s_)]
+    print(f"ESPN DISCOVER: {len(items)} competitions listed, {len(slugs)} men's to check")
+    found = []
+    for slug in slugs:
+        n = n_odds = 0
+        name = ""
+        for k in range(days):
+            try:
+                d = get(f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={(now + timedelta(days=k)):%Y%m%d}")
+            except Exception:  # noqa: BLE001
+                break
+            name = name or ((d.get("leagues") or [{}])[0].get("name") or "")
+            for e in d.get("events", []):
+                if ((e.get("status") or {}).get("type") or {}).get("state") != "pre":
+                    continue
+                n += 1
+                g = None
+                try:
+                    g = fixtures_espn.parse_event(e)
+                except Exception:  # noqa: BLE001
+                    pass
+                n_odds += g is not None
+        if n_odds:
+            found.append((slug, name, n, n_odds))
+    print(f"ESPN DISCOVER: {len(found)} competitions with odds in the next {days} days:")
+    for slug, name, n, k in found:
+        print(f"ESPN WITH ODDS {slug} | {name} | {k}/{n} games")
+
+
 def probe_sources(now):
     """Diagnose only: which free sources could list more fixtures *with odds* (a forecast needs odds)."""
     import json
@@ -346,7 +393,7 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
-        probe_sources(now)
+        discover_espn(now)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
