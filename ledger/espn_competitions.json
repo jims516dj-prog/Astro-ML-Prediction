@@ -1,15 +1,21 @@
 {
  "competitions": {
+  "bol.1": "Bolivian Liga Profesional",
   "bra.2": "Brazilian Serie B",
   "col.1": "Colombian Primera A",
+  "col.copa": "Copa Colombia",
   "ecu.1": "LigaPro Ecuador",
   "eng.fa": "English FA Cup",
   "eng.trophy": "English EFL Trophy",
   "esp.2": "Spanish LALIGA 2",
+  "esp.copa_del_rey": "Spanish Copa del Rey",
+  "mex.2": "Mexican Liga de Expansión MX",
   "nor.1": "Norwegian Eliteserien",
   "par.1": "Paraguayan Primera División",
+  "slv.1": "Salvadoran Primera Division",
   "uefa.nations": "UEFA Nations League",
+  "uefa.wchampions": "UEFA Women's Champions League",
   "uru.1": "Liga AUF Uruguaya"
  },
- "generated_at": "2026-11-09T00:41:51+00:00"
+ "generated_at": "2026-11-09T23:29:54+00:00"
 }

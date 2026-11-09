@@ -19,6 +19,11 @@
   "lon": -66.1618,
   "source": "wikipedia: Estadio Félix Capriles"
  },
+ "BK Häcken": {
+  "lat": 57.71916667,
+  "lon": 11.93055556,
+  "source": "wikipedia: Nordic Wellness Arena"
+ },
  "Barnet": {
   "lat": 51.6026,
   "lon": -0.2918,
@@ -89,6 +94,11 @@
   "lon": -74.1354175,
   "source": "openstreetmap: Estadio Metropolitano de Techo, Carrera 71D, Nueva Marsella, UPZs de Bogotá, Localidad Kennedy, Bogotá ciudad, Bogotá, Distrito Capital, RAP (Especial) Central, 110831, Colombia"
  },
+ "Internazionale": {
+  "lat": 45.58277778,
+  "lon": 9.30805556,
+  "source": "wikipedia: Stadio Brianteo"
+ },
  "KuPS Kuopio": {
   "lat": 62.88463,
   "lon": 27.6718,
@@ -149,6 +159,11 @@
   "lon": 23.72784,
   "source": "manual"
  },
+ "Paris Saint-Germain": {
+  "lat": 48.8413634,
+  "lon": 2.2530693,
+  "source": "openstreetmap: Parc des Princes, 24, Rue du Commandant Guilbaud, Quartier d'Auteuil, Paris 16e Arrondissement, Paris, Île-de-France, France métropolitaine, 75016, France"
+ },
  "Plymouth Argyle": {
   "lat": 50.38805556,
   "lon": -4.15083333,
@@ -163,6 +178,11 @@
   "lat": 50.40777778,
   "lon": -4.14722222,
   "source": "wikipedia: Plymouth Parkway F.C."
+ },
+ "Real Madrid": {
+  "lat": 40.45306,
+  "lon": -3.68835,
+  "source": "stadium"
  },
  "Red Star Belgrade": {
   "lat": 44.78333333,
