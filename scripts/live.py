@@ -160,6 +160,56 @@ def load_results(a, now) -> tuple[dict, dict]:
     return res, latest
 
 
+PROBE_ESPN = ["eng.1", "eng.2", "eng.3", "eng.4", "eng.5", "sco.1", "sco.2", "ger.1", "ger.2", "ger.3", "ita.1", "ita.2",
+              "esp.1", "esp.2", "fra.1", "fra.2", "ned.1", "ned.2", "bel.1", "por.1", "tur.1", "gre.1", "aut.1", "sui.1",
+              "den.1", "nor.1", "swe.1", "fin.1", "irl.1", "pol.1", "rou.1", "rus.1", "cze.1", "hun.1", "cro.1", "srb.1",
+              "ukr.1", "bul.1", "cyp.1", "isr.1", "usa.1", "usa.2", "mex.1", "mex.2", "arg.1", "bra.1", "bra.2", "chi.1",
+              "col.1", "per.1", "ecu.1", "uru.1", "par.1", "aus.1", "jpn.1", "kor.1", "chn.1", "ksa.1", "egy.1", "rsa.1",
+              "mar.1", "ind.1", "eng.league_cup", "eng.fa", "esp.copa_del_rey", "ger.dfb_pokal", "ita.coppa_italia",
+              "fra.coupe_de_france", "uefa.champions", "uefa.europa", "uefa.europa.conf", "conmebol.libertadores",
+              "conmebol.sudamericana", "concacaf.champions", "fifa.friendly", "uefa.nations"]
+
+
+def probe_sources(now):
+    """Diagnose only: which free sources could list more fixtures *with odds* (a forecast needs odds)."""
+    import json
+    import urllib.request
+    from datetime import timedelta
+    key = fixtures2.token()
+    if key:
+        try:
+            sports = fixtures2.Client(key).get("/sports")
+            soccer = sorted(s["key"] for s in sports if s.get("active") and s["key"].startswith("soccer"))
+            known = set(fixtures2.SPORT_DIV)
+            print(f"ODDS API active football competitions: {len(soccer)}; not yet used: "
+                  + ", ".join(k for k in soccer if k not in known))
+        except Exception as e:  # noqa: BLE001
+            print("ODDS API sports list unavailable:", type(e).__name__, e)
+    d0, d1 = now.date(), (now + timedelta(days=2)).date()
+    tot_ev = tot_odds = 0
+    sample = None
+    for slug in PROBE_ESPN:
+        url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={d0:%Y%m%d}-{d1:%Y%m%d}"
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (astro-football-research)"})
+            with urllib.request.urlopen(req, timeout=20) as r:
+                evs = json.loads(r.read()).get("events", [])
+        except Exception as e:  # noqa: BLE001
+            print(f"ESPN {slug}: unavailable ({type(e).__name__})")
+            continue
+        upcoming = [e for e in evs if (e.get("status") or {}).get("type", {}).get("state") == "pre"]
+        with_odds = [e for e in upcoming if (e.get("competitions") or [{}])[0].get("odds")]
+        tot_ev += len(upcoming)
+        tot_odds += len(with_odds)
+        if with_odds and sample is None:
+            sample = (slug, with_odds[0]["competitions"][0]["odds"][0])
+        if upcoming:
+            print(f"ESPN {slug}: {len(upcoming)} upcoming, {len(with_odds)} with odds")
+    print(f"ESPN total: {tot_ev} upcoming games in the next 2 days, {tot_odds} with odds")
+    if sample:
+        print("ESPN odds sample", sample[0], json.dumps(sample[1])[:1500])
+
+
 def diagnose(a, now):
     """What do the source files actually contain? (read-only; prints a report, writes nothing)"""
     import pandas as pd
@@ -221,6 +271,7 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
+        probe_sources(now)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
