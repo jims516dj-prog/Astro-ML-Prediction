@@ -339,7 +339,7 @@ def probe_region(now, words, label, days: int = 10):
         except Exception:  # noqa: BLE001
             continue
         name = ((first.get("leagues") or [{}])[0].get("name") or "")
-        if not any(t in (slug + " " + name).lower() for t in EUROPE) or re.match(r"(fifa|uefa\.(euro|nations|w))", slug):
+        if not any(t in (slug + " " + name).lower() for t in words):
             continue
         n = k = 0
         for d in range(days):
