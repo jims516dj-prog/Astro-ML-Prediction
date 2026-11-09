@@ -267,9 +267,18 @@ def probe_sources(now):
                 o = c.get("odds")
                 print(f"ESPN RAW {slug}: odds type {type(o).__name__}, len {len(o) if hasattr(o, '__len__') else '-'}")
                 for i, x in enumerate((o or [])[:2]):
-                    trim = {k: (v if not isinstance(v, dict) else {kk: vv for kk, vv in v.items() if kk != "link"})
-                            for k, v in (x or {}).items() if k not in ("link", "links")} if isinstance(x, dict) else x
-                    print(f"  odds[{i}]:", json.dumps(trim)[:1200])
+                    if not isinstance(x, dict):
+                        print(f"  odds[{i}]:", json.dumps(x)[:200])
+                        continue
+                    print(f"  odds[{i}] keys:", sorted(x))
+
+                    def strip(v):
+                        if isinstance(v, dict):
+                            return {k: strip(w) for k, w in v.items() if k not in ("link", "links", "tracking", "logos")}
+                        return v
+                    for k in sorted(x):
+                        if any(t in k.lower() for t in ("home", "away", "moneyline", "spread", "pointspread")):
+                            print(f"    {k}:", json.dumps(strip(x[k]))[:700])
         except Exception as e:  # noqa: BLE001
             print(f"ESPN RAW {slug}: {type(e).__name__} {e}")
     if sample:
