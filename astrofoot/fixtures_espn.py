@@ -32,11 +32,19 @@ SEEDS = {"bol.1": "Bolivian Liga Profesional", "ven.1": "Venezuelan Primera Divi
          "hon.1": "Honduran Liga Nacional", "gua.1": "Guatemalan Liga Nacional", "slv.1": "Salvadoran Primera",
          "pan.1": "Panamanian Liga", "can.1": "Canadian Premier League", "arg.2": "Argentine Primera Nacional",
          "mex.2": "Liga de Expansión MX", "chi.2": "Chilean Primera B", "col.2": "Colombian Primera B",
-         "eng.trophy": "English EFL Trophy", "uefa.nations": "UEFA Nations League"}
+         "eng.trophy": "English EFL Trophy", "uefa.nations": "UEFA Nations League",
+         # the Americas: cups and second tiers bookmakers price around match days
+         "arg.copa": "Copa Argentina", "arg.3": "Argentine Primera B", "bra.copa_do_brazil": "Copa do Brasil",
+         "chi.copa_chi": "Copa Chile", "col.copa": "Copa Colombia", "bol.copa": "Copa Bolivia",
+         "uru.2": "Segunda División de Uruguay", "usa.usl.1": "USL Championship", "usa.usl.l1": "USL League One",
+         "usa.open": "U.S. Open Cup", "conmebol.recopa": "CONMEBOL Recopa", "concacaf.leagues.cup": "Leagues Cup",
+         "bra.camp.paulista": "Brazilian Campeonato Paulista", "bra.camp.carioca": "Brazilian Campeonato Carioca",
+         "bra.camp.mineiro": "Brazilian Campeonato Mineiro", "bra.camp.gaucho": "Brazilian Campeonato Gaucho",
+         "concacaf.nations.league": "Concacaf Nations League"}
 ACADEMY_CUPS = {"eng.trophy"}
 # Youth, reserve and women's sides are left out (the models were trained on men's senior league football)
 YOUTH = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|women|femenin|féminin|\(w\)", re.I)
-NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|women|wom|fem|youth|olympic")
+NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|women|wom|fem|youth|olympic|ncaa|nwsl")
 SOURCE = "espn.com"
 DAYS_AHEAD = 2                 # today and tomorrow (the cycle runs three times a day)
 

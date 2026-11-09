@@ -496,7 +496,6 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
-        probe_region(now, AMERICAS, "AMERICAS")
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())

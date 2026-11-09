@@ -286,6 +286,14 @@ men's competition ESPN lists (about 185) and remembers each one that shows home/
 Expansión MX, Chile and Colombia's second divisions, the EFL Trophy, the Nations League). These appear as their own
 leagues (division codes such as `X:bol.1`). Youth (U21, U23…) and women's sides are left out.
 
+**The Americas.** Already forecast: MLS, Liga MX, Brazil Série A and Argentina (football-data.co.uk); Brazil Série B,
+Colombia, Ecuador, Paraguay, Peru, Uruguay and Chile, the Libertadores, Sudamericana and CONCACAF Champions Cup (ESPN /
+The Odds API). Checked every cycle and forecast as soon as bookmakers price them: Bolivia, Venezuela, Central America,
+Canada, Argentina's Primera Nacional and Primera B, Liga de Expansión MX, the Chilean, Colombian and Uruguayan second
+divisions, the USL Championship and League One, the Copa Argentina, Copa do Brasil, Copa Chile, Copa Colombia, Copa Bolivia,
+U.S. Open Cup, Recopa, Leagues Cup, the Brazilian state championships and the CONCACAF Nations League. College (NCAA) and
+women's competitions are left out.
+
 **More of Europe.** ESPN adds the Dutch Eerste Divisie and the KNVB Cup, Taça de Portugal, Scottish Cup, League Cup and
 Challenge Cup; The Odds API adds Germany's 3. Liga and Sweden's Superettan and also prices the Coupe de France and Coppa
 Italia. Results for competitions only The Odds API covers (3. Liga, Superettan) come from its scores endpoint (2 credits a

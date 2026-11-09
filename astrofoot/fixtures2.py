@@ -52,7 +52,7 @@ SPORT_DIV = {
     "soccer_spain_copa_del_rey": "CDR",
     "soccer_korea_kleague1": "KOR", "soccer_saudi_arabia_pro_league": "KSA", "soccer_africa_cup_of_nations": "AFCON",
     "soccer_germany_liga3": "D3", "soccer_sweden_superettan": "SWE2", "soccer_france_coupe_de_france": "CDF",
-    "soccer_italy_coppa_italia": "CIT",
+    "soccer_italy_coppa_italia": "CIT", "soccer_concacaf_leagues_cup": "X:concacaf.leagues.cup",
 }
 
 
