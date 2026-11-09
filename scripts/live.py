@@ -235,6 +235,66 @@ PROBE_ESPN = ["eng.1", "eng.2", "eng.3", "eng.4", "eng.5", "sco.1", "sco.2", "ge
               "conmebol.sudamericana", "concacaf.champions", "fifa.friendly", "uefa.nations"]
 
 
+ASIA_AFRICA = ("japan", "j1", "j2", "korea", "k league", "china", "chinese", "saudi", "india", "thai", "indonesia",
+               "malaysia", "vietnam", "qatar", "emirates", "uae", "iran", "iraq", "uzbek", "kuwait", "jordan", "bahrain",
+               "oman", "singapore", "hong kong", "afc", "asian", "egypt", "morocc", "south africa", "nigeria", "ghana",
+               "kenya", "tunisia", "algeria", "caf", "african", "botola", "premier soccer", "zambia", "uganda",
+               "tanzania", "cameroon", "senegal", "ivory", "angola", "zimbabwe", "ethiopia")
+
+
+def probe_asia_africa(now, days: int = 10):
+    """Diagnose only: Asian and African competitions on ESPN and The Odds API, and whether they carry odds."""
+    import json
+    import re
+    import urllib.request
+    from datetime import timedelta
+    ua = {"User-Agent": "Mozilla/5.0 (astro-football-research)"}
+
+    def get(url):
+        with urllib.request.urlopen(urllib.request.Request(url, headers=ua), timeout=20) as r:
+            return json.loads(r.read())
+    key = fixtures2.token()
+    if key:
+        try:
+            allsp = fixtures2.Client(key).get("/sports", all="true")
+            hits = [(x["key"], x.get("title"), x.get("active")) for x in allsp if x["key"].startswith("soccer")
+                    and any(t in (x["key"] + " " + str(x.get("title")) + " " + str(x.get("description"))).lower()
+                            for t in ASIA_AFRICA + ("_japan", "_korea", "_china", "saudi", "egypt", "africa"))]
+            print("ODDS API ASIA/AFRICA (all, incl. out of season):", hits)
+        except Exception as e:  # noqa: BLE001
+            print("ODDS API all sports unavailable:", type(e).__name__, e)
+    try:
+        items = get("https://sports.core.api.espn.com/v2/sports/soccer/leagues?limit=1000").get("items", [])
+    except Exception as e:  # noqa: BLE001
+        print("ESPN league list unavailable:", e)
+        return
+    slugs = sorted({m.group(1) for it in items for m in [re.search(r"/leagues/([^/?]+)", it.get("$ref", ""))] if m})
+    for slug in slugs:
+        if fixtures_espn.NOT_MEN.search(slug):
+            continue
+        try:
+            first = get(f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard")
+        except Exception as e:  # noqa: BLE001
+            continue
+        name = ((first.get("leagues") or [{}])[0].get("name") or "")
+        if not any(t in (slug + " " + name).lower() for t in ASIA_AFRICA):
+            continue
+        n = k = 0
+        for d in range(days):
+            try:
+                evs = get(f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={(now + timedelta(days=d)):%Y%m%d}").get("events", [])
+            except Exception:  # noqa: BLE001
+                break
+            for e in evs:
+                if ((e.get("status") or {}).get("type") or {}).get("state") == "pre":
+                    n += 1
+                    try:
+                        k += fixtures_espn.parse_event(e) is not None
+                    except Exception:  # noqa: BLE001
+                        pass
+        print(f"ESPN ASIA/AFRICA {slug} | {name} | {n} upcoming in {days} days, {k} with odds")
+
+
 def probe_sources(now):
     """Diagnose only: which free sources could list more fixtures *with odds* (a forecast needs odds)."""
     import json
@@ -367,6 +427,7 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
+        probe_asia_africa(now)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
