@@ -1,0 +1,15 @@
+{
+ "competitions": {
+  "bra.2": "Brazilian Serie B",
+  "col.1": "Colombian Primera A",
+  "ecu.1": "LigaPro Ecuador",
+  "eng.fa": "English FA Cup",
+  "eng.trophy": "English EFL Trophy",
+  "esp.2": "Spanish LALIGA 2",
+  "nor.1": "Norwegian Eliteserien",
+  "par.1": "Paraguayan Primera División",
+  "uefa.nations": "UEFA Nations League",
+  "uru.1": "Liga AUF Uruguaya"
+ },
+ "generated_at": "2026-11-09T00:41:51+00:00"
+}

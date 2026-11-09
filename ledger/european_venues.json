@@ -14,6 +14,11 @@
   "lon": -74.78132,
   "source": "city: Barranquilla"
  },
+ "Barnet": {
+  "lat": 51.6026,
+  "lon": -0.2918,
+  "source": "wikipedia: The Hive Stadium"
+ },
  "Bayer Leverkusen": {
   "lat": 51.03833333,
   "lon": 7.00222222,
@@ -24,6 +29,26 @@
   "lon": -9.20282,
   "source": "city"
  },
+ "Bradford City": {
+  "lat": 53.79444444,
+  "lon": -1.75194444,
+  "source": "city: Bradford"
+ },
+ "Bristol Rovers": {
+  "lat": 51.45523,
+  "lon": -2.59665,
+  "source": "city: Bristol"
+ },
+ "Bromley": {
+  "lat": 51.5190214,
+  "lon": -0.0334207,
+  "source": "openstreetmap: Mile End Stadium, 190, Burdett Road, Bromley-by-Bow, Mile End, London Borough of Tower Hamlets, Greater London, England, E3 4HL, United Kingdom"
+ },
+ "Burton Albion": {
+  "lat": 52.82194444,
+  "lon": -1.62694444,
+  "source": "wikipedia: Pirelli Stadium"
+ },
  "Celta": {
   "lat": 42.211842,
   "lon": -8.739711,
@@ -33,6 +58,11 @@
   "lat": 55.849711,
   "lon": -4.205589,
   "source": "stadium"
+ },
+ "Crewe Alexandra": {
+  "lat": 53.0875,
+  "lon": -2.43583333,
+  "source": "wikipedia: Gresty Road"
  },
  "Crystal Palace": {
   "lat": 51.398333,
@@ -54,10 +84,20 @@
   "lon": 27.6718,
   "source": "wikipedia: Kuopio Football Stadium"
  },
+ "Leicester City": {
+  "lat": 52.62027778,
+  "lon": -1.14222222,
+  "source": "wikipedia: King Power Stadium"
+ },
  "Leverkusen": {
   "lat": 51.038256,
   "lon": 7.002206,
   "source": "stadium"
+ },
+ "Mansfield Town": {
+  "lat": 53.13805556,
+  "lon": -1.20055556,
+  "source": "wikipedia: Field Mill"
  },
  "Milan": {
   "lat": 45.46427,
@@ -79,10 +119,25 @@
   "lon": 5.83666667,
   "source": "wikipedia: Goffertstadion"
  },
+ "Northampton Town": {
+  "lat": 52.23527778,
+  "lon": -0.93333333,
+  "source": "wikipedia: Sixfields Stadium"
+ },
+ "Oxford United": {
+  "lat": 51.71638889,
+  "lon": -1.20805556,
+  "source": "wikipedia: Kassam Stadium"
+ },
  "Panathinaikos": {
   "lat": 37.98376,
   "lon": 23.72784,
   "source": "manual"
+ },
+ "Plymouth Argyle": {
+  "lat": 50.38805556,
+  "lon": -4.15083333,
+  "source": "wikipedia: Home Park"
  },
  "Plymouth Parkway": {
   "lat": 50.38333,
@@ -123,6 +178,11 @@
   "lat": 50.81679,
   "lon": 5.18647,
   "source": "manual"
+ },
+ "Stockport County": {
+  "lat": 53.39972222,
+  "lon": -2.16638889,
+  "source": "wikipedia: Edgeley Park"
  },
  "Sunderland": {
   "lat": 54.9144,
