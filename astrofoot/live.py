@@ -27,7 +27,7 @@ import pandas as pd
 from . import geo, models, service
 from .config import ROOT, TIMEZONE_OF_SOURCE_TIMES
 from . import doublechance, overunder, teamgoals
-from .dataset import EUROPEAN, LEAGUE_NAMES, devig
+from .dataset import EUROPEAN, LEAGUE_NAMES, MULTI_CLUB, NO_PRIMARY, devig
 
 LEDGER = Path(os.environ.get("ASTRO_LEDGER", ROOT / "ledger"))
 FD = "https://www.football-data.co.uk"
@@ -316,7 +316,7 @@ def settle(results: dict[str, dict], now: datetime, ledger: Path = LEDGER, sourc
             new.append(seal({"match_key": k, "source": source, **results[k], "settled_at": stamp}))
             continue
         ko = datetime.fromisoformat(rec["kickoff_utc"])
-        if rec["division"] in EUROPEAN:
+        if rec["division"] in NO_PRIMARY:
             if now - ko > timedelta(days=EUROPEAN_VOID_DAYS):
                 new.append(seal({"match_key": k, "void": True, "settled_at": stamp, "source": "none",
                                  "reason": f"no result from football-data.org or ESPN within {EUROPEAN_VOID_DAYS} days: "
@@ -340,7 +340,7 @@ def needed_result_urls(ledger: Path = LEDGER, now: datetime | None = None) -> se
         ko = datetime.fromisoformat(rec["kickoff_utc"])
         prev = settled.get(rec["match_key"])
         unconfirmed = prev is not None and not prev.get("void") and prev.get("source", PRIMARY) != PRIMARY
-        if rec["division"] in EUROPEAN:          # no football-data.co.uk file: secondary sources only
+        if rec["division"] in NO_PRIMARY:        # no football-data.co.uk file: secondary sources only
             continue
         if (prev is None or unconfirmed) and ko + timedelta(hours=2) < now:
             urls.add(results_url(rec["division"], ko))

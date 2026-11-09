@@ -19,15 +19,30 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import fixtures2, form, geo, live, results2, results_espn, venues  # noqa: E402
+from astrofoot import fixtures2, fixtures_espn, form, geo, live, results2, results_espn, venues  # noqa: E402
 
 
-def european_pool(fixtures: list[dict], preds: list[dict]) -> set[str]:
-    """football-data.co.uk names of top-division clubs we know (current fixtures, earlier forecasts), so a
-    European entrant from one of our leagues gets the same name, and ground, as in its league. Lower
-    divisions are left out: their clubs do not play in Europe, and their names collide with ones that do
-    (Red Star Paris / Red Star Belgrade, Lincoln City / Lincoln Red Imps)."""
-    return {n for r in fixtures + preds if r["division"] in live.TOP_TIER for n in (r["home"], r["away"])}
+def recent_names(ledger: Path) -> dict[str, set[str]]:
+    """football-data.co.uk names per division from ledger/recent_results.csv (this and last season)."""
+    p = ledger / "recent_results.csv"
+    out: dict[str, set[str]] = {}
+    if p.exists():
+        import pandas as pd
+        r = pd.read_csv(p, usecols=["division", "home", "away"])
+        for d, g in r.groupby("division"):
+            out[d] = set(g.home) | set(g.away)
+    return out
+
+
+def european_pool(fixtures: list[dict], preds: list[dict], ledger: Path | None = None) -> set[str]:
+    """football-data.co.uk names of the clubs we know (every league we cover: fixtures, forecasts, this and last
+    season's results), so a club in a cup or a European tie gets the same name, and ground, as in its league.
+    Matching is strict (every word of the other source's name must be in ours, one club only), so Red Star
+    Belgrade, Lincoln Red Imps or Inter Club d'Escaldes are not taken for Red Star, Lincoln or Inter."""
+    names = {n for r in fixtures + preds if r["division"] not in live.NO_PRIMARY for n in (r["home"], r["away"])}
+    for d, ns in (recent_names(ledger) if ledger else {}).items():
+        names |= ns
+    return names
 
 
 class EuropeanGrounds:
@@ -43,10 +58,11 @@ class EuropeanGrounds:
             self.cache = {}
         self.div_of = {}
         for r in preds:
-            if r["division"] not in live.EUROPEAN:
+            if r["division"] not in live.MULTI_CLUB:
                 self.div_of.setdefault(r["home"], r["division"])
 
-    def __call__(self, team: str):
+    def __call__(self, team: str, division: str | None = None, hint: dict | None = None):
+        """hint: the venue as the fixtures source gives it ({name, city, country}), used before searching."""
         if team in self.cache:
             c = self.cache[team]
             return (c["lat"], c["lon"], c["source"])
@@ -59,6 +75,23 @@ class EuropeanGrounds:
             pass
         if loc is None and team in self.div_of:
             loc = geo.resolve(team, self.div_of[team])
+        if loc is None and division in geo.DIVISION_COUNTRY and division not in live.MULTI_CLUB:
+            try:
+                loc = geo.resolve(team, division)          # a league's own country: the club's city
+            except Exception:  # noqa: BLE001 - venue tables not downloaded
+                loc = None
+        if loc is None and hint:
+            if hint.get("name"):
+                try:
+                    hit = venues.wikipedia(hint["name"])         # the stadium's own page
+                except Exception:  # noqa: BLE001
+                    hit = None
+                if hit:
+                    loc = (hit[0], hit[1], f"wikipedia: {hit[2]}")
+            if loc is None:
+                ll = geo.city_lookup(hint.get("country"), hint.get("city"))
+                if ll:
+                    loc = (ll[0], ll[1], f"city: {hint.get('city')}")
         if loc is None:
             for fn, src in ((venues.wikipedia_ground, "wikipedia"), (venues.nominatim_ground, "openstreetmap")):
                 try:
@@ -87,16 +120,25 @@ def load_fixtures(a, now) -> list[dict]:
             errors.append(f"{url}: {type(e).__name__}: {e}")
     if errors:
         print("fixture sources unavailable:\n  " + "\n  ".join(errors), file=sys.stderr)
+    import pandas as pd
+    local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
+    voided = {k for k, v in live.read_results(a.ledger).items() if v.get("void")}
+    preds = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in voided]
+    grounds = EuropeanGrounds(a.ledger, preds)
+    rn = recent_names(a.ledger)
+    known_of = lambda d: ({n for r in out + preds if r["division"] == d for n in (r["home"], r["away"])}  # noqa: E731
+                          | rn.get(d, set()))
+    # ESPN first: free (DraftKings odds); The Odds API after it, for what is still missing (costs credits)
+    try:
+        out += fixtures_espn.extra_fixtures(out, now, a.horizon, live.match_key, local_date, preds, known_of,
+                                            european_pool(out, preds, a.ledger), grounds)
+    except Exception as e:  # noqa: BLE001 - an unofficial feed: never block the cycle
+        print(f"espn.com fixtures unavailable: {type(e).__name__}: {e}", file=sys.stderr)
     key = fixtures2.token()
     if key:
-        import pandas as pd
-        local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
-        voided = {k for k, v in live.read_results(a.ledger).items() if v.get("void")}
-        preds = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in voided]
         out += fixtures2.extra_fixtures(out, now, a.horizon, a.ledger, fixtures2.Client(key), live.fetch_csv,
                                         live.results_url, live.match_key, local_date, preds,
-                                        venue_of=EuropeanGrounds(a.ledger, preds),
-                                        european_pool=european_pool(out, preds))
+                                        venue_of=grounds, european_pool=european_pool(out, preds, a.ledger))
     else:
         print("extra fixtures: set ODDS_API_KEY to add games football-data.co.uk has not listed yet")
     if not out and errors:
@@ -288,7 +330,7 @@ def main():
         print(f"settled {n} match(es)")
     if a.cmd == "cycle" and not a.fixtures:
         # every result of this and last season, for the form checks (daily; the research corpus lags)
-        leagues = [d for d in live.LEAGUE_NAMES if d not in live.EUROPEAN and d != "MANUAL"]
+        leagues = [d for d in live.LEAGUE_NAMES if d not in live.NO_PRIMARY and d != "MANUAL"]
         form.refresh_recent(now, live.fetch_csv, leagues, a.ledger / "recent_results.csv")
     if a.cmd in ("cycle", "commit"):
         r = live.commit(load_fixtures(a, now), now, a.horizon, a.ledger)

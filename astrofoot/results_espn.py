@@ -25,6 +25,10 @@ LEAGUE_SLUG = {
     "IRL": "irl.1", "JAP": "jpn.1", "MEX": "mex.1", "NOR": "nor.1", "POL": "pol.1", "ROM": "rou.1",
     "RUS": "rus.1", "SUI": "sui.1", "SWE": "swe.1", "USA": "usa.1",
     "UCL": "uefa.champions", "UEL": "uefa.europa", "UECL": "uefa.europa.conf",
+    "COL": "col.1", "ECU": "ecu.1", "PAR": "par.1", "PER": "per.1", "URU": "uru.1", "CHI": "chi.1", "AUS": "aus.1",
+    "BRA2": "bra.2", "KSA": "ksa.1", "FAC": "eng.fa", "EFLC": "eng.league_cup", "CDR": "esp.copa_del_rey",
+    "DFB": "ger.dfb_pokal", "CIT": "ita.coppa_italia", "CDF": "fra.coupe_de_france",
+    "LIB": "conmebol.libertadores", "SUD": "conmebol.sudamericana", "CCC": "concacaf.champions",
 }
 # Plain full-time results. After extra time the headline score covers 120 minutes, so only the first two
 # per-half line scores are used (and the match is skipped if they are missing).

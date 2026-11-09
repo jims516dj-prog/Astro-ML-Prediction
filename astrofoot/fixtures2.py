@@ -23,7 +23,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .dataset import EUROPEAN, LEAGUE_NAMES
+from .dataset import EUROPEAN, LEAGUE_NAMES, MULTI_CLUB, NO_PRIMARY
 from .results2 import similarity
 
 API = "https://api.the-odds-api.com/v4"
@@ -46,6 +46,10 @@ SPORT_DIV = {
     "soccer_sweden_allsvenskan": "SWE", "soccer_usa_mls": "USA",
     "soccer_uefa_champs_league": "UCL", "soccer_uefa_europa_league": "UEL",
     "soccer_uefa_europa_conference_league": "UECL",
+    "soccer_australia_aleague": "AUS", "soccer_brazil_serie_b": "BRA2", "soccer_chile_campeonato": "CHI",
+    "soccer_conmebol_copa_libertadores": "LIB", "soccer_conmebol_copa_sudamericana": "SUD",
+    "soccer_england_efl_cup": "EFLC", "soccer_fa_cup": "FAC", "soccer_germany_dfb_pokal": "DFB",
+    "soccer_spain_copa_del_rey": "CDR",
 }
 
 
@@ -154,7 +158,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
     competition, kickoff and either club's name, so a spelling change never forecasts a game twice."""
     from .results2 import similarity
     euro_slots = [(r["division"], r["kickoff_utc"][:16], r["home"], r["away"]) for r in ledger_preds
-                  if r["division"] in EUROPEAN]
+                  if r["division"] in NO_PRIMARY]
 
     def euro_done(div, ko, h, a):
         k = ko.isoformat()[:16]
@@ -190,13 +194,21 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
                 soon.append((ko, ev))
         if not soon:
             continue
-        euro = div in EUROPEAN
-        known = (european_pool or set()) if euro else known_teams(div, now, fetch_csv, results_url, ledger_preds)
+        euro = div in NO_PRIMARY              # no football-data.co.uk file: own names, ground looked up
+        if div in MULTI_CLUB:
+            known = european_pool or set()
+        elif euro:
+            known = {n for r in ledger_preds if r["division"] == div for n in (r["home"], r["away"])}
+        else:
+            known = known_teams(div, now, fetch_csv, results_url, ledger_preds)
         todo = []
         for ko, ev in soon:
-            if euro:            # clubs from outside our leagues keep the API's spelling
+            if div in MULTI_CLUB:   # clubs from outside our leagues keep the API's spelling
                 h = european_name(ev["home_team"], known) or ev["home_team"]
                 a = european_name(ev["away_team"], known) or ev["away_team"]
+            elif euro:              # a league only the secondary sources cover: earlier spelling, else the API's
+                h = canonical_name(ev["home_team"], known) or ev["home_team"]
+                a = canonical_name(ev["away_team"], known) or ev["away_team"]
             else:
                 h, a = canonical_name(ev["home_team"], known), canonical_name(ev["away_team"], known)
             if not h or not a or h == a:
@@ -221,7 +233,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
             # European nights: also the totals market (one more credit) so goal predictions have a price
             priced = {e["id"]: e for e in client.get(f"/sports/{sport}/odds", regions="uk,eu" if div in
                                                      ("E0", "E1", "E2", "E3", "SC0") else "eu",
-                                                     markets="h2h,totals" if div in EUROPEAN else "h2h",
+                                                     markets="h2h,totals" if div in NO_PRIMARY else "h2h",
                                                      oddsFormat="decimal")}
         except Exception as e:  # noqa: BLE001
             log(f"  {div}: odds unavailable ({type(e).__name__}: {e})")
@@ -239,7 +251,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, ledg
                   "odds": {"home": odds[0], "draw": odds[1], "away": odds[2]},
                   "odds_source": f"{SOURCE} {book}", "p_over25": over25(priced.get(ev["id"], {})) if euro else None}
             if euro:
-                loc = venue_of(h) if venue_of else None
+                loc = venue_of(h, division=div) if venue_of else None
                 if not loc:
                     skipped.append(f"{h} v {a} ({div}): home ground not found")
                     continue

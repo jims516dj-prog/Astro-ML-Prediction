@@ -106,7 +106,7 @@ def test_european_fixtures_names_grounds_and_totals(tmp_path):
     c = FakeClient(e, o)
     grounds = {"Man United": (53.46, -2.29, "stadium")}
     out = fixtures2.extra_fixtures([], NOW, 4, tmp_path, c, results_csv, live.results_url, live.match_key, local_date, [],
-                                   log=lambda *a: None, venue_of=grounds.get,
+                                   log=lambda *a: None, venue_of=lambda t, **kw: grounds.get(t),
                                    european_pool={"Man United", "Wolves", "Nott'm Forest"})
     assert len(out) == 1                                    # Qarabag's ground unknown here: skipped, not guessed
     f = out[0]
@@ -145,6 +145,6 @@ def test_european_game_not_forecast_twice_under_another_spelling(tmp_path):
                 "kickoff_utc": "2026-11-04T15:00:00+00:00"}]
     run = lambda preds: fixtures2.extra_fixtures([], NOW, 4, tmp_path, FakeClient(e, o), results_csv, live.results_url,
                                                  live.match_key, local_date, preds, log=lambda *a: None,
-                                                 venue_of=lambda t: (51.0, 7.0, "x"), european_pool=set())
+                                                 venue_of=lambda t, **kw: (51.0, 7.0, "x"), european_pool=set())
     assert run(earlier) == []
     assert len(run([])) == 1

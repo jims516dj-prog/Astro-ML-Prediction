@@ -27,7 +27,33 @@ DIVISION_COUNTRY = {
     "ARG": "AR", "AUT": "AT", "BRA": "BR", "CHN": "CN", "DEN": "DK", "FIN": "FI",
     "IRL": "IE", "JAP": "JP", "MEX": "MX", "NOR": "NO", "POL": "PL", "ROM": "RO",
     "RUS": "RU", "SUI": "CH", "SWE": "SE", "USA": "US",
+    "COL": "CO", "ECU": "EC", "PAR": "PY", "PER": "PE", "URU": "UY", "CHI": "CL", "AUS": "AU", "BRA2": "BR",
+    "KSA": "SA", "FAC": "GB", "EFLC": "GB", "CDR": "ES", "DFB": "DE", "CIT": "IT", "CDF": "FR",
 }
+# Country names as ESPN writes them in venue addresses → ISO codes of the cities table
+COUNTRY_CODE = {
+    "England": "GB", "Scotland": "GB", "Wales": "GB", "United Kingdom": "GB", "Germany": "DE", "Italy": "IT",
+    "Spain": "ES", "France": "FR", "Netherlands": "NL", "Belgium": "BE", "Portugal": "PT", "Turkey": "TR",
+    "Türkiye": "TR", "Greece": "GR", "Argentina": "AR", "Austria": "AT", "Brazil": "BR", "China": "CN",
+    "China PR": "CN", "Denmark": "DK", "Finland": "FI", "Ireland": "IE", "Republic of Ireland": "IE", "Japan": "JP",
+    "Mexico": "MX", "Norway": "NO", "Poland": "PL", "Romania": "RO", "Russia": "RU", "Switzerland": "CH",
+    "Sweden": "SE", "USA": "US", "United States": "US", "Canada": "CA", "Colombia": "CO", "Ecuador": "EC",
+    "Paraguay": "PY", "Peru": "PE", "Uruguay": "UY", "Chile": "CL", "Bolivia": "BO", "Venezuela": "VE",
+    "Australia": "AU", "Saudi Arabia": "SA", "Costa Rica": "CR", "Honduras": "HN", "Guatemala": "GT",
+    "Panama": "PA", "Jamaica": "JM", "El Salvador": "SV", "Czech Republic": "CZ", "Czechia": "CZ", "Croatia": "HR",
+    "Serbia": "RS", "Scotland ": "GB", "Hungary": "HU", "Ukraine": "UA", "Israel": "IL", "Cyprus": "CY",
+}
+
+
+def city_lookup(country_name: str, city: str):
+    """(lat, lon) of a city given ESPN's country name, or None."""
+    code = COUNTRY_CODE.get((country_name or "").strip())
+    if not code or not city:
+        return None
+    try:
+        return _city_lookup(code, city.split(",")[0].strip())
+    except Exception:  # noqa: BLE001 - cities table not downloaded
+        return None
 
 # Words in club names that are never the city.
 _STOP = {

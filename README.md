@@ -265,6 +265,27 @@ true" compares live and backtest hit rates per probability band, so you can pick
 - The backtest tiles now score **all** picks (the rule the page applies), not just the top 10 a day.
 - Every Dataset, Live and Analyze view shows all five goal-and-chance predictions as badges/cards.
 
+## More leagues and cups (ESPN and The Odds API)
+
+A forecast needs a fixture **with bookmaker odds** (the market baseline behind every probability) and a venue. Besides
+football-data.co.uk, the cycle now uses:
+
+- **ESPN's public scoreboard** (free, no key; DraftKings odds), checked first: games in our leagues not listed yet, and
+  leagues and cups football-data.co.uk does not cover: Colombia, Ecuador, Paraguay, Peru, Uruguay, Chile, Australia,
+  Brazil Serie B, Saudi Arabia; the FA Cup, EFL Cup, Copa del Rey, DFB-Pokal, Coppa Italia, Coupe de France, Copa
+  Libertadores, Copa Sudamericana and CONCACAF Champions Cup. Only games with home/draw/away odds are used; the
+  over/under 2.5 price is taken when ESPN's line is 2.5.
+- **The Odds API** (credits) afterwards, for what is still missing, now also covering the A-League, Brazil Serie B, Chile,
+  the Libertadores and Sudamericana, the FA Cup, EFL Cup, DFB-Pokal and Copa del Rey (women's competitions are left out:
+  the models were trained on men's league football).
+
+These competitions are handled like the UEFA ones: names matched strictly (cups use every club name we know), grounds
+found from our tables, the stadium ESPN names (its Wikipedia page) or its city, then a search, and cached in
+`ledger/european_venues.json`; results from ESPN (and football-data.org where it covers them); void after 3 days without a
+result. A game never gets two forecasts across sources (same competition, kickoff within 6 hours, matching names).
+Worldwide lists such as Flashscore also include women's, youth and many lower or regional leagues without published odds,
+which cannot be forecast this way.
+
 ## European competitions (Champions League, Europa League, Conference League)
 
 football-data.co.uk has no files for club competitions, so these come only from the secondary sources:
