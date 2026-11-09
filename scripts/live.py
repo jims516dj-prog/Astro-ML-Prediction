@@ -254,6 +254,24 @@ def probe_sources(now):
         if upcoming:
             print(f"ESPN {slug}: {len(upcoming)} upcoming, {len(with_odds)} with odds")
     print(f"ESPN total: {tot_ev} upcoming games in the next 2 days, {tot_odds} with odds")
+    for slug in ("esp.copa_del_rey", "col.1", "ecu.1", "par.1", "esp.2"):     # raw odds shape, for the parser
+        try:
+            evs = []
+            for k in (0, 1):
+                url = f"https://site.api.espn.com/apis/site/v2/sports/soccer/{slug}/scoreboard?dates={(d0 + timedelta(days=k)):%Y%m%d}"
+                req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (astro-football-research)"})
+                with urllib.request.urlopen(req, timeout=20) as r:
+                    evs += json.loads(r.read()).get("events", [])
+            for e in evs[:1]:
+                c = (e.get("competitions") or [{}])[0]
+                o = c.get("odds")
+                print(f"ESPN RAW {slug}: odds type {type(o).__name__}, len {len(o) if hasattr(o, '__len__') else '-'}")
+                for i, x in enumerate((o or [])[:2]):
+                    trim = {k: (v if not isinstance(v, dict) else {kk: vv for kk, vv in v.items() if kk != "link"})
+                            for k, v in (x or {}).items() if k not in ("link", "links")} if isinstance(x, dict) else x
+                    print(f"  odds[{i}]:", json.dumps(trim)[:1200])
+        except Exception as e:  # noqa: BLE001
+            print(f"ESPN RAW {slug}: {type(e).__name__} {e}")
     if sample:
         print("ESPN odds sample", sample[0], json.dumps(sample[1])[:1500])
 
