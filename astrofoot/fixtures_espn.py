@@ -33,6 +33,7 @@ SEEDS = {"bol.1": "Bolivian Liga Profesional", "ven.1": "Venezuelan Primera Divi
          "pan.1": "Panamanian Liga", "can.1": "Canadian Premier League", "arg.2": "Argentine Primera Nacional",
          "mex.2": "Liga de Expansión MX", "chi.2": "Chilean Primera B", "col.2": "Colombian Primera B",
          "eng.trophy": "English EFL Trophy", "uefa.nations": "UEFA Nations League"}
+ACADEMY_CUPS = {"eng.trophy"}
 # Youth, reserve and women's sides are left out (the models were trained on men's senior league football)
 YOUTH = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|women|femenin|féminin|\(w\)", re.I)
 NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|women|wom|fem|youth|olympic")
@@ -195,6 +196,13 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
                     continue
                 if YOUTH.search(g["home"]) or YOUTH.search(g["away"]):
                     continue
+                if slug in ACADEMY_CUPS:
+                    # only lower-league clubs enter these, plus top clubs' academy (U21) sides that ESPN may list
+                    # under the senior name: a top-two-division club here is its academy side
+                    senior = known_of("E0") | known_of("E1")
+                    if canonical_name(g["home"], senior) or canonical_name(g["away"], senior):
+                        skipped.append(f"{g['home']} v {g['away']} ({div}): an academy side (top-two-division club)")
+                        continue
                 if div in MULTI_CLUB:
                     h = european_name(g["home"], multi_pool) or g["home"]
                     a = european_name(g["away"], multi_pool) or g["away"]

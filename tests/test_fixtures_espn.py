@@ -104,3 +104,18 @@ def test_discovered_competitions_are_secondary_and_named(monkeypatch, tmp_path):
                                        lambda t, **kw: (-16.5, -68.1, "wikipedia: " + kw["hint"]["name"]),
                                        fetch=fetch, log=lambda *a: None)
     assert [(f["division"], f["home"], f["league"]) for f in out] == [("X:bol.1", "Bolívar", "Bolivian Liga Profesional")]
+
+
+def test_efl_trophy_skips_academy_sides():
+    feeds = {"eng.trophy": [ev("Leicester City", "Walsall", "2026-11-09T19:00Z"),
+                            ev("Barnet", "Leyton Orient", "2026-11-09T19:00Z")]}
+    fetch = lambda slug, day: feeds.get(slug, []) if day == NOW.date() else []                   # noqa: E731
+    known = {"E1": {"Leicester"}, "E0": {"Arsenal"}}
+    out = fixtures_espn.extra_fixtures([], NOW, 4, live.match_key, local_date, [], lambda d: known.get(d, set()),
+                                       set(), lambda t, **kw: (51.6, -0.29, "x"), fetch=fetch, log=lambda *a: None)
+    assert [(f["home"], f["away"]) for f in out] == [("Barnet", "Leyton Orient")]
+
+
+def test_distance():
+    from astrofoot import venues
+    assert 15 < venues.km((51.389, 0.017), (51.524, -0.031)) < 17          # Hayes Lane → Mile End

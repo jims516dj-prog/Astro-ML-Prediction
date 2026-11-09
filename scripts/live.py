@@ -80,18 +80,21 @@ class EuropeanGrounds:
                 loc = geo.resolve(team, division)          # a league's own country: the club's city
             except Exception:  # noqa: BLE001 - venue tables not downloaded
                 loc = None
-        if loc is None and hint:
-            if hint.get("name"):
+        city_ll = geo.city_lookup(hint.get("country"), hint.get("city")) if hint else None
+        if loc is None and hint and hint.get("name"):
+            name, city = hint["name"], hint.get("city") or ""
+            for fn, q, src in ((venues.wikipedia, name, "wikipedia"),                 # the stadium's own page
+                               (venues.nominatim_stadium, f"{name}, {city}" if city else name, "openstreetmap")):
                 try:
-                    hit = venues.wikipedia(hint["name"])         # the stadium's own page
+                    hit = fn(q)
                 except Exception:  # noqa: BLE001
                     hit = None
-                if hit:
-                    loc = (hit[0], hit[1], f"wikipedia: {hit[2]}")
-            if loc is None:
-                ll = geo.city_lookup(hint.get("country"), hint.get("city"))
-                if ll:
-                    loc = (ll[0], ll[1], f"city: {hint.get('city')}")
+                # a hit far from the city ESPN gives is a namesake elsewhere
+                if hit and (city_ll is None or venues.km(city_ll, hit[:2]) < 40):
+                    loc = (hit[0], hit[1], f"{src}: {hit[2]}")
+                    break
+        if loc is None and city_ll:
+            loc = (city_ll[0], city_ll[1], f"city: {hint.get('city')}")
         if loc is None:
             for fn, src in ((venues.wikipedia_ground, "wikipedia"), (venues.nominatim_ground, "openstreetmap")):
                 try:
