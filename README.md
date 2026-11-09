@@ -279,6 +279,13 @@ football-data.co.uk, the cycle now uses:
   the Libertadores and Sudamericana, the FA Cup, EFL Cup, DFB-Pokal and Copa del Rey (women's competitions are left out:
   the models were trained on men's league football).
 
+**Discovery.** ESPN publishes odds for a competition only around its match days, so once a day the cycle scans every
+men's competition ESPN lists (about 185) and remembers each one that shows home/draw/away odds
+(`ledger/espn_competitions.json`); from then on its fixtures are checked every cycle. A few are checked from the start
+(Bolivia, Venezuela, Costa Rica, Honduras, Guatemala, El Salvador, Panama, Canada, Argentina's Primera Nacional, Liga de
+Expansión MX, Chile and Colombia's second divisions, the EFL Trophy, the Nations League). These appear as their own
+leagues (division codes such as `X:bol.1`). Youth (U21, U23…) and women's sides are left out.
+
 These competitions are handled like the UEFA ones: names matched strictly (cups use every club name we know), grounds
 found from our tables, the stadium ESPN names (its Wikipedia page) or its city, then a search, and cached in
 `ledger/european_venues.json`; results from ESPN (and football-data.org where it covers them); void after 3 days without a

@@ -43,10 +43,17 @@ def _get(url: str) -> list[dict]:
         return json.loads(r.read()).get("events", [])
 
 
+def slug_of(division: str) -> str | None:
+    """ESPN league slug of a division: fixed map, or the slug inside a discovered "X:" code."""
+    if division in LEAGUE_SLUG:
+        return LEAGUE_SLUG[division]
+    return division[2:] if isinstance(division, str) and division.startswith("X:") else None
+
+
 def fetch(division: str, date_from: date, date_to: date, base: str = API) -> list[dict]:
     """Raw ESPN events of one division between two dates (inclusive): one range query, or day by day
     if the feed refuses the range."""
-    url = f"{base}/{LEAGUE_SLUG[division]}/scoreboard"
+    url = f"{base}/{slug_of(division)}/scoreboard"
     try:
         return _get(f"{url}?dates={date_from:%Y%m%d}-{date_to:%Y%m%d}")
     except urllib.error.HTTPError as e:
@@ -91,7 +98,7 @@ def match_results(pending: list[dict], fetcher=fetch) -> tuple[dict[str, dict], 
     """Look up every pending forecast's division on ESPN. Returns (found, notes, events-per-division)."""
     by_div: dict[str, list[dict]] = {}
     for r in pending:
-        if r["division"] in LEAGUE_SLUG:
+        if slug_of(r["division"]):
             by_div.setdefault(r["division"], []).append(r)
     found, notes, counts = {}, [], {}
     for div, recs in sorted(by_div.items()):

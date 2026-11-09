@@ -21,6 +21,7 @@ from fastapi.templating import Jinja2Templates
 from .. import db, doublechance, form, foundings, goalmarkets, live, merged, mypicks, overunder, service, sync, teamgoals, venues
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
+from ..dataset import league_name as _league_name
 from ..tables import JERSEY_COLOR_PLANET
 from .svg import chart_wheel, orb_svg, placebo_svg, reliability_svg
 
@@ -31,7 +32,7 @@ T = Jinja2Templates(directory=HERE / "templates")
 T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.{d}f}%",
                      fmt_num=lambda x, d=4: "—" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x:+.{d}f}",
                      JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET),
-                     league_name=lambda code: LEAGUE_NAMES.get(code, code),
+                     league_name=lambda code: _league_name(code),
                      goal_markets=lambda a: goalmarkets.from_analysis(a),
                      mypicks_market=lambda code: mypicks.MARKET_NAMES.get(code.split(":")[0], code),
                      day_label=lambda d: _day_label(d))

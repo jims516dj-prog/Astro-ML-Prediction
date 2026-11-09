@@ -68,3 +68,39 @@ def test_extra_fixtures_leagues_cups_and_dedupe():
     assert grounds == [("CD Lugo", "CDR", "Anxo Carro")] and cup["odds_source"] == "espn.com DraftKings"
     gij = next(f for f in out if f["home"] == "Sp Gijon")
     assert "venue_lat" not in gij and gij["p_over25"] is not None
+
+
+def test_discovery_remembers_competitions_with_odds(tmp_path, monkeypatch):
+    path = tmp_path / "comps.json"
+    pages = {fixtures_espn.CORE: {"items": [{"$ref": "http://x/leagues/bol.1?lang=en"}, {"$ref": "http://x/leagues/ven.1?"},
+                                             {"$ref": "http://x/leagues/bra.w.1?"}, {"$ref": "http://x/leagues/esp.u19?"}]}}
+
+    def get(url):
+        if url in pages:
+            return pages[url]
+        slug = url.split("/soccer/")[1].split("/")[0]
+        if slug == "bol.1" and url.endswith(NOW.strftime("%Y%m%d")):
+            return {"leagues": [{"name": "Bolivian Liga"}], "events": [ev("Bolívar", "The Strongest", "2026-11-09T23:00Z")]}
+        return {"leagues": [{"name": slug}], "events": [ev("A", "B", "2026-11-09T23:00Z", ml=None)]}
+    assert fixtures_espn.discover(NOW, path, get=get, log=lambda *a: None) == 1
+    import json
+    assert json.loads(path.read_text())["competitions"] == {"bol.1": "Bolivian Liga"}       # women's/youth not scanned
+    assert fixtures_espn.discover(NOW, path, get=get, log=lambda *a: None) == -1             # once a day
+    monkeypatch.setattr(fixtures_espn, "COMP_FILE", path)
+    fixtures_espn._comps.cache_clear()
+    codes = dict(fixtures_espn.discovered_slugs())
+    assert codes["X:bol.1"] == "bol.1" and codes["X:ven.1"] == "ven.1"                       # remembered + seed
+
+
+def test_discovered_competitions_are_secondary_and_named(monkeypatch, tmp_path):
+    from astrofoot import dataset, results_espn
+    assert "X:bol.1" in dataset.NO_PRIMARY and "E0" not in dataset.NO_PRIMARY and "UCL" in dataset.NO_PRIMARY
+    assert results_espn.slug_of("X:bol.1") == "bol.1" and results_espn.slug_of("E0") == "eng.1"
+    assert dataset.league_name("X:ven.1") == "Venezuelan Primera División" and dataset.league_name("E0").startswith("England")
+    feeds = {"bol.1": [ev("Bolívar", "The Strongest", "2026-11-09T23:00Z", venue=("Hernando Siles", "La Paz", "Bolivia")),
+                       ev("Bolívar U20", "Always Ready U20", "2026-11-09T18:00Z")]}
+    fetch = lambda slug, day: feeds.get(slug, []) if day == NOW.date() else []                   # noqa: E731
+    out = fixtures_espn.extra_fixtures([], NOW, 4, live.match_key, local_date, [], lambda d: set(), set(),
+                                       lambda t, **kw: (-16.5, -68.1, "wikipedia: " + kw["hint"]["name"]),
+                                       fetch=fetch, log=lambda *a: None)
+    assert [(f["division"], f["home"], f["league"]) for f in out] == [("X:bol.1", "Bolívar", "Bolivian Liga Profesional")]

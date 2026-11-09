@@ -44,7 +44,27 @@ CUPS = {"FAC", "EFLC", "CDR", "DFB", "CIT", "CDF", "LIB", "SUD", "CCC"}
 # Leagues football-data.co.uk does not cover (fixtures, odds and results from ESPN / The Odds API only).
 EXTRA_SECONDARY = {"COL", "ECU", "PAR", "PER", "URU", "CHI", "AUS", "BRA2", "KSA"}
 MULTI_CLUB = EUROPEAN | CUPS
-NO_PRIMARY = EUROPEAN | CUPS | EXTRA_SECONDARY
+DISCOVERED = "X:"          # prefix of competitions found on ESPN by discovery, e.g. "X:bol.1" (fixtures_espn.py)
+
+
+class _Secondary(frozenset):
+    """The competitions without football-data.co.uk files: the fixed ones plus every discovered "X:" code."""
+
+    def __contains__(self, div) -> bool:
+        return (isinstance(div, str) and div.startswith(DISCOVERED)) or frozenset.__contains__(self, div)
+
+
+NO_PRIMARY = _Secondary(EUROPEAN | CUPS | EXTRA_SECONDARY)
+
+
+def league_name(code: str) -> str:
+    """Display name of a division: our names, then the names of competitions discovered on ESPN."""
+    if code in LEAGUE_NAMES:
+        return LEAGUE_NAMES[code]
+    if isinstance(code, str) and code.startswith(DISCOVERED):
+        from .fixtures_espn import discovered_names
+        return discovered_names().get(code[len(DISCOVERED):], code[len(DISCOVERED):])
+    return code
 
 
 def devig(odds: np.ndarray) -> np.ndarray:
