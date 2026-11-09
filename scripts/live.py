@@ -363,6 +363,11 @@ AMERICAS = ("usa", "united states", "mls", "usl", "canad", "mexic", "liga mx", "
             "libertadores", "sudamericana", "copa do brasil", "recopa", "leagues cup", "open cup")
 
 
+OCEANIA_MIDEAST = ("austral", "a-league", "new zealand", "nzl", "ofc", "oceania", "fiji", "papua", "tahiti", "saudi",
+                   "emirat", "uae", "qatar", "stars league", "iran", "persian", "iraq", "jordan", "kuwait", "bahrain",
+                   "oman", "leban", "syria", "yemen", "israel", "gulf", "arabian", "afc", "king's cup", "crown prince")
+
+
 def probe_sources(now):
     """Diagnose only: which free sources could list more fixtures *with odds* (a forecast needs odds)."""
     import json
@@ -496,6 +501,7 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
+        probe_region(now, OCEANIA_MIDEAST, "OCEANIA/MIDEAST", days=14)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())
