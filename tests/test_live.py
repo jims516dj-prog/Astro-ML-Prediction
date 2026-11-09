@@ -124,3 +124,16 @@ def test_postponed_match_becomes_void_not_pending(tmp_path):
     assert r["status"] == "void" and r["outcome"] is None
     rep = live.report(tmp_path)
     assert rep["void"] == 1 and rep["settled"] == 0 and rep["pending"] == 0
+
+
+def test_reinstated_forecast_is_pending_again(tmp_path):
+    import json
+
+    from astrofoot import live
+    rows = [{"match_key": "k", "void": True, "reason": "withdrawn before kickoff: mistake"},
+            {"match_key": "k", "reinstated": True, "reason": "the withdrawal was an error"}]
+    (tmp_path / "results.jsonl").write_text("\n".join(json.dumps(r) for r in rows) + "\n")
+    assert "k" not in live.read_results(tmp_path)
+    (tmp_path / "results.jsonl").write_text("\n".join(json.dumps(r) for r in rows + [{"match_key": "k", "goals_home": 1,
+                                                                                    "goals_away": 0}]) + "\n")
+    assert live.read_results(tmp_path)["k"]["goals_home"] == 1

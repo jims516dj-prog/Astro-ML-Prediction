@@ -172,7 +172,7 @@ def parse_event(ev: dict) -> dict | None:
 
 def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, match_key, local_date,
                    ledger_preds: list[dict], known_of, multi_pool: set[str], venue_of, fetch=fetch,
-                   log=print) -> list[dict]:
+                   log=print, senior_clubs: set[str] | None = None) -> list[dict]:
     """Fixtures (with odds) ESPN lists that `primary` does not, in the form of live.parse_fixtures.
     known_of(div) -> football-data.co.uk names for one of our leagues; multi_pool: names for cups/European ties."""
     busy = {(f["division"], f["kickoff_utc"][:10], t) for f in primary for t in (f["home"], f["away"])}
@@ -199,7 +199,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
                 if slug in ACADEMY_CUPS:
                     # only lower-league clubs enter these, plus top clubs' academy (U21) sides that ESPN may list
                     # under the senior name: a top-two-division club here is its academy side
-                    senior = known_of("E0") | known_of("E1")
+                    senior = senior_clubs if senior_clubs is not None else known_of("E0") | known_of("E1")
                     if canonical_name(g["home"], senior) or canonical_name(g["away"], senior):
                         skipped.append(f"{g['home']} v {g['away']} ({div}): an academy side (top-two-division club)")
                         continue

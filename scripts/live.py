@@ -34,6 +34,19 @@ def recent_names(ledger: Path) -> dict[str, set[str]]:
     return out
 
 
+def current_clubs(ledger: Path, now, divisions, fixtures: list[dict]) -> set[str]:
+    """Clubs playing in `divisions` this season (results since the season started, plus listed fixtures)."""
+    start = f"{now.year - (now.month < 7)}-07-01"
+    names = {n for f in fixtures if f["division"] in divisions for n in (f["home"], f["away"])}
+    p = ledger / "recent_results.csv"
+    if p.exists():
+        import pandas as pd
+        r = pd.read_csv(p, usecols=["kickoff_utc", "division", "home", "away"])
+        r = r[r.division.isin(divisions) & (r.kickoff_utc >= start)]
+        names |= set(r.home) | set(r.away)
+    return names
+
+
 def european_pool(fixtures: list[dict], preds: list[dict], ledger: Path | None = None) -> set[str]:
     """football-data.co.uk names of the clubs we know (every league we cover: fixtures, forecasts, this and last
     season's results), so a club in a cup or a European tie gets the same name, and ground, as in its league.
@@ -138,7 +151,8 @@ def load_fixtures(a, now) -> list[dict]:
         print(f"espn.com discovery failed: {type(e).__name__}: {e}", file=sys.stderr)
     try:
         out += fixtures_espn.extra_fixtures(out, now, a.horizon, live.match_key, local_date, preds, known_of,
-                                            european_pool(out, preds, a.ledger), grounds)
+                                            european_pool(out, preds, a.ledger), grounds,
+                                            senior_clubs=current_clubs(a.ledger, now, ("E0", "E1"), out))
     except Exception as e:  # noqa: BLE001 - an unofficial feed: never block the cycle
         import traceback
         print(f"espn.com fixtures unavailable: {type(e).__name__}: {e}\n" + "".join(traceback.format_exc(limit=4)),

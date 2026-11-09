@@ -206,7 +206,13 @@ def read_results(ledger: Path = LEDGER) -> dict[str, dict]:
     if not p.exists():
         return {}
     rows = [json.loads(line) for line in p.read_text().splitlines() if line.strip()]
-    return {r["match_key"]: r for r in rows}
+    out = {}
+    for r in rows:
+        if r.get("reinstated"):          # a withdrawal made in error, undone: the forecast is pending again
+            out.pop(r["match_key"], None)
+        else:
+            out[r["match_key"]] = r
+    return out
 
 
 def _append(path: Path, recs: list[dict]):
