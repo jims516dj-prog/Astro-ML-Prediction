@@ -50,6 +50,7 @@ SPORT_DIV = {
     "soccer_conmebol_copa_libertadores": "LIB", "soccer_conmebol_copa_sudamericana": "SUD",
     "soccer_england_efl_cup": "EFLC", "soccer_fa_cup": "FAC", "soccer_germany_dfb_pokal": "DFB",
     "soccer_spain_copa_del_rey": "CDR",
+    "soccer_korea_kleague1": "KOR", "soccer_saudi_arabia_pro_league": "KSA", "soccer_africa_cup_of_nations": "AFCON",
 }
 
 

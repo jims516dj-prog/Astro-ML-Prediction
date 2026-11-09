@@ -384,7 +384,8 @@ def diagnose(a, now):
         except Exception as e:  # noqa: BLE001
             print(f"FIXTURES {url}: unavailable ({type(e).__name__}: {e})")
     settled = live.read_results(a.ledger)
-    pending = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in settled]
+    pending = [r for r in live.read_predictions(a.ledger) if r["match_key"] not in settled
+               and r["division"] not in live.NO_PRIMARY]          # those have no football-data.co.uk file
     print(f"PENDING forecasts: {len(pending)}")
     print("EXTRA FIXTURES the-odds-api.com: " + ("key configured" if fixtures2.token() else
           "no key (set the ODDS_API_KEY secret to add games football-data.co.uk has not listed yet)"))
@@ -427,7 +428,6 @@ def main():
     now = datetime.fromisoformat(a.now) if a.now else datetime.now(timezone.utc)
     if a.cmd == "diagnose":
         diagnose(a, now)
-        probe_asia_africa(now)
         return
     if a.cmd == "verify":
         recs = live.read_predictions(a.ledger) + list(live.read_results(a.ledger).values())

@@ -28,7 +28,7 @@ DIVISION_COUNTRY = {
     "IRL": "IE", "JAP": "JP", "MEX": "MX", "NOR": "NO", "POL": "PL", "ROM": "RO",
     "RUS": "RU", "SUI": "CH", "SWE": "SE", "USA": "US",
     "COL": "CO", "ECU": "EC", "PAR": "PY", "PER": "PE", "URU": "UY", "CHI": "CL", "AUS": "AU", "BRA2": "BR",
-    "KSA": "SA", "FAC": "GB", "EFLC": "GB", "CDR": "ES", "DFB": "DE", "CIT": "IT", "CDF": "FR",
+    "KSA": "SA", "KOR": "KR", "FAC": "GB", "EFLC": "GB", "CDR": "ES", "DFB": "DE", "CIT": "IT", "CDF": "FR",
 }
 # Country names as ESPN writes them in venue addresses → ISO codes of the cities table
 COUNTRY_CODE = {
@@ -40,7 +40,8 @@ COUNTRY_CODE = {
     "Sweden": "SE", "USA": "US", "United States": "US", "Canada": "CA", "Colombia": "CO", "Ecuador": "EC",
     "Paraguay": "PY", "Peru": "PE", "Uruguay": "UY", "Chile": "CL", "Bolivia": "BO", "Venezuela": "VE",
     "Australia": "AU", "Saudi Arabia": "SA", "Costa Rica": "CR", "Honduras": "HN", "Guatemala": "GT",
-    "Panama": "PA", "Jamaica": "JM", "El Salvador": "SV", "Czech Republic": "CZ", "Czechia": "CZ", "Croatia": "HR",
+    "Panama": "PA", "Jamaica": "JM", "South Korea": "KR", "Korea Republic": "KR", "Egypt": "EG", "Morocco": "MA",
+    "South Africa": "ZA", "Nigeria": "NG", "Ghana": "GH", "India": "IN", "Qatar": "QA", "United Arab Emirates": "AE", "El Salvador": "SV", "Czech Republic": "CZ", "Czechia": "CZ", "Croatia": "HR",
     "Serbia": "RS", "Scotland ": "GB", "Hungary": "HU", "Ukraine": "UA", "Israel": "IL", "Cyprus": "CY",
 }
 

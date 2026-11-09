@@ -286,6 +286,12 @@ men's competition ESPN lists (about 185) and remembers each one that shows home/
 Expansión MX, Chile and Colombia's second divisions, the EFL Trophy, the Nations League). These appear as their own
 leagues (division codes such as `X:bol.1`). Youth (U21, U23…) and women's sides are left out.
 
+**Asia and Africa.** Free odds are scarce here. Japan and China come from football-data.co.uk; The Odds API prices the
+K League 1, Saudi Pro League and Africa Cup of Nations (used automatically whenever they are in season); ESPN lists many
+Asian and African competitions (AFC and CAF cups and qualifiers, India, South Africa, Saudi Arabia) but, as of November
+2026, without odds, and discovery will pick any of them up the day ESPN starts pricing them. No free source found
+publishes odds for African domestic leagues (Egypt, Morocco, Nigeria…), so those cannot be forecast.
+
 These competitions are handled like the UEFA ones: names matched strictly (cups use every club name we know), grounds
 found from our tables, the stadium ESPN names (its Wikipedia page) or its city, then a search, and cached in
 `ledger/european_venues.json`; results from ESPN (and football-data.org where it covers them); void after 3 days without a
