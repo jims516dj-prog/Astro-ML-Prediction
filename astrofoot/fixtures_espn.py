@@ -40,7 +40,10 @@ SEEDS = {"bol.1": "Bolivian Liga Profesional", "ven.1": "Venezuelan Primera Divi
          "usa.open": "U.S. Open Cup", "conmebol.recopa": "CONMEBOL Recopa", "concacaf.leagues.cup": "Leagues Cup",
          "bra.camp.paulista": "Brazilian Campeonato Paulista", "bra.camp.carioca": "Brazilian Campeonato Carioca",
          "bra.camp.mineiro": "Brazilian Campeonato Mineiro", "bra.camp.gaucho": "Brazilian Campeonato Gaucho",
-         "concacaf.nations.league": "Concacaf Nations League"}
+         "concacaf.nations.league": "Concacaf Nations League",
+         # Oceania and the Middle East: the club competitions ESPN carries (the A-League and Saudi Pro League are mapped)
+         "afc.champions": "AFC Champions League Elite", "afc.cup": "AFC Champions League Two",
+         "ksa.kings.cup": "Saudi King's Cup"}
 ACADEMY_CUPS = {"eng.trophy"}
 # Youth, reserve and women's sides are left out (the models were trained on men's senior league football)
 YOUTH = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|women|femenin|féminin|\(w\)", re.I)

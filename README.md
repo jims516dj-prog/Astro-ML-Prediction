@@ -294,6 +294,11 @@ divisions, the USL Championship and League One, the Copa Argentina, Copa do Bras
 U.S. Open Cup, Recopa, Leagues Cup, the Brazilian state championships and the CONCACAF Nations League. College (NCAA) and
 women's competitions are left out.
 
+**Oceania and the Middle East.** Australia's A-League and the Saudi Pro League are forecast (The Odds API and ESPN);
+the AFC Champions League Elite, AFC Champions League Two and Saudi King's Cup are checked every cycle and forecast as
+soon as ESPN prices them. No free source found carries the UAE, Qatari, Iranian, Iraqi, Jordanian, Kuwaiti or New
+Zealand leagues.
+
 **More of Europe.** ESPN adds the Dutch Eerste Divisie and the KNVB Cup, Taça de Portugal, Scottish Cup, League Cup and
 Challenge Cup; The Odds API adds Germany's 3. Liga and Sweden's Superettan and also prices the Coupe de France and Coppa
 Italia. Results for competitions only The Odds API covers (3. Liga, Superettan) come from its scores endpoint (2 credits a
