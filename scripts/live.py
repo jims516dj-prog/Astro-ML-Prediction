@@ -63,8 +63,12 @@ class EuropeanGrounds:
     then Wikipedia / OpenStreetMap for clubs outside our leagues. Lookups are cached in the ledger
     (european_venues.json), so a club's ground is found once and stays the same."""
 
-    def __init__(self, ledger: Path, preds: list[dict]):
-        self.path = ledger / "european_venues.json"
+    def __init__(self, ledger: Path, preds: list[dict], cache_name: str = "european_venues.json",
+                 hint_only: bool = False):
+        """hint_only (women's section): use only the venue the source names for each game, never the men's venue
+        tables or a search by club name (women's teams often play elsewhere); cached by venue, not by club."""
+        self.hint_only = hint_only
+        self.path = ledger / cache_name
         try:
             self.cache = json.loads(self.path.read_text())
         except (OSError, ValueError):
@@ -76,19 +80,26 @@ class EuropeanGrounds:
 
     def __call__(self, team: str, division: str | None = None, hint: dict | None = None):
         """hint: the venue as the fixtures source gives it ({name, city, country}), used before searching."""
-        if team in self.cache:
-            c = self.cache[team]
+        key = team
+        if self.hint_only:
+            if not hint or not (hint.get("name") or hint.get("city")):
+                return None
+            key = f"{hint.get('name') or ''} | {hint.get('city') or ''}"
+        if key in self.cache:
+            c = self.cache[key]
             return (c["lat"], c["lon"], c["source"])
         loc = None
         try:
-            st = geo.stadiums()
+            st = {} if self.hint_only else geo.stadiums()
             if team in st:
                 loc = (*st[team], "stadium")
         except Exception:  # noqa: BLE001
             pass
-        if loc is None and team in self.div_of:
+        if self.hint_only:
+            pass
+        elif loc is None and team in self.div_of:
             loc = geo.resolve(team, self.div_of[team])
-        if loc is None and division in geo.DIVISION_COUNTRY and division not in live.MULTI_CLUB:
+        if loc is None and not self.hint_only and division in geo.DIVISION_COUNTRY and division not in live.MULTI_CLUB:
             try:
                 loc = geo.resolve(team, division)          # a league's own country: the club's city
             except Exception:  # noqa: BLE001 - venue tables not downloaded
@@ -108,7 +119,7 @@ class EuropeanGrounds:
                     break
         if loc is None and city_ll:
             loc = (city_ll[0], city_ll[1], f"city: {hint.get('city')}")
-        if loc is None:
+        if loc is None and not self.hint_only:
             for fn, src in ((venues.wikipedia_ground, "wikipedia"), (venues.nominatim_ground, "openstreetmap")):
                 try:
                     hit = fn(team)
@@ -119,10 +130,49 @@ class EuropeanGrounds:
                     break
         if loc is None:
             return None             # not cached: tried again next cycle
-        self.cache[team] = {"lat": loc[0], "lon": loc[1], "source": loc[2]}
+        self.cache[key] = {"lat": loc[0], "lon": loc[1], "source": loc[2]}
         self.path.parent.mkdir(parents=True, exist_ok=True)
         self.path.write_text(json.dumps(self.cache, indent=1, sort_keys=True, ensure_ascii=False) + "\n")
         return loc
+
+
+def women_cycle(a, now):
+    """The women's section: its own ledger (ledger/women), sources, grounds and track record; never mixed with
+    the men's. Fixtures and odds from ESPN (women's competitions discovered daily), results from ESPN."""
+    import pandas as pd
+    wl = a.ledger / "women"
+    wl.mkdir(parents=True, exist_ok=True)
+    try:
+        fixtures_espn.discover(now, wl / "espn_competitions.json", women=True)
+    except Exception as e:  # noqa: BLE001
+        print(f"women: discovery failed: {type(e).__name__}: {e}", file=sys.stderr)
+    preds = live.read_predictions(wl)
+    settled = live.read_results(wl)
+    waiting = [r for r in preds if r["match_key"] not in settled
+               and datetime.fromisoformat(r["kickoff_utc"]) + timedelta(hours=2) < now]
+    found = {}
+    if waiting:
+        found, notes, _ = results_espn.match_results(waiting)
+        print(f"women: espn.com {len(found)} of {len(waiting)} pending result(s) found")
+    print(f"women: settled {live.settle(found, now, wl, source=results_espn.SOURCE)} match(es)")
+    local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
+    voided = {k for k, v in live.read_results(wl).items() if v.get("void")}
+    active = [r for r in preds if r["match_key"] not in voided]
+    grounds = EuropeanGrounds(wl, active, cache_name="venues.json", hint_only=True)
+    try:
+        fx = fixtures_espn.extra_fixtures([], now, a.horizon, live.match_key, local_date, active, lambda d: set(), set(),
+                                          grounds, competitions=fixtures_espn.women_slugs(), women=True,
+                                          log=lambda *x: print("women:", *x))
+    except Exception as e:  # noqa: BLE001
+        print(f"women: espn.com fixtures unavailable: {type(e).__name__}: {e}", file=sys.stderr)
+        fx = []
+    r = live.commit(fx, now, a.horizon, wl)
+    print(f"women: committed {r['committed']} prediction(s)")
+    for s_ in r["skipped"]:
+        print("  women skipped:", s_)
+    rep = live.report(wl)
+    live.write_report(rep, wl)
+    print(f"women: report: {rep['settled']} settled, {rep['pending']} pending")
 
 
 def load_fixtures(a, now) -> list[dict]:
@@ -522,6 +572,12 @@ def main():
             print("  skipped:", s)
     rep = live.report(a.ledger)
     live.write_report(rep, a.ledger)
+    if a.cmd == "cycle" and not a.fixtures:
+        try:
+            women_cycle(a, now)
+        except Exception as e:  # noqa: BLE001 - the women's section never blocks the men's record
+            import traceback
+            print(f"women: cycle failed: {type(e).__name__}: {e}\n{traceback.format_exc(limit=4)}", file=sys.stderr)
     print(f"report: {rep['settled']} settled, {rep['pending']} pending")
 
 

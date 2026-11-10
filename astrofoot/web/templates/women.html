@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% from "_goals.html" import badges as gm_badges %}
+{% block title %}Women · Astro Football Lab{% endblock %}
+{% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
+{% block body %}
+<h1>Women's football</h1>
+<p class="lede">A separate section for women's competitions: its own forecasts, sealed before kickoff and scored like the
+men's, in its own ledger (<code>ledger/women</code>), never mixed into the men's track record, Top picks, My picks or
+Dataset. Fixtures and odds come from ESPN (women's competitions with odds are discovered daily), results from ESPN.</p>
+<p class="callout small"><strong>Read with care.</strong> Engine 4 and the goal-market recalibrations were trained on men's
+football, so these probabilities rest mainly on the bookmaker odds; the classical engines are shown as for the men. Grounds
+are the venues ESPN names for each game (women's teams often play away from the men's stadiums), and form checks use
+women's results only. The track record below shows how well this holds up.</p>
+
+<section class="tiles">
+  <div class="tile"><div class="k">Women's forecasts</div><div class="v">{{ n }}</div><div class="s">{{ n_settled }} played</div></div>
+  <div class="tile"><div class="k">Most likely outcome (all markets)</div>
+    {% if score_summary.n %}<div class="v">{{ score_summary.hits }} / {{ score_summary.n }}</div>
+    <div class="s">hit rate {{ fmt_pct(score_summary.hit_rate) }} vs {{ fmt_pct(score_summary.expected) }} expected (± {{ fmt_pct(score_summary.se) }})</div>
+    {% else %}<div class="v sm">none played yet</div>{% endif %}</div>
+  <div class="tile"><div class="k">Match result (most likely)</div>
+    {% if score_result.n %}<div class="v">{{ score_result.hits }} / {{ score_result.n }}</div>
+    <div class="s">hit rate {{ fmt_pct(score_result.hit_rate) }} vs {{ fmt_pct(score_result.expected) }} expected</div>
+    {% else %}<div class="v sm">none played yet</div>{% endif %}</div>
+</section>
+
+<form method="get" class="filters">
+  <label>Day<select name="day" onchange="this.form.submit()">
+    <option value="all" {{ "selected" if day == "all" }}>All days</option>
+    {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
+  <label>Status<select name="status" onchange="this.form.submit()"><option value="">All</option>
+    {% for v, l in [("pending","Pending"),("settled","Completed"),("void","Postponed / void")] %}<option value="{{ v }}" {{ "selected" if status==v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Competition<select name="league" onchange="this.form.submit()"><option value="">All</option>
+    {% for l in leagues %}<option value="{{ l }}" {{ "selected" if league==l }}>{{ league_name(l) }}</option>{% endfor %}</select></label>
+</form>
+
+<div class="scroll"><table class="data small">
+<thead><tr><th>Kickoff (UTC)</th><th>Competition</th><th>Match</th><th class="num">xG home · away</th><th>Favourite</th>
+<th class="num">Market F/D/U</th><th>Most likely outcome</th><th>Rao</th><th>Chok.</th><th>Fraw.</th>
+<th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th></tr></thead>
+<tbody>{% for r in rows %}{% set p = r.predictions %}
+<tr><td class="mono">{{ r.kickoff_utc[:16].replace("T", " ") }}</td><td>{{ league_name(r.division) }}</td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}</td>
+<td class="num mono" style="white-space:nowrap">{{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</td>
+<td>{{ r.favourite }}</td>
+<td class="num">{{ fmt_pct(p.market.fav, 0) }}/{{ fmt_pct(p.market.draw, 0) }}/{{ fmt_pct(p.market.dog, 0) }}</td>
+<td>{% if r.sum_label %}<strong>{{ r.sum_label }}</strong> <span class="mono">{{ fmt_pct(r.sum_pick_p, 0) }}</span>{% if r.sum_hit is not none %} {{ "✓" if r.sum_hit else "✗" }}{% endif %}{% endif %}</td>
+{% for k in ["rao", "chokoisky", "frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ W[p[k].winner] }}</td>{% endfor %}
+<td>{{ gm_badges(r.gm) }}</td>
+<td class="mono">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }}{% elif r.status == "void" %}<span title="{{ r.void_reason or 'postponed or abandoned' }}">void</span>{% else %}pending{% endif %}</td></tr>
+{% else %}<tr><td colspan="12">No women's forecasts {% if day != "all" %}for {{ day_label(day) }} {% endif %}yet. They appear as ESPN prices women's games (the GitHub cycle checks three times a day).</td></tr>{% endfor %}</tbody>
+</table></div>
+{% endblock %}

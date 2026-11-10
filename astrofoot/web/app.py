@@ -512,9 +512,44 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
         "xg_steps": [t for t in form.XG_STEPS if t > 0], "page": "live"})
 
 
+WOMEN_LEDGER = live.LEDGER / "women"
+
+
+@app.get("/women", response_class=HTMLResponse)
+def women_page(request: Request, day: str = "", status: str = "", league: str = ""):
+    """The women's section: its own forecasts and track record (ledger/women), never mixed with the men's."""
+    recs = live.records(WOMEN_LEDGER)
+    for r in recs:
+        r["url"] = f"/women/match/{r['match_key']}"
+        _xg_pass(r, 0.0, "either")
+    live.add_summary(recs)
+    days = sorted({r["kickoff_utc"][:10] for r in recs}, reverse=True)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if day not in days and day != "all":
+        day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else "all")
+    rows = [r for r in recs if (day == "all" or r["kickoff_utc"][:10] == day) and (not status or r["status"] == status)
+            and (not league or r["division"] == league) and (status == "void" or r["status"] != "void" or not status)]
+    rows.sort(key=lambda r: (r["kickoff_utc"], r["home"]))
+    for r in rows:
+        r["gm"] = _gm_live(r)
+    scored = [r for r in recs if r["pre_kickoff"] and r["status"] != "void"]
+    return T.TemplateResponse(request, "women.html", {
+        "rows": rows, "day": day, "days": days, "status": status, "league": league,
+        "leagues": sorted({r["division"] for r in recs}, key=_league_name),
+        "n": len(recs), "n_settled": sum(r["status"] == "settled" for r in recs),
+        "score_summary": live.score_picks(scored, "summary"), "score_result": live.score_picks(scored, "result"),
+        "page": "women"})
+
+
+@app.get("/women/match/{key}", response_class=HTMLResponse)
+def women_match(request: Request, key: str):
+    return live_match(request, key, women=True)
+
+
 @app.get("/live/match/{key}", response_class=HTMLResponse)
-def live_match(request: Request, key: str, dup: int = 0):
-    rec = next((r for r in live.records() if r["match_key"] == key), None)
+def live_match(request: Request, key: str, dup: int = 0, women: bool = False):
+    recs = live.records(WOMEN_LEDGER) if women else live.records()
+    rec = next((r for r in recs if r["match_key"] == key), None)
     if rec is None:
         raise HTTPException(404)
     o = rec["odds"]
@@ -528,11 +563,12 @@ def live_match(request: Request, key: str, dup: int = 0):
     diffs = [k for k in ("rao", "chokoisky", "frawley")
              if a["verdicts"][k]["winner"] != rec["predictions"].get(k, {}).get("winner")]
     wheels = {z: chart_wheel(a["chart"][z], z) for z in ("tropical", "lahiri")}
-    fc = form.analyse(rec, form.history(live.records()))
+    fc = form.analyse(rec, form.history(recs, men=not women))     # women: women's results only
     return T.TemplateResponse(request, "live_match.html", {"r": rec, "a": a, "wheels": wheels, "diffs": diffs, "dup": dup,
+        "women": women,
         "fc": fc, "fc_research": form.load_research(),
                                                            "team_a": rec["home"], "team_b": rec["away"],
-                                                           "page": "live"})
+                                                           "page": "women" if women else "live"})
 
 
 # Files the GitHub jobs publish (ledger, model versions, reports). Local edits to them only block

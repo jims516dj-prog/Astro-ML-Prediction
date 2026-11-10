@@ -48,13 +48,14 @@ CUPS = {"FAC", "EFLC", "CDR", "DFB", "CIT", "CDF", "LIB", "SUD", "CCC", "AFCON",
 EXTRA_SECONDARY = {"COL", "ECU", "PAR", "PER", "URU", "CHI", "AUS", "BRA2", "KSA", "KOR", "N2", "D3", "SWE2"}
 MULTI_CLUB = EUROPEAN | CUPS
 DISCOVERED = "X:"          # prefix of competitions found on ESPN by discovery, e.g. "X:bol.1" (fixtures_espn.py)
+WOMEN = "W:"               # prefix of women's competitions (own ledger: ledger/women), e.g. "W:eng.w.1"
 
 
 class _Secondary(frozenset):
     """The competitions without football-data.co.uk files: the fixed ones plus every discovered "X:" code."""
 
     def __contains__(self, div) -> bool:
-        return (isinstance(div, str) and div.startswith(DISCOVERED)) or frozenset.__contains__(self, div)
+        return (isinstance(div, str) and div.startswith((DISCOVERED, WOMEN))) or frozenset.__contains__(self, div)
 
 
 NO_PRIMARY = _Secondary(EUROPEAN | CUPS | EXTRA_SECONDARY)
@@ -67,6 +68,9 @@ def league_name(code: str) -> str:
     if isinstance(code, str) and code.startswith(DISCOVERED):
         from .fixtures_espn import discovered_names
         return discovered_names().get(code[len(DISCOVERED):], code[len(DISCOVERED):])
+    if isinstance(code, str) and code.startswith(WOMEN):
+        from .fixtures_espn import women_names
+        return women_names().get(code[len(WOMEN):], code[len(WOMEN):])
     return code
 
 

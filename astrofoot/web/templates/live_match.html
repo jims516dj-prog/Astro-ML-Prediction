@@ -5,7 +5,10 @@
 {% if dup %}<p class="callout small"><strong>This game is already in the live record</strong>, so it was not added again
 (one entry per game). Here is the existing entry.</p>{% endif %}
 
-<p class="crumbs"><a href="/live">Live record</a> › forecast</p>
+<p class="crumbs">{% if women %}<a href="/women">Women</a> › forecast <span class="badge">women's section</span>{% else %}<a href="/live">Live record</a> › forecast{% endif %}</p>
+{% if women %}<p class="callout small">Women's football: the models behind Engine 4 and the goal-market recalibrations were trained on men's
+football, so these probabilities rest mainly on the bookmaker odds; the women's track record shows how well they hold up.
+Form checks use women's results only.</p>{% endif %}
 <h1>{{ r.home }} <span class="v">v</span> {{ r.away }}</h1>
 <p class="meta">{{ r.league }} · {{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %}
 · favourite: <strong>{{ r.favourite }}</strong> · odds {{ "%.2f"|format(r.odds.home) }} / {{ "%.2f"|format(r.odds.draw) }} / {{ "%.2f"|format(r.odds.away) }} ({{ r.odds_source }})

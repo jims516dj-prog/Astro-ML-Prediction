@@ -47,6 +47,16 @@ SEEDS = {"bol.1": "Bolivian Liga Profesional", "ven.1": "Venezuelan Primera Divi
 ACADEMY_CUPS = {"eng.trophy"}
 # Youth, reserve and women's sides are left out (the models were trained on men's senior league football)
 YOUTH = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|women|femenin|féminin|frauen|ladies|\(w\)", re.I)
+# The women's section (ledger/women): women's senior competitions, discovered like the men's
+WOMEN_FILE = ROOT / "ledger" / "women" / "espn_competitions.json"
+WOMEN_RE = re.compile(r"^[a-z]+\.w[a-z]|(^|\.)w(\.|$)|women|wom[ae]n|wsl|frauen|f[eé]min|femenil|damallsvenskan|"
+                      r"\bliga f\b|ladies|nwsl", re.I)
+YOUTH_COLLEGE = re.compile(r"youth|junior|olympic|ncaa|college|girls|\bu-?\d{2}\b|(^|\.)u\d+(\.|$)", re.I)
+WOMEN_SEEDS = {"uefa.wchampions": "UEFA Women's Champions League", "eng.w.1": "English Women's Super League",
+               "esp.w.1": "Spanish Liga F", "fra.w.1": "French Première Ligue", "ger.w.1": "German Frauen-Bundesliga",
+               "ita.w.1": "Italian Serie A Women", "usa.nwsl": "NWSL", "mex.w.1": "Liga MX Femenil",
+               "swe.w.1": "Swedish Damallsvenskan", "aus.w.1": "Australian A-League Women"}
+YOUTH_ONLY = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b", re.I)
 # A competition that is not men's senior football, by ESPN code or name (case-insensitive): women's ("w" codes such as
 # uefa.wchampions, eng.w.1; Women's, Frauen, Féminine, Femenil, Damallsvenskan, Liga F, NWSL), youth, college, Olympic
 NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|^[a-z]+\.w[a-z]|women|wom[ae]n|wsl|frauen|f[eé]min|femenil|damallsvenskan|"
@@ -70,13 +80,32 @@ def discovered_names() -> dict[str, str]:
     return {k: v for k, v in {**SEEDS, **_comps(mtime)}.items() if not NOT_MEN.search(k) and not NOT_MEN.search(v)}
 
 
+@lru_cache(maxsize=4)
+def _women_comps(mtime: float) -> dict[str, str]:
+    try:
+        return json.loads(WOMEN_FILE.read_text()).get("competitions", {})
+    except (OSError, ValueError):
+        return {}
+
+
+def women_names() -> dict[str, str]:
+    """slug -> name of the women's competitions (discovered with odds, plus the seeds)."""
+    mtime = WOMEN_FILE.stat().st_mtime if WOMEN_FILE.exists() else 0.0
+    return {k: v for k, v in {**WOMEN_SEEDS, **_women_comps(mtime)}.items() if not YOUTH_COLLEGE.search(k + " " + v)}
+
+
+def women_slugs() -> list[tuple[str, str]]:
+    """(division code "W:<slug>", slug) of the women's competitions."""
+    return [("W:" + slug, slug) for slug in sorted(women_names())]
+
+
 def discovered_slugs() -> list[tuple[str, str]]:
     """(division code, slug) of the discovered competitions not already in our fixed map."""
     fixed = set(LEAGUE_SLUG.values())
     return [(DISCOVERED + slug, slug) for slug in sorted(discovered_names()) if slug not in fixed]
 
 
-def discover(now: datetime, path=COMP_FILE, get=None, log=print, force: bool = False) -> int:
+def discover(now: datetime, path=COMP_FILE, get=None, log=print, force: bool = False, women: bool = False) -> int:
     """Once a day: scan every men's competition ESPN lists and remember those with upcoming games that have home/
     draw/away odds. A competition stays remembered (odds come and go with match days). Returns how many it found
     this time (-1 when skipped)."""
@@ -96,11 +125,23 @@ def discover(now: datetime, path=COMP_FILE, get=None, log=print, force: bool = F
         log(f"espn.com discovery: league list unavailable ({type(e).__name__})")
         return 0
     slugs = sorted({m.group(1) for it in items for m in [_re.search(r"/leagues/([^/?]+)", it.get("$ref", ""))] if m})
-    slugs = [x for x in slugs if not NOT_MEN.search(x)]
-    comps = {k: v for k, v in state.get("competitions", {}).items() if not (NOT_MEN.search(k) or NOT_MEN.search(v))}
+    if women:      # women's senior competitions only (no youth or college)
+        wanted = lambda slug, name="": bool(WOMEN_RE.search(slug + " " + name)) and not YOUTH_COLLEGE.search(slug + " " + name)  # noqa: E731
+    else:          # men's senior football only
+        wanted = lambda slug, name="": not (NOT_MEN.search(slug) or NOT_MEN.search(name))  # noqa: E731
+    # women's codes are not always marked in the slug: check every competition's name when looking for them
+    slugs = [x for x in slugs if women or wanted(x)]
+    comps = {k: v for k, v in state.get("competitions", {}).items() if wanted(k, v)}
     found = 0
     for slug in slugs:
         name, priced = "", 0
+        if women:          # read the name once first; scan the days only for women's competitions
+            try:
+                name = (get(f"{API}/{slug}/scoreboard").get("leagues") or [{}])[0].get("name") or slug
+            except Exception:  # noqa: BLE001
+                continue
+            if not wanted(slug, name):
+                continue
         for k in range(DISCOVER_DAYS):
             try:
                 d = get(f"{API}/{slug}/scoreboard?dates={(now + timedelta(days=k)):%Y%m%d}")
@@ -112,14 +153,15 @@ def discover(now: datetime, path=COMP_FILE, get=None, log=print, force: bool = F
                     priced += parse_event(e) is not None
                 except Exception:  # noqa: BLE001
                     pass
-        if priced and not NOT_MEN.search(name):
+        if priced and wanted(slug, name):
             comps[slug] = name
             found += 1
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps({"generated_at": now.isoformat(timespec="seconds"), "competitions": comps},
                                indent=1, sort_keys=True, ensure_ascii=False) + "\n")
     _comps.cache_clear()
-    log(f"espn.com discovery: {found} competitions with odds now, {len(comps)} remembered")
+    _women_comps.cache_clear()
+    log(f"espn.com discovery{' (women)' if women else ''}: {found} competitions with odds now, {len(comps)} remembered")
     return found
 
 
@@ -187,13 +229,16 @@ def parse_event(ev: dict) -> dict | None:
 
 def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, match_key, local_date,
                    ledger_preds: list[dict], known_of, multi_pool: set[str], venue_of, fetch=fetch,
-                   log=print, senior_clubs: set[str] | None = None) -> list[dict]:
+                   log=print, senior_clubs: set[str] | None = None, competitions=None,
+                   women: bool = False) -> list[dict]:
     """Fixtures (with odds) ESPN lists that `primary` does not, in the form of live.parse_fixtures.
     known_of(div) -> football-data.co.uk names for one of our leagues; multi_pool: names for cups/European ties."""
     busy = {(f["division"], f["kickoff_utc"][:10], t) for f in primary for t in (f["home"], f["away"])}
     have = {f["match_key"] for f in primary} | {r["match_key"] for r in ledger_preds}
     out, skipped, per, bad = [], [], {}, []
-    for div, slug in sorted(LEAGUE_SLUG.items()) + discovered_slugs():
+    comps = competitions if competitions is not None else sorted(LEAGUE_SLUG.items()) + discovered_slugs()
+    youth = YOUTH_ONLY if women else YOUTH
+    for div, slug in comps:
         known = None
         for k in range(DAYS_AHEAD):
             try:
@@ -209,7 +254,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
                     continue
                 if g is None or not (now < g["kickoff"] <= now + timedelta(days=horizon_days)):
                     continue
-                if YOUTH.search(g["home"]) or YOUTH.search(g["away"]):
+                if youth.search(g["home"]) or youth.search(g["away"]):
                     continue
                 if slug in ACADEMY_CUPS:
                     # only lower-league clubs enter these, plus top clubs' academy (U21) sides that ESPN may list
@@ -234,7 +279,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
                 key = match_key(div, local_date(g["kickoff"]), h, a)
                 if key in have or (div, day, h) in busy or (div, day, a) in busy:
                     continue
-                league = LEAGUE_NAMES.get(div) or discovered_names().get(slug, slug)
+                league = LEAGUE_NAMES.get(div) or (women_names() if women else discovered_names()).get(slug, slug)
                 fx = {"match_key": key, "division": div, "league": league, "home": h, "away": a,
                       "kickoff_utc": g["kickoff"].isoformat(),
                       "odds": {"home": g["odds"][0], "draw": g["odds"][1], "away": g["odds"][2]},

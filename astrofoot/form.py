@@ -117,14 +117,17 @@ def refresh_recent(now, fetch_csv, leagues, path: Path = RECENT, log=print, forc
     return len(out)
 
 
-@lru_cache(maxsize=4)
-def _history_cached(corpus_mtime: float, recent_mtime: float, live_sig: tuple) -> dict[str, list[tuple]]:
-    """team -> [(kickoff, venue 'H'/'A', opponent, goals for, goals against, division)], newest first."""
-    c = pd.concat([_recent(), _corpus()], ignore_index=True)     # recent first: it wins duplicates
+@lru_cache(maxsize=8)
+def _history_cached(corpus_mtime: float, recent_mtime: float, live_sig: tuple, men: bool = True) -> dict[str, list[tuple]]:
+    """team -> [(kickoff, venue 'H'/'A', opponent, goals for, goals against, division)], newest first.
+    men=False: only the given games (the women's section never mixes in the men's corpus or results)."""
+    c = pd.concat([_recent(), _corpus()], ignore_index=True) if men else \
+        pd.DataFrame(columns=["ko", "home", "away", "gh", "ga", "division"])
     live = pd.DataFrame(list(live_sig), columns=["ko", "home", "away", "gh", "ga", "division"])
     if len(live):
         live["ko"] = pd.to_datetime(live.ko, utc=True)
     games = pd.concat([c, live], ignore_index=True)
+    games["ko"] = pd.to_datetime(games.ko, utc=True)          # typed even when one side is empty
     games["day"] = games.ko.dt.strftime("%Y-%m-%d")
     games = games.drop_duplicates(subset=["day", "home", "away"], keep="first")
     out: dict[str, list[tuple]] = {}
@@ -136,15 +139,16 @@ def _history_cached(corpus_mtime: float, recent_mtime: float, live_sig: tuple) -
     return out
 
 
-def history(recs: list[dict]) -> dict[str, list[tuple]]:
-    """Team histories from the corpus plus the settled games among `recs` (joined live/manual records)."""
+def history(recs: list[dict], men: bool = True) -> dict[str, list[tuple]]:
+    """Team histories from the corpus plus the settled games among `recs` (joined live/manual records);
+    men=False: from `recs` alone (women's section)."""
     p = WORK / "matches.parquet"
     mtime = p.stat().st_mtime if p.exists() else 0.0
     rmtime = RECENT.stat().st_mtime if RECENT.exists() else 0.0
     sig = tuple(sorted((r["kickoff_utc"], r["home"], r["away"], int(r["result"]["goals_home"]),
                         int(r["result"]["goals_away"]), r["division"])
                        for r in recs if r.get("result") and r["result"].get("goals_home") is not None))
-    return _history_cached(mtime, rmtime, sig)
+    return _history_cached(mtime, rmtime, sig, men) if men else _history_cached(0.0, 0.0, sig, False)
 
 
 # ----------------------------------------------------------------------------- analysis

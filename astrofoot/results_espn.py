@@ -49,7 +49,7 @@ def slug_of(division: str) -> str | None:
     """ESPN league slug of a division: fixed map, or the slug inside a discovered "X:" code."""
     if division in LEAGUE_SLUG:
         return LEAGUE_SLUG[division]
-    return division[2:] if isinstance(division, str) and division.startswith("X:") else None
+    return division[2:] if isinstance(division, str) and division.startswith(("X:", "W:")) else None
 
 
 def fetch(division: str, date_from: date, date_to: date, base: str = API) -> list[dict]:

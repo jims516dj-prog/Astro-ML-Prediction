@@ -265,6 +265,22 @@ true" compares live and backtest hit rates per probability band, so you can pick
 - The backtest tiles now score **all** picks (the rule the page applies), not just the top 10 a day.
 - Every Dataset, Live and Analyze view shows all five goal-and-chance predictions as badges/cards.
 
+## Women's football (separate section)
+
+The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger
+(`ledger/women/`: predictions, results, `TRACK_RECORD.md`). They never enter the men's track record, Top picks, My picks
+or Dataset, and the men's pipeline never forecasts women's competitions.
+
+- **Sources:** ESPN. Once a day the cycle discovers the women's senior competitions with home/draw/away odds
+  (`ledger/women/espn_competitions.json`; seeded with the Women's Champions League, WSL, Liga F, Première Ligue,
+  Frauen-Bundesliga, Serie A Women, NWSL, Liga MX Femenil, Damallsvenskan and A-League Women; youth and college left out).
+  Results from ESPN; void after 3 days without one.
+- **Grounds:** only the venue ESPN names for each game (women's teams often play away from the men's stadiums), cached by
+  venue in `ledger/women/venues.json`; never the men's venue tables.
+- **Form checks** use women's results only (ESPN lists clubs by their plain names, so men's results would otherwise mix in).
+- **Caveat:** Engine 4 and the goal-market recalibrations were trained on men's football, so the women's probabilities
+  rest mainly on the odds; the women's track record shows how well that holds up.
+
 ## More leagues and cups (ESPN and The Odds API)
 
 A forecast needs a fixture **with bookmaker odds** (the market baseline behind every probability) and a venue. Besides
