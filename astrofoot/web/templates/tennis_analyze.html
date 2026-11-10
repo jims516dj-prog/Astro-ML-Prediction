@@ -33,7 +33,6 @@ Add a bookmaker's odds (any free odds site) to blend them into the expected figu
 born {{ out.dob[side] or "unknown" }}{{ "; " if loop.first else "." }}{% endfor %}</p>
 {% if out.p %}{{ probs(out.p, out.m.p1, out.m.p2) }}{% endif %}
 {{ day_panel(out.day, out.m.p1, out.m.p2, out.p, edge_pts) }}
-<h2>Statistics</h2>
 {{ factors(out.x) }}
 {% endif %}
 {% endblock %}

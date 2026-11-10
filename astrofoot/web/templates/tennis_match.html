@@ -14,6 +14,5 @@ first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit e
 <p class="small">Sealed {{ r.committed_at }} · {{ "✓ verified" if r.verified else "✗ does not verify" }} · sha256 <span class="mono">{{ r.sha256[:16] }}…</span></p>
 {% if r.odds %}<p class="small">Odds: {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }} ({{ r.odds.source }}).</p>{% endif %}
 {{ day_panel(day, r.p1, r.p2, p, edge_pts) }}
-<h2>Statistics the model saw</h2>
 {{ factors(x) }}
 {% endblock %}
