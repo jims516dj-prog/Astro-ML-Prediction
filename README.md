@@ -315,6 +315,16 @@ decimal odds and every page (Forecasts, Live record, Top picks, My picks, the ma
 the expected figure recomputed exactly as the cycle would with odds ("your odds" badge; "add odds" links on matches
 without). They are stored in your local database, never in the sealed ledger, whose seals still verify.
 
+**Last 5 matches and head-to-head.** Each match page and Analyze show both players' last 5 completed matches and their
+last 5 meetings (date, opponent, W/L, score, tournament), from the ESPN history before the match. They are also model
+features (last-5 win share, sets won in the last 5, last-5 meetings, who won the last meeting).
+
+**Matches you add.** ESPN covers the ATP and WTA tours (including WTA 125s) but not Challengers, ITF, Davis Cup or
+exhibitions, and no other free source offers them for automated use. On Analyze, **Add this match to my tennis matches**
+saves any match: it appears on Forecasts, Live record, Top picks and My picks with a "manual" badge; enter the score on its
+match page once played (or mark it void / remove it). Not sealed, never in the official track record; if ESPN later
+lists the same match, the sealed forecast takes over.
+
 **TBD.** ESPN lists draw slots before a player is known (a qualifier still to come) as "TBD". Those matches are not
 forecast until both players are known; forecasts sealed with a TBD before this rule are shown as void.
 

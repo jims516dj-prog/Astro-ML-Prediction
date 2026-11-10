@@ -90,7 +90,7 @@ from the soccer ones.</p>
   <tr><td><input type="hidden" name="game" value="{{ k }}">{% if row.pick %}<span class="badge ok">added</span>{% else %}<input type="checkbox" name="sel_{{ k }}" id="sel_{{ k }}" aria-label="pick {{ g.p1 }} v {{ g.p2 }}">{% endif %}</td>
     <td class="mono">{{ g.start_utc[11:16] }}{% if row.started %}<br><span class="badge">started</span>{% endif %}</td>
     <td>{{ g.event }}<br><span class="small">{{ g.tour|upper }} · {{ g.surface }} · {{ g.round }}</span></td>
-    <td><a href="/tennis/match/{{ k }}">{{ g.p1 }} v {{ g.p2 }}</a>{% if g.odds %} <span class="badge" title="{{ g.odds.source }}">{{ "your odds" if g.odds.manual else "odds" }}</span>{% else %} <a class="small" href="/tennis/match/{{ k }}#odds">add odds</a>{% endif %}
+    <td><a href="/tennis/match/{{ k }}">{{ g.p1 }} v {{ g.p2 }}</a>{% if g.manual %} <span class="badge">manual</span>{% endif %}{% if g.odds %} <span class="badge" title="{{ g.odds.source }}">{{ "your odds" if g.odds.manual else "odds" }}</span>{% else %} <a class="small" href="/tennis/match/{{ k }}#odds">add odds</a>{% endif %}
       {% if row.elsewhere %}<br><span class="small">also on {{ row.elsewhere|join(", ") }}</span>{% endif %}</td>
     <td>{% if row.pick %}<span class="small">{{ row.pick.label }}</span>{% else %}<select name="out_{{ k }}" onchange="document.getElementById('sel_{{ k }}').checked = true" aria-label="outcome for {{ g.p1 }} v {{ g.p2 }}">
       {% for o in row.opts %}<option value="{{ o.code }}" {{ "selected" if o.code == row.chosen }}>{{ fmt_pct(o.p, 0) }} · {{ o.label }}{% if loop.first %} (most likely){% endif %}</option>{% endfor %}</select>{% endif %}</td>

@@ -41,6 +41,9 @@ CREATE TABLE IF NOT EXISTS team_charts (
 CREATE TABLE IF NOT EXISTS venues (
   name TEXT PRIMARY KEY, lat REAL NOT NULL, lon REAL NOT NULL, source TEXT NOT NULL, verified_at TEXT
 );
+CREATE TABLE IF NOT EXISTS tennis_manual (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL, rec_json TEXT NOT NULL, result_json TEXT
+);
 CREATE TABLE IF NOT EXISTS tennis_odds (
   match_id TEXT PRIMARY KEY, a REAL NOT NULL, b REAL NOT NULL, entered_at TEXT NOT NULL, note TEXT
 );
@@ -282,4 +285,31 @@ def set_tennis_odds(con, match_id: str, a: float, b: float, note: str = ""):
 
 def delete_tennis_odds(con, match_id: str):
     con.execute("DELETE FROM tennis_odds WHERE match_id=?", (match_id,))
+    con.commit()
+
+
+# ----------------------------------------------------------------------------- tennis matches added by hand
+def add_tennis_manual(con, rec: dict) -> str:
+    cur = con.execute("INSERT INTO tennis_manual (created_at, rec_json) VALUES (?, ?)", (utcnow(), "{}"))
+    mid = f"u{cur.lastrowid}"
+    con.execute("UPDATE tennis_manual SET rec_json=? WHERE id=?", (json.dumps({**rec, "match_id": mid}, default=str), cur.lastrowid))
+    con.commit()
+    return mid
+
+
+def tennis_manual(con) -> list[tuple[dict, dict | None]]:
+    out = []
+    for r in con.execute("SELECT * FROM tennis_manual ORDER BY id").fetchall():
+        out.append((json.loads(r["rec_json"]), json.loads(r["result_json"]) if r["result_json"] else None))
+    return out
+
+
+def set_tennis_manual_result(con, match_id: str, res: dict | None):
+    con.execute("UPDATE tennis_manual SET result_json=? WHERE id=?",
+                (json.dumps(res) if res else None, int(match_id.lstrip("u"))))
+    con.commit()
+
+
+def delete_tennis_manual(con, match_id: str):
+    con.execute("DELETE FROM tennis_manual WHERE id=?", (int(match_id.lstrip("u")),))
     con.commit()

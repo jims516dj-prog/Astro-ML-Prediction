@@ -389,3 +389,50 @@ def test_tennis_my_picks_day_favours_filter(tmp_path, monkeypatch):
     assert "Ann A v Bea B" in html and "Cat C v Dee D" not in html and "both: A" in html
     html = client.get("/tennis/mypicks?day=2030-01-02&favours=split").text
     assert "Cat C v Dee D" in html and "Ann A v Bea B" not in html
+
+
+def test_score_parsing():
+    from astrofoot.web.tennis_web import parse_score as ps
+    assert ps("6-4 3-6 7-6")["set_winners"] == "121" and ps("6-4 3-6") is None
+    assert ps("6-4 2-1 ret") is None and ps("6-4 2-1 ret", 3, 2) == {"winner": 2, "set_winners": "1", "score": "6-4 2-1 ret.",
+                                                                     "retired": True, "void": False}
+    assert ps("6-3 6-4", 5) is None and ps("6-3 6-4 6-2", 5)["winner"] == 1 and ps("4-6 7-5 10-8")["set_winners"] == "211"
+
+
+def test_matches_added_by_hand(tmp_path, monkeypatch):
+    import re
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot import db
+    from astrofoot.tennis import live as tlive
+    from astrofoot.web import app as web
+    from astrofoot.web import tennis_web
+
+    hist, pl = fake_matches(300)
+    monkeypatch.setattr(tennis_web.tlive, "load_matches", lambda ledger=None: hist)
+    monkeypatch.setattr(tennis_web.tlive, "load_players", lambda ledger=None: pl)
+    monkeypatch.setattr(tennis_web, "_sources_key", lambda: ("manual-test", len(hist)))
+    monkeypatch.setattr(tlive, "predictions", lambda ledger=None: [])
+    tennis_web._STATE.clear()
+    path = tmp_path / "t.sqlite3"
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    client = TestClient(web.app)
+    q = {"a": "Player 1", "b": "Player 2", "when": "2030-01-02T12:00", "surface": "clay", "best_of": "3", "tour": "atp",
+         "round": "Round 1", "event": "Some Challenger", "a_seed": "", "b_seed": "", "a_dob": "", "b_dob": "", "venue": "",
+         "a_odds": "1.5", "b_odds": "2.5"}
+    if not model.BUNDLE.exists():
+        return
+    r = client.post("/tennis/analyze/save", data=q, follow_redirects=False)
+    mid = re.search(r"/tennis/match/(u\d+)", r.headers["location"]).group(1)
+    html = client.get(f"/tennis/match/{mid}").text
+    assert "Added by you" in html and "Some Challenger" in html
+    for url in ("/tennis?day=all", "/tennis/live", "/tennis/top?day=all", "/tennis/mypicks?day=2030-01-02"):
+        assert "manual" in client.get(url).text, url
+    assert "Could not read" in client.post(f"/tennis/match/{mid}/result", data={"score": "6-4"}).text
+    client.post(f"/tennis/match/{mid}/result", data={"score": "6-4 4-6 6-3"})
+    (rec,) = [r for r in tennis_web.records() if r["match_id"] == mid]
+    assert rec["status"] == "settled" and rec["result"]["winner"] == 1 and rec["manual"]
+    assert tlive.track_record([rec])["n"] == 0                          # never in the official record
+    client.post(f"/tennis/match/{mid}/result", data={"delete": "1"})
+    assert db.tennis_manual(db.connect(path)) == []

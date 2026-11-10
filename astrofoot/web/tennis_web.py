@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import math
+import re
 import subprocess
 import sys
 import threading
@@ -59,13 +60,50 @@ def state():
 
 
 def records() -> list[dict]:
-    """Tennis forecasts with any odds you entered by hand applied (see tennis.live.with_odds)."""
+    """Tennis forecasts with any odds you entered by hand applied (see tennis.live.with_odds), plus the matches you
+    added yourself on Analyze ('manual': not sealed, never in the official track record)."""
+    from ..tennis.odds import same_player
     from .app import con
     try:
-        uo = db.tennis_odds(con())
+        c = con()
+        uo, manual = db.tennis_odds(c), db.tennis_manual(c)
     except Exception:  # noqa: BLE001
-        uo = {}
-    return tlive.records(user_odds=uo) if uo else tlive.records()
+        uo, manual = {}, []
+    recs = tlive.records(user_odds=uo) if uo else tlive.records()
+    for rec, res in manual:
+        # once ESPN lists the same match, the sealed forecast takes over
+        t = pd.Timestamp(rec["start_utc"])
+        if any(abs((pd.Timestamp(r["start_utc"]) - t).total_seconds()) < 36 * 3600
+               and ((same_player(rec["p1"], r["p1"]) and same_player(rec["p2"], r["p2"]))
+                    or (same_player(rec["p1"], r["p2"]) and same_player(rec["p2"], r["p1"]))) for r in recs):
+            continue
+        o = uo.get(rec["match_id"])
+        j = tlive.join(tlive.with_odds({**rec, "odds": None}, o) if o else rec, res)
+        j.update(verified=None, manual=True)
+        recs.append(j)
+    return sorted(recs, key=lambda r: r["start_utc"])
+
+
+def parse_score(text: str, best_of: int = 3, winner: int | None = None) -> dict | None:
+    """'6-4 3-6 7-6' (player 1's games first) → set winners and the match winner. Only completed sets count (6+
+    games, or a deciding tie-break to 10). A retirement ('ret') needs the winner given; None if not readable."""
+    sets = [(int(a), int(b)) for a, b in re.findall(r"(\d+)\s*[-–:]\s*(\d+)", text or "")]
+    done = [(a, b) for a, b in sets if a != b and max(a, b) >= 6 or max(a, b) >= 10]
+    sw = "".join("1" if a > b else "2" for a, b in done)
+    retired = bool(re.search(r"ret|w/?o|walkover", text or "", re.I))
+    w1, w2 = sw.count("1"), sw.count("2")
+    need = 3 if best_of == 5 else 2
+    if not retired:
+        if max(w1, w2) < need:
+            return None
+        winner = 1 if w1 > w2 else 2
+    elif winner not in (1, 2):
+        return None
+    if not sw:
+        return {"winner": None, "set_winners": "", "score": text.strip(), "retired": retired, "void": True,
+                "void_reason": "no set completed"}
+    return {"winner": winner, "set_winners": sw, "score": " ".join(f"{a}-{b}" for a, b in sets) + (" ret." if retired else ""),
+            "retired": retired, "void": False}
 
 
 # ----------------------------------------------------------------------------- explanations
@@ -192,6 +230,81 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
         "rows": rows, "day": day, "days": days, "tour": tour, "status": status, "tours": TOUR, "tr": tr_all,
         "tr_day": tlive.track_record(rows), "n": len(recs), "rep": rep, "has_model": model.BUNDLE.exists(),
         "has_data": (DATA / "matches.parquet").exists(), "page": "tennis_home"})
+
+
+ANALYZE_FIELDS = ("a", "b", "when", "surface", "best_of", "tour", "round", "event", "a_seed", "b_seed", "a_dob", "b_dob",
+                  "venue", "a_odds", "b_odds")
+
+
+def json_safe(o):
+    import json
+    return json.loads(json.dumps(o, default=lambda x: x.isoformat() if hasattr(x, "isoformat") else
+                                 (x.item() if hasattr(x, "item") else str(x))).replace("NaN", "null"))
+
+
+@router.post("/tennis/analyze/save")
+async def tennis_analyze_save(request: Request):
+    """Add the analysed match to your tennis matches (shown everywhere with a 'manual' badge)."""
+    from .app import con
+    form = await request.form()
+    kw = {k: str(form.get(k, "")) for k in ANALYZE_FIELDS}
+    kw["best_of"] = 5 if kw["best_of"] == "5" else 3
+    kw["surface"] = kw["surface"] or "hard"
+    kw["round"] = kw["round"] or "Round 1"
+    resp = tennis_analyze(request, **kw)
+    out = resp.context.get("out")
+    if not out or not out.get("p"):
+        raise HTTPException(400, "nothing to save: analyse a match first (and a trained model is needed)")
+    m, p = out["m"], out["p"]
+    odds = None
+    if kw["a_odds"] and kw["b_odds"]:
+        try:
+            odds = {"a": float(kw["a_odds"]), "b": float(kw["b_odds"]), "source": "entered by you", "manual": True,
+                    "entered_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "after_start": False}
+        except ValueError:
+            odds = None
+    f = {k: (None if isinstance(v, float) and math.isnan(v) else v) for k, v in out["f"].items()
+         if not k.startswith(("d_astro_", "d_num_")) or k in ("d_astro_rule", "d_num_rule")}
+    rec = {"manual": True, "tour": m["tour"], "event": m["event"] or "Added by you", "round": m["round"], "venue": m["venue"],
+           "surface": m["surface"], "best_of": m["best_of"], "start_utc": m["date"].isoformat(), "p1": m["p1"], "p1_id": m["p1_id"],
+           "p1_seed": m["p1_seed"], "p1_country": m.get("p1_country"), "p2": m["p2"], "p2_id": m["p2_id"], "p2_seed": m["p2_seed"],
+           "p2_country": m.get("p2_country"), "model_version": p["version"], "p": p, "features": f, "day": out["day"],
+           "odds": odds, "committed_at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "sha256": ""}
+    mid = db.add_tennis_manual(con(), json_safe(rec))
+    return RedirectResponse(f"/tennis/match/{mid}?msg=" + urllib.parse.quote("Added to your tennis matches."), status_code=303)
+
+
+@router.post("/tennis/match/{mid}/result")
+async def tennis_manual_result(request: Request, mid: str):
+    """Result (or removal) of a match you added yourself."""
+    from .app import con
+    form = await request.form()
+    c = con()
+    if not mid.startswith("u"):
+        raise HTTPException(400, "only matches you added can be edited")
+    if form.get("delete"):
+        db.delete_tennis_manual(c, mid)
+        return RedirectResponse("/tennis?day=all", status_code=303)
+    rec = next((r for r, _ in db.tennis_manual(c) if r["match_id"] == mid), None)
+    if rec is None:
+        raise HTTPException(404)
+    if form.get("void"):
+        db.set_tennis_manual_result(c, mid, {"winner": None, "set_winners": "", "score": "", "retired": False, "void": True,
+                                             "void_reason": "marked void by you"})
+        msg = "Marked void."
+    elif form.get("clear"):
+        db.set_tennis_manual_result(c, mid, None)
+        msg = "Result cleared."
+    else:
+        w = str(form.get("winner", ""))
+        res = parse_score(str(form.get("score", "")), int(rec.get("best_of") or 3), int(w) if w in ("1", "2") else None)
+        if res is None:
+            msg = ("Could not read a finished score: type the sets with the first-listed player's games first, e.g. "
+                   "6-4 3-6 7-6. For a retirement add 'ret' and choose the winner.")
+        else:
+            db.set_tennis_manual_result(c, mid, res)
+            msg = "Result saved."
+    return RedirectResponse(f"/tennis/match/{mid}?msg=" + urllib.parse.quote(msg), status_code=303)
 
 
 @router.post("/tennis/match/{mid}/odds")
@@ -589,8 +702,9 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
     from .app import SYNC
     market = market if market in dict(LIVE_MARKETS) else "set"
     recs = records()
-    integrity = {"n": len(recs), "verified": sum(bool(r["verified"]) for r in recs),
-                 "late": sum(not r["pre_kickoff"] for r in recs)}
+    sealed = [r for r in recs if not r.get("manual")]
+    integrity = {"n": len(sealed), "verified": sum(bool(r["verified"]) for r in sealed),
+                 "late": sum(not r["pre_kickoff"] for r in sealed), "manual": len(recs) - len(sealed)}
     try:
         mp = float(min_p) if min_p else 0.0
     except ValueError:

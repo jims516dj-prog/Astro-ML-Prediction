@@ -271,7 +271,7 @@ def records(ledger: Path = LEDGER, user_odds: dict | None = None) -> list[dict]:
 def track_record(recs: list[dict]) -> dict:
     """Scores of every settled pre-start forecast: sets (each set played), first set, at least one set
     for the underdog, and the match, each against the rate its own probabilities expected."""
-    s = [r for r in recs if r["status"] == "settled" and r["pre_kickoff"]]
+    s = [r for r in recs if r["status"] == "settled" and r["pre_kickoff"] and not r.get("manual")]
     if not s:
         return {"n": 0}
     sets_n = sum(r["sets_played"] for r in s)

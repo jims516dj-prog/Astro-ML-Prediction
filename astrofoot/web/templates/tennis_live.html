@@ -8,7 +8,7 @@ could not have been tuned on.</p>
 
 <section class="tiles">
   <div class="tile"><div class="k">Forecasts</div><div class="v">{{ integrity.n }}</div><div class="s">{{ tr.n }} settled before the start</div></div>
-  <div class="tile"><div class="k">Integrity</div><div class="v sm">{{ integrity.verified }}/{{ integrity.n }} seals verify</div><div class="s">{{ integrity.late }} committed after the start (not scored)</div></div>
+  <div class="tile"><div class="k">Integrity</div><div class="v sm">{{ integrity.verified }}/{{ integrity.n }} seals verify</div><div class="s">{{ integrity.late }} committed after the start (not scored){% if integrity.manual %} · {{ integrity.manual }} added by you (not sealed){% endif %}</div></div>
   {% for k, label in [("sets", "Sets: favoured player won"), ("first", "First set"), ("match", "Match"), ("dog_one_set", "Underdog won a set")] %}
   {% set v = tr.get(k) %}<div class="tile"><div class="k">{{ label }}</div>
   {% if v and v.n %}<div class="v">{{ v.hits }} / {{ v.n }}</div><div class="s">{{ fmt_pct(v.rate) }} vs {{ fmt_pct(v.expected) }} expected</div>
@@ -73,13 +73,13 @@ UTC) have already published. Tennis results come from ESPN, usually within an ho
 <tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
 <tr><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
-<td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
+<td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
 <td>{{ k.player }}</td><td class="num">{{ fmt_pct(k.p, 0) }}</td>
 <td class="num pp">{{ fmt_pct(r.e.a_set, 0) }}<br>{{ fmt_pct(r.e.b_set, 0) }}</td><td class="num pp">{{ fmt_pct(r.e.a_match, 0) }}<br>{{ fmt_pct(r.e.b_match, 0) }}</td>
 <td class="small">{% for key, lab in [("astro", "Astro"), ("num", "Num")] %}{{ lab }}: {% set f = dv[key].favours %}{{ (r.p1 if f == 1 else r.p2).split()[-1] if f else "level" }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
 <td class="mono">{% if r.status == "settled" %}{{ r.result.score }}{% if r.result.retired %} ret.{% endif %}<br>
 {% if q.market == "set" %}{{ k.hit }}/{{ k.n }} sets{% else %}{{ "✓" if k.hit else "✗" }}{% endif %}{% elif r.status == "void" %}<span title="{{ r.result.void_reason }}">void</span>{% else %}pending{% endif %}</td>
-<td class="mono small" title="committed {{ r.committed_at }} · sha256 {{ r.sha256 }}">{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}</td></tr>
+<td class="mono small" title="committed {{ r.committed_at }}{% if r.sha256 %} · sha256 {{ r.sha256 }}{% endif %}">{% if r.manual %}not sealed{% else %}{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}{% endif %}</td></tr>
 {% else %}<tr><td colspan="10">No forecasts match these filters.</td></tr>{% endfor %}</tbody></table></div>
 <p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no - 1 }}">← newer</a>{% endif %}
 <span>page {{ page_no }} / {{ pages }}</span>{% if page_no < pages %}<a href="?{{ qs }}&page_no={{ page_no + 1 }}">older →</a>{% endif %}</p>

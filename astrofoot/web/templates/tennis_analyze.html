@@ -31,7 +31,14 @@ Add a bookmaker's odds (any free odds site) to blend them into the expected figu
 <h2>{{ out.m.p1 }} v {{ out.m.p2 }}</h2>
 <p class="note">{% for side, nm in [("a", out.m.p1), ("b", out.m.p2)] %}{{ nm }}: {% if out.known[side] %}{{ out.n[side] }} matches in the history{% else %}<strong>not in the history</strong> (average rating){% endif %},
 born {{ out.dob[side] or "unknown" }}{{ "; " if loop.first else "." }}{% endfor %}</p>
-{% if out.p %}{{ probs(out.p, out.m.p1, out.m.p2) }}{% endif %}
+{% if out.p %}{{ probs(out.p, out.m.p1, out.m.p2) }}
+<form method="post" action="/tennis/analyze/save" class="row">
+  {% for k, v in q.items() %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
+  <button class="btn">Add this match to my tennis matches</button>
+  <span class="small">For matches the automatic forecasts do not cover (Challengers, ITF, Davis Cup, exhibitions…): it then
+  appears on Forecasts, Live record, Top picks and My picks with a <span class="badge">manual</span> badge, and you enter the
+  result once played. Not sealed; never counted in the official track record.</span>
+</form>{% endif %}
 {{ day_panel(out.day, out.m.p1, out.m.p2, out.p, edge_pts) }}
 {{ five_panel(out.five, out.m.p1, out.m.p2) }}
 {{ factors(out.x) }}

@@ -12,12 +12,31 @@
 first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit else "✗" }}.</p>
 {% elif r.status == "void" %}<p class="callout small">Void: {{ r.result.void_reason }}.</p>{% endif %}
 {{ probs(p, r.p1, r.p2) }}
+{% if r.manual %}
+<p class="callout small"><strong>Added by you</strong> on {{ r.committed_at[:16].replace("T", " ") }} UTC from Analyze: not sealed, and never
+counted in the official track record.</p>
+<h2>Result</h2>
+{% if r.status == "settled" %}<p class="small">Saved: {{ r.result.score }}, {{ r.p1 if r.result.winner == 1 else r.p2 }} won.</p>
+{% elif r.status == "void" %}<p class="small">Void ({{ r.result.void_reason }}).</p>{% endif %}
+<form method="post" action="/tennis/match/{{ r.match_id }}/result" class="filters">
+  <label>Score, {{ r.p1 }}'s games first<input name="score" value="{{ r.result.score if r.result and r.result.score else '' }}" placeholder="6-4 3-6 7-6" size="16"></label>
+  <label>Winner (needed for a retirement)<select name="winner"><option value="">from the score</option>
+    <option value="1">{{ r.p1 }}</option><option value="2">{{ r.p2 }}</option></select></label>
+  <div class="row"><button class="btn small">Save result</button></div>
+</form>
+<div class="row">
+  <form method="post" action="/tennis/match/{{ r.match_id }}/result"><input type="hidden" name="void" value="1"><button class="btn ghost small">Mark void (not played)</button></form>
+  {% if r.result %}<form method="post" action="/tennis/match/{{ r.match_id }}/result"><input type="hidden" name="clear" value="1"><button class="btn ghost small">Clear the result</button></form>{% endif %}
+  <form method="post" action="/tennis/match/{{ r.match_id }}/result" onsubmit="return confirm('Remove this match and its picks?')"><input type="hidden" name="delete" value="1"><button class="btn danger small">Remove this match</button></form>
+</div>
+{% else %}
 <p class="small">Sealed {{ r.committed_at }} · {{ "✓ verified" if r.verified else "✗ does not verify" }} · sha256 <span class="mono">{{ r.sha256[:16] }}…</span></p>
+{% endif %}
 
 <h2 id="odds">Odds</h2>
-{% if r.odds and not r.odds.manual %}<p class="small">Sealed with the forecast: {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }} ({{ r.odds.source }}).</p>
+{% if r.odds and not r.odds.manual and not r.manual %}<p class="small">Sealed with the forecast: {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }} ({{ r.odds.source }}).</p>
 {% else %}
-{% if r.odds %}<p class="small">Odds <strong>entered by you</strong> {{ r.odds.entered_at[:16].replace("T", " ") }} UTC{% if r.odds.after_start %} (after the start){% endif %}:
+{% if r.odds %}<p class="small">Odds <strong>entered by you</strong>{% if r.odds.entered_at %} {{ r.odds.entered_at[:16].replace("T", " ") }} UTC{% endif %}{% if r.odds.after_start %} (after the start){% endif %}:
 {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }}. Every page uses them for this match (expected figure, picks,
 Top picks, My picks, Live record); the sealed forecast itself is unchanged and its seal still verifies.</p>
 {% else %}<p class="small">No bookmaker odds were available when this forecast was sealed (The Odds API prices only the big
