@@ -702,13 +702,13 @@ def _form_rows(r: dict, hist, agree: str) -> list[dict]:
     return [a] if a["qualifies"] else []
 
 
-def _form_page(request: Request, day: str, agree: str, role: str, xg: str = ""):
+def _form_page(request: Request, day: str, agree: str, role: str, xg: str = "", section: str = "men"):
     """Top picks → Form check: a team's scoring form, for the teams the chosen number of engines back."""
     if agree == "3":                         # older links: "3/3 only"
         agree = "=3"
     agree = agree if agree in dict(FORM_AGREE) else ""
-    recs = [r for r in _all_games() if r["status"] != "void"]
-    hist = form.history(recs)
+    recs = [r for r in _section_games(section) if r["status"] != "void"]
+    hist = form.history(recs, men=False) if section == "women" else form.history(recs)   # women: women's results only
     days = sorted({r["kickoff_utc"][:10] for r in recs}, reverse=True)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     if not day or day not in days:
@@ -736,7 +736,8 @@ def _form_page(request: Request, day: str, agree: str, role: str, xg: str = ""):
         "agree_label": dict(FORM_AGREE)[agree], "role": role, "so_far": so_far, "xg": xg,
         "xg_steps": [t for t in form.XG_STEPS if t > 0], "xg_table": steps or [],
         "xg_hist": next((b for b in steps or [] if abs(b["min"] - xg_min) < 1e-9), None) if xg_min > 0 else None,
-        "research": research, "markets": TOP_MARKETS, "market": "form", "page": "top"})
+        "research": research, "markets": TOP_MARKETS, "market": "form", "page": "top",
+        "section": section, "sections": SECTIONS, "skeep": _xg_keep("", "", "", section)})
 
 
 TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Double chance"), ("o15", "Over/under 1.5"),
@@ -746,9 +747,11 @@ TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Doubl
 
 @app.get("/top", response_class=HTMLResponse)
 def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "",
-             m: list[str] = Query(default=[]), role: str = "", xg: str = "", xg_for: str = "either"):
+             m: list[str] = Query(default=[]), role: str = "", xg: str = "", xg_for: str = "either",
+             section: str = "men"):
+    section = section if section in SECTIONS else "men"
     if market == "form":
-        return _form_page(request, day, agree, role, xg)
+        return _form_page(request, day, agree, role, xg, section)
     xg_for = xg_for if xg_for in XG_FOR else "either"
     try:
         xg_min = float(xg) if xg else 0.0
@@ -760,7 +763,7 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
         mp = min(max(float(min_p), 0.0), 0.99) if min_p else 0.0
     except ValueError:
         mp = 0.0
-    recs = _all_games()
+    recs = _section_games(section)
     if market == "summary":
         live.add_summary(recs, chosen)
     tp = live.top_picks(recs, market=market)
@@ -785,7 +788,8 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
     return T.TemplateResponse(request, "top.html", {
         "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p,
         "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR, "xg_steps": [t for t in form.XG_STEPS if t > 0],
-        "keep": _xg_keep(xg, xg_for),
+        "keep": _xg_keep(xg, xg_for, "", section), "skeep": _xg_keep("", "", "", section),
+        "section": section, "sections": SECTIONS,
         "markets": TOP_MARKETS, "n_day_all": len(tp.get(day, [])), "chosen": chosen,
         "summary_names": dict(TOP_MARKETS),
         "summary_mix": {k: sum(1 for p in picks if p.get("sum_market") == k) for k in live.SUMMARY_MARKETS},

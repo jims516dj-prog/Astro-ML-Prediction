@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_section.html" as section_ui %}
 {% block title %}Top picks · Astro Football Lab{% if dc and research %}
 <h2>Does astrology add anything on double chance?</h2>
 <p class="small">Live so far, by how many engines' predicted results fall inside the pick:</p>
@@ -45,7 +46,9 @@ Neither adds anything. The model picked "under" in only {{ "{:,}".format(researc
 {% set nE = 3 %}
 {% macro pp(x) %}{{ "%+.1f"|format(100 * x) }} pts{% endmacro %}
 {% block body %}
-<h1>Top picks</h1>
+<h1>Top picks{% if section == "women" %}: women's football{% endif %}</h1>
+{{ section_ui.switch(section, sections, "/top?market=" ~ market) }}
+{% if section == "women" %}{{ section_ui.women_note("Picks") }}{% endif %}
 
 <nav class="seg" aria-label="Market">
   {% for k, label in markets %}<a href="/top?market={{ k }}{% if day %}&day={{ day }}{% endif %}{{ keep }}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
@@ -153,7 +156,7 @@ price them. This is a research view of which matches are most predictable, not b
 hundreds of picks would be news; over a handful of matches it is noise.</p>
 
 <form method="get" class="row">
-  <input type="hidden" name="market" value="{{ market }}">
+  <input type="hidden" name="market" value="{{ market }}"><input type="hidden" name="section" value="{{ section }}">
   {% if summary %}<fieldset class="row mk-pick"><legend class="small">Markets considered</legend>
     {% for k, label in markets if k != "summary" %}<label class="chk"><input type="checkbox" name="m" value="{{ k }}" {{ "checked" if k in chosen }} onchange="this.form.submit()"> {{ label }}</label>{% endfor %}
   </fieldset>{% endif %}

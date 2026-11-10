@@ -1,10 +1,13 @@
 {% extends "base.html" %}
+{% import "_section.html" as section_ui %}
 {% from "_form.html" import detail, window_line %}
 {% block title %}Form check · Top picks · Astro Football Lab{% endblock %}
 {% block body %}
-<h1>Top picks</h1>
+<h1>Top picks{% if section == "women" %}: women's football{% endif %}</h1>
+{{ section_ui.switch(section, sections, "/top?market=form") }}
+{% if section == "women" %}{{ section_ui.women_note("Teams and form checks (women's results only)") }}{% endif %}
 <nav class="seg" aria-label="Market">
-  {% for k, label in markets %}<a href="/top?market={{ k }}{% if day %}&day={{ day }}{% endif %}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
+  {% for k, label in markets %}<a href="/top?market={{ k }}{% if day %}&day={{ day }}{% endif %}{{ skeep }}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
 </nav>
 
 <p class="lede">Teams by how many of the 3 classical engines call them to win (by default <strong>2/3 or 3/3</strong>; choose
@@ -25,7 +28,7 @@ already price them. Read the form figures as context, not as an edge.</div>
 {% endif %}
 
 <form method="get" class="filters">
-  <input type="hidden" name="market" value="form">
+  <input type="hidden" name="market" value="form"><input type="hidden" name="section" value="{{ section }}">
   <label>Day<select name="day" onchange="this.form.submit()">
     {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
   <label>Engines backing the team<select name="agree" onchange="this.form.submit()">

@@ -1,0 +1,12 @@
+{# Men / Women switch for pages that cover both sections #}
+{% macro switch(section, sections, base, counts=None) %}
+<nav class="row" aria-label="Section" style="margin:4px 0 8px">
+  {% for k, l in sections.items() %}{% if k == section %}<span class="btn small">{{ l }}</span>{% else %}<a class="btn ghost small" href="{{ base }}{{ '&' if '?' in base else '?' }}section={{ k }}">{{ l }}</a>{% endif %}{% endfor %}
+</nav>
+{% endmacro %}
+{% macro women_note(what) %}
+<p class="callout small"><strong>Women's section.</strong> {{ what }} come from the women's forecasts (<a href="/women">Women</a>),
+kept apart from the men's. Read with care: the engines and the goal-market recalibrations were trained on men's football,
+so the probabilities rest mainly on the bookmaker odds, and the research figures on this page (backtests, calibration
+tables) are from men's football.</p>
+{% endmacro %}

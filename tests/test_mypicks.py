@@ -217,3 +217,23 @@ def test_women_section_has_its_own_slips_and_games(tmp_path, monkeypatch):
     assert len(db.slips(c, "2026-11-09", "men")) == 1 and db.my_picks(c, section="men") == []
     rows = list(csv.DictReader(io.StringIO(client.get("/mypicks/export.csv").text)))
     assert [(x["section"], x["home"]) for x in rows] == [("Women", "Gamma Women")]
+
+
+def test_top_picks_women_section(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+
+    men = live_rec("M1", "Alpha", "Beta", "2026-11-09T15:00:00+00:00")
+    women = live_rec("W1", "Gamma Women", "Delta Women", "2026-11-09T18:00:00+00:00")
+    women.update(division="W:uefa.wchampions", url="/women/match/W1")
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [men])
+    monkeypatch.setattr(web, "_women_games", lambda include_withdrawn=False: [women])
+    client = TestClient(web.app)
+    for market in ("summary", "result", "goals", "score", "btts", "dc", "o15"):
+        html = client.get(f"/top?market={market}&day=2026-11-09&section=women").text
+        assert "Women's section" in html and "Alpha v Beta" not in html, market
+        assert "market=goals" in html and "section=women" in html                 # tabs keep the section
+        if market in ("summary", "result"):
+            assert "Gamma Women" in html and "Alpha" in client.get(f"/top?market={market}&day=2026-11-09").text
+    assert client.get("/top?market=form&day=2026-11-09&section=women").status_code == 200

@@ -90,7 +90,7 @@ Form checks use women's results only.</p>{% endif %}
   {% if fc_research and fc_research.all %}<p class="note">Historically, adding this form estimate to the market did not improve
   the prediction of whether a team scores (log loss {{ "%.4f"|format(fc_research.all.log_loss["mkt"]) }} vs
   {{ "%.4f"|format(fc_research.all.log_loss["mkt+form"]) }}, {{ "{:,}".format(fc_research.all.n) }} team-games): context, not an edge.
-  <a href="/top?market=form&day={{ r.kickoff_utc[:10] }}">All form checks for this day</a>.</p>{% endif %}
+  <a href="/top?market=form&day={{ r.kickoff_utc[:10] }}{{ "&section=women" if women }}">All form checks for this day</a>.</p>{% endif %}
   {% else %}
   <p class="small">Not analysed: no team is backed by 2 or more of the 3 classical engines (at most {{ fc.agree }}/3 agree on a winner).</p>
   {% endif %}
