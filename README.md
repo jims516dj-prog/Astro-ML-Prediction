@@ -284,7 +284,8 @@ men's competition ESPN lists (about 185) and remembers each one that shows home/
 (`ledger/espn_competitions.json`); from then on its fixtures are checked every cycle. A few are checked from the start
 (Bolivia, Venezuela, Costa Rica, Honduras, Guatemala, El Salvador, Panama, Canada, Argentina's Primera Nacional, Liga de
 Expansión MX, Chile and Colombia's second divisions, the EFL Trophy, the Nations League). These appear as their own
-leagues (division codes such as `X:bol.1`). Youth (U21, U23…) and women's sides are left out.
+leagues (division codes such as `X:bol.1`). Youth (U21, U23…), college and women's competitions are left out, by
+ESPN code and by name, case-insensitively (Women's, Frauen, Féminine, Femenil, Damallsvenskan, Liga F, NWSL…).
 
 **The Americas.** Already forecast: MLS, Liga MX, Brazil Série A and Argentina (football-data.co.uk); Brazil Série B,
 Colombia, Ecuador, Paraguay, Peru, Uruguay and Chile, the Libertadores, Sudamericana and CONCACAF Champions Cup (ESPN /

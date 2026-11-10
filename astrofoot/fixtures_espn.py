@@ -46,8 +46,11 @@ SEEDS = {"bol.1": "Bolivian Liga Profesional", "ven.1": "Venezuelan Primera Divi
          "ksa.kings.cup": "Saudi King's Cup"}
 ACADEMY_CUPS = {"eng.trophy"}
 # Youth, reserve and women's sides are left out (the models were trained on men's senior league football)
-YOUTH = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|women|femenin|féminin|\(w\)", re.I)
-NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|women|wom|fem|youth|olympic|ncaa|nwsl")
+YOUTH = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b|women|femenin|féminin|frauen|ladies|\(w\)", re.I)
+# A competition that is not men's senior football, by ESPN code or name (case-insensitive): women's ("w" codes such as
+# uefa.wchampions, eng.w.1; Women's, Frauen, Féminine, Femenil, Damallsvenskan, Liga F, NWSL), youth, college, Olympic
+NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|^[a-z]+\.w[a-z]|women|wom[ae]n|wsl|frauen|f[eé]min|femenil|damallsvenskan|"
+                     r"\bliga f\b|ladies|girls|youth|junior|olympic|ncaa|college|nwsl|\bu-?\d{2}\b", re.I)
 SOURCE = "espn.com"
 DAYS_AHEAD = 2                 # today and tomorrow (the cycle runs three times a day)
 
@@ -61,9 +64,10 @@ def _comps(mtime: float) -> dict[str, str]:
 
 
 def discovered_names() -> dict[str, str]:
-    """slug -> name of every competition discovery has seen with odds, plus the seeds."""
+    """slug -> name of every competition discovery has seen with odds, plus the seeds (never women's, youth or
+    college competitions, even if an older discovery remembered one)."""
     mtime = COMP_FILE.stat().st_mtime if COMP_FILE.exists() else 0.0
-    return {**SEEDS, **_comps(mtime)}
+    return {k: v for k, v in {**SEEDS, **_comps(mtime)}.items() if not NOT_MEN.search(k) and not NOT_MEN.search(v)}
 
 
 def discovered_slugs() -> list[tuple[str, str]]:
@@ -93,7 +97,7 @@ def discover(now: datetime, path=COMP_FILE, get=None, log=print, force: bool = F
         return 0
     slugs = sorted({m.group(1) for it in items for m in [_re.search(r"/leagues/([^/?]+)", it.get("$ref", ""))] if m})
     slugs = [x for x in slugs if not NOT_MEN.search(x)]
-    comps = dict(state.get("competitions", {}))
+    comps = {k: v for k, v in state.get("competitions", {}).items() if not (NOT_MEN.search(k) or NOT_MEN.search(v))}
     found = 0
     for slug in slugs:
         name, priced = "", 0

@@ -8,7 +8,7 @@
 <p class="crumbs"><a href="/live">Live record</a> › forecast</p>
 <h1>{{ r.home }} <span class="v">v</span> {{ r.away }}</h1>
 <p class="meta">{{ r.league }} · {{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %}
-· favourite: <strong>{{ r.favourite }}</strong> · odds {{ r.odds.home }} / {{ r.odds.draw }} / {{ r.odds.away }} ({{ r.odds_source }})
+· favourite: <strong>{{ r.favourite }}</strong> · odds {{ "%.2f"|format(r.odds.home) }} / {{ "%.2f"|format(r.odds.draw) }} / {{ "%.2f"|format(r.odds.away) }} ({{ r.odds_source }})
 · {% if r.result %}<span class="badge ok">completed</span> result <strong>{{ r.result.goals_home }}–{{ r.result.goals_away }}</strong>{% elif r.status == "void" %}<span class="badge warn">void: postponed or abandoned, not scored</span>{% else %}<span class="badge muted">pending</span>{% endif %}</p>
 
 <section class="card">

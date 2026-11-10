@@ -119,3 +119,19 @@ def test_efl_trophy_skips_academy_sides():
 def test_distance():
     from astrofoot import venues
     assert 15 < venues.km((51.389, 0.017), (51.524, -0.031)) < 17          # Hayes Lane → Mile End
+
+
+def test_womens_competitions_never_discovered_or_forecast(tmp_path, monkeypatch):
+    import json
+    path = tmp_path / "comps.json"
+    path.write_text(json.dumps({"generated_at": "2026-11-01T00:00:00+00:00",
+                                "competitions": {"uefa.wchampions": "UEFA Women's Champions League", "bol.1": "Bolivian"}}))
+    monkeypatch.setattr(fixtures_espn, "COMP_FILE", path)
+    fixtures_espn._comps.cache_clear()
+    names = fixtures_espn.discovered_names()
+    assert "uefa.wchampions" not in names and "bol.1" in names            # an old remembered entry is dropped
+    for slug, name in (("uefa.wchampions", "UEFA Women's Champions League"), ("ger.w.1", "Frauen-Bundesliga"),
+                       ("mex.w.1", "Liga MX Femenil"), ("usa.nwsl", "NWSL")):
+        assert fixtures_espn.NOT_MEN.search(slug) or fixtures_espn.NOT_MEN.search(name)
+    for slug, name in (("wal.1", "Welsh Premier League"), ("uefa.champions", "UEFA Champions League")):
+        assert not (fixtures_espn.NOT_MEN.search(slug) or fixtures_espn.NOT_MEN.search(name))
