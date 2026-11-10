@@ -187,3 +187,33 @@ def test_live_record_expected_goals_filter(monkeypatch):
     c = TestClient(web.app)
     shown = lambda q: int(re.search(r"\((\d+) shown\)", c.get("/live?" + q).text).group(1))   # noqa: E731
     assert shown("") == 2 and shown("xg=1.5") == 1 and shown("xg=1.5&xg_for=away") == 0 and shown("xg=?") == 2
+
+
+def test_women_section_has_its_own_slips_and_games(tmp_path, monkeypatch):
+    import csv
+    import io
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+
+    men = live_rec("M1", "Alpha", "Beta", "2026-11-09T15:00:00+00:00")
+    women = live_rec("W1", "Gamma Women", "Delta Women", "2026-11-09T18:00:00+00:00")
+    women.update(division="W:uefa.wchampions", url="/women/match/W1")
+    path = tmp_path / "t.sqlite3"
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [men])
+    monkeypatch.setattr(web, "_women_games", lambda include_withdrawn=False: [women])
+    client = TestClient(web.app)
+    html = client.get("/mypicks?section=women&day=2026-11-09").text
+    assert "Gamma Women" in html and "Alpha v Beta" not in html
+    c = db.connect(path)
+    (ws,) = db.slips(c, "2026-11-09", "women")
+    r = client.post("/mypicks/add", data={"slip": ws["id"], "game": "W1", "sel_W1": "on"}, follow_redirects=False)
+    assert "section=women" in r.headers["location"]
+    assert [p["home"] for p in db.my_picks(c, section="women")] == ["Gamma Women"]
+    men_html = client.get("/mypicks?day=2026-11-09").text            # the men's section: its own slip, no women's picks
+    assert "Alpha" in men_html and "Gamma Women" not in men_html.split('id="mine"')[1].split("<h2")[0]
+    assert len(db.slips(c, "2026-11-09", "men")) == 1 and db.my_picks(c, section="men") == []
+    rows = list(csv.DictReader(io.StringIO(client.get("/mypicks/export.csv").text)))
+    assert [(x["section"], x["home"]) for x in rows] == [("Women", "Gamma Women")]

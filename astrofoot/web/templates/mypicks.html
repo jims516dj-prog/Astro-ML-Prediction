@@ -2,7 +2,13 @@
 {% block title %}My picks · Astro Football Lab{% endblock %}
 {% set STATE = {"won": ("ok", "won"), "lost": ("warn", "lost"), "open": ("", "open"), "empty": ("", "empty")} %}
 {% block body %}
-<h1>My picks</h1>
+<h1>My picks{% if section == "women" %}: women's football{% endif %}</h1>
+<nav class="row" aria-label="Section" style="margin:4px 0 8px">
+  {% for k, l in sections.items() %}{% if k == section %}<span class="btn small">{{ l }}</span>{% else %}<a class="btn ghost small" href="/mypicks?section={{ k }}">{{ l }}{% if k == "women" and n_women %} ({{ n_women }}){% endif %}</a>{% endif %}{% endfor %}
+</nav>
+{% if section == "women" %}<p class="callout small"><strong>Women's section.</strong> Games come from the women's forecasts
+(<a href="/women">Women</a>), with their own slips, kept apart from the men's slips and scores. Read the probabilities with care:
+the engines and goal-market recalibrations were trained on men's football, so they rest mainly on the bookmaker odds.</p>{% endif %}
 <p class="lede">Choose a day: its games load from the live record and your dataset. Build as many <strong>slips</strong>
 as you like for the day: choose a slip, tick games, choose an outcome for each (the most likely one is preselected;
 every outcome shows its calibrated probability) and <strong>add</strong> them. Picks stay editable. A game can be on several
@@ -14,6 +20,7 @@ slips, once per slip. Everything is scored once the games are played.</p>
     {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
   <label>Or any date<input type="date" value="{{ day }}" onchange="location.href='/mypicks?day='+this.value+'{{ keep }}'"></label>
   {% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}{% if eng %}<input type="hidden" name="eng" value="{{ eng }}">{% endif %}
+  <input type="hidden" name="section" value="{{ section }}">
 </form>
 
 <section class="tiles">
@@ -42,7 +49,7 @@ per market, so they carry no betting value; this is a research tool, not betting
 <td>{% if x.id != active.id %}<a class="small" href="/mypicks?day={{ day }}&slip={{ x.id }}{{ keep }}">open</a>{% endif %}</td></tr>
 {% endfor %}</tbody></table></div>
 <div class="row slip-tools">
-  <form method="post" action="/mypicks/slip/new" class="row"><input type="hidden" name="day" value="{{ day }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}{% if eng %}<input type="hidden" name="eng" value="{{ eng }}">{% endif %}
+  <form method="post" action="/mypicks/slip/new" class="row"><input type="hidden" name="day" value="{{ day }}"><input type="hidden" name="section" value="{{ section }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}{% if eng %}<input type="hidden" name="eng" value="{{ eng }}">{% endif %}
     <input name="name" placeholder="name (optional)" aria-label="new slip name" maxlength="60"><button class="btn small">+ New slip</button></form>
   <form method="post" action="/mypicks/slip/rename" class="row"><input type="hidden" name="slip" value="{{ active.id }}">{% if xg %}<input type="hidden" name="xg" value="{{ xg }}"><input type="hidden" name="xg_for" value="{{ xg_for }}">{% endif %}{% if eng %}<input type="hidden" name="eng" value="{{ eng }}">{% endif %}
     <input name="name" value="{{ active.name }}" aria-label="rename {{ active.name }}" maxlength="60"><button class="btn ghost small">Rename</button></form>
@@ -56,12 +63,14 @@ per market, so they carry no betting value; this is a research tool, not betting
 <h2 id="mine">{{ active.name }} <span class="small">({{ day }} · <span class="badge {{ STATE[slip_sum.state][0] }}">{{ STATE[slip_sum.state][1] }}</span>)</span></h2>
 <form class="row noprint" method="get" action="/mypicks/report" target="_blank">
   <span class="small"><strong>Presentation report</strong> (full detail, printable as PDF):</span>
-  <a class="btn ghost small" href="/mypicks/report?day={{ day }}" target="_blank">This day (all slips)</a>
-  <a class="btn ghost small" href="/mypicks/report" target="_blank">All days</a>
+  <input type="hidden" name="section" value="{{ section }}">
+  <a class="btn ghost small" href="/mypicks/report?day={{ day }}&section={{ section }}" target="_blank">This day (all {{ sections[section]|lower }}'s slips)</a>
+  <a class="btn ghost small" href="/mypicks/report?section={{ section }}" target="_blank">All days</a>
+  <a class="btn ghost small" href="/mypicks/report" target="_blank" title="men's and women's slips together">All days, both sections</a>
   <label class="inline">from<input type="date" name="date_from" value="{{ day }}"></label>
   <label class="inline">to<input type="date" name="date_to" value="{{ day }}"></label>
   <button class="btn ghost small">Open report</button>
-  <a class="small" href="/mypicks/export.csv?day={{ day }}">CSV (this day)</a> · <a class="small" href="/mypicks/export.csv">CSV (all days)</a>
+  <a class="small" href="/mypicks/export.csv?day={{ day }}&section={{ section }}">CSV (this day)</a> · <a class="small" href="/mypicks/export.csv?section={{ section }}">CSV (all days)</a> · <a class="small" href="/mypicks/export.csv">CSV (both sections)</a>
 </form>
 {% if day_picks %}
 <form method="post" action="/mypicks/edit">
@@ -89,7 +98,7 @@ per market, so they carry no betting value; this is a research tool, not betting
 
 <h2>Games on {{ day }} <span class="small">({{ rows|length }}{% if hidden %} shown, {{ hidden }} hidden by the filter{% endif %})</span></h2>
 <form method="get" class="filters" action="/mypicks">
-  <input type="hidden" name="day" value="{{ day }}"><input type="hidden" name="slip" value="{{ active.id }}">
+  <input type="hidden" name="day" value="{{ day }}"><input type="hidden" name="slip" value="{{ active.id }}"><input type="hidden" name="section" value="{{ section }}">
   <label>Expected goals (from the odds)<select name="xg" onchange="this.form.submit()"><option value="">any</option>
     {% for t in xg_steps %}<option value="{{ t }}" {{ "selected" if xg and xg|float == t }}>{{ "%.1f"|format(t) }} or more</option>{% endfor %}</select></label>
   <label>For<select name="xg_for" onchange="this.form.submit()">

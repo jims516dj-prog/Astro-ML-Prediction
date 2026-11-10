@@ -52,11 +52,11 @@
 <div class="toolbar noprint">
   <a class="btn ghost small" href="/mypicks{% if r.date_from and r.date_from == r.date_to %}?day={{ r.date_from }}{% endif %}">← Back to My picks</a>
   <button class="btn small" onclick="window.print()">Print / save as PDF</button>
-  <a class="btn ghost small" href="/mypicks/export.csv?date_from={{ r.date_from }}&date_to={{ r.date_to }}">Download CSV</a>
+  <a class="btn ghost small" href="/mypicks/export.csv?date_from={{ r.date_from }}&date_to={{ r.date_to }}&section={{ r.section }}">Download CSV</a>
 </div>
 
 <header class="rep-head">
-  <h1>My picks: {{ period }}</h1>
+  <h1>My picks{% if r.section_name %} ({{ r.section_name|lower }}){% endif %}: {{ period }}</h1>
   <div class="meta">Astro Football Lab · generated {{ r.generated[:16].replace("T", " ") }} UTC · {{ r.summary.n }} pick{{ "" if r.summary.n == 1 else "s" }}
   {% if r.days|length > 1 %}over {{ r.days|length }} days{% endif %}</div>
 </header>
@@ -85,7 +85,7 @@ handful of picks the gap is noise; ± is one standard error.</p>
 picks' probabilities, treating the games as independent.</p>
 <div class="scroll"><table class="data">
 <thead><tr><th>Day</th><th>Slip</th><th class="num">Picks</th><th class="num">Chance all come in</th><th class="num">Picks won</th><th>Slip result</th></tr></thead>
-<tbody>{% for x in r.slips %}<tr><td class="mono">{{ x.day }}</td><td>{{ x.name }}</td><td class="num">{{ x.n }}</td>
+<tbody>{% for x in r.slips %}<tr><td class="mono">{{ x.day }}</td><td>{{ x.name }}{% if x.section == "women" %} <span class="badge">Women</span>{% endif %}</td><td class="num">{{ x.n }}</td>
 <td class="num">{{ fmt_pct(x.all_win) if x.all_win is not none else "–" }}</td>
 <td class="num">{% if x.score.n %}{{ x.score.hits }} / {{ x.score.n }}{% else %}–{% endif %}</td>
 <td><strong>{{ {"won": "WON", "lost": "LOST", "open": "open", "empty": "empty"}[x.state] }}</strong>{% if x.late %} · {{ x.late }} picked after kickoff{% endif %}{% if x.void %} · {{ x.void }} void{% endif %}</td></tr>{% endfor %}</tbody>
@@ -117,7 +117,7 @@ covers picks of the likelier team to score.</p>
 
 <h2>Every pick in full</h2>
 {% for p in r.rows %}{% set g = p.game %}
-{% if loop.changed(p.slip_id) %}<h3 class="slip-head">{{ p.day }} · {{ p.slip_name }}</h3>{% endif %}
+{% if loop.changed(p.slip_id) %}<h3 class="slip-head">{{ p.day }} · {{ p.slip_name }}{% if p.section == "women" %} · Women{% endif %}</h3>{% endif %}
 <article class="pick">
   <div class="pick-top">
     <h3>{{ loop.index }}. {{ p.home }} v {{ p.away }}</h3>

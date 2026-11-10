@@ -268,8 +268,8 @@ true" compares live and backtest hit rates per probability band, so you can pick
 ## Women's football (separate section)
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger
-(`ledger/women/`: predictions, results, `TRACK_RECORD.md`). They never enter the men's track record, Top picks, My picks
-or Dataset, and the men's pipeline never forecasts women's competitions.
+(`ledger/women/`: predictions, results, `TRACK_RECORD.md`). They never enter the men's track record, Top picks or
+Dataset, and the men's pipeline never forecasts women's competitions. My picks has a separate **Women** section for them.
 
 - **Sources:** ESPN. Once a day the cycle discovers the women's senior competitions with home/draw/away odds
   (`ledger/women/espn_competitions.json`; seeded with the Women's Champions League, WSL, Liga F, Première Ligue,
@@ -369,6 +369,10 @@ The **My picks** tab (next to Top picks): choose a day and its games load from t
 (each once). Tick the games you want and choose an outcome for each from a list of every market's outcomes
 (home/draw/away, double chance, over/under 1.5 and 2.5, each team to score or not, both teams to score or not),
 each with its calibrated probability; the most likely one is preselected.
+
+**Men / Women** buttons at the top switch section. The Women section lists the women's forecasts and keeps its own
+slips and scores, apart from the men's. The report and CSV cover one section, or both together (CSV has a
+`section` column).
 
 **Expected-goals filter.** Above the day's games: *Expected goals (from the odds)* any / 0.8+ / 1.0+ / 1.2+ / 1.5+ / 2.0+,
 *for* either team, the home team, the away team or the team backed by 2+ engines. Each game shows both teams' expected

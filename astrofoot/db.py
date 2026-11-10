@@ -66,6 +66,10 @@ def connect(path=DB_PATH) -> sqlite3.Connection:
     con.row_factory = sqlite3.Row
     con.executescript(SCHEMA)
     _migrate_picks(con)
+    if "section" not in {r[1] for r in con.execute("PRAGMA table_info(my_slips)")}:
+        # slips belong to the men's or the women's section; every earlier slip was a men's one
+        con.execute("ALTER TABLE my_slips ADD COLUMN section TEXT NOT NULL DEFAULT 'men'")
+        con.commit()
     return con
 
 
@@ -175,10 +179,18 @@ def team_charts(con):
 
 
 # ----------------------------------------------------------------------------- my picks (slips)
-def slips(con, day: str | None = None) -> list[dict]:
-    q, args = "SELECT s.*, (SELECT COUNT(*) FROM my_slip_picks p WHERE p.slip_id = s.id) AS n FROM my_slips s", ()
+def slips(con, day: str | None = None, section: str | None = None) -> list[dict]:
+    """Slips, optionally of one day and/or one section ("men" or "women")."""
+    q = "SELECT s.*, (SELECT COUNT(*) FROM my_slip_picks p WHERE p.slip_id = s.id) AS n FROM my_slips s"
+    cond, args = [], []
     if day:
-        q, args = q + " WHERE s.day=?", (day,)
+        cond.append("s.day=?")
+        args.append(day)
+    if section:
+        cond.append("s.section=?")
+        args.append(section)
+    if cond:
+        q += " WHERE " + " AND ".join(cond)
     return [dict(r) for r in con.execute(q + " ORDER BY s.day, s.id", args).fetchall()]
 
 
@@ -187,16 +199,17 @@ def get_slip(con, slip_id) -> dict | None:
     return dict(r) if r else None
 
 
-def create_slip(con, day: str, name: str = "", created_at: str | None = None) -> int:
-    """A new slip for `day`; unnamed slips are called "Slip N" (the first free number)."""
-    taken = {s["name"] for s in slips(con, day)}
+def create_slip(con, day: str, name: str = "", created_at: str | None = None, section: str = "men") -> int:
+    """A new slip for `day` in a section; unnamed slips are called "Slip N" (the first free number)."""
+    section = section if section in ("men", "women") else "men"
+    taken = {s["name"] for s in slips(con, day, section)}
     if not name.strip():
         n = 1
         while f"Slip {n}" in taken:
             n += 1
         name = f"Slip {n}"
-    sid = con.execute("INSERT INTO my_slips (day, name, created_at) VALUES (?,?,?)",
-                      (day, name.strip()[:60], created_at or utcnow())).lastrowid
+    sid = con.execute("INSERT INTO my_slips (day, name, created_at, section) VALUES (?,?,?,?)",
+                      (day, name.strip()[:60], created_at or utcnow(), section)).lastrowid
     con.commit()
     return sid
 
@@ -213,10 +226,14 @@ def delete_slip(con, slip_id):
     con.commit()
 
 
-def my_picks(con, day: str | None = None, slip_id=None) -> list[dict]:
-    """Picks with their slip's name; filtered by day and/or slip."""
-    q = "SELECT p.*, s.name AS slip_name FROM my_slip_picks p JOIN my_slips s ON s.id = p.slip_id"
+def my_picks(con, day: str | None = None, slip_id=None, section: str | None = None) -> list[dict]:
+    """Picks with their slip's name and section; filtered by day, slip and/or section."""
+    q = ("SELECT p.*, s.name AS slip_name, s.section AS section FROM my_slip_picks p "
+         "JOIN my_slips s ON s.id = p.slip_id")
     cond, args = [], []
+    if section:
+        cond.append("s.section=?")
+        args.append(section)
     if day:
         cond.append("p.day=?")
         args.append(day)
