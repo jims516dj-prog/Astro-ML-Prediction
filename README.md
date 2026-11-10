@@ -320,6 +320,12 @@ retrained weekly on GitHub (workflow `tennis`, Tuesdays: refreshes the history a
 page, **Retrain on this computer** runs the same training locally, and **Rebuild data + retrain on GitHub** starts the
 workflow (needs the Update now token).
 
+**Live record** (`/tennis/live`): every sealed tennis forecast, newest first, with its seal check; the track record
+(sets, first set, match, underdog winning a set); filters for dates, status, tour, surface, player, tournament, market,
+right/wrong, minimum probability, the day's astrology and numerology, and priced matches; the statistics model, the
+expected figure and the odds compared on settled matches; calibration of set picks; and the same Update now / Get latest
+results buttons as soccer (one GitHub run covers both).
+
 **My picks** (`/tennis/mypicks`): tennis slips, kept apart from the soccer ones. Choose a day, tick matches and an outcome
 for each (either player to win the match, the first set, or at least one set; most likely preselected, each with its
 expected probability and whether the day's astrology and numerology favour that player), add them to a slip, edit later.

@@ -246,3 +246,40 @@ def test_odds_fetch_buys_only_listed_tournaments_and_keeps_a_reserve(tmp_path):
     c3 = Fake(100)                                                      # below the reserve: buys nothing
     (tmp_path / "odds_state.json").unlink()
     assert todds.fetch(up, now, tmp_path, client=c3, log=lambda *a: None) == {}
+
+
+def test_tennis_live_record_scores_settled_forecasts(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot import live as football_live
+    from astrofoot.tennis import live as tlive
+    from astrofoot.web import app as web
+    from astrofoot.web import tennis_web
+
+    p = {"a_set": 0.6, "b_set": 0.4, "a_first": 0.62, "b_first": 0.38, "a_one_set": 0.85, "b_one_set": 0.6,
+         "a_match": 0.7, "b_match": 0.3, "version": "t"}
+    p["expected"] = dict(p)
+    p["market"] = {"a_match": 0.75, "b_match": 0.25, "a_set": 0.63, "b_set": 0.37}
+    day = {"day": "2030-01-02", "dob": {"a": None, "b": None},
+           "astro": {"a": {"score": 1.0, "contacts": []}, "b": {"score": 0.0, "contacts": []}, "favours": 1},
+           "num": {"a": {"score": 0.0, "parts": [], "numbers": {}}, "b": {"score": 0.0, "parts": [], "numbers": {}}, "favours": 0}}
+    base = {"tour": "atp", "event": "Test Open", "round": "Round 1", "venue": "", "surface": "hard", "best_of": 3,
+            "start_utc": "2030-01-02T12:00:00+00:00", "p1_id": "1", "p2_id": "2", "p1_seed": None, "p2_seed": None,
+            "model_version": "t", "p": p, "features": {}, "day": day, "odds": {"a": 1.3, "b": 3.6, "source": "t"},
+            "committed_at": "2030-01-01T10:00:00+00:00"}
+    r1 = football_live.seal({**base, "match_id": "M1", "p1": "Ann A", "p2": "Bea B"})
+    r2 = football_live.seal({**base, "match_id": "M2", "p1": "Cat C", "p2": "Dee D"})
+    res = {"M1": {"winner": 1, "set_winners": "121", "score": "6-4 3-6 6-2", "retired": False, "void": False}}
+    monkeypatch.setattr(tlive, "records", lambda ledger=None: [tlive.join(r1, res["M1"]), tlive.join(r2, None)])
+    client = TestClient(web.app)
+    html = client.get("/tennis/live").text
+    assert "2/2 seals verify" in html and "2/3 sets" in html and "Odds alone" in html
+    assert "Ann A" in client.get("/tennis/live?status=settled&hit=hit").text
+    assert "Cat C" not in client.get("/tennis/live?status=settled").text
+    recs = [tlive.join(r1, res["M1"])]
+    for r in recs:
+        r["dayv"] = day
+    (stats, expected, odds) = tennis_web.compare_sources(recs)
+    assert stats["n_sets"] == 3 and abs(stats["set_acc"] - 2 / 3) < 1e-9 and odds["n"] == 1
+    band = next(b for b in tennis_web.calibration(recs) if b["matches"])
+    assert band["band"] == "60–65%" and band["hits"] == 2 and band["n"] == 3

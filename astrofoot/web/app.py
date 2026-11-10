@@ -659,8 +659,11 @@ def _pull_and_report() -> str:
     if not (ROOT / ".git").exists():
         return ("This folder is not a git clone: download the project again (Code → Download ZIP) "
                 "to get new results.")
+    from ..tennis import live as tlive
     before = live.records()
     n_res, n_fc = sum(r["status"] == "settled" for r in before), len(before)
+    tb = tlive.records()
+    t_res, t_fc = sum(r["status"] == "settled" for r in tb), len(tb)
     try:
         set_aside = _tidy_generated_files()
         r = subprocess.run(["git", "pull", "--ff-only"], cwd=ROOT, capture_output=True, text=True, timeout=120)
@@ -670,8 +673,11 @@ def _pull_and_report() -> str:
         after = live.records()
         new_res = sum(x["status"] == "settled" for x in after) - n_res
         new_fc = len(after) - n_fc
+        ta = tlive.records()
+        tennis = (f" Tennis: {sum(r['status'] == 'settled' for r in ta) - t_res} new result(s), "
+                  f"{len(ta) - t_fc} new forecast(s).")
         code = any(line.strip().startswith(("astrofoot/", "scripts/")) for line in out)
-        return (f"Up to date: {new_res} new result(s), {new_fc} new forecast(s)."
+        return (f"Up to date: {new_res} new result(s), {new_fc} new forecast(s)." + tennis
                 + (" The app's code was also updated: restart the app to use it." if code else "")
                 + (f" Local model files from an earlier refit were moved to {set_aside}." if set_aside else ""))
     except (OSError, subprocess.TimeoutExpired) as e:
@@ -680,10 +686,14 @@ def _pull_and_report() -> str:
         imported.cache_clear()
 
 
+BACK = {"/live", "/tennis/live"}     # pages the update buttons may return to
+
+
 @app.post("/live/refresh")
-def live_refresh():
+def live_refresh(back: str = Form("/live")):
     """Bring in what the scheduled GitHub jobs have already published: git pull."""
-    return RedirectResponse("/live?" + urllib.parse.urlencode({"msg": _pull_and_report()}), status_code=303)
+    back = back if back in BACK else "/live"
+    return RedirectResponse(back + "?" + urllib.parse.urlencode({"msg": _pull_and_report()}), status_code=303)
 
 
 SYNC = {"running": False, "phase": "", "detail": "", "msg": ""}
@@ -706,17 +716,18 @@ def _sync_worker():
 
 
 @app.post("/live/sync")
-def live_sync():
+def live_sync(back: str = Form("/live")):
     """Run the forecast/results cycle on GitHub right now, wait for it, then pull."""
+    back = back if back in BACK else "/live"
     if sync.token() is None:
-        return RedirectResponse("/live?" + urllib.parse.urlencode({"msg": (
+        return RedirectResponse(back + "?" + urllib.parse.urlencode({"msg": (
             "Update now needs a GitHub token (one-time setup, see README → 'Update now'). Meanwhile: "
             + _pull_and_report())}), status_code=303)
     if not SYNC["running"]:
         import threading
         SYNC.update(running=True, phase="starting", detail="Starting", msg="")
         threading.Thread(target=_sync_worker, daemon=True).start()
-    return RedirectResponse("/live?syncing=1", status_code=303)
+    return RedirectResponse(back + "?syncing=1", status_code=303)
 
 
 @app.get("/live/sync/status")

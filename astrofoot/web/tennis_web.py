@@ -357,3 +357,106 @@ def tennis_top(request: Request, market: str = "set", day: str = "", tour: str =
         "qs": urllib.parse.urlencode({k: v for k, v in {"day": day, "tour": tour, "min_p": min_p, "astro": astro, "num": num,
                                                          "odds": odds}.items() if v}),
         "page": "tennis_top"})
+
+
+# ----------------------------------------------------------------------------- live record
+LIVE_MARKETS = [("set", "Sets"), ("first", "First set"), ("match", "Match"), ("one_set", "At least one set"),
+                ("dog_set", "Underdog wins a set")]
+
+
+def _ll(p: float, y: int) -> float:
+    p = min(max(p, 1e-6), 1 - 1e-6)
+    return -math.log(p if y else 1 - p)
+
+
+def compare_sources(rows: list[dict]) -> list[dict]:
+    """On settled forecasts: the statistics model, the expected figure and the odds, set by set and match by match
+    (log loss: lower is better), each on the matches it covers."""
+    done = [r for r in rows if r["status"] == "settled" and r["pre_kickoff"]]
+    out = []
+    for name, get in (("Statistics model", lambda r: r["p"]), ("Expected (headline)", lambda r: r["e"]),
+                      ("Odds alone", lambda r: (r["p"].get("market") or {}) if "a_set" in (r["p"].get("market") or {}) else None)):
+        sets_ll, sets_hit, n_sets, m_ll, m_hit, n = 0.0, 0, 0, 0.0, 0, 0
+        for r in done:
+            q = get(r)
+            if not q:
+                continue
+            n += 1
+            for c in r["result"]["set_winners"]:
+                y = int(c == "1")
+                sets_ll += _ll(q["a_set"], y)
+                sets_hit += int((q["a_set"] >= 0.5) == bool(y))
+                n_sets += 1
+            y = int(r["result"]["winner"] == 1)
+            m_ll += _ll(q["a_match"], y)
+            m_hit += int((q["a_match"] >= 0.5) == bool(y))
+        out.append({"name": name, "n": n, "n_sets": n_sets,
+                    "set_ll": sets_ll / n_sets if n_sets else None, "set_acc": sets_hit / n_sets if n_sets else None,
+                    "match_ll": m_ll / n if n else None, "match_acc": m_hit / n if n else None})
+    return out
+
+
+def calibration(rows: list[dict]) -> list[dict]:
+    """Set picks grouped by their probability: did the favoured player win sets as often as forecast?"""
+    done = [r for r in rows if r["status"] == "settled" and r["pre_kickoff"]]
+    edges = (0.5, 0.55, 0.6, 0.65, 0.7, 0.8, 1.0001)
+    out = []
+    for lo, hi in zip(edges[:-1], edges[1:]):
+        b = [r for r in done if lo <= r["p_set_pick"] < hi]
+        n = sum(r["sets_played"] for r in b)
+        out.append({"band": f"{int(100 * lo)}–{min(100, int(100 * hi))}%", "matches": len(b), "n": n,
+                    "hits": sum(r["set_hits"] for r in b), "rate": sum(r["set_hits"] for r in b) / n if n else None,
+                    "expected": sum(r["p_set_pick"] * r["sets_played"] for r in b) / n if n else None})
+    return out
+
+
+@router.get("/tennis/live", response_class=HTMLResponse)
+def tennis_live(request: Request, date_from: str = "", date_to: str = "", status: str = "", tour: str = "",
+                surface: str = "", player: str = "", event: str = "", market: str = "set", hit: str = "", astro: str = "",
+                num: str = "", odds: str = "", min_p: str = "", page_no: int = 1, msg: str = "", syncing: int = 0):
+    from .app import SYNC
+    market = market if market in dict(LIVE_MARKETS) else "set"
+    recs = tlive.records()
+    integrity = {"n": len(recs), "verified": sum(bool(r["verified"]) for r in recs),
+                 "late": sum(not r["pre_kickoff"] for r in recs)}
+    try:
+        mp = float(min_p) if min_p else 0.0
+    except ValueError:
+        mp = 0.0
+    t = player.lower().strip()
+    rows = []
+    for r in sorted(recs, key=lambda r: r["start_utc"], reverse=True):
+        d = r["start_utc"][:10]
+        if (date_from and d < date_from) or (date_to and d > date_to) or (status and r["status"] != status) \
+                or (tour and r["tour"] != tour) or (surface and r["surface"] != surface) or (odds and not r.get("odds")) \
+                or (t and t not in r["p1"].lower() and t not in r["p2"].lower()) \
+                or (event and event.lower() not in r["event"].lower()):
+            continue
+        r["dayv"] = day_of(r)
+        r["pick"] = pick_of(r, market)
+        k = r["pick"]
+        if k["p"] < mp or (astro and (astro == "yes") != k["astro"]) or (num and (num == "yes") != k["num"]):
+            continue
+        if hit:
+            if k["hit"] is None:
+                continue
+            won = k["hit"] * 2 > k["n"] if market == "set" else bool(k["hit"])
+            if (hit == "hit") != won:
+                continue
+        rows.append(r)
+    done = [r for r in rows if r["pick"]["hit"] is not None and r["pre_kickoff"]]
+    n = sum(r["pick"]["n"] for r in done)
+    subset = {"n": n, "hits": sum(r["pick"]["hit"] for r in done), "matches": len(done),
+              "expected": sum(r["pick"]["p"] * r["pick"]["n"] for r in done) / n if n else None}
+    subset["rate"] = subset["hits"] / n if n else None
+    per = 50
+    pages = max(1, math.ceil(len(rows) / per))
+    page_no = min(max(page_no, 1), pages)
+    q = {"date_from": date_from, "date_to": date_to, "status": status, "tour": tour, "surface": surface, "player": player,
+         "event": event, "market": market, "hit": hit, "astro": astro, "num": num, "odds": odds, "min_p": min_p}
+    return _T().TemplateResponse(request, "tennis_live.html", {
+        "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages, "q": q,
+        "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "integrity": integrity,
+        "tr": tlive.track_record(recs), "subset": subset, "compare": compare_sources(rows), "calib": calibration(rows),
+        "markets": LIVE_MARKETS, "tours": TOUR, "agree": AGREE, "msg": msg, "syncing": bool(syncing) or SYNC["running"],
+        "has_token": sync.token() is not None, "page": "tennis_live"})

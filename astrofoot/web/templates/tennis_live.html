@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Live record · Astro Tennis Lab{% endblock %}
+{% block body %}
+<h1>Tennis live track record</h1>
+<p class="lede">Every tennis forecast, committed to <code>ledger/tennis</code> <em>before the start</em> and sealed with a
+SHA-256, then scored against ESPN's results. Unlike the backtests on the ML model page, these are matches the model
+could not have been tuned on.</p>
+
+<section class="tiles">
+  <div class="tile"><div class="k">Forecasts</div><div class="v">{{ integrity.n }}</div><div class="s">{{ tr.n }} settled before the start</div></div>
+  <div class="tile"><div class="k">Integrity</div><div class="v sm">{{ integrity.verified }}/{{ integrity.n }} seals verify</div><div class="s">{{ integrity.late }} committed after the start (not scored)</div></div>
+  {% for k, label in [("sets", "Sets: favoured player won"), ("first", "First set"), ("match", "Match"), ("dog_one_set", "Underdog won a set")] %}
+  {% set v = tr.get(k) %}<div class="tile"><div class="k">{{ label }}</div>
+  {% if v and v.n %}<div class="v">{{ v.hits }} / {{ v.n }}</div><div class="s">{{ fmt_pct(v.rate) }} vs {{ fmt_pct(v.expected) }} expected</div>
+  {% else %}<div class="v sm">none yet</div>{% endif %}</div>{% endfor %}
+</section>
+
+{% if msg %}<p class="callout small">{{ msg }}</p>{% endif %}
+<div class="row">
+  <form method="post" action="/live/sync"><input type="hidden" name="back" value="/tennis/live"><button class="btn">Update now</button></form>
+  <form method="post" action="/live/refresh"><input type="hidden" name="back" value="/tennis/live"><button class="btn ghost">Get latest results</button></form>
+</div>
+<p class="note"><strong>Update now</strong> asks GitHub to run the forecast and results cycle immediately (it covers soccer and
+tennis), waits 2–3 minutes and downloads the outcome{% if not has_token %}; it needs the one-time GitHub token, see
+README → “Update now”{% endif %}. <strong>Get latest results</strong> downloads what the scheduled runs (05:17, 11:17, 17:17
+UTC) have already published. Tennis results come from ESPN, usually within an hour of the end of a match.</p>
+{% if syncing %}<div class="callout small"><strong>Updating…</strong> <span id="syncdetail">Starting</span>
+<span class="note">(this page refreshes by itself when done)</span></div>
+<script>
+(async function poll() {
+  const s = await fetch("/live/sync/status").then(r => r.json()).catch(() => null);
+  if (s && !s.running && s.phase === "done") { location.href = "/tennis/live?msg=" + encodeURIComponent(s.msg); return; }
+  if (s) document.getElementById("syncdetail").textContent = s.detail || s.phase;
+  setTimeout(poll, 3000);
+})();
+</script>{% endif %}
+
+<h2>Forecasts <span class="small">({{ "{:,}".format(n) }} shown)</span></h2>
+<form method="get" class="filters">
+  <label>From<input type="date" name="date_from" value="{{ q.date_from }}"></label>
+  <label>To<input type="date" name="date_to" value="{{ q.date_to }}"></label>
+  <label>Status<select name="status"><option value="">All</option>
+    {% for v, l in [("pending", "Pending"), ("settled", "Completed"), ("void", "Void")] %}<option value="{{ v }}" {{ "selected" if q.status == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Tour<select name="tour"><option value="">Both</option>
+    {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if q.tour == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Surface<select name="surface"><option value="">All</option>
+    {% for s in ["hard", "clay", "grass"] %}<option {{ "selected" if q.surface == s }}>{{ s }}</option>{% endfor %}</select></label>
+  <label>Player<input name="player" value="{{ q.player }}" placeholder="contains…"></label>
+  <label>Tournament<input name="event" value="{{ q.event }}" placeholder="contains…"></label>
+  <label>Market<select name="market">
+    {% for k, l in markets %}<option value="{{ k }}" {{ "selected" if q.market == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Its pick<select name="hit"><option value="">—</option>
+    <option value="hit" {{ "selected" if q.hit == "hit" }}>Right</option><option value="miss" {{ "selected" if q.hit == "miss" }}>Wrong</option></select></label>
+  <label>Minimum probability<select name="min_p"><option value="">any</option>
+    {% for v in ("0.55", "0.6", "0.65", "0.7", "0.75", "0.8", "0.85", "0.9") %}<option value="{{ v }}" {{ "selected" if q.min_p == v }}>{{ (v|float * 100)|round|int }}%+</option>{% endfor %}</select></label>
+  <label>Astrology for the day<select name="astro">
+    {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if q.astro == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Numerology for the day<select name="num">
+    {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if q.num == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Odds<select name="odds"><option value="">any</option><option value="1" {{ "selected" if q.odds }}>priced only</option></select></label>
+  <div class="row"><button class="btn ghost">Filter</button><a href="/tennis/live" class="small">Clear</a></div>
+</form>
+{% if subset.n %}<p class="note"><strong>These filtered forecasts so far ({{ dict(markets)[q.market] }}):</strong> the pick was right
+{{ subset.hits }} of {{ subset.n }} {{ "sets" if q.market == "set" else "times" }} ({{ fmt_pct(subset.rate) }}), against
+{{ fmt_pct(subset.expected) }} expected from its own probabilities. Over a handful of matches a gap is noise.</p>{% endif %}
+
+<div class="scroll"><table class="data small">
+<thead><tr><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th>Pick ({{ dict(markets)[q.market]|lower }})</th><th class="num">Chance</th>
+<th class="num" title="expected chance to win a given set: player 1 / player 2">Set</th><th class="num">Match</th>
+<th>Day favours</th><th>Result</th><th>Seal</th></tr></thead>
+<tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
+<tr><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
+<td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
+<td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">odds</span>{% endif %}</td>
+<td>{{ k.player }}</td><td class="num">{{ fmt_pct(k.p, 0) }}</td>
+<td class="num pp">{{ fmt_pct(r.e.a_set, 0) }}<br>{{ fmt_pct(r.e.b_set, 0) }}</td><td class="num pp">{{ fmt_pct(r.e.a_match, 0) }}<br>{{ fmt_pct(r.e.b_match, 0) }}</td>
+<td class="small">{% for key, lab in [("astro", "Astro"), ("num", "Num")] %}{{ lab }}: {% set f = dv[key].favours %}{{ (r.p1 if f == 1 else r.p2).split()[-1] if f else "level" }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>
+<td class="mono">{% if r.status == "settled" %}{{ r.result.score }}{% if r.result.retired %} ret.{% endif %}<br>
+{% if q.market == "set" %}{{ k.hit }}/{{ k.n }} sets{% else %}{{ "✓" if k.hit else "✗" }}{% endif %}{% elif r.status == "void" %}<span title="{{ r.result.void_reason }}">void</span>{% else %}pending{% endif %}</td>
+<td class="mono small" title="committed {{ r.committed_at }} · sha256 {{ r.sha256 }}">{{ "✓" if r.verified else "✗" }}{{ "" if r.pre_kickoff else " late" }} {{ r.sha256[:8] }}</td></tr>
+{% else %}<tr><td colspan="10">No forecasts match these filters.</td></tr>{% endfor %}</tbody></table></div>
+<p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no - 1 }}">← newer</a>{% endif %}
+<span>page {{ page_no }} / {{ pages }}</span>{% if page_no < pages %}<a href="?{{ qs }}&page_no={{ page_no + 1 }}">older →</a>{% endif %}</p>
+
+<h2>Statistics, expected figure and odds compared</h2>
+<p class="note">Settled forecasts under the filters above. Log loss: lower is better (it punishes confident mistakes);
+"Odds alone" covers only the matches The Odds API priced.</p>
+<div class="scroll"><table class="data"><thead><tr><th>Source</th><th class="num">Matches</th><th class="num">Sets right</th><th class="num">Set log loss</th><th class="num">Matches right</th><th class="num">Match log loss</th></tr></thead>
+<tbody>{% for c in compare %}<tr><td>{{ c.name }}</td><td class="num">{{ c.n }}</td>
+<td class="num">{{ fmt_pct(c.set_acc) }}</td><td class="num">{{ "%.4f"|format(c.set_ll) if c.set_ll is not none else "—" }}</td>
+<td class="num">{{ fmt_pct(c.match_acc) }}</td><td class="num">{{ "%.4f"|format(c.match_ll) if c.match_ll is not none else "—" }}</td></tr>{% endfor %}</tbody></table></div>
+
+<h2>Calibration of set picks</h2>
+<p class="note">Settled forecasts grouped by the favoured player's chance per set: a well-calibrated model wins about as often as forecast.</p>
+<div class="scroll"><table class="data"><thead><tr><th>Chance per set</th><th class="num">Matches</th><th class="num">Sets</th><th class="num">Won</th><th class="num">Rate</th><th class="num">Expected</th></tr></thead>
+<tbody>{% for b in calib %}<tr><td>{{ b.band }}</td><td class="num">{{ b.matches }}</td><td class="num">{{ b.n }}</td><td class="num">{{ b.hits }}</td>
+<td class="num">{{ fmt_pct(b.rate) }}</td><td class="num">{{ fmt_pct(b.expected) }}</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}
