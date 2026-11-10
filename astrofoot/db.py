@@ -201,7 +201,7 @@ def get_slip(con, slip_id) -> dict | None:
 
 def create_slip(con, day: str, name: str = "", created_at: str | None = None, section: str = "men") -> int:
     """A new slip for `day` in a section; unnamed slips are called "Slip N" (the first free number)."""
-    section = section if section in ("men", "women") else "men"
+    section = section if section in ("men", "women", "tennis") else "men"
     taken = {s["name"] for s in slips(con, day, section)}
     if not name.strip():
         n = 1

@@ -320,6 +320,11 @@ retrained weekly on GitHub (workflow `tennis`, Tuesdays: refreshes the history a
 page, **Retrain on this computer** runs the same training locally, and **Rebuild data + retrain on GitHub** starts the
 workflow (needs the Update now token).
 
+**My picks** (`/tennis/mypicks`): tennis slips, kept apart from the soccer ones. Choose a day, tick matches and an outcome
+for each (either player to win the match, the first set, or at least one set; most likely preselected, each with its
+expected probability and whether the day's astrology and numerology favour that player), add them to a slip, edit later.
+Scored once played; presentation report and CSV like soccer's.
+
 Commands: `python scripts/tennis.py build` (history + players), `train` (features + training), `cycle` (live forecasts).
 
 ## Women's football (separate section)

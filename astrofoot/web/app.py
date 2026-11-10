@@ -873,7 +873,7 @@ def _report(c, date_from: str, date_to: str, section: str = "") -> dict:
     section = section if section in SECTIONS else ""
     games = {g["match_key"]: g for g in _picks_games(include_withdrawn=True)}
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
-    picks = [p for p in db.my_picks(c, section=section or None) if (not date_from or p["day"] >= date_from) and (not date_to or p["day"] <= date_to)]
+    picks = [p for p in db.my_picks(c, section=section or None) if p.get("section") != "tennis" and (not date_from or p["day"] >= date_from) and (not date_to or p["day"] <= date_to)]
     rows = []
     for v in _picks_view(c, list(games.values()), picks, now_iso):
         g = games.get(v["match_key"])
@@ -896,6 +896,8 @@ def _report(c, date_from: str, date_to: str, section: str = "") -> dict:
     rows.sort(key=lambda r: (r["day"], r["slip_id"], r["kickoff_utc"], r["home"]))
     slip_list = []
     for x in db.slips(c, section=section or None):
+        if x.get("section") == "tennis":
+            continue
         if (date_from and x["day"] < date_from) or (date_to and x["day"] > date_to):
             continue
         mine = [r for r in rows if r["slip_id"] == x["id"]]
@@ -1246,3 +1248,6 @@ async def api_analyse(request: Request):
 from .tennis_web import router as _tennis_router  # noqa: E402
 
 app.include_router(_tennis_router)
+from .tennis_picks import router as _tennis_picks_router  # noqa: E402
+
+app.include_router(_tennis_picks_router)

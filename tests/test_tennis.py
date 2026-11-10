@@ -177,3 +177,39 @@ def test_odds_player_names_match():
     from astrofoot.tennis.odds import same_player
     assert same_player("Iga Swiatek", "Iga Świątek") and same_player("Carlos Alcaraz", "Carlos Alcaraz Garfia")
     assert not same_player("Karolina Pliskova", "Kristyna Pliskova") and not same_player("Jannik Sinner", "Carlos Alcaraz")
+
+
+def test_tennis_my_picks_slips_and_scoring(tmp_path, monkeypatch):
+    import re
+
+    from fastapi.testclient import TestClient
+
+    from astrofoot import db
+    from astrofoot import live as football_live
+    from astrofoot.tennis import live as tlive
+    from astrofoot.tennis import mypicks as tmp
+    from astrofoot.web import app as web
+
+    p = {"a_set": 0.6, "b_set": 0.4, "a_first": 0.62, "b_first": 0.38, "a_one_set": 0.85, "b_one_set": 0.6,
+         "a_match": 0.7, "b_match": 0.3, "version": "t"}
+    day = {"day": "2030-01-02", "dob": {"a": None, "b": None},
+           "astro": {"a": {"score": 1.0, "contacts": []}, "b": {"score": 0.0, "contacts": []}, "favours": 1},
+           "num": {"a": {"score": 0.0, "parts": [], "numbers": {}}, "b": {"score": 1.0, "parts": [], "numbers": {}}, "favours": 2}}
+    rec = football_live.seal({"match_id": "M1", "tour": "atp", "event": "Test Open", "round": "Round 1", "venue": "", "surface": "hard",
+                              "best_of": 3, "start_utc": "2030-01-02T12:00:00+00:00", "p1": "Ann A", "p1_id": "1", "p2": "Bea B",
+                              "p2_id": "2", "p1_seed": None, "p2_seed": None, "model_version": "t", "p": p, "features": {},
+                              "day": day, "odds": None, "committed_at": "2030-01-01T10:00:00+00:00"})
+    res = {"M1": {"match_id": "M1", "winner": 2, "set_winners": "122", "score": "6-4 3-6 2-6", "retired": False, "void": False}}
+    monkeypatch.setattr(tlive, "records", lambda ledger=None: [tlive.join(rec, res["M1"])])
+    path = tmp_path / "t.sqlite3"
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    client = TestClient(web.app)
+    html = client.get("/tennis/mypicks?day=2030-01-02").text
+    sid = int(re.search(r'/tennis/mypicks/slip/rename".*?name="slip" value="(\d+)"', html, re.S).group(1))
+    client.post("/tennis/mypicks/add", data={"slip": sid, "game": "M1", "sel_M1": "on", "out_M1": "o:1"})
+    (pick,) = db.my_picks(db.connect(path), section="tennis")
+    assert pick["selection"] == "o:1" and abs(pick["p"] - 0.85) < 1e-9
+    html = client.get("/tennis/mypicks?day=2030-01-02").text
+    assert "6-4 3-6 2-6 ✓" in html and "astro ✓" in html                # Ann won a set; astrology favoured her
+    assert tmp.won("m:1", "122", 2) is False and tmp.won("f:1", "122", 2) and tmp.won("o:2", "122", 2)
+    assert "Ann A" not in client.get("/mypicks").text                     # never on the soccer My picks

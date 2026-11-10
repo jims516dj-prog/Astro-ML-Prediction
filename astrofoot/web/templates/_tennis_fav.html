@@ -1,0 +1,2 @@
+{% macro fav_badges(f) %}{% if f %}{% if f.astro %}<span class="badge ok" title="the day's astrology favours this player">astro ✓</span>{% elif f.astro_other %}<span class="badge" title="the day's astrology favours the other player">astro ✗</span>{% endif %}
+{% if f.num %}<span class="badge ok" title="the day's numerology favours this player">num ✓</span>{% elif f.num_other %}<span class="badge" title="the day's numerology favours the other player">num ✗</span>{% endif %}{% endif %}{% endmacro %}
