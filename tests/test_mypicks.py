@@ -259,3 +259,22 @@ def test_live_record_women_section(monkeypatch):
     assert 'name="section" value="women"' in html                    # the filters keep the section
     men_html = client.get("/live").text
     assert "Alpha v Beta" in men_html and "Gamma Women" not in men_html
+
+
+def test_dataset_women_section(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+
+    men = live_rec("M1", "Alpha", "Beta", "2026-11-09T15:00:00+00:00")
+    women = live_rec("W1", "Gamma Women", "Delta Women", "2026-11-09T18:00:00+00:00")
+    women.update(division="W:uefa.wchampions", url="/women/match/W1", odds={"home": 1.8, "draw": 3.6, "away": 4.4})
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [men])
+    monkeypatch.setattr(web, "_women_games", lambda include_withdrawn=False: [women])
+    client = TestClient(web.app)
+    html = client.get("/dataset?section=women").text
+    assert "Gamma Women" in html and "Alpha v Beta" not in html and "Research corpus" not in html
+    assert 'name="section" value="women"' in html
+    assert "Alpha v Beta" in client.get("/dataset").text
+    csv_text = client.get("/dataset/women.csv").text
+    assert "Gamma Women" in csv_text and "Alpha" not in csv_text

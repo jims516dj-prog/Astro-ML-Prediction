@@ -292,10 +292,14 @@ def delete_match(mid: str):
 @app.get("/dataset", response_class=HTMLResponse)
 def dataset_page(request: Request, league: str = "", season: str = "", team: str = "", page: int = 1,
                  status: str = "", origin: str = "", gpage: int = 1, g_from: str = "", g_to: str = "",
-                 g_agree: str = "", c_from: str = "", c_to: str = "", c_agree: str = ""):
-    # 1) every game we forecast: live record + games added by hand, each game once
+                 g_agree: str = "", c_from: str = "", c_to: str = "", c_agree: str = "", section: str = "men"):
+    section = section if section in SECTIONS else "men"
+    women = section == "women"
+    if women:
+        origin = season = c_from = c_to = c_agree = ""
+    # 1) every game we forecast: live record + games added by hand, each game once (women: the women's ledger)
     g_agree, g_ok = _agree_test(g_agree)
-    games = [r for r in _filter_live(_all_games(include_withdrawn=status == "void"), date_from=g_from, date_to=g_to,
+    games = [r for r in _filter_live(_section_games(section, include_withdrawn=status == "void"), date_from=g_from, date_to=g_to,
                                      status=status, origin=origin, league=league, team=team)
              if g_ok(r["classical_agree"])]
     per = 50
@@ -304,8 +308,8 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     shown = games[(gpage - 1) * per: gpage * per]
     for r in shown:
         r["gm"] = _gm_live(r)
-    # 2) the research corpus
-    m = imported()
+    # 2) the research corpus (men's football only: there is no women's historical corpus)
+    m = imported().iloc[0:0] if women else imported()
     q = m
     if league:
         q = q[q.division == league]
@@ -334,7 +338,7 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     counts = {o: sum(1 for r in games if r["origin"] == o) for o in ("live", "manual")}
     keep_g = {"origin": origin, "status": status, "g_from": g_from, "g_to": g_to, "g_agree": g_agree}
     keep_c = {"season": season, "c_from": c_from, "c_to": c_to, "c_agree": c_agree}
-    shared = {"league": league, "team": team}
+    shared = {"league": league, "team": team, "section": "women" if women else ""}
     qs = lambda d: "&".join(f"{k}={urllib.parse.quote(str(v))}" for k, v in d.items() if v)      # noqa: E731
     return T.TemplateResponse(request, "dataset.html", {
         "games": shown, "games_n": len(games), "gpage": gpage, "gpages": gpages, "counts": counts,
@@ -343,7 +347,32 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
         "status": status, "origin": origin, "g_from": g_from, "g_to": g_to, "g_agree": g_agree,
         "c_from": c_from, "c_to": c_to, "c_agree": c_agree, "agree_choices": AGREE_CHOICES,
         "keep_g": keep_g, "keep_c": keep_c, "g_qs": qs({**shared, **keep_g, **keep_c, "page": page}),
-        "c_qs": qs({**shared, **keep_g, **keep_c, "gpage": gpage}), "page": "dataset"})
+        "c_qs": qs({**shared, **keep_g, **keep_c, "gpage": gpage}), "section": section, "sections": SECTIONS,
+        "page": "dataset"})
+
+
+@app.get("/dataset/women.csv")
+def women_csv():
+    """Every women's forecast with its odds, probabilities, engine calls and result (one row per game)."""
+    import csv
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(["kickoff_utc", "competition", "home", "away", "status", "goals_home", "goals_away", "outcome",
+                "odds_home", "odds_draw", "odds_away", "odds_source", "favourite", "p_fav", "p_draw", "p_dog",
+                "xg_home", "xg_away", "rao", "chokoisky", "frawley", "astrology_agrees", "void_reason", "seal_sha256",
+                "committed_at"])
+    for r in sorted(_women_games(include_withdrawn=True), key=lambda r: (r["kickoff_utc"], r["home"])):
+        p, o, res = r["predictions"], r.get("odds") or {}, r.get("result") or {}
+        xh, xa = _xg(r)
+        w.writerow([r["kickoff_utc"], league_label(r["division"]), r["home"], r["away"], r["status"],
+                    res.get("goals_home", ""), res.get("goals_away", ""), r.get("outcome") or "",
+                    o.get("home"), o.get("draw"), o.get("away"), r.get("odds_source", ""), r.get("favourite", ""),
+                    round(p["market"]["fav"], 4), round(p["market"]["draw"], 4), round(p["market"]["dog"], 4),
+                    round(xh, 3), round(xa, 3), *[(p.get(e) or {}).get("winner", "") for e in ENGINE_NAMES],
+                    r.get("classical_agree", ""), r.get("void_reason") or "", r.get("sha256") or "",
+                    r.get("committed_at") or ""])
+    return StreamingResponse(iter([buf.getvalue()]), media_type="text/csv",
+                             headers={"Content-Disposition": "attachment; filename=women-forecasts.csv"})
 
 
 def _corpus_agree(q: pd.DataFrame) -> pd.Series:

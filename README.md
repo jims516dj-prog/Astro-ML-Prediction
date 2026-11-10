@@ -268,9 +268,10 @@ true" compares live and backtest hit rates per probability band, so you can pick
 ## Women's football (separate section)
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger
-(`ledger/women/`: predictions, results, `TRACK_RECORD.md`). They never enter the men's track record or Dataset,
-and the men's pipeline never forecasts women's competitions. The Live record, Top picks and My picks each have a separate **Women**
-section (Men / Women buttons at the top): every Top picks tab, including the Form check (women's results only), works
+(`ledger/women/`: predictions, results, `TRACK_RECORD.md`). They never enter the men's track record or figures,
+and the men's pipeline never forecasts women's competitions. The Live record, Top picks, My picks and Dataset each have a
+separate **Women** section (Dataset: every women's forecast with filters and a CSV export, `/dataset/women.csv`; there is
+no women's research corpus) (Men / Women buttons at the top): every Top picks tab, including the Form check (women's results only), works
 on the women's games alone.
 
 - **Sources:** ESPN. Once a day the cycle discovers the women's senior competitions with home/draw/away odds

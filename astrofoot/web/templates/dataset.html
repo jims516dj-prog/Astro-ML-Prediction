@@ -1,19 +1,26 @@
 {% extends "base.html" %}
+{% import "_section.html" as section_ui %}
 {% from "_goals.html" import badges as gm_badges %}
 {% block title %}Dataset · Astro Football Lab{% endblock %}
 {% set W = {1: "fav", 0: "draw", -1: "dog"} %}
 {% block body %}
-<h1>Historical dataset</h1>
-<div class="row"><a class="btn" href="/analyze?historical=1">Add historical match</a><a class="btn ghost" href="/analyze">Add new match for analysis</a>
-<a class="btn ghost" href="/dataset/export.csv">Export CSV</a><a class="btn ghost" href="/dataset/export.json">Export JSON (full)</a></div>
+<h1>Historical dataset{% if section == "women" %}: women's football{% endif %}</h1>
+{{ section_ui.switch(section, sections, "/dataset") }}
+{% if section == "women" %}<p class="callout small"><strong>Women's section.</strong> Every women's forecast (<code>ledger/women</code>),
+pending, completed or void, kept apart from the men's. There is no women's research corpus: the historical seasons shown
+under the men's games come from football-data.co.uk, which has no women's leagues, so the women's dataset grows from these
+sealed forecasts and their results.</p>
+<div class="row"><a class="btn ghost" href="/dataset/women.csv">Export women's forecasts (CSV)</a></div>
+{% else %}<div class="row"><a class="btn" href="/analyze?historical=1">Add historical match</a><a class="btn ghost" href="/analyze">Add new match for analysis</a>
+<a class="btn ghost" href="/dataset/export.csv">Export CSV</a><a class="btn ghost" href="/dataset/export.json">Export JSON (full)</a></div>{% endif %}
 
-<h2>Forecast games <span class="small">({{ "{:,}".format(games_n) }}: {{ counts.live }} from the live record, {{ counts.manual }} added manually)</span></h2>
-<p class="note">Every game we have forecast, each once: the live record's automatic forecasts (pending, completed or void)
+<h2>Forecast games <span class="small">({{ "{:,}".format(games_n) }}{% if section != "women" %}: {{ counts.live }} from the live record, {{ counts.manual }} added manually{% endif %})</span></h2>
+{% if section != "women" %}<p class="note">Every game we have forecast, each once: the live record's automatic forecasts (pending, completed or void)
 and the games you add on the <a href="/analyze">Analyze</a> page. Completed live games appear here as soon as their
-results come in (<strong>Get latest results</strong> on the <a href="/live">Live record</a> page).</p>
+results come in (<strong>Get latest results</strong> on the <a href="/live">Live record</a> page).</p>{% endif %}
 <form class="filters" method="get">
-  <label>Source<select name="origin" onchange="this.form.submit()"><option value="">All</option>
-    {% for v, l in [("live","Live record (automatic)"),("manual","Added manually")] %}<option value="{{ v }}" {{ "selected" if origin==v }}>{{ l }}</option>{% endfor %}</select></label>
+  {% if section == "women" %}<input type="hidden" name="section" value="women">{% else %}<label>Source<select name="origin" onchange="this.form.submit()"><option value="">All</option>
+    {% for v, l in [("live","Live record (automatic)"),("manual","Added manually")] %}<option value="{{ v }}" {{ "selected" if origin==v }}>{{ l }}</option>{% endfor %}</select></label>{% endif %}
   <label>Status<select name="status" onchange="this.form.submit()"><option value="">All</option>
     {% for v, l in [("pending","Pending"),("settled","Completed"),("void","Void / abandoned")] %}<option value="{{ v }}" {{ "selected" if status==v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>League<select name="league" onchange="this.form.submit()"><option value="">All</option>{% for l in leagues %}<option value="{{ l }}" {{ "selected" if l==league }}>{{ league_name(l) }}</option>{% endfor %}</select></label>
@@ -23,7 +30,7 @@ results come in (<strong>Get latest results</strong> on the <a href="/live">Live
   <label>Astrology agrees<select name="g_agree" onchange="this.form.submit()"><option value="">any</option>
     {% for v, l in agree_choices %}<option value="{{ v }}" {{ "selected" if g_agree == v }}>{{ l }}</option>{% endfor %}</select></label>
   {% for k, v in keep_c.items() if v %}<input type="hidden" name="{{ k }}" value="{{ v }}">{% endfor %}
-  <div class="row"><button class="btn ghost">Filter</button><a class="small" href="/dataset">Clear</a></div>
+  <div class="row"><button class="btn ghost">Filter</button><a class="small" href="/dataset{{ '?section=women' if section == 'women' }}">Clear</a></div>
 </form>
 <p class="note">Astrology agrees: how many of the three classical engines called the most likely result.</p>
 <div class="scroll"><table class="data small">
@@ -38,12 +45,13 @@ results come in (<strong>Get latest results</strong> on the <a href="/live">Live
 <td class="num">{{ r.classical_agree }}/3</td>
 <td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td>
 <td>{{ gm_badges(r.gm) }}</td></tr>
-{% else %}<tr><td colspan="14">No games match these filters. <a href="/analyze">Analyze one</a>.</td></tr>{% endfor %}
+{% else %}<tr><td colspan="14">No games match these filters.{% if section != "women" %} <a href="/analyze">Analyze one</a>.{% endif %}</td></tr>{% endfor %}
 </tbody></table></div>
 <p class="row">{% if gpage > 1 %}<a href="?{{ g_qs }}&gpage={{ gpage-1 }}">← newer</a>{% endif %}
 <span>page {{ gpage }} / {{ gpages }}</span>
 {% if gpage < gpages %}<a href="?{{ g_qs }}&gpage={{ gpage+1 }}">older →</a>{% endif %}</p>
 
+{% if section != "women" %}
 <h2>Research corpus <span class="small">({{ "{:,}".format(n) }} matches)</span></h2>
 <p class="note">Goals column: double chance, over/under 1.5, over/under 2.5, home or away goal and both teams to score for every match, from its odds
 (recalibrated on past seasons), with ✓/✗ against the final score. Hover a badge for the full probabilities.</p>
@@ -72,4 +80,5 @@ results come in (<strong>Get latest results</strong> on the <a href="/live">Live
 <p class="row">{% if page_no > 1 %}<a href="?{{ c_qs }}&page={{ page_no-1 }}">← newer</a>{% endif %}
 <span>page {{ page_no }} / {{ pages }}</span>
 {% if page_no < pages %}<a href="?{{ c_qs }}&page={{ page_no+1 }}">older →</a>{% endif %}</p>
+{% endif %}
 {% endblock %}
