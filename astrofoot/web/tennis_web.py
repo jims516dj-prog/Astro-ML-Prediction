@@ -150,9 +150,11 @@ def explain(f: dict, m: dict) -> dict:
 def day_of(rec: dict) -> dict:
     """The date-only astrology / numerology comparison: sealed with the forecast, or worked out now (it depends
     only on the two dates of birth and the match date) for forecasts sealed before it existed."""
-    if rec.get("day"):
+    if rec.get("day") and "tz" in rec["day"]:      # sealed with the venue's day: as sealed
         return rec["day"]
-    m = {"p1_id": rec["p1_id"], "p2_id": rec["p2_id"], "p1": rec["p1"], "p2": rec["p2"], "date": rec["start_utc"]}
+    # sealed before the day was taken at the venue (or without a reading): worked out now from the dates and venue
+    m = {"p1_id": rec["p1_id"], "p2_id": rec["p2_id"], "p1": rec["p1"], "p2": rec["p2"], "date": rec["start_utc"],
+         "venue": rec.get("venue") or ""}
     return tlive.day_compare(m, state()["pdict"])
 
 
@@ -465,8 +467,8 @@ def day_verdicts(m: pd.DataFrame) -> pd.DataFrame:
     pd_ = s["pdict"]
 
     @lru_cache(maxsize=None)
-    def astro(pid, day):
-        return daychart.astro_day((pd_.get(pid) or {}).get("dob"), day)["score"]
+    def astro(pid, day, tz):
+        return daychart.astro_day((pd_.get(pid) or {}).get("dob"), day, tz)["score"]
 
     @lru_cache(maxsize=None)
     def num(pid, name, day):
@@ -476,8 +478,10 @@ def day_verdicts(m: pd.DataFrame) -> pd.DataFrame:
     todo = [i for i in m["id"] if i not in cache]
     if todo:
         sub = m[m["id"].isin(set(todo))]
-        for mid, a, b, na, nb, d in zip(sub["id"], sub.p1_id, sub.p2_id, sub.p1, sub.p2, sub.date.dt.strftime("%Y-%m-%d")):
-            cache[mid] = (daychart.verdict(astro(a, d), astro(b, d)), daychart.verdict(num(a, na, d), num(b, nb, d), 0.4))
+        from ..tennis.venue import local_day
+        for mid, a, b, na, nb, when, ven in zip(sub["id"], sub.p1_id, sub.p2_id, sub.p1, sub.p2, sub.date, sub.venue.fillna("")):
+            d, tz = local_day(ven, when)             # the match day at the venue
+            cache[mid] = (daychart.verdict(astro(a, d, tz), astro(b, d, tz)), daychart.verdict(num(a, na, d), num(b, nb, d), 0.4))
     v = [cache[i] for i in m["id"]]
     return pd.DataFrame({"astro_fav": [x[0] for x in v], "num_fav": [x[1] for x in v]}, index=m.index)
 

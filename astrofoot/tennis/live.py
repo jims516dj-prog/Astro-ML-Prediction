@@ -72,12 +72,13 @@ def state(matches: pd.DataFrame, now: datetime) -> features.State:
 
 def day_compare(m: dict, players: dict) -> dict:
     """Date-only astrology and numerology of both players for the match day, and who each favours."""
-    day = str(m.get("date") or m.get("start_utc"))[:10]
+    from .venue import local_day
+    day, tz = local_day(m.get("venue") or "", m.get("date") or m.get("start_utc"))
     pa, pb = players.get(str(m["p1_id"]), {}), players.get(str(m["p2_id"]), {})
-    aa, ab = daychart.astro_day(pa.get("dob"), day), daychart.astro_day(pb.get("dob"), day)
+    aa, ab = daychart.astro_day(pa.get("dob"), day, tz), daychart.astro_day(pb.get("dob"), day, tz)
     na = daychart.num_day(pa.get("dob"), pa.get("full_name") or m["p1"], day)
     nb = daychart.num_day(pb.get("dob"), pb.get("full_name") or m["p2"], day)
-    return {"day": day, "dob": {"a": daychart.an.clean_dob(pa.get("dob")), "b": daychart.an.clean_dob(pb.get("dob"))},
+    return {"day": day, "tz": tz, "venue": m.get("venue") or "", "dob": {"a": daychart.an.clean_dob(pa.get("dob")), "b": daychart.an.clean_dob(pb.get("dob"))},
             "astro": {"a": aa, "b": ab, "favours": daychart.verdict(aa["score"], ab["score"])},
             "num": {"a": na, "b": nb, "favours": daychart.verdict(na["score"], nb["score"], 0.4)}}
 

@@ -192,7 +192,7 @@ def test_tennis_my_picks_slips_and_scoring(tmp_path, monkeypatch):
 
     p = {"a_set": 0.6, "b_set": 0.4, "a_first": 0.62, "b_first": 0.38, "a_one_set": 0.85, "b_one_set": 0.6,
          "a_match": 0.7, "b_match": 0.3, "version": "t"}
-    day = {"day": "2030-01-02", "dob": {"a": None, "b": None},
+    day = {"day": "2030-01-02", "tz": None, "venue": "", "dob": {"a": None, "b": None},
            "astro": {"a": {"score": 1.0, "contacts": []}, "b": {"score": 0.0, "contacts": []}, "favours": 1},
            "num": {"a": {"score": 0.0, "parts": [], "numbers": {}}, "b": {"score": 1.0, "parts": [], "numbers": {}}, "favours": 2}}
     rec = football_live.seal({"match_id": "M1", "tour": "atp", "event": "Test Open", "round": "Round 1", "venue": "", "surface": "hard",
@@ -260,7 +260,7 @@ def test_tennis_live_record_scores_settled_forecasts(monkeypatch):
          "a_match": 0.7, "b_match": 0.3, "version": "t"}
     p["expected"] = dict(p)
     p["market"] = {"a_match": 0.75, "b_match": 0.25, "a_set": 0.63, "b_set": 0.37}
-    day = {"day": "2030-01-02", "dob": {"a": None, "b": None},
+    day = {"day": "2030-01-02", "tz": None, "venue": "", "dob": {"a": None, "b": None},
            "astro": {"a": {"score": 1.0, "contacts": []}, "b": {"score": 0.0, "contacts": []}, "favours": 1},
            "num": {"a": {"score": 0.0, "parts": [], "numbers": {}}, "b": {"score": 0.0, "parts": [], "numbers": {}}, "favours": 0}}
     base = {"tour": "atp", "event": "Test Open", "round": "Round 1", "venue": "", "surface": "hard", "best_of": 3,
@@ -325,7 +325,7 @@ def _rec(match_id="M1", p1="Ann A", p2="Bea B", p2_id="2", astro=1, num=1):
     from astrofoot import live as football_live
     p = {"a_set": 0.55, "b_set": 0.45, "a_first": 0.56, "b_first": 0.44, "a_one_set": 0.8, "b_one_set": 0.7,
          "a_match": 0.6, "b_match": 0.4, "version": "t"}
-    day = {"day": "2030-01-02", "dob": {"a": None, "b": None},
+    day = {"day": "2030-01-02", "tz": None, "venue": "", "dob": {"a": None, "b": None},
            "astro": {"a": {"score": 1.0, "contacts": []}, "b": {"score": 0.0, "contacts": []}, "favours": astro},
            "num": {"a": {"score": 1.0, "parts": [], "numbers": {}}, "b": {"score": 0.0, "parts": [], "numbers": {}}, "favours": num}}
     return football_live.seal({"match_id": match_id, "tour": "wta", "event": "Test Open", "round": "Round 1", "venue": "",
@@ -436,3 +436,21 @@ def test_matches_added_by_hand(tmp_path, monkeypatch):
     assert tlive.track_record([rec])["n"] == 0                          # never in the official record
     client.post(f"/tennis/match/{mid}/result", data={"delete": "1"})
     assert db.tennis_manual(db.connect(path)) == []
+
+
+def test_day_chart_follows_the_venue():
+    from astrofoot.tennis import venue
+    from astrofoot.tennis import daychart as dc
+    if venue.venue_tz("Bogota, Colombia") is None:          # the cities table is not downloaded here
+        return
+    late = "2026-11-11T01:30:00+00:00"                        # 20:30 on the 10th in Bogotá
+    assert venue.local_day("Bogota, Colombia", late) == ("2026-11-10", "America/Bogota")
+    assert venue.local_day("Melbourne, Australia", "2026-11-10T22:00:00+00:00")[0] == "2026-11-11"
+    assert venue.local_day("World", late) == ("2026-11-11", None)                 # unknown venue: the UTC day
+    assert venue.venue_tz("St. Petersburg, Russia") == "Europe/Moscow" and venue.venue_tz("Basel. Switzerland") == "Europe/Zurich"
+    assert venue.noon_utc_hour("2026-11-10", "America/Bogota") == 17.0
+    # the sky is taken at noon at the venue, so the Sun differs from noon UTC by the hours in between
+    assert abs(dc.sky("2026-11-10", "America/Bogota")[0] - dc.positions("2026-11-10")[0] - 5 * 0.0417) < 0.01
+    f = features.day_features({"dob": "1995-07-23"}, {"dob": "1999-08-31"}, "A", "B", pd.Timestamp(late), "Bogota, Colombia")
+    g = features.day_features({"dob": "1995-07-23"}, {"dob": "1999-08-31"}, "A", "B", pd.Timestamp("2026-11-10T17:00", tz="UTC"), "")
+    assert f["d_num_rule"] == g["d_num_rule"]               # same local day → same numerology

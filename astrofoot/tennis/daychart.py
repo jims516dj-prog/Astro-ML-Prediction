@@ -28,9 +28,10 @@ ASPECT_NAME = {0: "conjunct", 60: "sextile", 120: "trine", 90: "square", 180: "o
 
 
 @lru_cache(maxsize=60000)
-def positions(day: str) -> np.ndarray:
+def positions(day: str, hour_utc: float = 12.0) -> np.ndarray:
+    """Planets on a date at an hour of the UTC day (12.0 = noon UTC; noon at a venue is venue.noon_utc_hour)."""
     d = date.fromisoformat(day[:10])
-    jd = swe.julday(d.year, d.month, d.day, 12.0)
+    jd = swe.julday(d.year, d.month, d.day, hour_utc)
     return np.array([swe.calc_ut(jd, i, swe.FLG_MOSEPH)[0][0] for i in _IDS])
 
 
@@ -39,20 +40,26 @@ def _sep(t: np.ndarray, n: np.ndarray) -> np.ndarray:
     return np.where(d > 180, 360 - d, d)                    # transit × natal separations, 6 × 6
 
 
-def contacts(dob: str, day: str) -> dict[str, np.ndarray]:
+def sky(day: str, tz: str | None = None) -> np.ndarray:
+    """The match day's planets at noon at the venue (noon UTC if the venue's timezone is unknown)."""
+    from .venue import noon_utc_hour
+    return positions(day, noon_utc_hour(day, tz))
+
+
+def contacts(dob: str, day: str, tz: str | None = None) -> dict[str, np.ndarray]:
     """Strength (1 = exact, 0 = outside the 3° orb) of each transit-to-natal contact, by family."""
-    sep = _sep(positions(day), positions(dob))
+    sep = _sep(sky(day, tz), positions(dob))
     return {f: np.max([np.clip(1 - np.abs(sep - a) / ORB, 0, None) for a in angs], axis=0) for f, angs in FAMILIES.items()}
 
 
 FEATURES = [f"{f}_{t}_{n}" for f in FAMILIES for t in PLANETS for n in PLANETS]
 
 
-def contact_vector(dob: str | None, day: str) -> np.ndarray:
+def contact_vector(dob: str | None, day: str, tz: str | None = None) -> np.ndarray:
     dob = an.clean_dob(dob)
     if not dob:
         return np.full(len(FEATURES), np.nan)
-    c = contacts(dob, day)
+    c = contacts(dob, day, tz)
     return np.concatenate([c[f].ravel() for f in FAMILIES])
 
 
@@ -66,12 +73,12 @@ RULES = {
 }
 
 
-def astro_day(dob: str | None, day: str) -> dict:
-    """Rule score for one player on one day, with the contacts that made it."""
+def astro_day(dob: str | None, day: str, tz: str | None = None) -> dict:
+    """Rule score for one player on one day (the calendar day at the venue), with the contacts that made it."""
     dob = an.clean_dob(dob)
     if not dob:
         return {"score": None, "contacts": []}
-    t, n = positions(day), positions(dob)
+    t, n = sky(day, tz), positions(dob)
     sep = _sep(t, n)
     score, why = 0.0, []
     for (tp, np_), w in RULES.items():

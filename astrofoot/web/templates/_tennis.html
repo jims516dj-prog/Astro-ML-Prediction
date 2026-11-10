@@ -23,8 +23,10 @@ Model version {{ p.version }}.</p>
 {% macro day_panel(day, a, b, p, edge_pts) %}
 {% set av, nv = day.astro, day.num %}
 <h2>Who is favoured for the day</h2>
-<p class="note">Dates only: each player's chart for the date of birth against the sky on {{ day.day }} (planets at 12:00 UTC on
-both dates; the Moon is left out because it moves too fast for a date-only chart). Born {{ a }}: {{ day.dob.a or "unknown" }} ·
+<p class="note">Dates only: each player's chart for the date of birth against the sky on <strong>{{ day.day }}</strong>,
+the match day at the venue{% if day.venue %} ({{ day.venue }}{% if day.tz %}, {{ day.tz }}{% endif %}){% endif %}{% if day.tz %},
+planets at noon there{% else %}; the venue's timezone is not known, so the UTC day and noon UTC are used{% endif %}.
+Natal charts: planets at 12:00 UTC on the date of birth. The Moon is left out because it moves too fast for a date-only chart. Born {{ a }}: {{ day.dob.a or "unknown" }} ·
 {{ b }}: {{ day.dob.b or "unknown" }}.</p>
 <section class="tiles">
   <div class="tile"><div class="k">Astrology (traditional reading)</div>

@@ -12,7 +12,7 @@ import pandas as pd
 
 from . import astro_num as an
 from . import daychart as dc
-from . import espn
+from . import espn, venue
 
 STAT_FEATURES = ["a_form5", "b_form5", "form5_diff", "sets5_diff", "h2h5_diff", "h2h_last", "elo_diff", "selo_diff", "blend_diff", "p_elo", "n_diff", "a_n_log", "b_n_log", "form_diff",
                  "a_form", "b_form", "setform_diff", "a_rest", "b_rest", "load_diff", "h2h_diff", "h2h_n",
@@ -175,18 +175,19 @@ def row(st: State, m: dict, players: dict) -> dict:
     meet = list(st.meet[frozenset((a, b))])
     out["h2h5_diff"] = float(sum(w == a for w in meet) - sum(w == b for w in meet))
     out["h2h_last"] = 0.0 if not meet else (1.0 if meet[-1] == a else -1.0)
-    out.update(day_features(pa, pb, m["p1"], m["p2"], when))
+    out.update(day_features(pa, pb, m["p1"], m["p2"], when, m.get("venue")))
     return out
 
 
-def day_features(pa: dict, pb: dict, name_a: str, name_b: str, when) -> dict:
-    """Date-only astrology and numerology of both players for the match day (see daychart)."""
-    day = str(when)[:10] if not hasattr(when, "strftime") else when.strftime("%Y-%m-%d")
+def day_features(pa: dict, pb: dict, name_a: str, name_b: str, when, venue_name: str | None = None) -> dict:
+    """Date-only astrology and numerology of both players for the match day: the calendar day at the venue, its sky
+    at noon there (see daychart, venue)."""
+    day, tz = venue.local_day(venue_name or "", when)
     out = {}
-    va, vb = dc.contact_vector(pa.get("dob"), day), dc.contact_vector(pb.get("dob"), day)
+    va, vb = dc.contact_vector(pa.get("dob"), day, tz), dc.contact_vector(pb.get("dob"), day, tz)
     for k, x in zip(dc.FEATURES, va - vb):
         out[f"d_astro_{k}"] = float(x)
-    ra, rb = dc.astro_day(pa.get("dob"), day)["score"], dc.astro_day(pb.get("dob"), day)["score"]
+    ra, rb = dc.astro_day(pa.get("dob"), day, tz)["score"], dc.astro_day(pb.get("dob"), day, tz)["score"]
     out.update(a_astro_rule=np.nan if ra is None else ra, b_astro_rule=np.nan if rb is None else rb)
     out["d_astro_rule"] = out["a_astro_rule"] - out["b_astro_rule"]
     na = dc.num_vector(pa.get("dob"), pa.get("full_name") or name_a, day)

@@ -296,6 +296,11 @@ each player's date and place of birth. ESPN does not publish surfaces, so they a
 - *Numerology*: life path, personal year, personal day, expression (name) number, and whether the personal or universal
   day matches the life path, or is a 1 or 8.
 
+**The match day is the venue's.** ESPN gives start times in GMT/UTC; the day's chart and numbers use the calendar
+day at the venue (its timezone from the cities table, e.g. a 01:30 GMT match in Bogotá is still the 10th there), with the
+day's planets at noon at the venue. About 98% of matches are placed; venues given only as a country with several
+timezones (USA, Australia, …) fall back to the UTC day.
+
 **Who is favoured for the day (date-only).** Birth times are rarely published and start times move, so astrology and
 numerology use dates only: each player's chart for the date of birth against the sky on the match day (planets at
 12:00 UTC; the Moon is left out, it moves too fast). Each player gets a traditional day score (Jupiter and Venus contacts

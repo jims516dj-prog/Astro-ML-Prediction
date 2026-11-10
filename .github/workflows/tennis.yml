@@ -24,6 +24,7 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -r requirements.txt
+      - run: python scripts/fetch_data.py --live     # cities table: venue timezones for the match day's chart
       - if: ${{ inputs.cmd == 'probe' }}
         run: python scripts/tennis_probe.py
         env:
