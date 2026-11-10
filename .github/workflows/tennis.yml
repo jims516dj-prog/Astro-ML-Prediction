@@ -1,0 +1,25 @@
+# Tennis: build the historical dataset and train the set model (weekly), or run diagnostics on demand.
+name: tennis
+on:
+  workflow_dispatch:
+    inputs:
+      cmd:
+        description: "probe (diagnostics only) or build"
+        required: false
+        default: "build"
+permissions:
+  contents: write
+concurrency: tennis
+jobs:
+  tennis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt openpyxl
+      - if: ${{ inputs.cmd == 'probe' }}
+        run: python scripts/tennis_probe.py
