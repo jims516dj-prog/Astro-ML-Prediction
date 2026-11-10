@@ -3,21 +3,35 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>{% block title %}Astro Football Lab{% endblock %}</title>
+{% set sport = "tennis" if page and page.startswith("tennis") else "soccer" %}
+<title>{% block title %}{{ "Astro Tennis Lab" if sport == "tennis" else "Astro Football Lab" }}{% endblock %}</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
-<div class="banner" role="note">
+{% if sport == "tennis" %}<div class="banner" role="note">
+  <strong>⚠ For astrological research and educational purposes only.</strong> Tennis forecasts combine statistics,
+  astrology and numerology through machine learning; the model page shows openly how much each part actually helps,
+  including when it does not. This application does not facilitate gambling and must not be used for that purpose.
+</div>{% else %}<div class="banner" role="note">
   <strong>⚠ For astrological research and educational purposes only.</strong>
   Dr Ravi Rao's <em>Sports Astrology</em> states: “I would go so far as to say that the method will not work for persons
   involved in betting. I would like to call it astrology's curse.” This application does not facilitate gambling and must
   not be used for that purpose. Predictions are probabilistic estimates, not guarantees; the traditional 70/30 doctrine holds
   that astrologers are at best 70% accurate. Engine 4 is a research instrument whose measured performance against market
   odds and placebo skies is shown openly — including when it shows no edge.
-</div>
+</div>{% endif %}
 <header class="top">
-  <a class="brand" href="/">Astro Football Lab</a>
-  <nav>
+  <a class="brand" href="{{ '/tennis' if sport == 'tennis' else '/' }}">{{ "Astro Tennis Lab" if sport == "tennis" else "Astro Football Lab" }}</a>
+  <nav class="sport" aria-label="Sport">
+    <a href="/" class="{{ 'on' if sport == 'soccer' }}" {{ 'aria-current="page"' if sport == 'soccer' }}>⚽ Soccer</a>
+    <a href="/tennis" class="{{ 'on' if sport == 'tennis' }}" {{ 'aria-current="page"' if sport == 'tennis' }}>🎾 Tennis</a>
+  </nav>
+  {% if sport == "tennis" %}<nav>
+    <a href="/tennis" class="{{ 'on' if page=='tennis_home' }}">Forecasts</a>
+    <a href="/tennis/analyze" class="{{ 'on' if page=='tennis_analyze' }}">Analyze</a>
+    <a href="/tennis/dataset" class="{{ 'on' if page=='tennis_dataset' }}">Dataset</a>
+    <a href="/tennis/model" class="{{ 'on' if page=='tennis_model' }}">ML model</a>
+  </nav>{% else %}<nav>
     <a href="/" class="{{ 'on' if page=='home' }}">Overview</a>
     <a href="/analyze" class="{{ 'on' if page=='analyze' }}">Analyze</a>
     <a href="/dataset" class="{{ 'on' if page=='dataset' }}">Dataset</a>
@@ -27,10 +41,11 @@
     <a href="/mypicks" class="{{ 'on' if page=='mypicks' }}">My picks</a>
     <a href="/women" class="{{ 'on' if page=='women' }}">Women</a>
     <a href="/ml" class="{{ 'on' if page=='ml' }}">ML dashboard</a>
-  </nav>
+  </nav>{% endif %}
 </header>
 <main>{% block body %}{% endblock %}</main>
-<footer>Data: football-data.co.uk via xgabora/Club-Football-Match-Data-2000-2025 · stadium coordinates: jokecamp/FootballData ·
-cities: dr5hn/countries-states-cities-database (ODbL) · ephemeris: Swiss Ephemeris (Moshier).</footer>
+<footer>{% if sport == "tennis" %}Data: ESPN public tennis scoreboard (matches, set scores, seeds) and athlete pages
+(dates and places of birth) · ephemeris: Swiss Ephemeris (Moshier).{% else %}Data: football-data.co.uk via xgabora/Club-Football-Match-Data-2000-2025 · stadium coordinates: jokecamp/FootballData ·
+cities: dr5hn/countries-states-cities-database (ODbL) · ephemeris: Swiss Ephemeris (Moshier).{% endif %}</footer>
 </body>
 </html>

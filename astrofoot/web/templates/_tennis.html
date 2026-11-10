@@ -1,0 +1,25 @@
+{# Shared pieces of the tennis pages #}
+{% macro probs(p, a, b) %}
+<div class="scroll"><table class="data">
+<thead><tr><th>Chance to…</th><th class="num">{{ a }}</th><th class="num">{{ b }}</th><th style="min-width:120px"></th></tr></thead>
+<tbody>
+{% for k, label in [("set", "win a given set"), ("first", "win the first set"), ("one_set", "win at least one set"), ("match", "win the match")] %}
+<tr><td>{{ label }}</td><td class="num"><strong>{{ fmt_pct(p["a_" ~ k]) }}</strong></td><td class="num"><strong>{{ fmt_pct(p["b_" ~ k]) }}</strong></td>
+<td>{% if k != "one_set" %}<div class="pbar" title="{{ a }} {{ fmt_pct(p['a_' ~ k]) }}"><span style="width:{{ (100 * p['a_' ~ k])|round(1) }}%"></span></div>{% endif %}</td></tr>
+{% endfor %}</tbody></table></div>
+<p class="note">“Win at least one set” is each player's own chance (they do not add up to 100%: both often win a set).
+Model version {{ p.version }}.</p>
+{% endmacro %}
+
+{% macro factors(x, used) %}
+{% for key, title, note in [("stats", "Statistics", "Ratings, form, rest, head-to-head, seeds and the match format."),
+                            ("astro", "Astrology", "Natal charts from the date of birth (12:00 UTC: birth times are not published) against the sky at the start of the match."),
+                            ("numerology", "Numerology", "Pythagorean numbers from the date of birth and full name, and the match date.")] %}
+<h3>{{ title }} {% set g = "stats" if key == "stats" else key %}{% if g in used %}<span class="badge ok">used by the model</span>{% elif used %}<span class="badge" title="it did not improve the held-out forecasts, so the current model leaves it out (see ML model)">shown, not used by the model</span>{% endif %}</h3>
+<p class="note">{{ note }}</p>
+<div class="scroll"><table class="data small">
+<thead><tr><th>Factor</th><th class="num">{{ x.a }}</th><th class="num">{{ x.b }}</th><th>Note</th></tr></thead>
+<tbody>{% for label, va, vb, n in x[key] %}<tr><td>{{ label }}</td><td class="num mono">{{ "—" if va is none else va }}</td>
+<td class="num mono">{{ "" if vb is none else vb }}</td><td class="small">{{ n }}</td></tr>{% endfor %}</tbody></table></div>
+{% endfor %}
+{% endmacro %}

@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+{% from "_tennis.html" import probs %}
+{% block title %}Tennis forecasts · Astro Tennis Lab{% endblock %}
+{% block body %}
+<h1>Tennis forecasts</h1>
+<p class="lede">Who is more likely to win a set: for every upcoming ATP and WTA singles match, each player's chance to win
+a given set, the first set, at least one set and the match. Forecasts are sealed (SHA-256) and committed to
+<code>ledger/tennis</code> before the start by the GitHub cycle (05:17, 11:17, 17:17 UTC), then scored against ESPN's results.</p>
+{% if not has_model %}<p class="callout"><strong>No trained model yet.</strong> {% if has_data %}Train it on the
+<a href="/tennis/model">ML model</a> page.{% else %}The first GitHub run builds the history (ESPN, ATP and WTA since 2010)
+and trains the model; then <code>git pull</code> (or “Get latest results” on the soccer Live record page) brings it here.{% endif %}
+Meanwhile you can still look at the <a href="/tennis/analyze">Analyze</a> page.</p>{% endif %}
+
+<section class="tiles">
+  <div class="tile"><div class="k">Forecasts</div><div class="v">{{ n }}</div><div class="s">{{ tr.n }} settled before the start</div></div>
+  {% for k, label in [("sets", "Sets: favoured player won"), ("first", "First set"), ("match", "Match"), ("dog_one_set", "Underdog won a set")] %}
+  {% set v = tr.get(k) %}<div class="tile"><div class="k">{{ label }}</div>
+  {% if v and v.n %}<div class="v">{{ v.hits }} / {{ v.n }}</div><div class="s">{{ fmt_pct(v.rate) }} vs {{ fmt_pct(v.expected) }} expected</div>
+  {% else %}<div class="v sm">none yet</div>{% endif %}</div>{% endfor %}
+</section>
+
+<form method="get" class="filters">
+  <label>Day<select name="day" onchange="this.form.submit()"><option value="all" {{ "selected" if day == "all" }}>All days</option>
+    {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
+  <label>Tour<select name="tour" onchange="this.form.submit()"><option value="">Both</option>
+    {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if tour == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Status<select name="status" onchange="this.form.submit()"><option value="">All</option>
+    {% for v, l in [("pending", "Pending"), ("settled", "Completed"), ("void", "Void")] %}<option value="{{ v }}" {{ "selected" if status == v }}>{{ l }}</option>{% endfor %}</select></label>
+</form>
+
+<div class="scroll"><table class="data small">
+<thead><tr><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th class="num" title="chance to win a given set">Set</th>
+<th class="num">First set</th><th class="num" title="each player's chance to win at least one set">≥1 set</th><th class="num">Match</th><th>Result</th></tr></thead>
+<tbody>{% for r in rows %}{% set p = r.p %}
+<tr><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
+<td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
+<td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a></td>
+{% for k in ["set", "first", "one_set", "match"] %}<td class="num pp">{{ fmt_pct(p["a_" ~ k], 0) }}<br>{{ fmt_pct(p["b_" ~ k], 0) }}</td>{% endfor %}
+<td class="mono">{% if r.status == "settled" %}{{ r.result.score }}{% if r.result.retired %} ret.{% endif %}<br>
+<span class="small">sets {{ r.set_hits }}/{{ r.sets_played }} {{ "✓" if r.match_hit else "✗" }} match</span>{% elif r.status == "void" %}<span title="{{ r.result.void_reason }}">void</span>{% else %}pending{% endif %}</td></tr>
+{% else %}<tr><td colspan="8">No tennis forecasts {% if day != "all" %}for {{ day_label(day) }} {% endif %}yet. The GitHub cycle adds matches starting within 36 hours.</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="note">Each cell shows the first-listed player on top and the second below. Sets column: the share of sets
+the favoured player (for sets) won once the match is played.</p>
+{% endblock %}

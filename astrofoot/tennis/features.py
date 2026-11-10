@@ -88,6 +88,7 @@ class State:
 
 
 def _age(dob, when) -> float:
+    dob = an.clean_dob(dob)
     if not dob:
         return np.nan
     return (when - pd.Timestamp(dob, tz="UTC")).days / 365.25

@@ -20,6 +20,17 @@ ORB = 6.0
 ELEMENT = ["fire", "earth", "air", "water"]
 
 
+def clean_dob(dob) -> str | None:
+    """A usable 'YYYY-MM-DD' or None (missing values arrive as None, NaN or empty strings)."""
+    if not isinstance(dob, str) or len(dob) < 10:
+        return None
+    try:
+        date.fromisoformat(dob[:10])
+    except ValueError:
+        return None
+    return dob[:10]
+
+
 def _jd(dt: datetime) -> float:
     dt = dt.astimezone(timezone.utc)
     return swe.julday(dt.year, dt.month, dt.day, dt.hour + dt.minute / 60 + dt.second / 3600)
@@ -70,6 +81,7 @@ ASTRO_FEATURES = ["solar_return", "birthday_window", "ju_sun", "sa_sun", "ma_sun
 
 
 def astro(dob: str | None, when: datetime) -> dict:
+    dob = clean_dob(dob)
     if not dob:
         return {k: np.nan for k in ASTRO_FEATURES}
     n, t = natal(dob), transit(when.astimezone(timezone.utc).strftime("%Y-%m-%dT%H"))
@@ -89,6 +101,7 @@ def astro(dob: str | None, when: datetime) -> dict:
 def synastry(dob_a: str | None, dob_b: str | None) -> dict:
     """Directional contacts between the two players' charts: A's Mars on B's Sun (pressure on B) and back,
     and whether their Sun elements are compatible (same, or fire-air / earth-water)."""
+    dob_a, dob_b = clean_dob(dob_a), clean_dob(dob_b)
     if not dob_a or not dob_b:
         return {"mars_on_opp_sun_a": np.nan, "mars_on_opp_sun_b": np.nan, "sun_compatible": np.nan}
     a, b = natal(dob_a), natal(dob_b)
@@ -135,6 +148,8 @@ def expression(name: str) -> int:
 
 
 def numerology(dob: str | None, name: str, day: date) -> dict:
+    dob = clean_dob(dob)
+    name = name if isinstance(name, str) else ""
     if not dob:
         return {k: np.nan for k in NUM_FEATURES} | {"expression": float(expression(name)) if name else np.nan}
     lp, pdn = life_path(dob), personal_day(dob, day)

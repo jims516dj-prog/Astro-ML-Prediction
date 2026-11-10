@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}ML model · Astro Tennis Lab{% endblock %}
+{% block body %}
+<h1>Tennis ML model</h1>
+<p class="lede">Four gradient-boosted models read the same pre-match features: statistics, astrology and numerology. Every
+retrain fine-tunes them: it tests which feature groups actually improve forecasts on the latest 12 months held out, tunes
+the settings, checks each recent season walk-forward against a plain Elo rating, then refits on all the data as a new
+version. Weekly on GitHub (Tuesdays), or on demand below.</p>
+
+{% if retrain.msg %}<p class="callout small">{{ retrain.msg }}{% if retrain.running %} <span class="note">(reload this page to see when it is done)</span>{% endif %}</p>{% endif %}
+<div class="row">
+  <form method="post" action="/tennis/model/retrain"><button class="btn" {{ "disabled" if retrain.running or not has_data }}
+    title="{{ 'needs the history: git pull after the first GitHub run' if not has_data }}">Retrain on this computer</button></form>
+  <form method="post" action="/tennis/model/github"><button class="btn ghost" {{ "disabled" if not has_token }}
+    title="{{ 'needs the one-time GitHub token (README → Update now)' if not has_token }}">Rebuild data + retrain on GitHub</button></form>
+</div>
+{% if retrain.log %}<details><summary class="small">Last local run</summary><pre class="small">{{ retrain.log }}</pre></details>{% endif %}
+
+{% if not rep %}<p class="callout">No model trained yet. The first GitHub run builds the history and trains it.</p>{% else %}
+<section class="tiles">
+  <div class="tile"><div class="k">Version</div><div class="v sm">{{ rep.version }}</div><div class="s">trained {{ rep.trained_at[:16].replace("T", " ") }} UTC</div></div>
+  <div class="tile"><div class="k">Training matches</div><div class="v">{{ "{:,}".format(rep.n_matches) }}</div><div class="s">{{ rep.first_match }} → {{ rep.last_match }}</div></div>
+  <div class="tile"><div class="k">Features used</div><div class="v sm">{{ rep.chosen }}</div><div class="s">chosen on the held-out year</div></div>
+  {% set h = rep.holdout.set %}<div class="tile"><div class="k">Sets called right (held out)</div><div class="v">{{ fmt_pct(h.model.accuracy) }}</div>
+  <div class="s">Elo alone {{ fmt_pct(h.elo.accuracy) }} · {{ "{:,}".format(h.model.n) }} sets</div></div>
+</section>
+
+<h2>Held-out year ({{ rep.holdout_from }} on, {{ "{:,}".format(rep.n_holdout) }} matches)</h2>
+<div class="scroll"><table class="data">
+<thead><tr><th>Question</th><th class="num">Accuracy</th><th class="num">Elo alone</th><th class="num">Log loss</th><th class="num">Elo alone</th><th class="num">Brier</th><th class="num">n</th></tr></thead>
+<tbody>{% for k, label in names.items() %}{% set h = rep.holdout[k] %}
+<tr><td>{{ label }}</td><td class="num">{{ fmt_pct(h.model.accuracy) }}</td><td class="num">{{ fmt_pct(h.elo.accuracy) }}</td>
+<td class="num {{ 'ok-txt' if h.model.log_loss < h.elo.log_loss }}">{{ "%.4f"|format(h.model.log_loss) }}</td><td class="num">{{ "%.4f"|format(h.elo.log_loss) }}</td>
+<td class="num">{{ "%.4f"|format(h.model.brier) }}</td><td class="num">{{ "{:,}".format(h.model.n) }}</td></tr>{% endfor %}</tbody></table></div>
+<p class="note">Lower log loss is better (it punishes confident mistakes). "Accuracy" for at least one set is whether the
+model's yes/no on that player winning a set was right; most players win a set, so its base rate is high.</p>
+
+<h2>Do astrology and numerology help? (feature groups)</h2>
+<div class="scroll"><table class="data">
+<thead><tr><th>Features</th><th class="num">Set log loss</th><th class="num">Set accuracy</th><th class="num">Match log loss</th><th class="num">Match accuracy</th><th class="num">vs statistics alone</th></tr></thead>
+<tbody>{% for name, res in rep.ablation.items() %}{% set g = rep.gate.get(name) %}
+<tr><td>{% if name == rep.chosen %}<strong>{{ name }}</strong> <span class="badge ok">chosen</span>{% else %}{{ name }}{% endif %}</td>
+<td class="num">{{ "%.4f"|format(res.set.log_loss) }}</td><td class="num">{{ fmt_pct(res.set.accuracy) }}</td>
+<td class="num">{{ "%.4f"|format(res.match.log_loss) }}</td><td class="num">{{ fmt_pct(res.match.accuracy) }}</td>
+<td class="num">{% if g %}{{ "%+.4f"|format(g.delta) }} ± {{ "%.4f"|format(g.se or 0) }}{% else %}—{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+<p class="note">A group is kept only if it lowers the held-out set log loss by more than one standard error (negative
+change beyond ±). Otherwise it is still computed and shown on every match, but the model does not use it, because on
+unseen matches it added noise rather than signal.</p>
+
+{% if rep.importance %}<h3>How much each kept group matters</h3>
+<p class="note">Increase in held-out set log loss when that group's values are shuffled (bigger = the model leans on it more).</p>
+<ul>{% for g, v in rep.importance.items() %}<li>{{ {"stats": "Statistics", "astro": "Astrology", "numerology": "Numerology"}[g] }}: {{ "%+.4f"|format(v) }}</li>{% endfor %}</ul>{% endif %}
+
+<h2>Walk-forward by season</h2>
+<div class="scroll"><table class="data">
+<thead><tr><th>Season</th><th class="num">Matches</th><th class="num">Sets right</th><th class="num">Elo alone</th><th class="num">Set log loss</th><th class="num">Elo alone</th><th class="num">Matches right</th><th class="num">Elo alone</th></tr></thead>
+<tbody>{% for w in rep.walk_forward %}<tr><td>{{ w.season }}</td><td class="num">{{ "{:,}".format(w.n) }}</td>
+<td class="num">{{ fmt_pct(w.set.accuracy) }}</td><td class="num">{{ fmt_pct(w.set_elo.accuracy) }}</td>
+<td class="num">{{ "%.4f"|format(w.set.log_loss) }}</td><td class="num">{{ "%.4f"|format(w.set_elo.log_loss) }}</td>
+<td class="num">{{ fmt_pct(w.match.accuracy) }}</td><td class="num">{{ fmt_pct(w.match_elo.accuracy) }}</td></tr>{% endfor %}</tbody></table></div>
+<p class="note">Each season is forecast by a model trained only on the seasons before it.</p>
+
+<h2>Settings tried</h2>
+<div class="scroll"><table class="data small"><thead><tr><th>Settings</th><th class="num">Set log loss</th></tr></thead>
+<tbody>{% for t in rep.tuning %}<tr><td class="mono">{{ t.params }}</td><td class="num">{{ "%.4f"|format(t.log_loss) }}{% if t.params == rep.params %} ✓{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+
+{% if rep.history|length > 1 %}<h2>Versions</h2>
+<div class="scroll"><table class="data small"><thead><tr><th>Version</th><th>Features</th><th class="num">Matches</th><th class="num">Held-out set log loss</th><th class="num">Sets right</th></tr></thead>
+<tbody>{% for v in rep.history|reverse %}<tr><td class="mono">{{ v.version }}</td><td>{{ v.chosen }}</td><td class="num">{{ "{:,}".format(v.n_matches) }}</td>
+<td class="num">{{ "%.4f"|format(v.set_log_loss) }}</td><td class="num">{{ fmt_pct(v.set_accuracy) }}</td></tr>{% endfor %}</tbody></table></div>{% endif %}
+{% endif %}
+{% endblock %}

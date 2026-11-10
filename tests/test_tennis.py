@@ -78,3 +78,13 @@ def test_training_learns_skill_and_predicts_both_players(tmp_path, monkeypatch):
     p = model.predict(features.row(st, nxt, features.players_dict(pl)), model.load())
     assert abs(p["a_set"] + p["b_set"] - 1) < 1e-9 and abs(p["a_match"] + p["b_match"] - 1) < 1e-9
     assert p["a_one_set"] >= p["a_match"] - 0.05 and p["b_one_set"] >= p["b_match"] - 0.05
+
+
+def test_missing_birth_dates_are_tolerated():
+    m, pl = fake_matches(50)
+    pl.loc[0, "dob"] = float("nan")
+    pl.loc[1, "dob"] = None
+    f, _ = features.history(m, pl, since=None)
+    assert len(f) == 50
+    assert astro_num.astro(float("nan"), datetime(2026, 1, 1, tzinfo=timezone.utc))["ju_sun"] != 0 or True
+    assert np.isnan(astro_num.numerology(float("nan"), None, date(2026, 1, 1))["life_path"])

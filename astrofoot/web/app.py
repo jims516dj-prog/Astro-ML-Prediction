@@ -1240,3 +1240,9 @@ def api_venue(q: str):
 async def api_analyse(request: Request):
     inp = await request.json()
     return JSONResponse(json.loads(json.dumps(service.analyse(inp), default=_jd)))
+
+
+# ----------------------------------------------------------------------------- tennis section
+from .tennis_web import router as _tennis_router  # noqa: E402
+
+app.include_router(_tennis_router)

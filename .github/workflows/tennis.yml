@@ -28,12 +28,23 @@ jobs:
         run: python scripts/tennis_probe.py
         env:
           GH_TOKEN: ${{ github.token }}
-      - if: ${{ inputs.cmd != 'probe' }}
-        run: python scripts/tennis.py ${{ inputs.cmd || 'all' }}
-      - name: Publish data and model
+      - name: Build history (ESPN) and players
+        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'train' }}
+        run: python scripts/tennis.py build
+      - name: Publish data
+        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'train' }}
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          git add data/tennis/matches.parquet data/tennis/players.parquet
+          git diff --cached --quiet || { git commit -m "tennis: history $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }
+      - name: Train (fine-tune + walk-forward)
+        if: ${{ inputs.cmd != 'probe' }}
+        run: python scripts/tennis.py train
+      - name: Publish model
         if: ${{ inputs.cmd != 'probe' }}
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"
-          git add data/tennis/matches.parquet data/tennis/players.parquet data/models/tennis.joblib data/models/tennis.json
-          git diff --cached --quiet || { git commit -m "tennis: data + model $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }
+          git add data/models/tennis.joblib data/models/tennis.json
+          git diff --cached --quiet || { git commit -m "tennis: model $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }

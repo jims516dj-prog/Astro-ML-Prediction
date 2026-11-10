@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% from "_tennis.html" import probs, factors %}
+{% block title %}{{ r.p1 }} v {{ r.p2 }} · Astro Tennis Lab{% endblock %}
+{% block body %}
+<p class="crumbs"><a href="/tennis">Tennis forecasts</a> › match</p>
+<h1>{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }} v {% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</h1>
+<p class="lede">{{ r.event }} · {{ r.round }} · {{ r.tour|upper }} · {{ r.surface }} (approximate) · best of {{ r.best_of }} ·
+{{ r.start_utc[:16].replace("T", " ") }} UTC{% if r.venue %} · {{ r.venue }}{% endif %}</p>
+{% if r.status == "settled" %}<p class="callout small"><strong>Result:</strong> {{ r.result.score }}{% if r.result.retired %} (retired){% endif %}:
+{{ r.p1 if r.result.winner == 1 else r.p2 }} won. Sets: the favoured player won {{ r.set_hits }} of {{ r.sets_played }};
+first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit else "✗" }}.</p>
+{% elif r.status == "void" %}<p class="callout small">Void: {{ r.result.void_reason }}.</p>{% endif %}
+{{ probs(p, r.p1, r.p2) }}
+<p class="small">Sealed {{ r.committed_at }} · {{ "✓ verified" if r.verified else "✗ does not verify" }} · sha256 <span class="mono">{{ r.sha256[:16] }}…</span></p>
+<h2>Why: every factor the model saw</h2>
+{{ factors(x, used) }}
+{% endblock %}

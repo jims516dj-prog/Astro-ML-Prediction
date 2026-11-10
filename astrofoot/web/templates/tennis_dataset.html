@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Dataset · Astro Tennis Lab{% endblock %}
+{% block body %}
+<h1>Tennis dataset</h1>
+<p class="lede">Every completed ATP and WTA singles match ESPN lists since 2010 (main draws and qualifying), with set
+scores and seeds: the history the model learns from. {{ "{:,}".format(n_dob) }} of {{ "{:,}".format(n_players) }}
+players have a date of birth. Surfaces are inferred from the tournament (ESPN does not publish them).</p>
+<form method="get" class="filters">
+  <label>Tour<select name="tour" onchange="this.form.submit()"><option value="">Both</option>
+    {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if q.tour == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Surface<select name="surface" onchange="this.form.submit()"><option value="">All</option>
+    {% for s in ["hard", "clay", "grass"] %}<option {{ "selected" if q.surface == s }}>{{ s }}</option>{% endfor %}</select></label>
+  <label>Year<select name="year" onchange="this.form.submit()"><option value="">All</option>
+    {% for y in years %}<option {{ "selected" if q.year == y|string }}>{{ y }}</option>{% endfor %}</select></label>
+  <label>Player<input name="player" value="{{ q.player }}" placeholder="contains…"></label>
+  <label>Tournament<input name="event" value="{{ q.event }}" placeholder="contains…"></label>
+  <div class="row"><button class="btn ghost">Filter</button><a class="small" href="/tennis/dataset">Clear</a></div>
+</form>
+<p class="note">{{ "{:,}".format(n) }} matches{% if by_surface %} ({% for s, c in by_surface.items() %}{{ s }} {{ "{:,}".format(c) }}{{ ", " if not loop.last }}{% endfor %}){% endif %}.</p>
+<div class="scroll"><table class="data small">
+<thead><tr><th>Date (UTC)</th><th>Tour</th><th>Tournament</th><th>Round</th><th>Surface</th><th>Winner</th><th>Loser</th><th>Score</th></tr></thead>
+<tbody>{% for r in rows %}{% set w1 = r.winner == 1 %}
+<tr><td class="mono">{{ r.date.strftime("%Y-%m-%d") }}</td><td>{{ r.tour|upper }}</td><td>{{ r.event }}</td><td>{{ r.round }}</td><td>{{ r.surface }}</td>
+<td>{% set s = r.p1_seed if w1 else r.p2_seed %}{% if s and s == s %}({{ s|int }}) {% endif %}{{ r.p1 if w1 else r.p2 }}</td>
+<td>{% set s = r.p2_seed if w1 else r.p1_seed %}{% if s and s == s %}({{ s|int }}) {% endif %}{{ r.p2 if w1 else r.p1 }}</td>
+<td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td></tr>
+{% else %}<tr><td colspan="8">No matches{% if not years %}: the history is built by the first GitHub tennis run (then git pull){% endif %}.</td></tr>{% endfor %}</tbody>
+</table></div>
+<p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no - 1 }}">← newer</a>{% endif %}
+<span>page {{ page_no }} / {{ pages }}</span>{% if page_no < pages %}<a href="?{{ qs }}&page_no={{ page_no + 1 }}">older →</a>{% endif %}</p>
+{% endblock %}
