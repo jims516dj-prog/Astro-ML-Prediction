@@ -86,6 +86,10 @@ def explain(f: dict, m: dict) -> dict:
         ("Elo rating difference (A − B, all surfaces)", num("elo_diff", 0), None, "≈ +100 points ≈ 64% match chance for A"),
         ("Surface Elo difference (A − B)", num("selo_diff", 0), None, f"on {m.get('surface', 'hard')}"),
         ("Elo match chance for A (blend of the two)", num("p_elo", 3), None, "the plain rating forecast"),
+        ("Last 5 matches won (share)", num("a_form5"), num("b_form5"), "see the last five below"),
+        ("Sets won share, last 5 matches (A − B)", num("sets5_diff"), None, ""),
+        ("Last 5 meetings: wins A − B", num("h2h5_diff", 0), None, "+1 = A won the last meeting" if f.get("h2h_last") == 1
+         else ("+1 = B won the last meeting" if f.get("h2h_last") == -1 else "no meeting yet")),
         ("Form: share of the last 10 matches won", num("a_form"), num("b_form"), ""),
         ("Sets won share, last 30 sets (A − B)", num("setform_diff"), None, ""),
         ("Days since last match", num("a_rest", 1), num("b_rest", 1), "60 = 60+ days or none"),
@@ -119,6 +123,35 @@ def edge_pts(logit: float | None) -> float | None:
     if logit is None:
         return None
     return 100 * (1 / (1 + math.exp(-logit)) - 0.5)
+
+
+def _view_score(score: str, flip: bool) -> str:
+    return " ".join("-".join(reversed(x.split("-"))) for x in str(score).split()) if flip else str(score)
+
+
+def recent(pid: str, before, n: int = 5, opp: str | None = None) -> list[dict]:
+    """A player's last n completed matches before a moment (or the last n meetings with `opp`), newest first,
+    from the ESPN history: date, tournament, round, surface, opponent, won/lost and the score from their side."""
+    m = state()["matches"]
+    if not len(m) or not pid:
+        return []
+    when = pd.Timestamp(before)
+    when = when.tz_localize("UTC") if when.tzinfo is None else when
+    mine = (m.p1_id == pid) | (m.p2_id == pid)
+    if opp:
+        mine &= (m.p1_id == opp) | (m.p2_id == opp)
+    sub = m[mine & m.completed & ~m.walkover & (m.date < when) & (m.set_winners.fillna("").str.len() > 0)]
+    out = []
+    for r in sub.sort_values("date").tail(n).iloc[::-1].to_dict("records"):
+        first = r["p1_id"] == pid
+        out.append({"date": r["date"].strftime("%Y-%m-%d"), "event": r["event"], "round": r["round"], "surface": r["surface"],
+                    "opponent": r["p2"] if first else r["p1"], "won": (r["winner"] == 1) == first,
+                    "score": _view_score(r["score"], not first), "retired": bool(r.get("retired"))})
+    return out
+
+
+def last_five(p1_id: str, p2_id: str, before) -> dict:
+    return {"a": recent(p1_id, before), "b": recent(p2_id, before), "h2h": recent(p1_id, before, 5, opp=p2_id)}
 
 
 def _bundle_groups():
@@ -192,7 +225,7 @@ def tennis_match(request: Request, mid: str, msg: str = ""):
     groups, _ = _bundle_groups()
     return _T().TemplateResponse(request, "tennis_match.html", {
         "r": rec, "p": rec["p"], "x": explain(rec["features"], rec), "used": groups, "sealed": True, "day": day_of(rec),
-        "msg": msg,
+        "msg": msg, "five": last_five(rec["p1_id"], rec["p2_id"], rec["start_utc"]),
         "edge_pts": edge_pts, "page": "tennis_home"})
 
 
@@ -241,7 +274,7 @@ def tennis_analyze(request: Request, a: str = "", b: str = "", when: str = "", s
         known = {side: ids[side] in s["names"] for side in ("a", "b")}
         dob = {side: (pdict.get(ids[side]) or {}).get("dob") for side in ("a", "b")}
         out = {"m": m, "f": f, "p": p, "x": explain(f, m), "known": known, "dob": dob,
-               "day": tlive.day_compare(m, pdict),
+               "day": tlive.day_compare(m, pdict), "five": last_five(ids["a"], ids["b"], m["date"]),
                "n": {side: s["st"].n.get(ids[side], 0) for side in ("a", "b")}}
     groups, _ = _bundle_groups()
     return _T().TemplateResponse(request, "tennis_analyze.html", {

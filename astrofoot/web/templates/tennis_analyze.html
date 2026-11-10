@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_tennis.html" import probs, factors, day_panel %}
+{% from "_tennis.html" import probs, factors, day_panel, five_panel %}
 {% block title %}Analyze · Astro Tennis Lab{% endblock %}
 {% block body %}
 <h1>Analyze a match</h1>
@@ -33,6 +33,7 @@ Add a bookmaker's odds (any free odds site) to blend them into the expected figu
 born {{ out.dob[side] or "unknown" }}{{ "; " if loop.first else "." }}{% endfor %}</p>
 {% if out.p %}{{ probs(out.p, out.m.p1, out.m.p2) }}{% endif %}
 {{ day_panel(out.day, out.m.p1, out.m.p2, out.p, edge_pts) }}
+{{ five_panel(out.five, out.m.p1, out.m.p2) }}
 {{ factors(out.x) }}
 {% endif %}
 {% endblock %}

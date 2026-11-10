@@ -14,7 +14,7 @@ from . import astro_num as an
 from . import daychart as dc
 from . import espn
 
-STAT_FEATURES = ["elo_diff", "selo_diff", "blend_diff", "p_elo", "n_diff", "a_n_log", "b_n_log", "form_diff",
+STAT_FEATURES = ["a_form5", "b_form5", "form5_diff", "sets5_diff", "h2h5_diff", "h2h_last", "elo_diff", "selo_diff", "blend_diff", "p_elo", "n_diff", "a_n_log", "b_n_log", "form_diff",
                  "a_form", "b_form", "setform_diff", "a_rest", "b_rest", "load_diff", "h2h_diff", "h2h_n",
                  "a_seed_inv", "b_seed_inv", "a_q", "b_q", "a_wc", "b_wc", "age_diff", "a_age", "b_age",
                  "height_diff", "a_left", "b_left", "a_home", "b_home", "best_of5", "slam", "qualifying",
@@ -64,6 +64,8 @@ class State:
     last: dict = field(default_factory=dict)
     recent: dict = field(default_factory=lambda: defaultdict(lambda: deque(maxlen=20)))
     h2h: dict = field(default_factory=lambda: defaultdict(int))
+    sets5: dict = field(default_factory=lambda: defaultdict(lambda: deque(maxlen=5)))      # (sets won, played)
+    meet: dict = field(default_factory=lambda: defaultdict(lambda: deque(maxlen=5)))       # last 5 winners of a pair
     names: dict = field(default_factory=dict)
 
     def update(self, m: dict):
@@ -99,6 +101,10 @@ class State:
             self.setform[b].append(1.0 if w == "2" else 0.0)
         self.h2h[(a, b)] += int(s == 1)
         self.h2h[(b, a)] += int(s == 0)
+        sw = str(m.get("set_winners") or "")
+        self.sets5[a].append((sw.count("1"), len(sw)))
+        self.sets5[b].append((sw.count("2"), len(sw)))
+        self.meet[frozenset((a, b))].append(a if s == 1 else b)
 
 
 def _age(dob, when) -> float:
@@ -160,6 +166,15 @@ def row(st: State, m: dict, players: dict) -> dict:
         "surf_clay": float(surf == "clay"), "surf_grass": float(surf == "grass"), "tour_wta": float(m.get("tour") == "wta"),
     }
     out["form_diff"] = out["a_form"] - out["b_form"]
+    # the last 5 matches and the last 5 meetings
+    l5a, l5b = list(fa)[-5:], list(fb)[-5:]
+    out["a_form5"], out["b_form5"] = (np.mean(l5a) if l5a else 0.5), (np.mean(l5b) if l5b else 0.5)
+    out["form5_diff"] = out["a_form5"] - out["b_form5"]
+    share = lambda d: (sum(w for w, _ in d) / max(1, sum(n for _, n in d))) if d else 0.5  # noqa: E731
+    out["sets5_diff"] = share(st.sets5[a]) - share(st.sets5[b])
+    meet = list(st.meet[frozenset((a, b))])
+    out["h2h5_diff"] = float(sum(w == a for w in meet) - sum(w == b for w in meet))
+    out["h2h_last"] = 0.0 if not meet else (1.0 if meet[-1] == a else -1.0)
     out.update(day_features(pa, pb, m["p1"], m["p2"], when))
     return out
 
@@ -222,7 +237,7 @@ def flip(df: pd.DataFrame) -> pd.DataFrame:
     """The same matches seen from the other player (A↔B): differences change sign, a_/b_ columns swap."""
     f = df.copy()
     for c in ("elo_diff", "selo_diff", "blend_diff", "n_diff", "form_diff", "setform_diff", "load_diff", "h2h_diff",
-              "age_diff", "height_diff"):
+              "age_diff", "height_diff", "form5_diff", "sets5_diff", "h2h5_diff", "h2h_last"):
         if c in f:
             f[c] = -df[c]
     if "p_elo" in f:

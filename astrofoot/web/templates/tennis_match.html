@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_tennis.html" import probs, factors, day_panel %}
+{% from "_tennis.html" import probs, factors, day_panel, five_panel %}
 {% block title %}{{ r.p1 }} v {{ r.p2 }} · Astro Tennis Lab{% endblock %}
 {% block body %}
 <p class="crumbs"><a href="/tennis">Tennis forecasts</a> › match</p>
@@ -31,5 +31,6 @@ tournaments). Type a bookmaker's decimal odds to blend them into the expected fi
   <button class="btn ghost small">Remove my odds</button></form>{% endif %}
 {% endif %}
 {{ day_panel(day, r.p1, r.p2, p, edge_pts) }}
+{{ five_panel(five, r.p1, r.p2) }}
 {{ factors(x) }}
 {% endblock %}
