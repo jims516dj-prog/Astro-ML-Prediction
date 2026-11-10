@@ -70,7 +70,7 @@ def _v(f, k):
 def explain(f: dict, m: dict) -> dict:
     """Readable factor tables (A = player 1, B = player 2) from a feature row."""
     a, b = m["p1"], m["p2"]
-    num = lambda k, d=2: None if _v(f, k) is None else round(float(f[k]), d)  # noqa: E731
+    num = lambda k, d=2: None if _v(f, k) is None else (int(round(float(f[k]))) if d == 0 else round(float(f[k]), d))  # noqa: E731
     stats = [
         ("Elo rating difference (A − B, all surfaces)", num("elo_diff", 0), None, "≈ +100 points ≈ 64% match chance for A"),
         ("Surface Elo difference (A − B)", num("selo_diff", 0), None, f"on {m.get('surface', 'hard')}"),

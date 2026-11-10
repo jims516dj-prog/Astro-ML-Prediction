@@ -126,6 +126,7 @@ def test_live_cycle_seals_then_settles(tmp_path, monkeypatch):
                       fetch_players=fetch_players)
     assert out == {"new": 0, "settled": 1}
     (r,) = tlive.records(ledger)
+    assert r["p1_seed"] is None and r["p2_seed"] is None                # no "nan" seeds
     assert r["status"] == "settled" and r["sets_played"] == 3 and r["result"]["winner"] == 2
     tr = tlive.track_record([r])
     assert tr["n"] == 1 and tr["sets"]["n"] == 3
@@ -148,3 +149,8 @@ def test_tennis_pages_render_with_a_switch(tmp_path, monkeypatch):
         assert "🎾 Tennis" in html and "Astro Tennis Lab" in html, url
     assert "Life path number" in client.get("/tennis/analyze?a=Player+1&b=Player+2").text
     assert "Astro Football Lab" in client.get("/").text
+
+
+def test_best_of_five_only_in_mens_slam_main_draws():
+    assert espn.best_of("atp", "Wimbledon", "Round 1") == 5 and espn.best_of("atp", "Wimbledon", "Qualifying 1st Round") == 3
+    assert espn.best_of("wta", "Wimbledon", "Final") == 3 and espn.best_of("atp", "Bybit Stockholm Open", "Round 1") == 3

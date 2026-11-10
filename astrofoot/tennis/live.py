@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 from .. import live as football_live
-from . import DATA, LEDGER, build, features, model
+from . import DATA, LEDGER, build, espn, features, model
 
 HORIZON_H = 36          # forecast matches starting within this many hours
 VOID_DAYS = 4           # no result this long after the start: void
@@ -58,6 +58,7 @@ def load_matches(ledger: Path = LEDGER) -> pd.DataFrame:
         return pd.DataFrame()
     df = pd.concat(parts, ignore_index=True).drop_duplicates("id", keep="last")
     df["date"] = pd.to_datetime(df["date"], utc=True)
+    df["best_of"] = [espn.best_of(t, e, r) for t, e, r in zip(df.tour, df.event, df["round"])]
     return df.sort_values(["date", "id"]).reset_index(drop=True)
 
 
@@ -111,8 +112,8 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
             break
         rec = {"match_id": m["id"], "tour": m["tour"], "event": m["event"], "round": m["round"], "venue": m["venue"],
                "surface": m["surface"], "best_of": int(m["best_of"]), "start_utc": m["date"].isoformat(),
-               "p1": m["p1"], "p1_id": m["p1_id"], "p1_seed": m.get("p1_seed"), "p1_country": m.get("p1_country"),
-               "p2": m["p2"], "p2_id": m["p2_id"], "p2_seed": m.get("p2_seed"), "p2_country": m.get("p2_country"),
+               "p1": m["p1"], "p1_id": m["p1_id"], "p1_seed": _seed(m.get("p1_seed")), "p1_country": m.get("p1_country"),
+               "p2": m["p2"], "p2_id": m["p2_id"], "p2_seed": _seed(m.get("p2_seed")), "p2_country": m.get("p2_country"),
                "model_version": fc["p"]["version"], "p": fc["p"], "features": fc["features"],
                "committed_at": now.isoformat(timespec="seconds")}
         new.append(football_live.seal(json.loads(json.dumps(rec, default=_plain))))
@@ -143,6 +144,10 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     return {"new": len(new), "settled": len(settled)}
 
 
+def _seed(v):
+    return int(v) if isinstance(v, (int, float, np.integer, np.floating)) and v == v and v else None
+
+
 def _plain(o):
     if isinstance(o, (np.integer,)):
         return int(o)
@@ -157,6 +162,10 @@ def join(r: dict, res: dict | None) -> dict:
     p = r["p"]
     out = {**r, "result": res, "status": "pending" if res is None else ("void" if res.get("void") else "settled"),
            "verified": football_live.verify(r), "pre_kickoff": r["committed_at"] < r["start_utc"]}
+    out["best_of"] = espn.best_of(r.get("tour"), r.get("event"), r.get("round"))   # display: ESPN's was wrong for ATP
+    for k in ("p1_seed", "p2_seed"):          # display only: a missing seed may be stored as NaN
+        v = r.get(k)
+        out[k] = int(v) if isinstance(v, (int, float)) and v == v and v else None
     fav = 1 if p["a_match"] >= 0.5 else 2
     out.update(fav=fav, set_pick=1 if p["a_set"] >= 0.5 else 2, p_set_pick=max(p["a_set"], p["b_set"]),
                first_pick=1 if p["a_first"] >= 0.5 else 2, p_first_pick=max(p["a_first"], p["b_first"]),

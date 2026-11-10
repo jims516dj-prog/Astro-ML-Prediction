@@ -111,7 +111,7 @@ def parse_competition(c: dict, e: dict, tour: str) -> dict | None:
         "id": str(c.get("id")), "event_id": str(e.get("id") or ""), "event": e.get("name") or "", "tour": tour,
         "date": c.get("date") or c.get("startDate") or e.get("date"), "venue": venue,
         "round": ((c.get("round") or {}).get("displayName") or ""),
-        "best_of": int(((c.get("format") or {}).get("regulation") or {}).get("periods") or 3),
+        "best_of": best_of(tour, e.get("name") or "", ((c.get("round") or {}).get("displayName") or "")),
         "state": st.get("state") or "", "status": st.get("name") or "", "completed": bool(st.get("completed")),
         "p1_id": p[0]["id"], "p1": p[0]["name"], "p1_country": p[0]["country"], "p1_seed": p[0]["seed"],
         "p1_entry": p[0]["entry"], "p1_rank": p[0]["rank"],
@@ -120,6 +120,16 @@ def parse_competition(c: dict, e: dict, tour: str) -> dict | None:
         "winner": winner, "score": score, "set_winners": "".join(map(str, set_winners)),
         "retired": bool(retired) and not walkover, "walkover": bool(walkover), "note": note[:300],
     }
+
+
+SLAMS = ("australian open", "french open", "roland garros", "wimbledon", "us open")
+
+
+def best_of(tour: str, event: str, round_name: str) -> int:
+    """ESPN reports 5 'periods' for every ATP match, so the format is derived: best of 5 only in the men's
+    Grand Slam main draws (qualifying is best of 3)."""
+    ev, rd = (event or "").lower(), (round_name or "").lower()
+    return 5 if tour == "atp" and any(x in ev for x in SLAMS) and "qualif" not in rd else 3
 
 
 def athlete(pid: str, get=get_json) -> dict:

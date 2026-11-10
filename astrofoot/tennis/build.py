@@ -50,6 +50,7 @@ def crawl(d_from: date, d_to: date, log=print, get=espn.get_json, workers: int =
     df = df.dropna(subset=["date"])
     df = df[(df.date.dt.date >= d_from) & (df.date.dt.date <= d_to + timedelta(days=1))]
     df["surface"] = [surface(e, v) for e, v in zip(df.event, df.venue)]
+    df["best_of"] = [espn.best_of(t, e, r) for t, e, r in zip(df.tour, df.event, df["round"])]
     return df.sort_values(["date", "id"]).reset_index(drop=True)
 
 

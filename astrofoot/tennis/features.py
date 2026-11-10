@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 
 from . import astro_num as an
+from . import espn
 
 STAT_FEATURES = ["elo_diff", "selo_diff", "blend_diff", "p_elo", "n_diff", "a_n_log", "b_n_log", "form_diff",
                  "a_form", "b_form", "setform_diff", "a_rest", "b_rest", "load_diff", "h2h_diff", "h2h_n",
@@ -140,7 +141,8 @@ def row(st: State, m: dict, players: dict) -> dict:
         "height_diff": h(pa) - h(pb), "a_left": hw(pa), "b_left": hw(pb),
         "a_home": _same_country(m.get("p1_country") or pa.get("country"), venue_c),
         "b_home": _same_country(m.get("p2_country") or pb.get("country"), venue_c),
-        "best_of5": float(int(m.get("best_of") or 3) == 5), "slam": float(any(s in ev for s in SLAMS)),
+        "best_of5": float(espn.best_of(m.get("tour"), m.get("event"), m.get("round")) == 5),
+        "slam": float(any(s in ev for s in SLAMS)),
         "qualifying": float("qualif" in (m.get("round") or "").lower()), "round_no": float(round_no(m.get("round"))),
         "surf_clay": float(surf == "clay"), "surf_grass": float(surf == "grass"), "tour_wta": float(m.get("tour") == "wta"),
     }
