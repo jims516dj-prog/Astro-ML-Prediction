@@ -1,12 +1,65 @@
 {
- "generated_at": "2026-11-10T14:47:10+00:00",
+ "generated_at": "2026-11-10T22:28:13+00:00",
  "integrity": {
-  "records": 11,
-  "hash_ok": 11,
+  "records": 12,
+  "hash_ok": 12,
   "late": 0
  },
- "pending": 11,
- "settled": 0,
+ "pending": 8,
+ "settled": 4,
  "void": 0,
- "engines": {}
+ "engines": {
+  "market": {
+   "n": 4,
+   "rps": 0.14620384607056422,
+   "logloss": 0.8745972233229632,
+   "brier": 0.5119998173153368,
+   "accuracy": 0.75
+  },
+  "engine4": {
+   "n": 4,
+   "rps": 0.14620384607056425,
+   "logloss": 0.8745972233229632,
+   "brier": 0.5119998173153368,
+   "accuracy": 0.75
+  },
+  "synthesis": {
+   "n": 4,
+   "rps": 0.14620384607056422,
+   "logloss": 0.8745972233229632,
+   "brier": 0.5119998173153368,
+   "accuracy": 0.75
+  },
+  "rao": {
+   "n": 4,
+   "accuracy": 0.0,
+   "market_expected": 0.15272697975465183,
+   "lift_pp": -15.272697975465183,
+   "lift_se_pp": 17.731724447945506
+  },
+  "chokoisky": {
+   "n": 4,
+   "accuracy": 0.0,
+   "market_expected": 0.33745559218620885,
+   "lift_pp": -33.74555921862088,
+   "lift_se_pp": 19.2042440061221
+  },
+  "frawley": {
+   "n": 4,
+   "accuracy": 0.25,
+   "market_expected": 0.2829258239000769,
+   "lift_pp": -3.2925823900076923,
+   "lift_se_pp": 19.23088191305035
+  }
+ },
+ "engine4_by_version": {
+  "v2": {
+   "n": 4,
+   "rps": 0.14620384607056425,
+   "logloss": 0.8745972233229632,
+   "brier": 0.5119998173153368,
+   "accuracy": 0.75,
+   "rps_market": 0.1462038460705642
+  }
+ }
 }

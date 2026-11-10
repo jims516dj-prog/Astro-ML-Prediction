@@ -278,5 +278,10 @@
   "lat": -1.24472222,
   "lon": -78.62305556,
   "source": "wikipedia: Estadio Bellavista"
+ },
+ "Vietnam": {
+  "lat": 20.4358,
+  "lon": 106.18,
+  "source": "wikipedia: Thiên Trường Stadium"
  }
 }
