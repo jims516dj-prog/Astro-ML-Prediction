@@ -1,0 +1,47 @@
+{
+ "Alfredo Di Stéfano Stadium | Madrid": {
+  "lat": 40.47666667,
+  "lon": -3.61416667,
+  "source": "wikipedia: Alfredo Di Stéfano Stadium"
+ },
+ "Bravida Arena | Gothenburg": {
+  "lat": 57.71916667,
+  "lon": 11.93055556,
+  "source": "wikipedia: Nordic Wellness Arena"
+ },
+ "Estadio Olímpico Benito Juárez | Ciudad Juárez": {
+  "lat": 31.75305556,
+  "lon": -106.46777778,
+  "source": "wikipedia: Estadio Olímpico Benito Juárez"
+ },
+ "Estadio Olímpico Universitario | Mexico City": {
+  "lat": 19.33194444,
+  "lon": -99.19222222,
+  "source": "wikipedia: Estadio Olímpico Universitario"
+ },
+ "Estádio da Luz | Lisbon": {
+  "lat": 38.7527,
+  "lon": -9.1847,
+  "source": "wikipedia: Estádio da Luz"
+ },
+ "King Power at Den Dreef Stadion | Leuven": {
+  "lat": 50.8684105,
+  "lon": 4.6942994,
+  "source": "openstreetmap: King Power at Den Dreef, Tervuursevest, Ruelenspark, Heverlee, Leuven, Vlaams-Brabant, Vlaanderen, 3001, België / Belgique / Belgien"
+ },
+ "Parc des Princes | Paris": {
+  "lat": 48.8413634,
+  "lon": 2.2530693,
+  "source": "openstreetmap: Parc des Princes, 24, Rue du Commandant Guilbaud, Quartier d'Auteuil, Paris 16e Arrondissement, Paris, Île-de-France, France métropolitaine, 75016, France"
+ },
+ "Stadio Olimpico Grande Torino | Torino": {
+  "lat": 45.04166667,
+  "lon": 7.65,
+  "source": "wikipedia: Stadio Olimpico Grande Torino"
+ },
+ "U-Power Stadium | Monza": {
+  "lat": 45.58277778,
+  "lon": 9.30805556,
+  "source": "wikipedia: Stadio Brianteo"
+ }
+}
