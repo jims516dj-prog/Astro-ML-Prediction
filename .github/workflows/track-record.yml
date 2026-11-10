@@ -36,6 +36,10 @@ jobs:
         env:
           FOOTBALL_DATA_ORG_TOKEN: ${{ secrets.FOOTBALL_DATA_ORG_TOKEN }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+      - name: Tennis cycle (forecast upcoming matches, settle finished ones)
+        if: ${{ !inputs.diagnose }}
+        continue-on-error: true
+        run: python scripts/tennis.py cycle
       - name: Push ledger
         if: ${{ !inputs.diagnose }}
         run: |

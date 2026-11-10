@@ -12,3 +12,4 @@ data/app.sqlite3
 data/*.log
 data/models/local_backup/
 .github_token
+data/tennis/features.parquet

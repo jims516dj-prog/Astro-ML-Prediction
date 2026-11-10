@@ -1,27 +1,39 @@
-# Tennis: build the historical dataset and train the set model (weekly), or run diagnostics on demand.
+# Tennis: rebuild the ESPN history (new results), refresh players' birth details and retrain the set
+# models with fine-tuning and a walk-forward check (weekly, or on demand). "probe" = diagnostics only.
 name: tennis
 on:
+  schedule:
+    - cron: "23 3 * * 2"      # Tuesdays 03:23 UTC
   workflow_dispatch:
     inputs:
       cmd:
-        description: "probe (diagnostics only) or build"
+        description: "all (build + train), train (retrain only) or probe (diagnostics)"
         required: false
-        default: "build"
+        default: "all"
 permissions:
   contents: write
 concurrency: tennis
 jobs:
   tennis:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 180
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: pip
-      - run: pip install -r requirements.txt openpyxl
+      - run: pip install -r requirements.txt
       - if: ${{ inputs.cmd == 'probe' }}
         run: python scripts/tennis_probe.py
         env:
           GH_TOKEN: ${{ github.token }}
+      - if: ${{ inputs.cmd != 'probe' }}
+        run: python scripts/tennis.py ${{ inputs.cmd || 'all' }}
+      - name: Publish data and model
+        if: ${{ inputs.cmd != 'probe' }}
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          git add data/tennis/matches.parquet data/tennis/players.parquet data/models/tennis.joblib data/models/tennis.json
+          git diff --cached --quiet || { git commit -m "tennis: data + model $(date -u +%Y-%m-%d)"; git pull --rebase; git push; }
