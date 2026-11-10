@@ -10,7 +10,8 @@ import numpy as np
 import pandas as pd
 
 from .. import live as football_live
-from . import DATA, LEDGER, build, espn, features, model
+from . import DATA, LEDGER, build, daychart, espn, features, model
+from . import odds as tennis_odds
 
 HORIZON_H = 36          # forecast matches starting within this many hours
 VOID_DAYS = 4           # no result this long after the start: void
@@ -69,15 +70,30 @@ def state(matches: pd.DataFrame, now: datetime) -> features.State:
     return st
 
 
-def forecast(st: features.State, m: dict, players: dict, bundle=None) -> dict | None:
+def day_compare(m: dict, players: dict) -> dict:
+    """Date-only astrology and numerology of both players for the match day, and who each favours."""
+    day = str(m.get("date") or m.get("start_utc"))[:10]
+    pa, pb = players.get(str(m["p1_id"]), {}), players.get(str(m["p2_id"]), {})
+    aa, ab = daychart.astro_day(pa.get("dob"), day), daychart.astro_day(pb.get("dob"), day)
+    na = daychart.num_day(pa.get("dob"), pa.get("full_name") or m["p1"], day)
+    nb = daychart.num_day(pb.get("dob"), pb.get("full_name") or m["p2"], day)
+    return {"day": day, "dob": {"a": daychart.an.clean_dob(pa.get("dob")), "b": daychart.an.clean_dob(pb.get("dob"))},
+            "astro": {"a": aa, "b": ab, "favours": daychart.verdict(aa["score"], ab["score"])},
+            "num": {"a": na, "b": nb, "favours": daychart.verdict(na["score"], nb["score"], 0.4)}}
+
+
+def forecast(st: features.State, m: dict, players: dict, bundle=None, odds: dict | None = None) -> dict | None:
     f = features.row(st, m, players)
-    p = model.predict(f, bundle)
+    p = model.predict(f, bundle, odds=(odds["a"], odds["b"]) if odds else None)
     if p is None:
         return None
-    return {"features": {k: (None if isinstance(v, float) and np.isnan(v) else v) for k, v in f.items()}, "p": p}
+    keep = {k: (None if isinstance(v, float) and np.isnan(v) else v) for k, v in f.items()
+            if not k.startswith("d_astro_") and not k.startswith("d_num_") or k in ("d_astro_rule", "d_num_rule")}
+    return {"features": keep, "p": p, "day": day_compare(m, players), "odds": odds}
 
 
-def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=build.crawl, fetch_players=build.players) -> dict:
+def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=build.crawl, fetch_players=build.players,
+          odds_fetch=tennis_odds.fetch) -> dict:
     now = now or datetime.now(timezone.utc)
     ledger.mkdir(parents=True, exist_ok=True)
     fresh = crawl((now - timedelta(days=45)).date(), (now + timedelta(days=3)).date(), log)
@@ -101,12 +117,14 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     players = features.players_dict(pl)
     bundle = model.load()
     done_ids = {r["match_id"] for r in predictions(ledger)}
+    todo = [m for m in up.to_dict("records") if m["id"] not in done_ids]
+    priced = odds_fetch(todo, now, ledger, log=log) if todo else {}
     st = state(matches, now)
     new = []
     for m in up.to_dict("records"):
         if m["id"] in done_ids or not m["p1_id"] or not m["p2_id"]:
             continue
-        fc = forecast(st, m, players, bundle)
+        fc = forecast(st, m, players, bundle, priced.get(m["id"]))
         if fc is None:
             log("tennis: no trained model yet")
             break
@@ -114,7 +132,8 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                "surface": m["surface"], "best_of": int(m["best_of"]), "start_utc": m["date"].isoformat(),
                "p1": m["p1"], "p1_id": m["p1_id"], "p1_seed": _seed(m.get("p1_seed")), "p1_country": m.get("p1_country"),
                "p2": m["p2"], "p2_id": m["p2_id"], "p2_seed": _seed(m.get("p2_seed")), "p2_country": m.get("p2_country"),
-               "model_version": fc["p"]["version"], "p": fc["p"], "features": fc["features"],
+               "model_version": fc["p"]["version"], "p": fc["p"], "features": fc["features"], "day": fc["day"],
+               "odds": fc["odds"],
                "committed_at": now.isoformat(timespec="seconds")}
         new.append(football_live.seal(json.loads(json.dumps(rec, default=_plain))))
     _append(ledger / "predictions.jsonl", new)
@@ -166,16 +185,23 @@ def join(r: dict, res: dict | None) -> dict:
     for k in ("p1_seed", "p2_seed"):          # display only: a missing seed may be stored as NaN
         v = r.get(k)
         out[k] = int(v) if isinstance(v, (int, float)) and v == v and v else None
-    fav = 1 if p["a_match"] >= 0.5 else 2
-    out.update(fav=fav, set_pick=1 if p["a_set"] >= 0.5 else 2, p_set_pick=max(p["a_set"], p["b_set"]),
-               first_pick=1 if p["a_first"] >= 0.5 else 2, p_first_pick=max(p["a_first"], p["b_first"]),
-               dog=3 - fav, p_dog_one_set=p["b_one_set"] if fav == 1 else p["a_one_set"],
-               p_fav_one_set=p["a_one_set"] if fav == 1 else p["b_one_set"])
+    # the headline figures: 'expected' (statistics + learned astrology/numerology, blended with the odds when
+    # there are any); forecasts sealed before those existed use the statistics model
+    e = p.get("expected") or {k: p[k] for k in p if k[:2] in ("a_", "b_")}
+    out["e"] = e
+    fav = 1 if e["a_match"] >= 0.5 else 2
+    out.update(fav=fav, set_pick=1 if e["a_set"] >= 0.5 else 2, p_set_pick=max(e["a_set"], e["b_set"]),
+               first_pick=1 if e["a_first"] >= 0.5 else 2, p_first_pick=max(e["a_first"], e["b_first"]),
+               match_pick=fav, p_match_pick=max(e["a_match"], e["b_match"]),
+               one_pick=1 if e["a_one_set"] >= e["b_one_set"] else 2, p_one_pick=max(e["a_one_set"], e["b_one_set"]),
+               dog=3 - fav, p_dog_one_set=e["b_one_set"] if fav == 1 else e["a_one_set"],
+               p_fav_one_set=e["a_one_set"] if fav == 1 else e["b_one_set"])
     if res and not res.get("void"):
         sw = res["set_winners"]
         out.update(sets_a=sw.count("1"), sets_b=sw.count("2"), first_winner=int(sw[0]) if sw else None,
                    dog_won_set=str(out["dog"]) in sw, match_hit=res["winner"] == fav,
                    first_hit=(int(sw[0]) == out["first_pick"]) if sw else None,
+                   one_hit=str(out["one_pick"]) in sw,
                    set_hits=sum(1 for c in sw if int(c) == out["set_pick"]), sets_played=len(sw))
     return out
 
@@ -197,7 +223,7 @@ def track_record(recs: list[dict]) -> dict:
     out = {"n": len(s), "sets": {"n": sets_n, "hits": sets_hit, "expected": sets_exp / sets_n if sets_n else None}}
     for key, hit, pk in (("first", "first_hit", "p_first_pick"), ("match", "match_hit", None)):
         rows = [r for r in s if r.get(hit) is not None]
-        exp = [r[pk] if pk else max(r["p"]["a_match"], r["p"]["b_match"]) for r in rows]
+        exp = [r[pk] if pk else r["p_match_pick"] for r in rows]
         out[key] = {"n": len(rows), "hits": sum(bool(r[hit]) for r in rows), "expected": float(np.mean(exp)) if rows else None}
     out["dog_one_set"] = {"n": len(s), "hits": sum(bool(r["dog_won_set"]) for r in s),
                           "expected": float(np.mean([r["p_dog_one_set"] for r in s]))}

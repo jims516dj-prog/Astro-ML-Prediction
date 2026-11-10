@@ -1,10 +1,11 @@
 {% extends "base.html" %}
-{% from "_tennis.html" import probs, factors %}
+{% from "_tennis.html" import probs, factors, day_panel %}
 {% block title %}Analyze · Astro Tennis Lab{% endblock %}
 {% block body %}
 <h1>Analyze a match</h1>
 <p class="lede">Enter two players: ratings, form and head-to-head come from the history up to now, birth details from ESPN.
-A player the history does not know starts from an average rating; give their date of birth for the astrology and numerology.</p>
+A player the history does not know starts from an average rating; give their date of birth for the astrology and numerology.
+Add a bookmaker's odds (any free odds site) to blend them into the expected figure.</p>
 {% if not has_model %}<p class="callout small">No trained model yet, so only the factors are shown (see <a href="/tennis/model">ML model</a>).</p>{% endif %}
 <form method="get" class="filters">
   <datalist id="players">{% for n in names %}<option value="{{ n }}">{% endfor %}</datalist>
@@ -21,6 +22,8 @@ A player the history does not know starts from an average rating; give their dat
   <label>Round<input name="round" value="{{ q.round }}" size="12"></label>
   <label>Tournament<input name="event" value="{{ q.event }}" placeholder="e.g. Wimbledon"></label>
   <label>Venue (city, country)<input name="venue" value="{{ q.venue }}" placeholder="London, United Kingdom"></label>
+  <label>Odds A (decimal, optional)<input name="a_odds" value="{{ q.a_odds }}" size="5" inputmode="decimal" placeholder="1.45"></label>
+  <label>Odds B<input name="b_odds" value="{{ q.b_odds }}" size="5" inputmode="decimal" placeholder="2.80"></label>
   <div class="row"><button class="btn">Analyze</button></div>
 </form>
 {% if err %}<p class="callout small">{{ err }}</p>{% endif %}
@@ -29,7 +32,8 @@ A player the history does not know starts from an average rating; give their dat
 <p class="note">{% for side, nm in [("a", out.m.p1), ("b", out.m.p2)] %}{{ nm }}: {% if out.known[side] %}{{ out.n[side] }} matches in the history{% else %}<strong>not in the history</strong> (average rating){% endif %},
 born {{ out.dob[side] or "unknown" }}{{ "; " if loop.first else "." }}{% endfor %}</p>
 {% if out.p %}{{ probs(out.p, out.m.p1, out.m.p2) }}{% endif %}
-<h2>Every factor</h2>
-{{ factors(out.x, used) }}
+{{ day_panel(out.day, out.m.p1, out.m.p2, out.p, edge_pts) }}
+<h2>Statistics</h2>
+{{ factors(out.x) }}
 {% endif %}
 {% endblock %}

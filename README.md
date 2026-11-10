@@ -293,6 +293,24 @@ each player's date and place of birth. ESPN does not publish surfaces, so they a
 - *Numerology*: life path, personal year, personal day, expression (name) number, and whether the personal or universal
   day matches the life path, or is a 1 or 8.
 
+**Who is favoured for the day (date-only).** Birth times are rarely published and start times move, so astrology and
+numerology use dates only: each player's chart for the date of birth against the sky on the match day (planets at
+12:00 UTC; the Moon is left out, it moves too fast). Each player gets a traditional day score (Jupiter and Venus contacts
+add, Saturn and hard Mars contacts subtract; numerology: personal day in harmony with the life path, 1 and 8 days, …) and
+the higher score is "favoured for the day". Every contact (108) and number is also given to the machine, which learns its
+own weights (logistic models and trees are tried), alone and on top of the statistics; they enter the expected figure only
+where they improved unseen matches (ML model page shows the result).
+
+**Odds and the expected figure.** ESPN has no tennis odds; The Odds API (the same free `ODDS_API_KEY`) prices about 50
+tournaments: Grand Slams, Masters 1000, WTA 1000, the Finals, some 500s. Finding listed matches is free; buying a
+tournament's odds costs one credit, at most every 12 hours, never below 150 credits left (kept for soccer). The margin-free
+match chance is turned into set / first-set / at-least-one-set chances and blended with the model (60% odds) into the
+**expected** figure shown everywhere. On Analyze you can type any bookmaker's odds yourself.
+
+**Top picks** (`/tennis/top`): tabs for sets, first set, match, at least one set and underdog to win a set, ranked by the
+expected chance, with filters for day, tour, minimum probability, whether the day's astrology / numerology favour the
+pick, and priced matches only; plus the live record of each view.
+
 **Machine learning.** Four gradient-boosted models (win a set, first set, at least one set, match), trained on both
 orientations of every match so neither player is favoured by order. Every retrain fine-tunes: it compares statistics
 alone with statistics + astrology, + numerology and + both on the latest 12 months held out, and keeps astrology or

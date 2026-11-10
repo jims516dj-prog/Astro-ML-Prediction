@@ -11,6 +11,7 @@ import numpy as np
 import pandas as pd
 
 from . import astro_num as an
+from . import daychart as dc
 from . import espn
 
 STAT_FEATURES = ["elo_diff", "selo_diff", "blend_diff", "p_elo", "n_diff", "a_n_log", "b_n_log", "form_diff",
@@ -18,9 +19,10 @@ STAT_FEATURES = ["elo_diff", "selo_diff", "blend_diff", "p_elo", "n_diff", "a_n_
                  "a_seed_inv", "b_seed_inv", "a_q", "b_q", "a_wc", "b_wc", "age_diff", "a_age", "b_age",
                  "height_diff", "a_left", "b_left", "a_home", "b_home", "best_of5", "slam", "qualifying",
                  "round_no", "surf_clay", "surf_grass", "tour_wta"]
-ASTRO = [f"{s}_{k}" for k in an.ASTRO_FEATURES for s in ("a", "b")] + ["mars_on_opp_sun_a", "mars_on_opp_sun_b",
-                                                                       "sun_compatible"]
-NUMER = [f"{s}_{k}" for k in an.NUM_FEATURES for s in ("a", "b")] + ["universal_day"]
+# date-only astrology and numerology (daychart): A − B differences of every contact / number, and the
+# traditional day scores of each player
+ASTRO = [f"d_astro_{k}" for k in dc.FEATURES] + ["a_astro_rule", "b_astro_rule", "d_astro_rule"]
+NUMER = [f"d_num_{k}" for k in dc.NUM_FEATURES] + ["a_num_rule", "b_num_rule", "d_num_rule"]
 GROUPS = {"stats": STAT_FEATURES, "astro": ASTRO, "numerology": NUMER}
 SLAMS = ("australian open", "french open", "roland garros", "wimbledon", "us open")
 ROUNDS = {"final": 7, "semifinal": 6, "quarterfinal": 5, "round of 16": 4, "4th round": 4, "fourth round": 4,
@@ -147,14 +149,28 @@ def row(st: State, m: dict, players: dict) -> dict:
         "surf_clay": float(surf == "clay"), "surf_grass": float(surf == "grass"), "tour_wta": float(m.get("tour") == "wta"),
     }
     out["form_diff"] = out["a_form"] - out["b_form"]
-    day = when.date()
-    for side, p, name in (("a", pa, m["p1"]), ("b", pb, m["p2"])):
-        for k, v in an.astro(p.get("dob"), when.to_pydatetime() if hasattr(when, "to_pydatetime") else when).items():
-            out[f"{side}_{k}"] = v
-        for k, v in an.numerology(p.get("dob"), p.get("full_name") or name, day).items():
-            out[f"{side}_{k}"] = v
-    out.update(an.synastry(pa.get("dob"), pb.get("dob")))
-    out["universal_day"] = float(an.universal_day(day))
+    out.update(day_features(pa, pb, m["p1"], m["p2"], when))
+    return out
+
+
+def day_features(pa: dict, pb: dict, name_a: str, name_b: str, when) -> dict:
+    """Date-only astrology and numerology of both players for the match day (see daychart)."""
+    day = str(when)[:10] if not hasattr(when, "strftime") else when.strftime("%Y-%m-%d")
+    out = {}
+    va, vb = dc.contact_vector(pa.get("dob"), day), dc.contact_vector(pb.get("dob"), day)
+    for k, x in zip(dc.FEATURES, va - vb):
+        out[f"d_astro_{k}"] = float(x)
+    ra, rb = dc.astro_day(pa.get("dob"), day)["score"], dc.astro_day(pb.get("dob"), day)["score"]
+    out.update(a_astro_rule=np.nan if ra is None else ra, b_astro_rule=np.nan if rb is None else rb)
+    out["d_astro_rule"] = out["a_astro_rule"] - out["b_astro_rule"]
+    na = dc.num_vector(pa.get("dob"), pa.get("full_name") or name_a, day)
+    nb = dc.num_vector(pb.get("dob"), pb.get("full_name") or name_b, day)
+    for k, x in zip(dc.NUM_FEATURES, na - nb):
+        out[f"d_num_{k}"] = float(x)
+    sa = dc.num_day(pa.get("dob"), pa.get("full_name") or name_a, day)["score"]
+    sb = dc.num_day(pb.get("dob"), pb.get("full_name") or name_b, day)["score"]
+    out.update(a_num_rule=np.nan if sa is None else sa, b_num_rule=np.nan if sb is None else sb)
+    out["d_num_rule"] = out["a_num_rule"] - out["b_num_rule"]
     return out
 
 
@@ -203,8 +219,9 @@ def flip(df: pd.DataFrame) -> pd.DataFrame:
     for c in df.columns:
         if c.startswith("a_") and "b_" + c[2:] in df.columns:
             f[c], f["b_" + c[2:]] = df["b_" + c[2:]], df[c]
-    if "mars_on_opp_sun_a" in f:
-        f["mars_on_opp_sun_a"], f["mars_on_opp_sun_b"] = df["mars_on_opp_sun_b"], df["mars_on_opp_sun_a"]
+    for c in df.columns:
+        if c.startswith("d_"):
+            f[c] = -df[c]
     if "winner" in f:
         f["winner"] = 3 - df["winner"]
     if "set_winners" in f:

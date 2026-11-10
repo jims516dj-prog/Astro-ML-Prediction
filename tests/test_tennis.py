@@ -61,7 +61,8 @@ def test_features_use_only_the_past_and_flip_is_symmetric():
     g = features.flip(features.flip(f))
     pd.testing.assert_frame_equal(f, g)
     ff = features.flip(f)
-    assert (ff.elo_diff == -f.elo_diff).all() and (ff.a_life_path.fillna(-1) == f.b_life_path.fillna(-1)).all()
+    assert (ff.elo_diff == -f.elo_diff).all() and (ff.a_num_rule.fillna(-1) == f.b_num_rule.fillna(-1)).all()
+    assert (ff.d_astro_rule.fillna(0) == -f.d_astro_rule.fillna(0)).all()
 
 
 def test_training_learns_skill_and_predicts_both_players(tmp_path, monkeypatch):
@@ -78,6 +79,15 @@ def test_training_learns_skill_and_predicts_both_players(tmp_path, monkeypatch):
     p = model.predict(features.row(st, nxt, features.players_dict(pl)), model.load())
     assert abs(p["a_set"] + p["b_set"] - 1) < 1e-9 and abs(p["a_match"] + p["b_match"] - 1) < 1e-9
     assert p["a_one_set"] >= p["a_match"] - 0.05 and p["b_one_set"] >= p["b_match"] - 0.05
+    assert set(rep["learned"]) == {"astro", "numerology"} and set(rep["combo_eval"]) == set(model.HEADS)
+    assert rep["verdicts"]["astro"]["n_matches"] > 0
+    c = p["combined"]
+    assert abs(c["a_set"] + c["b_set"] - 1) < 1e-9 and p["expected"] == c and p["market"] is None
+    # with odds: the market and the expected figure (blend) appear
+    q = model.predict(features.row(st, nxt, features.players_dict(pl)), model.load(), odds=(1.5, 2.6))
+    assert abs(q["market"]["a_match"] - (1 / 1.5) / (1 / 1.5 + 1 / 2.6)) < 1e-9 and q["market"]["a_set"] > 0.5
+    lo, hi = sorted([q["combined"]["a_set"], q["market"]["a_set"]])
+    assert lo - 1e-9 <= q["expected"]["a_set"] <= hi + 1e-9
 
 
 def test_missing_birth_dates_are_tolerated():
@@ -114,16 +124,20 @@ def test_live_cycle_seals_then_settles(tmp_path, monkeypatch):
         return pd.DataFrame([{"id": "99", "name": "New Player", "full_name": "New Player", "dob": "2001-04-04",
                               "birthplace": "", "hand": "L", "height_in": 70.0, "country": "Italy"}])
 
-    out = tlive.cycle(now, ledger, log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame([up]), fetch_players=fetch_players)
+    odds = lambda todo, now, ledger, log: {"U1": {"a": 1.4, "b": 3.0, "source": "test"}}  # noqa: E731
+    out = tlive.cycle(now, ledger, log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame([up]), fetch_players=fetch_players,
+                      odds_fetch=odds)
     assert out["new"] == 1 and fetched == ["99"]
     (rec,) = tlive.predictions(ledger)
-    assert rec["features"]["b_life_path"] is not None and 0 < rec["p"]["a_set"] < 1
+    assert rec["day"]["dob"]["b"] == "2001-04-04" and rec["day"]["num"]["b"]["numbers"]["life_path"] == 11
+    assert rec["day"]["astro"]["favours"] in (0, 1, 2) and rec["odds"]["a"] == 1.4
+    assert 0 < rec["p"]["expected"]["a_set"] < 1 and rec["p"]["market"]["a_match"] > 0.6
     from astrofoot import live as football_live
     assert football_live.verify(rec)
     # a second cycle does not forecast it twice; once played, it is settled
     done = {**up, "state": "post", "completed": True, "winner": 2, "set_winners": "212", "score": "4-6 6-3 2-6"}
     out = tlive.cycle(now + timedelta(hours=8), ledger, log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame([done]),
-                      fetch_players=fetch_players)
+                      fetch_players=fetch_players, odds_fetch=odds)
     assert out == {"new": 0, "settled": 1}
     (r,) = tlive.records(ledger)
     assert r["p1_seed"] is None and r["p2_seed"] is None                # no "nan" seeds
@@ -147,10 +161,19 @@ def test_tennis_pages_render_with_a_switch(tmp_path, monkeypatch):
     for url in ("/tennis", "/tennis/model", "/tennis/dataset?player=player+1", "/tennis/analyze?a=Player+1&b=Player+2&surface=clay"):
         html = client.get(url).text
         assert "🎾 Tennis" in html and "Astro Tennis Lab" in html, url
-    assert "Life path number" in client.get("/tennis/analyze?a=Player+1&b=Player+2").text
+    html = client.get("/tennis/analyze?a=Player+1&b=Player+2&a_odds=1.5&b_odds=2.6").text
+    assert "Who is favoured for the day" in html and "life path" in html
+    for m in ("set", "first", "match", "one_set", "dog_set"):
+        assert "Tennis top picks" in client.get(f"/tennis/top?market={m}&day=all").text
     assert "Astro Football Lab" in client.get("/").text
 
 
 def test_best_of_five_only_in_mens_slam_main_draws():
     assert espn.best_of("atp", "Wimbledon", "Round 1") == 5 and espn.best_of("atp", "Wimbledon", "Qualifying 1st Round") == 3
     assert espn.best_of("wta", "Wimbledon", "Final") == 3 and espn.best_of("atp", "Bybit Stockholm Open", "Round 1") == 3
+
+
+def test_odds_player_names_match():
+    from astrofoot.tennis.odds import same_player
+    assert same_player("Iga Swiatek", "Iga Świątek") and same_player("Carlos Alcaraz", "Carlos Alcaraz Garfia")
+    assert not same_player("Karolina Pliskova", "Kristyna Pliskova") and not same_player("Jannik Sinner", "Carlos Alcaraz")

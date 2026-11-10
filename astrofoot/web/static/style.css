@@ -170,3 +170,5 @@ nav.sport a.on { background: var(--e4); color: #fff; }
 .pbar { display: flex; height: 8px; border-radius: 4px; overflow: hidden; background: var(--muted-bg); min-width: 90px; margin-top: 3px; }
 .pbar span { display: block; background: var(--e4); }
 .pp { white-space: nowrap; }
+.cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+@media (max-width: 720px) { .cols2 { grid-template-columns: 1fr; } }

@@ -35,7 +35,43 @@ version. Weekly on GitHub (Tuesdays), or on demand below.</p>
 <p class="note">Lower log loss is better (it punishes confident mistakes). "Accuracy" for at least one set is whether the
 model's yes/no on that player winning a set was right; most players win a set, so its base rate is high.</p>
 
-<h2>Do astrology and numerology help? (feature groups)</h2>
+{% if rep.learned %}<h2>Machine-learned astrology and numerology</h2>
+<p class="note">Date-only features: every contact between the day's planets and each player's natal planets (Sun, Mercury,
+Venus, Mars, Jupiter, Saturn; conjunction, harmonious, hard; {{ "108" }} in all), and the numerology numbers of the day (personal day,
+life path, personal year, name number, and their harmonies). The machine learns its own weight for each (several model types
+are tried; the best on the first half of the held-out year is kept), alone and then on top of the statistics.</p>
+<div class="scroll"><table class="data">
+<thead><tr><th></th><th>Model kept</th><th class="num">Sets right, alone (unseen)</th><th class="num">Log loss alone</th><th class="num">Coin flip</th></tr></thead>
+<tbody>{% for k, l in [("astro", "Astrology"), ("numerology", "Numerology")] %}{% set v = rep.learned[k] %}
+<tr><td>{{ l }}</td><td>{{ v.kind }}{% if v.C %} (C = {{ v.C }}){% endif %}</td><td class="num">{{ fmt_pct(v.alone_h2.accuracy) }}</td>
+<td class="num">{{ "%.4f"|format(v.alone_h2.log_loss) }}</td><td class="num">{{ "%.4f"|format(v.alone_h2.coin) }}</td></tr>{% endfor %}</tbody></table></div>
+
+<h3>On top of the statistics (the expected figure)</h3>
+<div class="scroll"><table class="data">
+<thead><tr><th>Question</th><th class="num">Log loss with</th><th class="num">without</th><th class="num">Change</th><th class="num">Accuracy with</th><th class="num">without</th><th>Astrology &amp; numerology</th></tr></thead>
+<tbody>{% for k, label in names.items() %}{% set c = rep.combo_eval[k] %}
+<tr><td>{{ label }}</td><td class="num">{{ "%.4f"|format(c.with) }}</td><td class="num">{{ "%.4f"|format(c.without) }}</td>
+<td class="num">{{ "%+.4f"|format(c.delta) }} ± {{ "%.4f"|format(c.se) }}</td><td class="num">{{ fmt_pct(c.acc_with) }}</td><td class="num">{{ fmt_pct(c.acc_without) }}</td>
+<td>{% if rep.combiner[k].astro_num_used %}<span class="badge ok">used</span>{% else %}<span class="badge">not used</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
+<p class="note">Fitted on the first half of the held-out year ({{ rep.holdout_from }} → {{ rep.holdout_mid }}), judged on the
+second half. They enter the expected figure only where they lowered the log loss by more than one standard error;
+otherwise their weight is set to zero, and the learned edge is still shown on each match for reference.</p>
+
+<h3>Traditional day readings</h3>
+<div class="scroll"><table class="data"><thead><tr><th></th><th class="num">Matches with a favourite</th><th class="num">Sets won by the favoured player</th><th class="num">Matches won</th></tr></thead>
+<tbody>{% for k, l in [("astro", "Astrology day score"), ("numerology", "Numerology day score")] %}{% set v = rep.verdicts[k] %}
+<tr><td>{{ l }}</td><td class="num">{{ "{:,}".format(v.n_matches) }} ({{ fmt_pct(v.share, 0) }})</td><td class="num">{{ fmt_pct(v.set_rate) }} of {{ "{:,}".format(v.n_sets) }}</td>
+<td class="num">{{ fmt_pct(v.match_rate) }}</td></tr>{% endfor %}</tbody></table></div>
+<p class="note">Held-out year. 50% = no better than chance.</p>
+
+<h3>Odds</h3>
+<p class="note">Where The Odds API prices a match (Grand Slams, Masters 1000, WTA 1000, Finals, some 500s), the margin-free
+match chance is turned into set, first-set and at-least-one-set chances (mapping fitted on the held-out year per format) and
+blended with the model: {{ (100 * rep.market_weight)|round|int }}% odds, {{ 100 - (100 * rep.market_weight)|round|int }}% model.
+Once enough priced matches are settled, the live record will show whether that weight should move.</p>
+{% endif %}
+
+<h2>Do astrology and numerology help inside the trees? (feature groups)</h2>
 <div class="scroll"><table class="data">
 <thead><tr><th>Features</th><th class="num">Set log loss</th><th class="num">Set accuracy</th><th class="num">Match log loss</th><th class="num">Match accuracy</th><th class="num">vs statistics alone</th></tr></thead>
 <tbody>{% for name, res in rep.ablation.items() %}{% set g = rep.gate.get(name) %}

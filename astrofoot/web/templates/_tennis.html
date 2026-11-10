@@ -1,25 +1,63 @@
 {# Shared pieces of the tennis pages #}
 {% macro probs(p, a, b) %}
+{% set e = p.expected or p %}{% set c = p.combined %}{% set mk = p.market %}
 <div class="scroll"><table class="data">
-<thead><tr><th>Chance to…</th><th class="num">{{ a }}</th><th class="num">{{ b }}</th><th style="min-width:120px"></th></tr></thead>
+<thead><tr><th>Chance to…</th><th class="num">{{ a }}</th><th class="num">{{ b }}</th><th style="min-width:110px"></th>
+<th class="num small" title="statistics model alone">Statistics</th>{% if c %}<th class="num small" title="statistics + machine-learned astrology and numerology">+ astro &amp; num</th>{% endif %}
+{% if mk %}<th class="num small" title="from the bookmaker odds, margin removed">Odds</th>{% endif %}</tr></thead>
 <tbody>
 {% for k, label in [("set", "win a given set"), ("first", "win the first set"), ("one_set", "win at least one set"), ("match", "win the match")] %}
-<tr><td>{{ label }}</td><td class="num"><strong>{{ fmt_pct(p["a_" ~ k]) }}</strong></td><td class="num"><strong>{{ fmt_pct(p["b_" ~ k]) }}</strong></td>
-<td>{% if k != "one_set" %}<div class="pbar" title="{{ a }} {{ fmt_pct(p['a_' ~ k]) }}"><span style="width:{{ (100 * p['a_' ~ k])|round(1) }}%"></span></div>{% endif %}</td></tr>
+<tr><td>{{ label }}</td><td class="num"><strong>{{ fmt_pct(e["a_" ~ k]) }}</strong></td><td class="num"><strong>{{ fmt_pct(e["b_" ~ k]) }}</strong></td>
+<td>{% if k != "one_set" %}<div class="pbar" title="{{ a }} {{ fmt_pct(e['a_' ~ k]) }}"><span style="width:{{ (100 * e['a_' ~ k])|round(1) }}%"></span></div>{% endif %}</td>
+<td class="num small">{{ fmt_pct(p["a_" ~ k], 0) }} / {{ fmt_pct(p["b_" ~ k], 0) }}</td>
+{% if c %}<td class="num small">{{ fmt_pct(c["a_" ~ k], 0) }} / {{ fmt_pct(c["b_" ~ k], 0) }}</td>{% endif %}
+{% if mk %}<td class="num small">{% if mk["a_" ~ k] is defined %}{{ fmt_pct(mk["a_" ~ k], 0) }} / {{ fmt_pct(mk["b_" ~ k], 0) }}{% else %}—{% endif %}</td>{% endif %}</tr>
 {% endfor %}</tbody></table></div>
-<p class="note">“Win at least one set” is each player's own chance (they do not add up to 100%: both often win a set).
+<p class="note"><strong>Expected</strong> (bold): {% if p.expected is defined and mk %}the statistics model with the machine-learned
+astrology and numerology, blended with the odds ({{ (100 * p.market_weight)|round|int }}% odds){% elif p.expected is defined %}the statistics
+model with the machine-learned astrology and numerology (no odds for this match){% else %}the statistics model (sealed before
+astrology, numerology and odds were added){% endif %}. “At least one set” is each player's own chance (both often win a set).
 Model version {{ p.version }}.</p>
 {% endmacro %}
 
-{% macro factors(x, used) %}
-{% for key, title, note in [("stats", "Statistics", "Ratings, form, rest, head-to-head, seeds and the match format."),
-                            ("astro", "Astrology", "Natal charts from the date of birth (12:00 UTC: birth times are not published) against the sky at the start of the match."),
-                            ("numerology", "Numerology", "Pythagorean numbers from the date of birth and full name, and the match date.")] %}
-<h3>{{ title }} {% set g = "stats" if key == "stats" else key %}{% if g in used %}<span class="badge ok">used by the model</span>{% elif used %}<span class="badge" title="it did not improve the held-out forecasts, so the current model leaves it out (see ML model)">shown, not used by the model</span>{% endif %}</h3>
-<p class="note">{{ note }}</p>
+{% macro day_panel(day, a, b, p, edge_pts) %}
+{% set av, nv = day.astro, day.num %}
+<h2>Who is favoured for the day</h2>
+<p class="note">Dates only: each player's chart for the date of birth against the sky on {{ day.day }} (planets at 12:00 UTC on
+both dates; the Moon is left out because it moves too fast for a date-only chart). Born {{ a }}: {{ day.dob.a or "unknown" }} ·
+{{ b }}: {{ day.dob.b or "unknown" }}.</p>
+<section class="tiles">
+  <div class="tile"><div class="k">Astrology (traditional reading)</div>
+    <div class="v sm">{% if av.favours == 1 %}{{ a }}{% elif av.favours == 2 %}{{ b }}{% else %}Level{% endif %}</div>
+    <div class="s">day score {{ av.a.score if av.a.score is not none else "—" }} vs {{ av.b.score if av.b.score is not none else "—" }}</div></div>
+  <div class="tile"><div class="k">Numerology (traditional reading)</div>
+    <div class="v sm">{% if nv.favours == 1 %}{{ a }}{% elif nv.favours == 2 %}{{ b }}{% else %}Level{% endif %}</div>
+    <div class="s">day score {{ nv.a.score if nv.a.score is not none else "—" }} vs {{ nv.b.score if nv.b.score is not none else "—" }}</div></div>
+  {% if p and p.astro_edge is defined %}
+  {% set ea, en = edge_pts(p.astro_edge), edge_pts(p.num_edge) %}
+  <div class="tile"><div class="k">Machine-learned astrology</div><div class="v sm">{% if ea|abs < 0.05 %}no edge{% else %}{{ a if ea > 0 else b }} {{ "%+.1f"|format(ea|abs) }} pts{% endif %}</div>
+    <div class="s">per set, from weights learned on 100,000 matches</div></div>
+  <div class="tile"><div class="k">Machine-learned numerology</div><div class="v sm">{% if en|abs < 0.05 %}no edge{% else %}{{ a if en > 0 else b }} {{ "%+.1f"|format(en|abs) }} pts{% endif %}</div>
+    <div class="s">{{ "used in the expected figure" if p.astro_num_used else "not used: no proven edge on unseen matches" }}</div></div>
+  {% endif %}
+</section>
+<div class="cols2">
+{% for side, nm in [("a", a), ("b", b)] %}
+<div><h3>{{ nm }}</h3>
+<p class="small"><strong>Astrology:</strong> {% if av[side].score is none %}no date of birth{% else %}score {{ av[side].score }}{% endif %}</p>
+<ul class="small">{% for c in av[side].contacts %}<li>{{ c.text }}{% if c.orb is not none %} ({{ c.orb }}° orb){% endif %}: <span class="mono">{{ "%+.2f"|format(c.points) }}</span></li>{% else %}{% if av[side].score is not none %}<li>no major contacts within 3°</li>{% endif %}{% endfor %}</ul>
+{% if nv[side].numbers %}<p class="small"><strong>Numerology:</strong> life path {{ nv[side].numbers.life_path }}, personal year {{ nv[side].numbers.personal_year }},
+personal day {{ nv[side].numbers.personal_day }}, universal day {{ nv[side].numbers.universal_day }}{% if nv[side].numbers.expression %}, name number {{ nv[side].numbers.expression }}{% endif %} · score {{ nv[side].score }}</p>
+<ul class="small">{% for x in nv[side].parts %}<li>{{ x.text }}: <span class="mono">{{ "%+.1f"|format(x.points) }}</span></li>{% else %}<li>no favourable numbers today</li>{% endfor %}</ul>{% endif %}
+</div>{% endfor %}
+</div>
+{% endmacro %}
+
+{% macro factors(x) %}
+<h3>Statistics</h3>
+<p class="note">Ratings, form, rest, head-to-head, seeds and the match format.</p>
 <div class="scroll"><table class="data small">
 <thead><tr><th>Factor</th><th class="num">{{ x.a }}</th><th class="num">{{ x.b }}</th><th>Note</th></tr></thead>
-<tbody>{% for label, va, vb, n in x[key] %}<tr><td>{{ label }}</td><td class="num mono">{{ "—" if va is none else va }}</td>
+<tbody>{% for label, va, vb, n in x.stats %}<tr><td>{{ label }}</td><td class="num mono">{{ "—" if va is none else va }}</td>
 <td class="num mono">{{ "" if vb is none else vb }}</td><td class="small">{{ n }}</td></tr>{% endfor %}</tbody></table></div>
-{% endfor %}
 {% endmacro %}

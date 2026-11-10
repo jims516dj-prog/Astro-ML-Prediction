@@ -91,37 +91,23 @@ def explain(f: dict, m: dict) -> dict:
         ("Format", "best of 5" if f.get("best_of5") else "best of 3", None,
          ("Grand Slam · " if f.get("slam") else "") + ("qualifying" if f.get("qualifying") else f"round {int(f.get('round_no') or 0)}")),
     ]
-    astro = [
-        ("Sun's return (1 = birthday, −1 = half a year away)", num("a_solar_return"), num("b_solar_return"), ""),
-        ("Within ~10 days of the birthday", "yes" if f.get("a_birthday_window") else "no",
-         "yes" if f.get("b_birthday_window") else "no", ""),
-        ("Transit Jupiter → natal Sun", num("a_ju_sun"), num("b_ju_sun"), ASPECT_NOTE),
-        ("Transit Saturn → natal Sun", num("a_sa_sun"), num("b_sa_sun"), ""),
-        ("Transit Mars → natal Sun", num("a_ma_sun"), num("b_ma_sun"), ""),
-        ("Transit Mars → natal Mars", num("a_ma_ma"), num("b_ma_ma"), ""),
-        ("Transit Moon → natal Sun", num("a_mo_sun"), num("b_mo_sun"), "changes within the day"),
-        ("Transit Venus → natal Venus", num("a_ve_ve"), num("b_ve_ve"), ""),
-        ("Transit Jupiter → natal Moon", num("a_ju_mo"), num("b_ju_mo"), "natal Moon at noon: ±7°"),
-        ("Moon's element matches natal Sun's element", "yes" if f.get("a_moon_elem_match") else "no",
-         "yes" if f.get("b_moon_elem_match") else "no", ""),
-        ("Natal Sun element", astro_num.ELEMENT[int(f["a_sun_elem"])] if _v(f, "a_sun_elem") is not None else "—",
-         astro_num.ELEMENT[int(f["b_sun_elem"])] if _v(f, "b_sun_elem") is not None else "—", ""),
-        ("Own Mars on the opponent's Sun (pressure)", num("mars_on_opp_sun_a"), num("mars_on_opp_sun_b"), "0–1, hard aspects"),
-        ("Sun elements compatible (same, fire–air, earth–water)",
-         "—" if _v(f, "sun_compatible") is None else ("yes" if f["sun_compatible"] else "no"), None, "shared"),
-    ]
-    numer = [
-        ("Life path number", num("a_life_path", 0), num("b_life_path", 0), "11, 22, 33 kept as master numbers"),
-        ("Personal year", num("a_personal_year", 0), num("b_personal_year", 0), ""),
-        ("Personal day (match day)", num("a_personal_day", 0), num("b_personal_day", 0), ""),
-        ("Expression (name) number", num("a_expression", 0), num("b_expression", 0), "Pythagorean letters"),
-        ("Personal day = life path", "yes" if f.get("a_pd_is_lp") else "no", "yes" if f.get("b_pd_is_lp") else "no", ""),
-        ("Personal day is a 1 or 8 (traditional 'winning' days)", "yes" if f.get("a_pd_power") else "no",
-         "yes" if f.get("b_pd_power") else "no", ""),
-        ("Universal day = life path", "yes" if f.get("a_ud_is_lp") else "no", "yes" if f.get("b_ud_is_lp") else "no",
-         f"universal day {int(f['universal_day'])}" if _v(f, "universal_day") is not None else ""),
-    ]
-    return {"stats": stats, "astro": astro, "numerology": numer, "a": a, "b": b}
+    return {"stats": stats, "a": a, "b": b}
+
+
+def day_of(rec: dict) -> dict:
+    """The date-only astrology / numerology comparison: sealed with the forecast, or worked out now (it depends
+    only on the two dates of birth and the match date) for forecasts sealed before it existed."""
+    if rec.get("day"):
+        return rec["day"]
+    m = {"p1_id": rec["p1_id"], "p2_id": rec["p2_id"], "p1": rec["p1"], "p2": rec["p2"], "date": rec["start_utc"]}
+    return tlive.day_compare(m, state()["pdict"])
+
+
+def edge_pts(logit: float | None) -> float | None:
+    """A learned log-odds edge as percentage points on an even set (50% → 50% + this)."""
+    if logit is None:
+        return None
+    return 100 * (1 / (1 + math.exp(-logit)) - 0.5)
 
 
 def _bundle_groups():
@@ -141,6 +127,8 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
         day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else "all")
     rows = [r for r in recs if (day == "all" or r["start_utc"][:10] == day) and (not tour or r["tour"] == tour)
             and (not status or r["status"] == status)]
+    for r in rows:
+        r["dayv"] = day_of(r)
     rep = model.load_report()
     return _T().TemplateResponse(request, "tennis_home.html", {
         "rows": rows, "day": day, "days": days, "tour": tour, "status": status, "tours": TOUR, "tr": tr_all,
@@ -155,14 +143,14 @@ def tennis_match(request: Request, mid: str):
         raise HTTPException(404)
     groups, _ = _bundle_groups()
     return _T().TemplateResponse(request, "tennis_match.html", {
-        "r": rec, "p": rec["p"], "x": explain(rec["features"], rec), "used": groups, "sealed": True,
-        "page": "tennis_home"})
+        "r": rec, "p": rec["p"], "x": explain(rec["features"], rec), "used": groups, "sealed": True, "day": day_of(rec),
+        "edge_pts": edge_pts, "page": "tennis_home"})
 
 
 @router.get("/tennis/analyze", response_class=HTMLResponse)
 def tennis_analyze(request: Request, a: str = "", b: str = "", when: str = "", surface: str = "hard", best_of: int = 3,
                    tour: str = "", round: str = "Round 1", event: str = "", a_seed: str = "", b_seed: str = "",
-                   a_dob: str = "", b_dob: str = "", venue: str = ""):
+                   a_dob: str = "", b_dob: str = "", venue: str = "", a_odds: str = "", b_odds: str = ""):
     s = state()
     names = sorted({n for n in s["names"].values() if n})
     out, err = None, None
@@ -194,17 +182,24 @@ def tennis_analyze(request: Request, a: str = "", b: str = "", when: str = "", s
              "p1_seed": int(a_seed) if a_seed.isdigit() else None, "p2_seed": int(b_seed) if b_seed.isdigit() else None,
              "p1_country": (pdict.get(ids["a"]) or {}).get("country"), "p2_country": (pdict.get(ids["b"]) or {}).get("country")}
         f = features.row(s["st"], m, pdict)
-        p = model.predict(f)
+        try:
+            odds = (float(a_odds), float(b_odds)) if a_odds and b_odds else None
+            if odds and min(odds) <= 1.0:
+                odds, err = None, "Odds must be decimal and above 1.00 (e.g. 1.45 and 2.80)."
+        except ValueError:
+            odds, err = None, "Could not read the odds; use decimal odds such as 1.45."
+        p = model.predict(f, odds=odds)
         known = {side: ids[side] in s["names"] for side in ("a", "b")}
         dob = {side: (pdict.get(ids[side]) or {}).get("dob") for side in ("a", "b")}
         out = {"m": m, "f": f, "p": p, "x": explain(f, m), "known": known, "dob": dob,
+               "day": tlive.day_compare(m, pdict),
                "n": {side: s["st"].n.get(ids[side], 0) for side in ("a", "b")}}
     groups, _ = _bundle_groups()
     return _T().TemplateResponse(request, "tennis_analyze.html", {
         "names": names, "q": {"a": a, "b": b, "when": when, "surface": surface, "best_of": best_of, "tour": tour,
                               "round": round, "event": event, "a_seed": a_seed, "b_seed": b_seed, "a_dob": a_dob,
-                              "b_dob": b_dob, "venue": venue},
-        "out": out, "err": err, "used": groups, "has_model": model.BUNDLE.exists(), "page": "tennis_analyze"})
+                              "b_dob": b_dob, "venue": venue, "a_odds": a_odds, "b_odds": b_odds},
+        "out": out, "err": err, "used": groups, "edge_pts": edge_pts, "has_model": model.BUNDLE.exists(), "page": "tennis_analyze"})
 
 
 @router.get("/tennis/model", response_class=HTMLResponse)
@@ -285,3 +280,80 @@ def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: st
         "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "by_surface": by_surface,
         "n_players": len(s["players"]), "n_dob": int(s["players"].dob.notna().sum()) if len(s["players"]) else 0,
         "page": "tennis_dataset"})
+
+
+# ----------------------------------------------------------------------------- top picks
+TOP_MARKETS = [("set", "Sets"), ("first", "First set"), ("match", "Match"), ("one_set", "Wins at least one set"),
+               ("dog_set", "Underdog wins a set")]
+AGREE = [("", "any"), ("yes", "favours the pick"), ("no", "does not favour it")]
+
+
+def pick_of(r: dict, market: str) -> dict:
+    """The pick of one forecast in one market: which player, its expected probability and, once played, the result."""
+    e = r["e"]
+    side = {"set": r["set_pick"], "first": r["first_pick"], "match": r["match_pick"], "one_set": r["one_pick"],
+            "dog_set": r["dog"]}[market]
+    key = {"set": "set", "first": "first", "match": "match", "one_set": "one_set", "dog_set": "one_set"}[market]
+    p = e[("a_" if side == 1 else "b_") + key]
+    hit = n = None
+    if r["status"] == "settled":
+        sw = r["result"]["set_winners"]
+        if market == "set":
+            hit, n = sw.count(str(side)), len(sw)
+        elif market == "first":
+            hit, n = int(sw[:1] == str(side)), 1
+        elif market == "match":
+            hit, n = int(r["result"]["winner"] == side), 1
+        else:
+            hit, n = int(str(side) in sw), 1
+    d = r["dayv"]
+    return {"side": side, "player": r["p1"] if side == 1 else r["p2"], "p": p, "hit": hit, "n": n,
+            "astro": d["astro"]["favours"] == side, "astro_any": d["astro"]["favours"] != 0,
+            "num": d["num"]["favours"] == side, "num_any": d["num"]["favours"] != 0}
+
+
+@router.get("/tennis/top", response_class=HTMLResponse)
+def tennis_top(request: Request, market: str = "set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
+               num: str = "", odds: str = ""):
+    market = market if market in dict(TOP_MARKETS) else "set"
+    recs = [r for r in tlive.records() if r["status"] != "void"]
+    for r in recs:
+        r["dayv"] = day_of(r)
+        r["pick"] = pick_of(r, market)
+    try:
+        mp = float(min_p) if min_p else 0.0
+    except ValueError:
+        mp = 0.0
+
+    def keep(r):
+        k = r["pick"]
+        return ((not tour or r["tour"] == tour) and k["p"] >= mp
+                and (not astro or (astro == "yes") == k["astro"]) and (not num or (num == "yes") == k["num"])
+                and (not odds or bool(r.get("odds"))))
+
+    days = sorted({r["start_utc"][:10] for r in recs}, reverse=True)
+    today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
+    if day not in days and day != "all":
+        day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else "all")
+    pool = [r for r in recs if keep(r)]
+    rows = sorted((r for r in pool if day == "all" or r["start_utc"][:10] == day), key=lambda r: -r["pick"]["p"])
+
+    def tally(rs):
+        done = [r for r in rs if r["pick"]["hit"] is not None and r["pre_kickoff"]]
+        n = sum(r["pick"]["n"] for r in done)
+        hits = sum(r["pick"]["hit"] for r in done)
+        exp = sum(r["pick"]["p"] * r["pick"]["n"] for r in done)
+        return {"n": n, "hits": hits, "rate": hits / n if n else None, "expected": exp / n if n else None, "matches": len(done)}
+
+    by_view = {label: tally([r for r in pool if f(r["pick"])]) for label, f in (
+        ("Astrology favours the pick", lambda k: k["astro"]), ("Astrology favours the other player", lambda k: k["astro_any"] and not k["astro"]),
+        ("Numerology favours the pick", lambda k: k["num"]), ("Numerology favours the other player", lambda k: k["num_any"] and not k["num"]),
+        ("Both favour the pick", lambda k: k["astro"] and k["num"]))}
+    rep = model.load_report()
+    return _T().TemplateResponse(request, "tennis_top.html", {
+        "rows": rows, "market": market, "markets": TOP_MARKETS, "day": day, "days": days, "tour": tour, "tours": TOUR,
+        "min_p": min_p, "astro": astro, "num": num, "odds": odds, "agree": AGREE,
+        "score_all": tally(pool), "score_day": tally(rows), "by_view": by_view, "verdicts": rep.get("verdicts"),
+        "qs": urllib.parse.urlencode({k: v for k, v in {"day": day, "tour": tour, "min_p": min_p, "astro": astro, "num": num,
+                                                         "odds": odds}.items() if v}),
+        "page": "tennis_top"})

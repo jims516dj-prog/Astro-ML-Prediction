@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% from "_tennis.html" import probs, factors %}
+{% from "_tennis.html" import probs, factors, day_panel %}
 {% block title %}{{ r.p1 }} v {{ r.p2 }} · Astro Tennis Lab{% endblock %}
 {% block body %}
 <p class="crumbs"><a href="/tennis">Tennis forecasts</a> › match</p>
@@ -12,6 +12,8 @@ first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit e
 {% elif r.status == "void" %}<p class="callout small">Void: {{ r.result.void_reason }}.</p>{% endif %}
 {{ probs(p, r.p1, r.p2) }}
 <p class="small">Sealed {{ r.committed_at }} · {{ "✓ verified" if r.verified else "✗ does not verify" }} · sha256 <span class="mono">{{ r.sha256[:16] }}…</span></p>
-<h2>Why: every factor the model saw</h2>
-{{ factors(x, used) }}
+{% if r.odds %}<p class="small">Odds: {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }} ({{ r.odds.source }}).</p>{% endif %}
+{{ day_panel(day, r.p1, r.p2, p, edge_pts) }}
+<h2>Statistics the model saw</h2>
+{{ factors(x) }}
 {% endblock %}

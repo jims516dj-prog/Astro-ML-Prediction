@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Top picks · Astro Tennis Lab{% endblock %}
+{% block body %}
+<h1>Tennis top picks</h1>
+<nav class="seg" aria-label="Market">
+  {% for k, label in markets %}<a href="/tennis/top?market={{ k }}{% if qs %}&{{ qs }}{% endif %}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
+</nav>
+<p class="lede">{% if market == "set" %}Every forecast match, ranked by how likely the favoured player is to win <em>any given set</em>.
+Once played, every set counts: a 6-3 4-6 6-2 win is 2 of 3.{% elif market == "first" %}Ranked by how likely the pick is to win
+the <em>first set</em>.{% elif market == "match" %}Ranked by how likely the pick is to win the <em>match</em>.{% elif market == "one_set" %}Ranked
+by the player most likely to win <em>at least one set</em> (usually the favourite: losing in straight sets is rarer than it
+seems).{% else %}The <em>underdog to win at least one set</em>, ranked by its chance: the favourite still often wins the match.{% endif %}
+Probabilities are the <strong>expected</strong> figures: statistics, machine-learned astrology and numerology, and the
+bookmaker odds where The Odds API prices the match.</p>
+
+<section class="tiles">
+  <div class="tile"><div class="k">This view, {{ day_label(day) if day != "all" else "all days" }}</div>
+  {% if score_day.n %}<div class="v">{{ score_day.hits }} / {{ score_day.n }}</div><div class="s">{{ fmt_pct(score_day.rate) }} vs {{ fmt_pct(score_day.expected) }} expected</div>{% else %}<div class="v sm">{{ rows|length }} pick{{ "" if rows|length == 1 else "s" }}, none played</div>{% endif %}</div>
+  <div class="tile"><div class="k">This view, all days so far</div>
+  {% if score_all.n %}<div class="v">{{ score_all.hits }} / {{ score_all.n }}</div><div class="s">{{ fmt_pct(score_all.rate) }} vs {{ fmt_pct(score_all.expected) }} expected{% if market == "set" %} (sets){% endif %}</div>{% else %}<div class="v sm">none played yet</div>{% endif %}</div>
+</section>
+
+<form method="get" class="filters">
+  <input type="hidden" name="market" value="{{ market }}">
+  <label>Day<select name="day" onchange="this.form.submit()"><option value="all" {{ "selected" if day == "all" }}>All days</option>
+    {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
+  <label>Tour<select name="tour" onchange="this.form.submit()"><option value="">Both</option>
+    {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if tour == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Minimum probability<select name="min_p" onchange="this.form.submit()"><option value="">any</option>
+    {% for v in ("0.55", "0.6", "0.65", "0.7", "0.75", "0.8", "0.85", "0.9") %}<option value="{{ v }}" {{ "selected" if min_p == v }}>{{ (v|float * 100)|round|int }}%+</option>{% endfor %}</select></label>
+  <label>Astrology for the day<select name="astro" onchange="this.form.submit()">
+    {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if astro == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Numerology for the day<select name="num" onchange="this.form.submit()">
+    {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if num == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Odds<select name="odds" onchange="this.form.submit()"><option value="">any</option>
+    <option value="1" {{ "selected" if odds }}>priced by the bookmakers only</option></select></label>
+</form>
+
+<div class="scroll"><table class="data small">
+<thead><tr><th class="num">#</th><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th>Pick</th><th class="num">Chance</th>
+<th>Astrology</th><th>Numerology</th><th>Result</th></tr></thead>
+<tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
+<tr><td class="num">{{ loop.index }}</td><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
+<td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
+<td><a href="/tennis/match/{{ r.match_id }}">{{ r.p1 }} v {{ r.p2 }}</a>{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">odds</span>{% endif %}</td>
+<td><strong>{{ k.player }}</strong>{% if market == "dog_set" or market == "one_set" %} to win a set{% elif market == "first" %} first set{% endif %}</td>
+<td class="num"><strong>{{ fmt_pct(k.p) }}</strong></td>
+<td>{% if k.astro %}<span class="badge ok">favours</span>{% elif k.astro_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>
+<td>{% if k.num %}<span class="badge ok">favours</span>{% elif k.num_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>
+<td class="mono">{% if k.hit is not none %}{{ r.result.score }}<br>{% if market == "set" %}{{ k.hit }}/{{ k.n }} sets{% else %}{{ "✓" if k.hit else "✗" }}{% endif %}{% else %}pending{% endif %}</td></tr>
+{% else %}<tr><td colspan="9">No picks match these filters{% if day != "all" %} for {{ day_label(day) }}{% endif %}.</td></tr>{% endfor %}</tbody>
+</table></div>
+
+<h2>Does the day's astrology or numerology help these picks?</h2>
+<p class="note">Live record of this market (all days, current filters), split by what the date-only readings said.</p>
+<div class="scroll"><table class="data small"><thead><tr><th>When…</th><th class="num">Played</th><th class="num">Right</th><th class="num">Rate</th><th class="num">Expected</th></tr></thead>
+<tbody>{% for label, t in by_view.items() %}<tr><td>{{ label }}</td><td class="num">{{ t.n }}</td><td class="num">{{ t.hits }}</td>
+<td class="num">{{ fmt_pct(t.rate) }}</td><td class="num">{{ fmt_pct(t.expected) }}</td></tr>{% endfor %}</tbody></table></div>
+{% if verdicts %}<p class="note">History (last 12 months, before any of this was tuned on it): when the traditional
+astrology day score favoured a player, that player won {{ fmt_pct(verdicts.astro.set_rate) }} of sets
+({{ "{:,}".format(verdicts.astro.n_sets) }}); for numerology {{ fmt_pct(verdicts.numerology.set_rate) }}
+({{ "{:,}".format(verdicts.numerology.n_sets) }}). 50% would mean no edge. See <a href="/tennis/model">ML model</a>.</p>{% endif %}
+{% endblock %}
