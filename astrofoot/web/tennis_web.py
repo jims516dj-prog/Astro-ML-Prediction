@@ -116,8 +116,18 @@ def _bundle_groups():
 
 
 # ----------------------------------------------------------------------------- pages
+DAY_FAVOURS = [("", "any"), ("both", "astrology and numerology favour the same player"),
+               ("split", "they favour different players"), ("astro", "astrology favours a player"),
+               ("num", "numerology favours a player")]
+
+
+def day_favours_ok(dv: dict, want: str) -> bool:
+    a, n = dv["astro"]["favours"], dv["num"]["favours"]
+    return {"both": a > 0 and a == n, "split": a > 0 and n > 0 and a != n, "astro": a > 0, "num": n > 0}.get(want, True)
+
+
 @router.get("/tennis", response_class=HTMLResponse)
-def tennis_home(request: Request, day: str = "", tour: str = "", status: str = ""):
+def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "", favours: str = ""):
     from .app import _day_label  # noqa: F401
     recs = tlive.records()
     tr_all = tlive.track_record(recs)
@@ -129,8 +139,12 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
             and (not status or r["status"] == status)]
     for r in rows:
         r["dayv"] = day_of(r)
+    favours = favours if favours in dict(DAY_FAVOURS) else ""
+    shown_all = len(rows)
+    rows = [r for r in rows if day_favours_ok(r["dayv"], favours)]
     rep = model.load_report()
     return _T().TemplateResponse(request, "tennis_home.html", {
+        "favours": favours, "favour_choices": DAY_FAVOURS, "hidden": shown_all - len(rows),
         "rows": rows, "day": day, "days": days, "tour": tour, "status": status, "tours": TOUR, "tr": tr_all,
         "tr_day": tlive.track_record(rows), "n": len(recs), "rep": rep, "has_model": model.BUNDLE.exists(),
         "has_data": (DATA / "matches.parquet").exists(), "page": "tennis_home"})
@@ -502,7 +516,8 @@ def calibration(rows: list[dict]) -> list[dict]:
 @router.get("/tennis/live", response_class=HTMLResponse)
 def tennis_live(request: Request, date_from: str = "", date_to: str = "", status: str = "", tour: str = "",
                 surface: str = "", player: str = "", event: str = "", market: str = "set", hit: str = "", astro: str = "",
-                num: str = "", odds: str = "", min_p: str = "", page_no: int = 1, msg: str = "", syncing: int = 0):
+                num: str = "", odds: str = "", min_p: str = "", page_no: int = 1, msg: str = "", syncing: int = 0,
+                favours: str = ""):
     from .app import SYNC
     market = market if market in dict(LIVE_MARKETS) else "set"
     recs = tlive.records()
@@ -524,7 +539,8 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
         r["dayv"] = day_of(r)
         r["pick"] = pick_of(r, market)
         k = r["pick"]
-        if k["p"] < mp or (astro and (astro == "yes") != k["astro"]) or (num and (num == "yes") != k["num"]):
+        if k["p"] < mp or (astro and (astro == "yes") != k["astro"]) or (num and (num == "yes") != k["num"]) \
+                or not day_favours_ok(r["dayv"], favours):
             continue
         if hit:
             if k["hit"] is None:
@@ -542,8 +558,10 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
     pages = max(1, math.ceil(len(rows) / per))
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "tour": tour, "surface": surface, "player": player,
-         "event": event, "market": market, "hit": hit, "astro": astro, "num": num, "odds": odds, "min_p": min_p}
+         "event": event, "market": market, "hit": hit, "astro": astro, "num": num, "odds": odds, "min_p": min_p,
+         "favours": favours}
     return _T().TemplateResponse(request, "tennis_live.html", {
+        "favour_choices": DAY_FAVOURS,
         "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages, "q": q,
         "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "integrity": integrity,
         "tr": tlive.track_record(recs), "subset": subset, "compare": compare_sources(rows), "calib": calibration(rows),

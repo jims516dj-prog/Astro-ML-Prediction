@@ -26,7 +26,10 @@ Meanwhile you can still look at the <a href="/tennis/analyze">Analyze</a> page.<
     {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if tour == k }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Status<select name="status" onchange="this.form.submit()"><option value="">All</option>
     {% for v, l in [("pending", "Pending"), ("settled", "Completed"), ("void", "Void")] %}<option value="{{ v }}" {{ "selected" if status == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Day favours<select name="favours" onchange="this.form.submit()">
+    {% for v, l in favour_choices %}<option value="{{ v }}" {{ "selected" if favours == v }}>{{ l }}</option>{% endfor %}</select></label>
 </form>
+{% if favours %}<p class="note">{{ rows|length }} match{{ "" if rows|length == 1 else "es" }} shown, {{ hidden }} hidden by “Day favours”.</p>{% endif %}
 
 <div class="scroll"><table class="data small">
 <thead><tr><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th class="num" title="chance to win a given set">Set</th>
@@ -37,7 +40,7 @@ Meanwhile you can still look at the <a href="/tennis/analyze">Analyze</a> page.<
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
 <td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a></td>
 {% for k in ["set", "first", "one_set", "match"] %}<td class="num pp">{{ fmt_pct(r.e["a_" ~ k], 0) }}<br>{{ fmt_pct(r.e["b_" ~ k], 0) }}</td>{% endfor %}
-{% set dv = r.dayv %}<td class="small">{% for key, lab in [("astro", "Astro"), ("num", "Num")] %}{{ lab }}: {% set f = dv[key].favours %}{{ (r.p1 if f == 1 else r.p2).split()[-1] if f else "level" }}{% if not loop.last %}<br>{% endif %}{% endfor %}{% if r.odds %}<br><span class="badge" title="{{ r.odds.source }}">odds</span>{% endif %}</td>
+{% set dv = r.dayv %}<td class="small">{% if dv.astro.favours and dv.astro.favours == dv.num.favours %}<span class="badge ok" title="astrology and numerology favour the same player">both: {{ (r.p1 if dv.astro.favours == 1 else r.p2).split()[-1] }}</span><br>{% endif %}{% for key, lab in [("astro", "Astro"), ("num", "Num")] %}{{ lab }}: {% set f = dv[key].favours %}{{ (r.p1 if f == 1 else r.p2).split()[-1] if f else "level" }}{% if not loop.last %}<br>{% endif %}{% endfor %}{% if r.odds %}<br><span class="badge" title="{{ r.odds.source }}">odds</span>{% endif %}</td>
 <td class="mono">{% if r.status == "settled" %}{{ r.result.score }}{% if r.result.retired %} ret.{% endif %}<br>
 <span class="small">sets {{ r.set_hits }}/{{ r.sets_played }} {{ "✓" if r.match_hit else "✗" }} match</span>{% elif r.status == "void" %}<span title="{{ r.result.void_reason }}">void</span>{% else %}pending{% endif %}</td></tr>
 {% else %}<tr><td colspan="9">No tennis forecasts {% if day != "all" %}for {{ day_label(day) }} {% endif %}yet. The GitHub cycle adds matches starting within 36 hours.</td></tr>{% endfor %}</tbody>

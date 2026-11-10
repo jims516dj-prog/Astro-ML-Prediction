@@ -309,3 +309,13 @@ def test_tennis_dataset_filters_and_day_readings(monkeypatch):
     n = lambda h: int(re.search(r"([\d,]+) matches \(", h).group(1).replace(",", ""))  # noqa: E731
     assert n(won) + n(lost) + n(level) == 300
     assert 'href="/tennis/dataset"' in client.get("/dataset").text           # Tennis on the soccer Dataset switch
+
+
+def test_day_favours_filter():
+    from astrofoot.web.tennis_web import day_favours_ok
+    dv = lambda a, n: {"astro": {"favours": a}, "num": {"favours": n}}  # noqa: E731
+    assert day_favours_ok(dv(1, 1), "both") and day_favours_ok(dv(2, 2), "both")
+    assert not day_favours_ok(dv(1, 2), "both") and not day_favours_ok(dv(0, 0), "both") and not day_favours_ok(dv(1, 0), "both")
+    assert day_favours_ok(dv(1, 2), "split") and not day_favours_ok(dv(1, 0), "split")
+    assert day_favours_ok(dv(1, 0), "astro") and not day_favours_ok(dv(0, 2), "astro") and day_favours_ok(dv(0, 2), "num")
+    assert day_favours_ok(dv(0, 0), "")

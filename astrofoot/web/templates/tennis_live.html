@@ -58,6 +58,8 @@ UTC) have already published. Tennis results come from ESPN, usually within an ho
   <label>Numerology for the day<select name="num">
     {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if q.num == v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Odds<select name="odds"><option value="">any</option><option value="1" {{ "selected" if q.odds }}>priced only</option></select></label>
+  <label>Day favours<select name="favours">
+    {% for v, l in favour_choices %}<option value="{{ v }}" {{ "selected" if q.favours == v }}>{{ l }}</option>{% endfor %}</select></label>
   <div class="row"><button class="btn ghost">Filter</button><a href="/tennis/live" class="small">Clear</a></div>
 </form>
 {% if subset.n %}<p class="note"><strong>These filtered forecasts so far ({{ dict(markets)[q.market] }}):</strong> the pick was right
