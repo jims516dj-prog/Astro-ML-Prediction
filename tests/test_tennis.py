@@ -213,3 +213,36 @@ def test_tennis_my_picks_slips_and_scoring(tmp_path, monkeypatch):
     assert "6-4 3-6 2-6 ✓" in html and "astro ✓" in html                # Ann won a set; astrology favoured her
     assert tmp.won("m:1", "122", 2) is False and tmp.won("f:1", "122", 2) and tmp.won("o:2", "122", 2)
     assert "Ann A" not in client.get("/mypicks").text                     # never on the soccer My picks
+
+
+def test_odds_fetch_buys_only_listed_tournaments_and_keeps_a_reserve(tmp_path):
+    from astrofoot.tennis import odds as todds
+
+    class Fake:
+        def __init__(self, remaining):
+            self.remaining, self.calls = remaining, []
+
+        def get(self, path, **kw):
+            self.calls.append(path)
+            if path == "/sports":
+                return [{"key": "tennis_wta_finals", "group": "Tennis", "active": True},
+                        {"key": "tennis_atp_finals", "group": "Tennis", "active": True}]
+            if path.endswith("/events"):
+                return ([{"id": "E1", "home_team": "Iga Świątek", "away_team": "Coco Gauff"}]
+                        if "wta" in path else [{"id": "E9", "home_team": "X Y", "away_team": "Z W"}])
+            return [{"id": "E1", "home_team": "Iga Świątek", "away_team": "Coco Gauff", "bookmakers": [
+                {"key": "b1", "markets": [{"key": "h2h", "outcomes": [{"name": "Iga Świątek", "price": 1.5}, {"name": "Coco Gauff", "price": 2.6}]}]},
+                {"key": "b2", "markets": [{"key": "h2h", "outcomes": [{"name": "Iga Świątek", "price": 1.6}, {"name": "Coco Gauff", "price": 2.4}]}]}]}]
+
+    up = [{"id": "M1", "p1": "Coco Gauff", "p2": "Iga Swiatek"}]
+    now = datetime(2030, 1, 1, tzinfo=timezone.utc)
+    c = Fake(400)
+    out = todds.fetch(up, now, tmp_path, client=c, log=lambda *a: None)
+    assert out["M1"]["a"] == pytest.approx(2.5) and out["M1"]["b"] == pytest.approx(1.55)       # player 1 = Gauff
+    assert c.calls.count("/sports/tennis_wta_finals/odds") == 1 and "/sports/tennis_atp_finals/odds" not in c.calls
+    c2 = Fake(400)                                                      # within 12 hours: served from the cache
+    assert todds.fetch(up, now + timedelta(hours=2), tmp_path, client=c2, log=lambda *a: None)["M1"]["a"] == pytest.approx(2.5)
+    assert not any(x.endswith("/odds") for x in c2.calls)
+    c3 = Fake(100)                                                      # below the reserve: buys nothing
+    (tmp_path / "odds_state.json").unlink()
+    assert todds.fetch(up, now, tmp_path, client=c3, log=lambda *a: None) == {}
