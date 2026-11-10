@@ -283,3 +283,29 @@ def test_tennis_live_record_scores_settled_forecasts(monkeypatch):
     assert stats["n_sets"] == 3 and abs(stats["set_acc"] - 2 / 3) < 1e-9 and odds["n"] == 1
     band = next(b for b in tennis_web.calibration(recs) if b["matches"])
     assert band["band"] == "60–65%" and band["hits"] == 2 and band["n"] == 3
+
+
+def test_tennis_dataset_filters_and_day_readings(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    from astrofoot.web import tennis_web
+
+    hist, pl = fake_matches(300)
+    hist.loc[hist.index[-1], ["round", "p1_seed", "winner"]] = ["Final", 3, 2]
+    monkeypatch.setattr(tennis_web.tlive, "load_matches", lambda ledger=None: hist)
+    monkeypatch.setattr(tennis_web.tlive, "load_players", lambda ledger=None: pl)
+    monkeypatch.setattr(tennis_web, "_sources_key", lambda: ("dataset-test", len(hist)))
+    tennis_web._STATE.clear()
+    client = TestClient(web.app)
+    html = client.get("/tennis/dataset?round=final&seeds=upset").text
+    assert "1 matches" in html and 'href="/dataset?section=women"' in html
+    html = client.get("/tennis/dataset?check=1").text
+    assert "before the day filters" in html and "Astrology favoured a player" in html
+    won = client.get("/tennis/dataset?astro=won").text
+    lost = client.get("/tennis/dataset?astro=lost").text
+    level = client.get("/tennis/dataset?astro=level").text
+    import re
+    n = lambda h: int(re.search(r"([\d,]+) matches \(", h).group(1).replace(",", ""))  # noqa: E731
+    assert n(won) + n(lost) + n(level) == 300
+    assert 'href="/tennis/dataset"' in client.get("/dataset").text           # Tennis on the soccer Dataset switch

@@ -244,11 +244,66 @@ def tennis_github():
     return RedirectResponse("/tennis/model", status_code=303)
 
 
+DATASET_ROUNDS = [("qualifying", "Qualifying"), ("early", "Round 1 to 3"), ("r16", "Round of 16"), ("qf", "Quarterfinal"),
+                  ("sf", "Semifinal"), ("final", "Final")]
+SEEDS = [("", "any"), ("both", "both seeded"), ("one", "one seeded"), ("none", "neither seeded"), ("upset", "unseeded beat a seed")]
+DAY_FILTER = [("", "any"), ("won", "favoured player won"), ("lost", "favoured player lost"), ("level", "level (no favourite)")]
+
+
+def _round_key(name: str) -> str:
+    n = (name or "").lower()
+    if "qualif" in n:
+        return "qualifying"
+    for k, words in (("final", ("final",)), ("sf", ("semi",)), ("qf", ("quarter",)), ("r16", ("round of 16", "4th round", "fourth"))):
+        if any(w in n for w in words) and not (k == "final" and ("semi" in n or "quarter" in n)):
+            return k
+    return "early"
+
+
+def day_verdicts(m: pd.DataFrame) -> pd.DataFrame:
+    """Who the date-only astrology and numerology favoured in each match (0 level, 1 or 2), cached per data version."""
+    from functools import lru_cache
+
+    from ..tennis import daychart
+    s = state()
+    cache = s.setdefault("verdicts", {})
+    pd_ = s["pdict"]
+
+    @lru_cache(maxsize=None)
+    def astro(pid, day):
+        return daychart.astro_day((pd_.get(pid) or {}).get("dob"), day)["score"]
+
+    @lru_cache(maxsize=None)
+    def num(pid, name, day):
+        p = pd_.get(pid) or {}
+        return daychart.num_day(p.get("dob"), p.get("full_name") or name, day)["score"]
+
+    todo = [i for i in m["id"] if i not in cache]
+    if todo:
+        sub = m[m["id"].isin(set(todo))]
+        for mid, a, b, na, nb, d in zip(sub["id"], sub.p1_id, sub.p2_id, sub.p1, sub.p2, sub.date.dt.strftime("%Y-%m-%d")):
+            cache[mid] = (daychart.verdict(astro(a, d), astro(b, d)), daychart.verdict(num(a, na, d), num(b, nb, d), 0.4))
+    v = [cache[i] for i in m["id"]]
+    return pd.DataFrame({"astro_fav": [x[0] for x in v], "num_fav": [x[1] for x in v]}, index=m.index)
+
+
+def _day_ok(fav: pd.Series, winner: pd.Series, want: str) -> pd.Series:
+    if want == "won":
+        return (fav > 0) & (fav == winner)
+    if want == "lost":
+        return (fav > 0) & (fav != winner)
+    if want == "level":
+        return fav == 0
+    return pd.Series(True, index=fav.index)
+
+
 @router.get("/tennis/dataset", response_class=HTMLResponse)
 def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: str = "", player: str = "", event: str = "",
-                   page_no: int = 1):
+                   date_from: str = "", date_to: str = "", round: str = "", seeds: str = "", best_of: str = "",
+                   astro: str = "", num: str = "", check: str = "", page_no: int = 1):
     s = state()
     m = s["matches"]
+    years, stats = [], None
     if len(m):
         m = m[m.completed & ~m.walkover & (m.set_winners.fillna("").str.len() > 0)]
         years = sorted({int(y) for y in m.date.dt.year.unique()}, reverse=True)
@@ -258,26 +313,60 @@ def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: st
             m = m[m.surface == surface]
         if year.isdigit():
             m = m[m.date.dt.year == int(year)]
+        day = m.date.dt.strftime("%Y-%m-%d")
+        if date_from:
+            m = m[day >= date_from]
+        if date_to:
+            m = m[day.reindex(m.index) <= date_to]
         if player:
             t = player.lower()
             m = m[m.p1.str.lower().str.contains(t, regex=False) | m.p2.str.lower().str.contains(t, regex=False)]
         if event:
             m = m[m.event.str.lower().str.contains(event.lower(), regex=False)]
+        if round in dict(DATASET_ROUNDS):
+            m = m[m["round"].map(_round_key) == round]
+        if best_of in ("3", "5"):
+            m = m[m.best_of.astype(int) == int(best_of)]
+        if seeds:
+            s1, s2 = m.p1_seed.notna() & (m.p1_seed > 0), m.p2_seed.notna() & (m.p2_seed > 0)
+            if seeds == "both":
+                m = m[s1 & s2]
+            elif seeds == "one":
+                m = m[s1 ^ s2]
+            elif seeds == "none":
+                m = m[~s1 & ~s2]
+            elif seeds == "upset":
+                m = m[(s1 & ~s2 & (m.winner == 2)) | (s2 & ~s1 & (m.winner == 1))]
+        if astro or num or check:
+            m = m.join(day_verdicts(m))
+            # how often the day's favourite won, under every filter except the day ones (else it is circular)
+            stats = {}
+            for k, label in (("astro_fav", "Astrology"), ("num_fav", "Numerology")):
+                f = m[m[k] > 0]
+                stats[label] = {"n": len(f), "won": int((f[k] == f.winner).sum())}
+            both = m[(m.astro_fav > 0) & (m.astro_fav == m.num_fav)]
+            stats["Astrology and numerology together"] = {"n": len(both), "won": int((both.astro_fav == both.winner).sum())}
+            m = m[_day_ok(m.astro_fav, m.winner, astro) & _day_ok(m.num_fav, m.winner, num)]
         m = m.sort_values("date", ascending=False)
-    else:
-        years = []
     per = 50
     pages = max(1, math.ceil(len(m) / per))
     page_no = min(max(page_no, 1), pages)
-    rows = m.iloc[(page_no - 1) * per: page_no * per].to_dict("records") if len(m) else []
+    page = m.iloc[(page_no - 1) * per: page_no * per] if len(m) else m
+    if len(page):
+        page = page.drop(columns=[c for c in ("astro_fav", "num_fav") if c in page]).join(day_verdicts(page))
+    rows = page.to_dict("records") if len(page) else []
     for r in rows:      # score from the winner's side
         if r.get("winner") == 2:
             r["score"] = " ".join("-".join(reversed(x.split("-"))) for x in str(r["score"]).split())
-    q = {"tour": tour, "surface": surface, "year": year, "player": player, "event": event}
+    q = {"tour": tour, "surface": surface, "year": year, "player": player, "event": event, "date_from": date_from,
+         "date_to": date_to, "round": round, "seeds": seeds, "best_of": best_of, "astro": astro, "num": num, "check": check}
     by_surface = m.surface.value_counts().to_dict() if len(m) else {}
+    from .app import SECTIONS
     return _T().TemplateResponse(request, "tennis_dataset.html", {
         "rows": rows, "n": len(m), "page_no": page_no, "pages": pages, "years": years, "q": q, "tours": TOUR,
-        "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "by_surface": by_surface,
+        "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "by_surface": by_surface, "stats": stats,
+        "rounds": DATASET_ROUNDS, "seed_choices": SEEDS, "day_filter": DAY_FILTER,
+        "sections": {**SECTIONS, "tennis": "Tennis"},
         "n_players": len(s["players"]), "n_dob": int(s["players"].dob.notna().sum()) if len(s["players"]) else 0,
         "page": "tennis_dataset"})
 

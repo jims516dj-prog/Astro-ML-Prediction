@@ -5,7 +5,7 @@
 {% set W = {1: "fav", 0: "draw", -1: "dog"} %}
 {% block body %}
 <h1>Historical dataset{% if section == "women" %}: women's football{% endif %}</h1>
-{{ section_ui.switch(section, sections, "/dataset") }}
+{{ section_ui.switch(section, dict(sections, tennis="Tennis"), "/dataset", {"tennis": "/tennis/dataset"}) }}
 {% if section == "women" %}<p class="callout small"><strong>Women's section.</strong> Every women's forecast (<code>ledger/women</code>),
 pending, completed or void, kept apart from the men's. There is no women's research corpus: the historical seasons shown
 under the men's games come from football-data.co.uk, which has no women's leagues, so the women's dataset grows from these

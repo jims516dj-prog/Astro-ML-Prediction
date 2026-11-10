@@ -1,7 +1,7 @@
 {# Men / Women switch for pages that cover both sections #}
-{% macro switch(section, sections, base, counts=None) %}
+{% macro switch(section, sections, base, links={}) %}
 <nav class="row" aria-label="Section" style="margin:4px 0 8px">
-  {% for k, l in sections.items() %}{% if k == section %}<span class="btn small">{{ l }}</span>{% else %}<a class="btn ghost small" href="{{ base }}{{ '&' if '?' in base else '?' }}section={{ k }}">{{ l }}</a>{% endif %}{% endfor %}
+  {% for k, l in sections.items() %}{% if k == section %}<span class="btn small">{{ l }}</span>{% else %}<a class="btn ghost small" href="{{ links[k] if k in links else base ~ ('&' if '?' in base else '?') ~ 'section=' ~ k }}">{{ l }}</a>{% endif %}{% endfor %}
 </nav>
 {% endmacro %}
 {% macro women_note(what) %}

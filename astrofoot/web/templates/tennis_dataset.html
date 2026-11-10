@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% import "_section.html" as section_ui %}
 {% block title %}Dataset · Astro Tennis Lab{% endblock %}
 {% block body %}
 <h1>Tennis dataset</h1>
+{{ section_ui.switch("tennis", sections, "/dataset", {"men": "/dataset", "women": "/dataset?section=women"}) }}
 <p class="lede">Every completed ATP and WTA singles match ESPN lists since 2010 (main draws and qualifying), with set
 scores and seeds: the history the model learns from. {{ "{:,}".format(n_dob) }} of {{ "{:,}".format(n_players) }}
 players have a date of birth. Surfaces are inferred from the tournament (ESPN does not publish them).</p>
@@ -12,19 +14,41 @@ players have a date of birth. Surfaces are inferred from the tournament (ESPN do
     {% for s in ["hard", "clay", "grass"] %}<option {{ "selected" if q.surface == s }}>{{ s }}</option>{% endfor %}</select></label>
   <label>Year<select name="year" onchange="this.form.submit()"><option value="">All</option>
     {% for y in years %}<option {{ "selected" if q.year == y|string }}>{{ y }}</option>{% endfor %}</select></label>
+  <label>From<input type="date" name="date_from" value="{{ q.date_from }}"></label>
+  <label>To<input type="date" name="date_to" value="{{ q.date_to }}"></label>
+  <label>Round<select name="round" onchange="this.form.submit()"><option value="">All</option>
+    {% for k, l in rounds %}<option value="{{ k }}" {{ "selected" if q.round == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Best of<select name="best_of" onchange="this.form.submit()"><option value="">3 or 5</option>
+    {% for b in ["3", "5"] %}<option {{ "selected" if q.best_of == b }}>{{ b }}</option>{% endfor %}</select></label>
+  <label>Seeds<select name="seeds" onchange="this.form.submit()">
+    {% for k, l in seed_choices %}<option value="{{ k }}" {{ "selected" if q.seeds == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Astrology for the day<select name="astro" onchange="this.form.submit()">
+    {% for k, l in day_filter %}<option value="{{ k }}" {{ "selected" if q.astro == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Numerology for the day<select name="num" onchange="this.form.submit()">
+    {% for k, l in day_filter %}<option value="{{ k }}" {{ "selected" if q.num == k }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Player<input name="player" value="{{ q.player }}" placeholder="contains…"></label>
   <label>Tournament<input name="event" value="{{ q.event }}" placeholder="contains…"></label>
+  {% if q.check %}<input type="hidden" name="check" value="1">{% endif %}
   <div class="row"><button class="btn ghost">Filter</button><a class="small" href="/tennis/dataset">Clear</a></div>
 </form>
+<p class="note">Astrology and numerology for the day: the date-only readings (each player's birth date against the match
+day), as on the forecasts. The first filter on them reads every chart once (about ten seconds), then it is quick.</p>
+{% if not stats and n %}<p class="small"><a href="?{{ qs }}{{ '&' if qs }}check=1">How did the day's astrology and numerology favourites do in these matches?</a></p>{% endif %}
+{% if stats %}<p class="callout small"><strong>In these matches (before the day filters):</strong>
+{% for k, v in stats.items() %}{{ k }} favoured a player in {{ "{:,}".format(v.n) }} matches; that player won
+{{ "{:,}".format(v.won) }} ({{ fmt_pct(v.won / v.n) if v.n else "—" }}){{ "; " if not loop.last else "." }}{% endfor %}
+50% would mean no edge.</p>{% endif %}
 <p class="note">{{ "{:,}".format(n) }} matches{% if by_surface %} ({% for s, c in by_surface.items() %}{{ s }} {{ "{:,}".format(c) }}{{ ", " if not loop.last }}{% endfor %}){% endif %}.</p>
 <div class="scroll"><table class="data small">
-<thead><tr><th>Date (UTC)</th><th>Tour</th><th>Tournament</th><th>Round</th><th>Surface</th><th>Winner</th><th>Loser</th><th>Score</th></tr></thead>
+<thead><tr><th>Date (UTC)</th><th>Tour</th><th>Tournament</th><th>Round</th><th>Surface</th><th>Winner</th><th>Loser</th><th>Score</th>
+<th title="who the day's astrology / numerology favoured: W = the winner, L = the loser, – = level">Day: astro · num</th></tr></thead>
 <tbody>{% for r in rows %}{% set w1 = r.winner == 1 %}
 <tr><td class="mono">{{ r.date.strftime("%Y-%m-%d") }}</td><td>{{ r.tour|upper }}</td><td>{{ r.event }}</td><td>{{ r.round }}</td><td>{{ r.surface }}</td>
 <td>{% set s = r.p1_seed if w1 else r.p2_seed %}{% if s and s == s %}({{ s|int }}) {% endif %}{{ r.p1 if w1 else r.p2 }}</td>
 <td>{% set s = r.p2_seed if w1 else r.p1_seed %}{% if s and s == s %}({{ s|int }}) {% endif %}{{ r.p2 if w1 else r.p1 }}</td>
-<td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td></tr>
-{% else %}<tr><td colspan="8">No matches{% if not years %}: the history is built by the first GitHub tennis run (then git pull){% endif %}.</td></tr>{% endfor %}</tbody>
+<td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td>
+<td class="mono">{% for f in [r.astro_fav, r.num_fav] %}{{ "–" if not f else ("W" if f == r.winner else "L") }}{{ " · " if loop.first }}{% endfor %}</td></tr>
+{% else %}<tr><td colspan="9">No matches{% if not years %}: the history is built by the first GitHub tennis run (then git pull){% endif %}.</td></tr>{% endfor %}</tbody>
 </table></div>
 <p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no - 1 }}">← newer</a>{% endif %}
 <span>page {{ page_no }} / {{ pages }}</span>{% if page_no < pages %}<a href="?{{ qs }}&page_no={{ page_no + 1 }}">older →</a>{% endif %}</p>
