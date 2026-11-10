@@ -1,14 +1,17 @@
 """One-off diagnostics for the tennis sources (run on GitHub Actions; prints only, commits nothing)."""
-import io
 import json
+import os
 import urllib.request
 
-UA = {"User-Agent": "Mozilla/5.0 (astro-football-research)"}
+UA = {"User-Agent": "astro-football-research (GitHub Actions)"}
 
 
-def get(url, n=None):
+def get(url):
+    h = dict(UA)
+    if "api.github.com" in url and os.environ.get("GH_TOKEN"):
+        h["Authorization"] = "Bearer " + os.environ["GH_TOKEN"]
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=60) as r:
             b = r.read()
         print(f"OK {url} {len(b)} bytes")
         return b
@@ -17,38 +20,50 @@ def get(url, n=None):
         return None
 
 
-for tour in ("atp", "wta"):
-    base = f"https://raw.githubusercontent.com/JeffSackmann/tennis_{tour}/master"
-    b = get(f"{base}/{tour}_players.csv")
-    if b:
-        print(b.decode("latin-1").splitlines()[:3])
-    for y in (2023, 2024, 2025, 2026):
-        b = get(f"{base}/{tour}_matches_{y}.csv")
-        if b:
-            lines = b.decode("latin-1").splitlines()
-            print(len(lines), lines[0][:400], "| last:", lines[-1][:200])
-
-for path in ("2026/2026.xlsx", "2025/2025.xlsx", "2026w/2026.xlsx", "2025w/2025.xlsx"):
-    b = get(f"http://www.tennis-data.co.uk/{path}")
-    if b:
-        import pandas as pd
-        df = pd.read_excel(io.BytesIO(b))
-        print(path, df.shape, list(df.columns))
-        print(df.tail(2).to_string()[:1500])
-
-for tour in ("atp", "wta"):
-    b = get(f"https://site.api.espn.com/apis/site/v2/sports/tennis/{tour}/scoreboard")
+# 1) Sackmann data: repo status and public mirrors
+for repo in ("JeffSackmann/tennis_atp", "JeffSackmann/tennis_wta"):
+    b = get(f"https://api.github.com/repos/{repo}")
     if b:
         d = json.loads(b)
-        ev = d.get("events", [])
-        print(tour, "events", len(ev))
-        if ev:
-            e = ev[0]
-            print(json.dumps({k: e.get(k) for k in ("name", "date", "season")})[:300])
-            gs = e.get("groupings") or []
-            print("groupings", len(gs))
-            for g in gs[:2]:
-                comps = g.get("competitions", [])
-                print(" grouping", (g.get("grouping") or {}).get("displayName"), len(comps))
-                if comps:
-                    print(json.dumps(comps[0])[:2500])
+        print(repo, d.get("full_name"), d.get("default_branch"), d.get("pushed_at"), d.get("size"))
+b = get("https://api.github.com/search/repositories?q=tennis_atp+in:name&sort=updated&per_page=15")
+if b:
+    for it in json.loads(b).get("items", []):
+        print(" ", it["full_name"], it["default_branch"], it["pushed_at"], it["size"], it.get("fork"),
+              (it.get("license") or {}).get("spdx_id"))
+
+# 2) ESPN history, calendar and athletes
+API = "https://site.api.espn.com/apis/site/v2/sports/tennis"
+b = get(f"{API}/atp/scoreboard")
+if b:
+    d = json.loads(b)
+    cal = (d.get("leagues") or [{}])[0].get("calendar") or []
+    print("calendar entries", len(cal), json.dumps(cal[:3])[:800])
+    comp = d["events"][0]["groupings"][0]["competitions"][0]
+    print("competition keys", sorted(comp.keys()))
+    print("competitor keys", sorted(comp["competitors"][0].keys()))
+for tour, day in (("atp", "20250120"), ("wta", "20250120"), ("atp", "20180605"), ("atp", "20100705"), ("atp", "20030616")):
+    b = get(f"{API}/{tour}/scoreboard?dates={day}")
+    if b:
+        d = json.loads(b)
+        for e in d.get("events", []):
+            singles = [g for g in e.get("groupings", []) if "Singles" in ((g.get("grouping") or {}).get("displayName") or "")]
+            n = sum(len(g.get("competitions", [])) for g in singles)
+            print(f"  {tour} {day}: {e.get('name')} | {e.get('date')} -> {e.get('endDate')} | singles {n}")
+            if singles and singles[0].get("competitions"):
+                c = singles[0]["competitions"][0]
+                print("   sample", c.get("date"), c.get("round"), json.dumps(c.get("notes"))[:200],
+                      [x.get("curatedRank") for x in c["competitors"]], "odds" in c, c.get("venue"))
+b = get(f"{API}/atp/scoreboard?dates=20250101-20250131")
+if b:
+    print("range events", len(json.loads(b).get("events", [])))
+for u in ("https://site.web.api.espn.com/apis/common/v3/sports/tennis/athletes/3449",
+          "https://sports.core.api.espn.com/v2/sports/tennis/athletes/3449",
+          "https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/athletes/3449"):
+    b = get(u)
+    if b:
+        d = json.loads(b)
+        ath = d.get("athlete", d)
+        print("  ", {k: ath.get(k) for k in ("displayName", "dateOfBirth", "birthPlace", "hand", "height", "age",
+                                         "citizenship", "displayDOB")})
+        print("   keys", sorted(ath.keys())[:60])
