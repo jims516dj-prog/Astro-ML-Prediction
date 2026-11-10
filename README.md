@@ -269,7 +269,7 @@ true" compares live and backtest hit rates per probability band, so you can pick
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger
 (`ledger/women/`: predictions, results, `TRACK_RECORD.md`). They never enter the men's track record or Dataset,
-and the men's pipeline never forecasts women's competitions. Top picks and My picks each have a separate **Women**
+and the men's pipeline never forecasts women's competitions. The Live record, Top picks and My picks each have a separate **Women**
 section (Men / Women buttons at the top): every Top picks tab, including the Form check (women's results only), works
 on the women's games alone.
 

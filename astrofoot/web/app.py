@@ -485,9 +485,15 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
 @app.get("/live", response_class=HTMLResponse)
 def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
               team: str = "", engine: str = "", hit: str = "", agree: str = "", page_no: int = 1, msg: str = "",
-              syncing: int = 0, origin: str = "", xg: str = "", xg_for: str = "either"):
-    recs = _all_games(include_withdrawn=status == "void")   # withdrawn duplicates: only under "void"
-    rep = live.report() if any(r["origin"] == "live" for r in recs) else None
+              syncing: int = 0, origin: str = "", xg: str = "", xg_for: str = "either", section: str = "men"):
+    section = section if section in SECTIONS else "men"
+    women = section == "women"
+    recs = _section_games(section, include_withdrawn=status == "void")   # withdrawn: only under "void"
+    if women:
+        origin = ""
+        rep = live.report(WOMEN_LEDGER) if recs else None
+    else:
+        rep = live.report() if any(r["origin"] == "live" for r in recs) else None
     xg_for = xg_for if xg_for in XG_FOR else "either"
     try:
         xg_min = float(xg) if xg else 0.0
@@ -501,7 +507,7 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
          "engine": engine, "hit": hit, "agree": agree, "origin": origin, "xg": xg,
-         "xg_for": xg_for if xg else ""}
+         "xg_for": xg_for if xg else "", "section": "women" if women else ""}
     shown = rows[(page_no - 1) * per: page_no * per]
     for r in shown:
         r["gm"] = _gm_live(r)
@@ -509,7 +515,7 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
         "rows": shown, "n": len(rows), "page_no": page_no, "pages": pages,
         "q": q, "qs": "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in q.items() if v), "subset": subset, "syncing": bool(syncing) or SYNC["running"], "has_token": sync.token() is not None,
         "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "xg_for_names": XG_FOR,
-        "xg_steps": [t for t in form.XG_STEPS if t > 0], "page": "live"})
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "section": section, "sections": SECTIONS, "page": "live"})
 
 
 WOMEN_LEDGER = live.LEDGER / "women"

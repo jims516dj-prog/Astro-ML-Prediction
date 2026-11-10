@@ -1,12 +1,20 @@
 {% extends "base.html" %}
+{% import "_section.html" as section_ui %}
 {% from "_goals.html" import badges as gm_badges %}
 {% block title %}Live record · Astro Football Lab{% endblock %}
 {% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
 {% block body %}
-<h1>Live track record</h1>
+<h1>Live track record{% if section == "women" %}: women's football{% endif %}</h1>
+{{ section_ui.switch(section, sections, "/live") }}
+{% if section == "women" %}<p class="callout small"><strong>Women's section.</strong> The women's forecasts and their own
+track record (<code>ledger/women</code>), sealed and scored like the men's but never mixed into the men's figures. Read
+with care: Engine 4 and the goal-market recalibrations were trained on men's football, so the probabilities rest mainly on
+the bookmaker odds.</p>{% endif %}
 <p class="lede">Forecasts for real upcoming matches, committed to the git ledger <em>before kickoff</em> and sealed with a
 SHA-256. Unlike the historical backtest, these are a test the model cannot have been tuned on.</p>
-{% if not rep %}
+{% if not rep and section == "women" %}
+<p class="callout">No women's forecasts yet. They appear as ESPN prices women's games (the GitHub cycle checks three times a day).</p>
+{% elif not rep %}
 <p class="callout">The ledger is empty. Run <code>python scripts/live.py cycle</code> (needs access to www.football-data.co.uk),
 then commit and push <code>ledger/</code> before the earliest kickoff.</p>
 {% else %}
@@ -37,10 +45,10 @@ Lower RPS is better; negative ΔRPS means better than the market.</p>
 {% endif %}
 
 <h2>Forecasts <span class="small">({{ "{:,}".format(n) }} shown)</span></h2>
-<p class="note">Includes the games you add on the <a href="/analyze">Analyze</a> page, marked <span class="badge">manual</span>.
+{% if section != "women" %}<p class="note">Includes the games you add on the <a href="/analyze">Analyze</a> page, marked <span class="badge">manual</span>.
 They are listed, filtered and scored here like the rest, but only the automatic forecasts are sealed on GitHub, so the
 official track record above counts those alone. Each game appears once: if you analysed a game the live record also
-forecast, its row links to your analysis too.</p>
+forecast, its row links to your analysis too.</p>{% endif %}
 {% if msg %}<p class="callout small">{{ msg }}</p>{% endif %}
 <div class="row">
   <form method="post" action="/live/sync"><button class="btn">Update now</button></form>
@@ -71,8 +79,8 @@ football-data.co.uk later confirms or corrects them.</p>
     <option value="">All</option>
     {% for v, l in [("pending","Pending"),("settled","Completed"),("void","Postponed / void")] %}<option value="{{ v }}" {{ "selected" if q.status==v }}>{{ l }}</option>{% endfor %}
   </select></label>
-  <label>Source<select name="origin"><option value="">All</option>
-    {% for v, l in [("live","Live record (automatic)"),("manual","Added manually")] %}<option value="{{ v }}" {{ "selected" if q.origin==v }}>{{ l }}</option>{% endfor %}</select></label>
+  {% if section == "women" %}<input type="hidden" name="section" value="women">{% else %}<label>Source<select name="origin"><option value="">All</option>
+    {% for v, l in [("live","Live record (automatic)"),("manual","Added manually")] %}<option value="{{ v }}" {{ "selected" if q.origin==v }}>{{ l }}</option>{% endfor %}</select></label>{% endif %}
   <label>League<select name="league"><option value="">All</option>
     {% for l in leagues %}<option value="{{ l }}" {{ "selected" if q.league==l }}>{{ league_name(l) }}</option>{% endfor %}</select></label>
   <label>Team<input name="team" value="{{ q.team }}" placeholder="contains…"></label>
@@ -88,7 +96,7 @@ football-data.co.uk later confirms or corrects them.</p>
     {% for t in xg_steps %}<option value="{{ t }}" {{ "selected" if q.xg and q.xg|float == t }}>{{ "%.1f"|format(t) }} or more</option>{% endfor %}</select></label>
   <label>For<select name="xg_for">
     {% for k, label in xg_for_names.items() %}<option value="{{ k }}" {{ "selected" if (q.xg_for or "either") == k }}>{{ label }}</option>{% endfor %}</select></label>
-  <div class="row"><button class="btn ghost">Filter</button><a href="/live" class="small">Clear</a></div>
+  <div class="row"><button class="btn ghost">Filter</button><a href="/live{{ '?section=women' if section == 'women' }}" class="small">Clear</a></div>
 </form>
 {% if subset.n %}<p class="note"><strong>These filtered matches so far:</strong> the overall outlook's call was right in
 {{ subset.hits }} of {{ subset.n }} settled ({{ fmt_pct(subset.hit_rate) }}), against {{ fmt_pct(subset.expected) }} expected

@@ -237,3 +237,25 @@ def test_top_picks_women_section(monkeypatch):
         if market in ("summary", "result"):
             assert "Gamma Women" in html and "Alpha" in client.get(f"/top?market={market}&day=2026-11-09").text
     assert client.get("/top?market=form&day=2026-11-09&section=women").status_code == 200
+
+
+def test_live_record_women_section(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+
+    men = live_rec("M1", "Alpha", "Beta", "2026-11-09T15:00:00+00:00")
+    women = live_rec("W1", "Gamma Women", "Delta Women", "2026-11-09T18:00:00+00:00")
+    women.update(division="W:uefa.wchampions", url="/women/match/W1")
+    for g in (men, women):
+        g.update(sha256="ab" * 32, verified=True, committed_at="2026-11-08T10:00:00+00:00")
+    monkeypatch.setattr(web, "_all_games", lambda include_withdrawn=False: [men])
+    monkeypatch.setattr(web, "_women_games", lambda include_withdrawn=False: [women])
+    monkeypatch.setattr(web.live, "report", lambda ledger=None: {"settled": 0, "pending": 1, "void": 0, "engines": {},
+                                                                  "integrity": {"hash_ok": 1, "records": 1, "late": 0}})
+    client = TestClient(web.app)
+    html = client.get("/live?section=women").text
+    assert "Gamma Women" in html and "Alpha v Beta" not in html and "Women's section" in html
+    assert 'name="section" value="women"' in html                    # the filters keep the section
+    men_html = client.get("/live").text
+    assert "Alpha v Beta" in men_html and "Gamma Women" not in men_html
