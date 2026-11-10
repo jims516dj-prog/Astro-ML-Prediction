@@ -29,6 +29,11 @@
   "lon": -0.2918,
   "source": "wikipedia: The Hive Stadium"
  },
+ "Barnsley": {
+  "lat": 53.552222,
+  "lon": -1.4675,
+  "source": "stadium"
+ },
  "Bayer Leverkusen": {
   "lat": 51.03833333,
   "lon": 7.00222222,
@@ -99,6 +104,11 @@
   "lon": 9.30805556,
   "source": "wikipedia: Stadio Brianteo"
  },
+ "Juventus": {
+  "lat": 45.07049,
+  "lon": 7.68682,
+  "source": "manual"
+ },
  "KuPS Kuopio": {
   "lat": 62.88463,
   "lon": 27.6718,
@@ -113,6 +123,11 @@
   "lat": 51.038256,
   "lon": 7.002206,
   "source": "stadium"
+ },
+ "Londrina": {
+  "lat": -23.31028,
+  "lon": -51.16278,
+  "source": "city"
  },
  "Mansfield Town": {
   "lat": 53.13805556,
@@ -144,6 +159,11 @@
   "lon": -0.93333333,
   "source": "wikipedia: Sixfields Stadium"
  },
+ "OH Leuven": {
+  "lat": 50.8684105,
+  "lon": 4.6942994,
+  "source": "openstreetmap: King Power at Den Dreef, Tervuursevest, Ruelenspark, Heverlee, Leuven, Vlaams-Brabant, Vlaanderen, 3001, België / Belgique / Belgien"
+ },
  "Once Caldas": {
   "lat": 5.06889,
   "lon": -75.51738,
@@ -163,6 +183,11 @@
   "lat": 48.8413634,
   "lon": 2.2530693,
   "source": "openstreetmap: Parc des Princes, 24, Rue du Commandant Guilbaud, Quartier d'Auteuil, Paris 16e Arrondissement, Paris, Île-de-France, France métropolitaine, 75016, France"
+ },
+ "Piratas": {
+  "lat": 19.16416667,
+  "lon": -96.125,
+  "source": "wikipedia: Estadio Luis \"Pirata\" Fuente"
  },
  "Plymouth Argyle": {
   "lat": 50.38805556,
@@ -188,6 +213,11 @@
   "lat": 44.78333333,
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
+ },
+ "Sheffield Wednesday": {
+  "lat": 53.411379,
+  "lon": -1.5006311,
+  "source": "openstreetmap: Hillsborough Stadium, Catch Bar Lane, Middlewood, Hillsborough, Sheffield, South Yorkshire, England, S6 1SW, United Kingdom"
  },
  "Sint Truiden": {
   "lat": 50.8134975,
