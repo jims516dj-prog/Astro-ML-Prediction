@@ -41,6 +41,9 @@ CREATE TABLE IF NOT EXISTS team_charts (
 CREATE TABLE IF NOT EXISTS venues (
   name TEXT PRIMARY KEY, lat REAL NOT NULL, lon REAL NOT NULL, source TEXT NOT NULL, verified_at TEXT
 );
+CREATE TABLE IF NOT EXISTS tennis_odds (
+  match_id TEXT PRIMARY KEY, a REAL NOT NULL, b REAL NOT NULL, entered_at TEXT NOT NULL, note TEXT
+);
 CREATE TABLE IF NOT EXISTS my_slips (
   id INTEGER PRIMARY KEY AUTOINCREMENT, day TEXT NOT NULL, name TEXT NOT NULL, created_at TEXT NOT NULL
 );
@@ -263,4 +266,20 @@ def update_pick(con, pick_id, selection: str, label: str, prob, picked_at: str):
 
 def delete_pick(con, pick_id):
     con.execute("DELETE FROM my_slip_picks WHERE id=?", (pick_id,))
+    con.commit()
+
+
+# ----------------------------------------------------------------------------- tennis odds entered by hand
+def tennis_odds(con) -> dict[str, dict]:
+    return {r["match_id"]: dict(r) for r in con.execute("SELECT * FROM tennis_odds").fetchall()}
+
+
+def set_tennis_odds(con, match_id: str, a: float, b: float, note: str = ""):
+    con.execute("INSERT OR REPLACE INTO tennis_odds (match_id, a, b, entered_at, note) VALUES (?,?,?,?,?)",
+                (match_id, float(a), float(b), utcnow(), note[:80]))
+    con.commit()
+
+
+def delete_tennis_odds(con, match_id: str):
+    con.execute("DELETE FROM tennis_odds WHERE match_id=?", (match_id,))
     con.commit()

@@ -30,6 +30,15 @@ ROUNDS = {"final": 7, "semifinal": 6, "quarterfinal": 5, "round of 16": 4, "4th 
           "1st round": 1, "first round": 1, "round 1": 1}
 
 
+PLACEHOLDER_NAMES = {"TBD", "TBA", "BYE", "QUALIFIER", "LUCKY LOSER", "WINNER", "LOSER"}
+
+
+def placeholder(pid, name) -> bool:
+    """ESPN's not-yet-known players: 'TBD' (a qualifier still to come, …), with negative ids."""
+    return (not pid or str(pid).startswith("-") or str(name or "").strip().upper() in PLACEHOLDER_NAMES
+            or str(name or "").strip().upper().startswith("TBD"))
+
+
 def round_no(name: str) -> int:
     n = (name or "").lower()
     if "qualif" in n:
@@ -60,6 +69,8 @@ class State:
     def update(self, m: dict):
         """Learn from one completed match (not walkovers; retirements only for workload)."""
         a, b, when = m["p1_id"], m["p2_id"], m["date"]
+        if placeholder(a, m.get("p1")) or placeholder(b, m.get("p2")):
+            return
         for p in (a, b):
             self.last[p] = when
             self.recent[p].append(when)

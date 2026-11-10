@@ -13,7 +13,7 @@ from the soccer ones.</p>
   <label>Day<select name="day" onchange="this.form.submit()">
     {% if day not in days %}<option value="{{ day }}" selected>{{ day_label(day) }}</option>{% endif %}
     {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
-  {% if tour %}<input type="hidden" name="tour" value="{{ tour }}">{% endif %}{% if fav %}<input type="hidden" name="fav" value="{{ fav }}">{% endif %}{% if odds %}<input type="hidden" name="odds" value="{{ odds }}">{% endif %}
+  {% if tour %}<input type="hidden" name="tour" value="{{ tour }}">{% endif %}{% if fav %}<input type="hidden" name="fav" value="{{ fav }}">{% endif %}{% if odds %}<input type="hidden" name="odds" value="{{ odds }}">{% endif %}{% if favours %}<input type="hidden" name="favours" value="{{ favours }}">{% endif %}
 </form>
 
 <section class="tiles">
@@ -37,7 +37,7 @@ from the soccer ones.</p>
 <td class="num">{{ x.n }}</td><td class="num">{{ fmt_pct(x.all_win) if x.all_win is not none else "–" }}</td>
 <td class="num">{% if x.score.n %}{{ x.score.hits }} / {{ x.score.n }}{% else %}–{% endif %}</td>
 <td><span class="badge {{ STATE[x.state][0] }}">{{ STATE[x.state][1] }}</span></td></tr>{% endfor %}</tbody></table></div>
-{% set hidden_keep %}{% if tour %}<input type="hidden" name="tour" value="{{ tour }}">{% endif %}{% if fav %}<input type="hidden" name="fav" value="{{ fav }}">{% endif %}{% if odds %}<input type="hidden" name="odds" value="{{ odds }}">{% endif %}{% endset %}
+{% set hidden_keep %}{% if tour %}<input type="hidden" name="tour" value="{{ tour }}">{% endif %}{% if fav %}<input type="hidden" name="fav" value="{{ fav }}">{% endif %}{% if odds %}<input type="hidden" name="odds" value="{{ odds }}">{% endif %}{% if favours %}<input type="hidden" name="favours" value="{{ favours }}">{% endif %}{% endset %}
 <div class="row slip-tools">
   <form method="post" action="/tennis/mypicks/slip/new" class="row"><input type="hidden" name="day" value="{{ day }}">{{ hidden_keep }}
     <input name="name" placeholder="name (optional)" aria-label="new slip name" maxlength="60"><button class="btn small">+ New slip</button></form>
@@ -78,6 +78,8 @@ from the soccer ones.</p>
     {% for k, l in [("atp", "ATP (men)"), ("wta", "WTA (women)")] %}<option value="{{ k }}" {{ "selected" if tour == k }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Day readings<select name="fav" onchange="this.form.submit()">
     {% for v, l in filters %}<option value="{{ v }}" {{ "selected" if fav == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Day favours<select name="favours" onchange="this.form.submit()">
+    {% for v, l in favour_choices %}<option value="{{ v }}" {{ "selected" if favours == v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Odds<select name="odds" onchange="this.form.submit()"><option value="">any</option><option value="1" {{ "selected" if odds }}>priced matches only</option></select></label>
 </form>
 {% if rows %}
@@ -88,11 +90,11 @@ from the soccer ones.</p>
   <tr><td><input type="hidden" name="game" value="{{ k }}">{% if row.pick %}<span class="badge ok">added</span>{% else %}<input type="checkbox" name="sel_{{ k }}" id="sel_{{ k }}" aria-label="pick {{ g.p1 }} v {{ g.p2 }}">{% endif %}</td>
     <td class="mono">{{ g.start_utc[11:16] }}{% if row.started %}<br><span class="badge">started</span>{% endif %}</td>
     <td>{{ g.event }}<br><span class="small">{{ g.tour|upper }} · {{ g.surface }} · {{ g.round }}</span></td>
-    <td><a href="/tennis/match/{{ k }}">{{ g.p1 }} v {{ g.p2 }}</a>{% if g.odds %} <span class="badge" title="{{ g.odds.source }}">odds</span>{% endif %}
+    <td><a href="/tennis/match/{{ k }}">{{ g.p1 }} v {{ g.p2 }}</a>{% if g.odds %} <span class="badge" title="{{ g.odds.source }}">{{ "your odds" if g.odds.manual else "odds" }}</span>{% else %} <a class="small" href="/tennis/match/{{ k }}#odds">add odds</a>{% endif %}
       {% if row.elsewhere %}<br><span class="small">also on {{ row.elsewhere|join(", ") }}</span>{% endif %}</td>
     <td>{% if row.pick %}<span class="small">{{ row.pick.label }}</span>{% else %}<select name="out_{{ k }}" onchange="document.getElementById('sel_{{ k }}').checked = true" aria-label="outcome for {{ g.p1 }} v {{ g.p2 }}">
       {% for o in row.opts %}<option value="{{ o.code }}" {{ "selected" if o.code == row.chosen }}>{{ fmt_pct(o.p, 0) }} · {{ o.label }}{% if loop.first %} (most likely){% endif %}</option>{% endfor %}</select>{% endif %}</td>
-    <td>{{ fav_badges(row.fav) }}</td></tr>{% endfor %}</tbody></table></div>
+    <td>{{ fav_badges(row.fav) }}{% if row.both %}<br><span class="badge ok" title="astrology and numerology favour the same player">both: {{ row.both }}</span>{% endif %}</td></tr>{% endfor %}</tbody></table></div>
   <div class="row sticky-save"><button class="btn">Add selected matches to {{ active.name }}</button></div>
 </form>
 {% else %}<p>No tennis forecasts on {{ day }}{% if hidden %} under these filters{% endif %}. Pick another day, or try <a href="/tennis/analyze">Analyze</a>.</p>{% endif %}

@@ -73,7 +73,7 @@ UTC) have already published. Tennis results come from ESPN, usually within an ho
 <tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
 <tr><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
-<td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">odds</span>{% endif %}</td>
+<td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
 <td>{{ k.player }}</td><td class="num">{{ fmt_pct(k.p, 0) }}</td>
 <td class="num pp">{{ fmt_pct(r.e.a_set, 0) }}<br>{{ fmt_pct(r.e.b_set, 0) }}</td><td class="num pp">{{ fmt_pct(r.e.a_match, 0) }}<br>{{ fmt_pct(r.e.b_match, 0) }}</td>
 <td class="small">{% for key, lab in [("astro", "Astro"), ("num", "Num")] %}{{ lab }}: {% set f = dv[key].favours %}{{ (r.p1 if f == 1 else r.p2).split()[-1] if f else "level" }}{% if not loop.last %}<br>{% endif %}{% endfor %}</td>

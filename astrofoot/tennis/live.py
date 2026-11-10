@@ -107,6 +107,8 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     pl = load_players(ledger)
     up = matches[(matches.state == "pre") & (matches.date >= pd.Timestamp(now))
                  & (matches.date <= pd.Timestamp(now + timedelta(hours=HORIZON_H)))]
+    up = up[pd.Series([not (features.placeholder(a, x) or features.placeholder(b, y))
+                       for a, x, b, y in zip(up.p1_id, up.p1, up.p2_id, up.p2)], index=up.index, dtype=bool)]
     need = set(up.p1_id) | set(up.p2_id)
     if need - set(pl.id):
         extra_path = ledger / "players.json"
@@ -143,6 +145,10 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     for r in predictions(ledger):
         if r["match_id"] in res:
             continue
+        if _tbd(r):     # sealed before the fix that skips not-yet-known players
+            settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
+                            "void": True, "void_reason": TBD_REASON, "source": "", "settled_at": now.isoformat(timespec="seconds")})
+            continue
         m = by_id.loc[r["match_id"]] if r["match_id"] in by_id.index else None
         if m is not None and isinstance(m, pd.DataFrame):
             m = m.iloc[-1]
@@ -163,6 +169,13 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     return {"new": len(new), "settled": len(settled)}
 
 
+TBD_REASON = "a player was still TBD (not yet known) when forecast"
+
+
+def _tbd(r: dict) -> bool:
+    return features.placeholder(r.get("p1_id"), r.get("p1")) or features.placeholder(r.get("p2_id"), r.get("p2"))
+
+
 def _seed(v):
     return int(v) if isinstance(v, (int, float, np.integer, np.floating)) and v == v and v else None
 
@@ -179,6 +192,9 @@ def _plain(o):
 
 def join(r: dict, res: dict | None) -> dict:
     p = r["p"]
+    if res is None and _tbd(r):      # void at once, before the next cycle writes it to the ledger
+        res = {"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False, "void": True,
+               "void_reason": TBD_REASON}
     out = {**r, "result": res, "status": "pending" if res is None else ("void" if res.get("void") else "settled"),
            "verified": football_live.verify(r), "pre_kickoff": r["committed_at"] < r["start_utc"]}
     out["best_of"] = espn.best_of(r.get("tour"), r.get("event"), r.get("round"))   # display: ESPN's was wrong for ATP
@@ -206,9 +222,50 @@ def join(r: dict, res: dict | None) -> dict:
     return out
 
 
-def records(ledger: Path = LEDGER) -> list[dict]:
+def with_odds(r: dict, odds: dict, bundle=None) -> dict:
+    """A forecast sealed without odds, seen with odds entered by hand: the odds' set / match chances and the
+    expected figure recomputed exactly as the cycle does when it has odds. The sealed record is not changed."""
+    bundle = bundle or model.load() or {}
+    p = r["p"]
+    base = p.get("combined") or {k: v for k, v in p.items() if k[:2] in ("a_", "b_")}
+    bo = espn.best_of(r.get("tour"), r.get("event"), r.get("round"))
+    mk = model.market_probs(odds["a"], odds["b"], bo, bundle.get("maps") or {})
+    if mk is None:
+        return r
+    exp, wm = dict(base), 0.0
+    if "a_set" in mk:
+        wm = float(bundle.get("market_weight", model.MARKET_WEIGHT))
+        for h in model.HEADS:
+            for s_ in ("a", "b"):
+                exp[f"{s_}_{h}"] = float(model._sig((1 - wm) * model._logit(base[f"{s_}_{h}"]) + wm * model._logit(mk[f"{s_}_{h}"])))
+        for h in ("set", "first", "match"):
+            exp[f"b_{h}"] = 1 - exp[f"a_{h}"]
+    else:            # no mapping in this model: blend the match chance only
+        wm = float(bundle.get("market_weight", model.MARKET_WEIGHT))
+        exp["a_match"] = float(model._sig((1 - wm) * model._logit(base["a_match"]) + wm * model._logit(mk["a_match"])))
+        exp["b_match"] = 1 - exp["a_match"]
+    entered = odds.get("entered_at") or ""
+    return {**r, "p": {**p, "combined": base, "market": mk, "expected": exp, "market_weight": wm},
+            "odds": {"a": float(odds["a"]), "b": float(odds["b"]), "manual": True, "entered_at": entered,
+                     "after_start": bool(entered) and entered >= r["start_utc"],
+                     "source": "entered by you" + (" after the start" if entered and entered >= r["start_utc"] else "")}}
+
+
+def records(ledger: Path = LEDGER, user_odds: dict | None = None) -> list[dict]:
+    """Every forecast joined with its result. user_odds ({match_id: {"a", "b", "entered_at"}}) fills in odds for
+    forecasts sealed without any; the seal is still checked against the sealed record."""
     res = results(ledger)
-    return sorted((join(r, res.get(r["match_id"])) for r in predictions(ledger)), key=lambda r: r["start_utc"])
+    out = []
+    bundle = model.load() if user_odds else None
+    for r in predictions(ledger):
+        o = (user_odds or {}).get(r["match_id"])
+        if o and not r.get("odds"):
+            j = join(with_odds(r, o, bundle), res.get(r["match_id"]))
+            j["verified"] = football_live.verify(r)
+        else:
+            j = join(r, res.get(r["match_id"]))
+        out.append(j)
+    return sorted(out, key=lambda r: r["start_utc"])
 
 
 def track_record(recs: list[dict]) -> dict:

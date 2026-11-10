@@ -13,7 +13,7 @@ import pandas as pd
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import HTMLResponse, RedirectResponse
 
-from .. import sync
+from .. import db, sync
 from ..tennis import DATA, ROOT, astro_num, features, model
 from ..tennis import live as tlive
 
@@ -49,12 +49,23 @@ def state():
                 names[str(i)] = n
         for r in pl.to_dict("records"):
             names.setdefault(str(r["id"]), r.get("name") or "")
+        names = {i: n for i, n in names.items() if not features.placeholder(i, n)}
         tours = {}
         if len(m):
             for i, t in zip(pd.concat([m.p1_id, m.p2_id]), pd.concat([m.tour, m.tour])):
                 tours[str(i)] = t
         _STATE.update(key=key, matches=m, players=pl, pdict=features.players_dict(pl), st=st, names=names, tours=tours)
     return _STATE
+
+
+def records() -> list[dict]:
+    """Tennis forecasts with any odds you entered by hand applied (see tennis.live.with_odds)."""
+    from .app import con
+    try:
+        uo = db.tennis_odds(con())
+    except Exception:  # noqa: BLE001
+        uo = {}
+    return tlive.records(user_odds=uo) if uo else tlive.records()
 
 
 # ----------------------------------------------------------------------------- explanations
@@ -129,7 +140,7 @@ def day_favours_ok(dv: dict, want: str) -> bool:
 @router.get("/tennis", response_class=HTMLResponse)
 def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "", favours: str = ""):
     from .app import _day_label  # noqa: F401
-    recs = tlive.records()
+    recs = records()
     tr_all = tlive.track_record(recs)
     days = sorted({r["start_utc"][:10] for r in recs}, reverse=True)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
@@ -150,14 +161,38 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
         "has_data": (DATA / "matches.parquet").exists(), "page": "tennis_home"})
 
 
+@router.post("/tennis/match/{mid}/odds")
+async def tennis_match_odds(request: Request, mid: str):
+    """Save (or with remove=1, delete) odds typed in by hand for a forecast sealed without odds."""
+    from .app import con
+    form = await request.form()
+    back = str(form.get("back") or "")
+    back = back if back.startswith("/tennis") else f"/tennis/match/{mid}"
+    if form.get("remove"):
+        db.delete_tennis_odds(con(), mid)
+        msg = "Odds removed."
+    else:
+        try:
+            a, b = float(str(form.get("a", "")).replace(",", ".")), float(str(form.get("b", "")).replace(",", "."))
+            if a <= 1.0 or b <= 1.0:
+                raise ValueError
+            db.set_tennis_odds(con(), mid, a, b)
+            msg = "Odds saved: every page now uses them for this match."
+        except ValueError:
+            msg = "Odds must be decimal numbers above 1.00, e.g. 1.45 and 2.80."
+    sep = "&" if "?" in back else "?"
+    return RedirectResponse(f"{back}{sep}msg={urllib.parse.quote(msg)}", status_code=303)
+
+
 @router.get("/tennis/match/{mid}", response_class=HTMLResponse)
-def tennis_match(request: Request, mid: str):
-    rec = next((r for r in tlive.records() if r["match_id"] == mid), None)
+def tennis_match(request: Request, mid: str, msg: str = ""):
+    rec = next((r for r in records() if r["match_id"] == mid), None)
     if rec is None:
         raise HTTPException(404)
     groups, _ = _bundle_groups()
     return _T().TemplateResponse(request, "tennis_match.html", {
         "r": rec, "p": rec["p"], "x": explain(rec["features"], rec), "used": groups, "sealed": True, "day": day_of(rec),
+        "msg": msg,
         "edge_pts": edge_pts, "page": "tennis_home"})
 
 
@@ -419,7 +454,7 @@ def pick_of(r: dict, market: str) -> dict:
 def tennis_top(request: Request, market: str = "set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
                num: str = "", odds: str = ""):
     market = market if market in dict(TOP_MARKETS) else "set"
-    recs = [r for r in tlive.records() if r["status"] != "void"]
+    recs = [r for r in records() if r["status"] != "void"]
     for r in recs:
         r["dayv"] = day_of(r)
         r["pick"] = pick_of(r, market)
@@ -520,7 +555,7 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
                 favours: str = ""):
     from .app import SYNC
     market = market if market in dict(LIVE_MARKETS) else "set"
-    recs = tlive.records()
+    recs = records()
     integrity = {"n": len(recs), "verified": sum(bool(r["verified"]) for r in recs),
                  "late": sum(not r["pre_kickoff"] for r in recs)}
     try:

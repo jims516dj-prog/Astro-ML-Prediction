@@ -200,7 +200,7 @@ def test_tennis_my_picks_slips_and_scoring(tmp_path, monkeypatch):
                               "p2_id": "2", "p1_seed": None, "p2_seed": None, "model_version": "t", "p": p, "features": {},
                               "day": day, "odds": None, "committed_at": "2030-01-01T10:00:00+00:00"})
     res = {"M1": {"match_id": "M1", "winner": 2, "set_winners": "122", "score": "6-4 3-6 2-6", "retired": False, "void": False}}
-    monkeypatch.setattr(tlive, "records", lambda ledger=None: [tlive.join(rec, res["M1"])])
+    monkeypatch.setattr(tlive, "records", lambda ledger=None, **kw: [tlive.join(rec, res["M1"])])
     path = tmp_path / "t.sqlite3"
     monkeypatch.setattr(web, "con", lambda: db.connect(path))
     client = TestClient(web.app)
@@ -270,7 +270,7 @@ def test_tennis_live_record_scores_settled_forecasts(monkeypatch):
     r1 = football_live.seal({**base, "match_id": "M1", "p1": "Ann A", "p2": "Bea B"})
     r2 = football_live.seal({**base, "match_id": "M2", "p1": "Cat C", "p2": "Dee D"})
     res = {"M1": {"winner": 1, "set_winners": "121", "score": "6-4 3-6 6-2", "retired": False, "void": False}}
-    monkeypatch.setattr(tlive, "records", lambda ledger=None: [tlive.join(r1, res["M1"]), tlive.join(r2, None)])
+    monkeypatch.setattr(tlive, "records", lambda ledger=None, **kw: [tlive.join(r1, res["M1"]), tlive.join(r2, None)])
     client = TestClient(web.app)
     html = client.get("/tennis/live").text
     assert "2/2 seals verify" in html and "2/3 sets" in html and "Odds alone" in html
@@ -319,3 +319,73 @@ def test_day_favours_filter():
     assert day_favours_ok(dv(1, 2), "split") and not day_favours_ok(dv(1, 0), "split")
     assert day_favours_ok(dv(1, 0), "astro") and not day_favours_ok(dv(0, 2), "astro") and day_favours_ok(dv(0, 2), "num")
     assert day_favours_ok(dv(0, 0), "")
+
+
+def _rec(match_id="M1", p1="Ann A", p2="Bea B", p2_id="2", astro=1, num=1):
+    from astrofoot import live as football_live
+    p = {"a_set": 0.55, "b_set": 0.45, "a_first": 0.56, "b_first": 0.44, "a_one_set": 0.8, "b_one_set": 0.7,
+         "a_match": 0.6, "b_match": 0.4, "version": "t"}
+    day = {"day": "2030-01-02", "dob": {"a": None, "b": None},
+           "astro": {"a": {"score": 1.0, "contacts": []}, "b": {"score": 0.0, "contacts": []}, "favours": astro},
+           "num": {"a": {"score": 1.0, "parts": [], "numbers": {}}, "b": {"score": 0.0, "parts": [], "numbers": {}}, "favours": num}}
+    return football_live.seal({"match_id": match_id, "tour": "wta", "event": "Test Open", "round": "Round 1", "venue": "",
+                               "surface": "hard", "best_of": 3, "start_utc": "2030-01-02T12:00:00+00:00", "p1": p1, "p1_id": "1",
+                               "p2": p2, "p2_id": p2_id, "p1_seed": None, "p2_seed": None, "model_version": "t", "p": p,
+                               "features": {}, "day": day, "odds": None, "committed_at": "2030-01-01T10:00:00+00:00"})
+
+
+def test_tbd_players_are_never_forecast_and_old_ones_are_void(tmp_path):
+    from astrofoot.tennis import live as tlive
+    assert features.placeholder("-4", "TBD") and features.placeholder("123", "TBD") and not features.placeholder("123", "Ann A")
+    rec = tlive.join(_rec(p2="TBD", p2_id="-4"), None)
+    assert rec["status"] == "void" and "TBD" in rec["result"]["void_reason"]
+    st = features.State()
+    st.update({"p1_id": "1", "p2_id": "-4", "p1": "Ann A", "p2": "TBD", "date": pd.Timestamp("2030-01-01", tz="UTC"),
+               "winner": 1, "set_winners": "11"})
+    assert "-4" not in st.n and "1" not in st.last                 # placeholders never enter the ratings
+
+
+def test_odds_entered_by_hand_apply_everywhere(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot import db
+    from astrofoot.tennis import live as tlive
+    from astrofoot.web import app as web
+
+    rec = _rec()
+    monkeypatch.setattr(tlive, "predictions", lambda ledger=None: [rec])
+    monkeypatch.setattr(tlive, "results", lambda ledger=None: {})
+    monkeypatch.setattr(model, "load", lambda: {"maps": {3: {"set": {"a": 0.8, "b": 0}, "first": {"a": 0.8, "b": 0},
+                                                            "one_set": {"a": 0.9, "b": 0.8}}}, "market_weight": 0.6})
+    path = tmp_path / "t.sqlite3"
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    client = TestClient(web.app)
+    before = tlive.records()[0]
+    r = client.post("/tennis/match/M1/odds", data={"a": "3.0", "b": "1.4"}, follow_redirects=False)
+    assert "Odds+saved" in r.headers["location"] or "Odds%20saved" in r.headers["location"]
+    after = tlive.records(user_odds=db.tennis_odds(db.connect(path)))[0]
+    assert after["verified"] and after["odds"]["manual"] and after["e"]["a_match"] < before["e"]["a_match"]
+    assert after["fav"] == 2                                            # the odds flipped the favourite
+    for url in ("/tennis/match/M1", "/tennis?day=all", "/tennis/live", "/tennis/top?day=all", "/tennis/mypicks?day=2030-01-02"):
+        assert "your odds" in client.get(url).text or "entered by you" in client.get(url).text, url
+    assert "must be decimal" in client.post("/tennis/match/M1/odds", data={"a": "0.9", "b": "x"}).text
+    client.post("/tennis/match/M1/odds", data={"remove": "1"})
+    assert db.tennis_odds(db.connect(path)) == {}
+
+
+def test_tennis_my_picks_day_favours_filter(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot import db
+    from astrofoot.tennis import live as tlive
+    from astrofoot.web import app as web
+
+    recs = [tlive.join(_rec("M1", "Ann A", "Bea B", astro=1, num=1), None),
+            tlive.join(_rec("M2", "Cat C", "Dee D", astro=1, num=2), None)]
+    monkeypatch.setattr(tlive, "records", lambda ledger=None, **kw: recs)
+    monkeypatch.setattr(web, "con", lambda: db.connect(tmp_path / "t.sqlite3"))
+    client = TestClient(web.app)
+    html = client.get("/tennis/mypicks?day=2030-01-02&favours=both").text
+    assert "Ann A v Bea B" in html and "Cat C v Dee D" not in html and "both: A" in html
+    html = client.get("/tennis/mypicks?day=2030-01-02&favours=split").text
+    assert "Cat C v Dee D" in html and "Ann A v Bea B" not in html

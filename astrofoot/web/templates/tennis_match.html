@@ -3,6 +3,7 @@
 {% block title %}{{ r.p1 }} v {{ r.p2 }} · Astro Tennis Lab{% endblock %}
 {% block body %}
 <p class="crumbs"><a href="/tennis">Tennis forecasts</a> › match</p>
+{% if msg %}<p class="callout small">{{ msg }}</p>{% endif %}
 <h1>{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }} v {% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</h1>
 <p class="lede">{{ r.event }} · {{ r.round }} · {{ r.tour|upper }} · {{ r.surface }} (approximate) · best of {{ r.best_of }} ·
 {{ r.start_utc[:16].replace("T", " ") }} UTC{% if r.venue %} · {{ r.venue }}{% endif %}</p>
@@ -12,7 +13,23 @@ first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit e
 {% elif r.status == "void" %}<p class="callout small">Void: {{ r.result.void_reason }}.</p>{% endif %}
 {{ probs(p, r.p1, r.p2) }}
 <p class="small">Sealed {{ r.committed_at }} · {{ "✓ verified" if r.verified else "✗ does not verify" }} · sha256 <span class="mono">{{ r.sha256[:16] }}…</span></p>
-{% if r.odds %}<p class="small">Odds: {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }} ({{ r.odds.source }}).</p>{% endif %}
+
+<h2 id="odds">Odds</h2>
+{% if r.odds and not r.odds.manual %}<p class="small">Sealed with the forecast: {{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }} ({{ r.odds.source }}).</p>
+{% else %}
+{% if r.odds %}<p class="small">Odds <strong>entered by you</strong> {{ r.odds.entered_at[:16].replace("T", " ") }} UTC{% if r.odds.after_start %} (after the start){% endif %}:
+{{ r.p1 }} {{ "%.2f"|format(r.odds.a) }} · {{ r.p2 }} {{ "%.2f"|format(r.odds.b) }}. Every page uses them for this match (expected figure, picks,
+Top picks, My picks, Live record); the sealed forecast itself is unchanged and its seal still verifies.</p>
+{% else %}<p class="small">No bookmaker odds were available when this forecast was sealed (The Odds API prices only the big
+tournaments). Type a bookmaker's decimal odds to blend them into the expected figure everywhere this match appears.</p>{% endif %}
+<form method="post" action="/tennis/match/{{ r.match_id }}/odds" class="filters">
+  <label>{{ r.p1 }}<input name="a" value="{{ '%.2f'|format(r.odds.a) if r.odds else '' }}" size="6" inputmode="decimal" placeholder="1.45" required></label>
+  <label>{{ r.p2 }}<input name="b" value="{{ '%.2f'|format(r.odds.b) if r.odds else '' }}" size="6" inputmode="decimal" placeholder="2.80" required></label>
+  <div class="row"><button class="btn small">{{ "Update odds" if r.odds else "Save odds" }}</button></div>
+</form>
+{% if r.odds %}<form method="post" action="/tennis/match/{{ r.match_id }}/odds"><input type="hidden" name="remove" value="1">
+  <button class="btn ghost small">Remove my odds</button></form>{% endif %}
+{% endif %}
 {{ day_panel(day, r.p1, r.p2, p, edge_pts) }}
 {{ factors(x) }}
 {% endblock %}

@@ -310,6 +310,14 @@ tournament's odds costs one credit, at most every 12 hours, never below 150 cred
 match chance is turned into set / first-set / at-least-one-set chances and blended with the model (60% odds) into the
 **expected** figure shown everywhere. On Analyze you can type any bookmaker's odds yourself.
 
+**Odds you enter yourself.** For a forecast sealed without odds, its match page has an Odds box: type a bookmaker's
+decimal odds and every page (Forecasts, Live record, Top picks, My picks, the match page) uses them for that match, with
+the expected figure recomputed exactly as the cycle would with odds ("your odds" badge; "add odds" links on matches
+without). They are stored in your local database, never in the sealed ledger, whose seals still verify.
+
+**TBD.** ESPN lists draw slots before a player is known (a qualifier still to come) as "TBD". Those matches are not
+forecast until both players are known; forecasts sealed with a TBD before this rule are shown as void.
+
 **Top picks** (`/tennis/top`): tabs for sets, first set, match, at least one set and underdog to win a set, ranked by the
 expected chance, with filters for day, tour, minimum probability, whether the day's astrology / numerology favour the
 pick, and priced matches only; plus the live record of each view.
