@@ -1,4 +1,9 @@
 {
+ "Anaitasuna": {
+  "lat": 43.17744,
+  "lon": -2.31129,
+  "source": "city: Azkoitia"
+ },
  "Anderlecht": {
   "lat": 50.83619,
   "lon": 4.31454,
@@ -84,6 +89,11 @@
   "lon": -0.085556,
   "source": "stadium"
  },
+ "Fuerte San Francisco": {
+  "lat": 13.68935,
+  "lon": -89.18718,
+  "source": "city: San Salvador"
+ },
  "Getafe": {
   "lat": 40.325556,
   "lon": -3.714722,
@@ -103,6 +113,11 @@
   "lat": 45.58277778,
   "lon": 9.30805556,
   "source": "wikipedia: Stadio Brianteo"
+ },
+ "Isidro Metapán": {
+  "lat": 14.3320903,
+  "lon": -89.448998,
+  "source": "openstreetmap: Estadio Jorge «Calero» Suárez, 1a Calle Poniente, Barrio San Pedro, Metapán, Santa Ana Norte, Santa Ana, El Salvador"
  },
  "Juventus": {
   "lat": 45.07049,

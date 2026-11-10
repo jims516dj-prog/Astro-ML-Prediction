@@ -9,6 +9,16 @@
   "lon": 11.93055556,
   "source": "wikipedia: Nordic Wellness Arena"
  },
+ "Estadio Banorte | Mexico City": {
+  "lat": 19.303,
+  "lon": -99.1505,
+  "source": "wikipedia: Estadio Azteca"
+ },
+ "Estadio Hidalgo | Pachuca": {
+  "lat": 20.10527778,
+  "lon": -98.75611111,
+  "source": "wikipedia: Estadio Hidalgo"
+ },
  "Estadio Olímpico Benito Juárez | Ciudad Juárez": {
   "lat": 31.75305556,
   "lon": -106.46777778,
