@@ -88,3 +88,63 @@ def test_missing_birth_dates_are_tolerated():
     assert len(f) == 50
     assert astro_num.astro(float("nan"), datetime(2026, 1, 1, tzinfo=timezone.utc))["ju_sun"] != 0 or True
     assert np.isnan(astro_num.numerology(float("nan"), None, date(2026, 1, 1))["life_path"])
+
+
+def test_live_cycle_seals_then_settles(tmp_path, monkeypatch):
+    from astrofoot.tennis import live as tlive
+
+    monkeypatch.setattr(model, "BUNDLE", tmp_path / "t.joblib")
+    monkeypatch.setattr(model, "REPORT", tmp_path / "t.json")
+    monkeypatch.setattr(model, "MODELS", tmp_path)
+    monkeypatch.setattr(tlive, "DATA", tmp_path / "data")
+    hist, pl = fake_matches(1500)
+    f, _ = features.history(hist, pl, since=None)
+    model.train(f, log=lambda *a: None, quick=True)
+    (tmp_path / "data").mkdir()
+    hist.to_parquet(tmp_path / "data" / "matches.parquet", index=False)
+    pl.to_parquet(tmp_path / "data" / "players.parquet", index=False)
+    now = (hist.date.max() + pd.Timedelta(days=1)).to_pydatetime()
+    up = {**hist.iloc[0].to_dict(), "id": "U1", "date": pd.Timestamp(now + timedelta(hours=5)), "state": "pre",
+          "completed": False, "winner": None, "set_winners": "", "score": "", "p1_id": "1", "p2_id": "99", "p2": "New Player"}
+    ledger = tmp_path / "ledger"
+    fetched = []
+
+    def fetch_players(ids, known, log):
+        fetched.extend(ids)
+        return pd.DataFrame([{"id": "99", "name": "New Player", "full_name": "New Player", "dob": "2001-04-04",
+                              "birthplace": "", "hand": "L", "height_in": 70.0, "country": "Italy"}])
+
+    out = tlive.cycle(now, ledger, log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame([up]), fetch_players=fetch_players)
+    assert out["new"] == 1 and fetched == ["99"]
+    (rec,) = tlive.predictions(ledger)
+    assert rec["features"]["b_life_path"] is not None and 0 < rec["p"]["a_set"] < 1
+    from astrofoot import live as football_live
+    assert football_live.verify(rec)
+    # a second cycle does not forecast it twice; once played, it is settled
+    done = {**up, "state": "post", "completed": True, "winner": 2, "set_winners": "212", "score": "4-6 6-3 2-6"}
+    out = tlive.cycle(now + timedelta(hours=8), ledger, log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame([done]),
+                      fetch_players=fetch_players)
+    assert out == {"new": 0, "settled": 1}
+    (r,) = tlive.records(ledger)
+    assert r["status"] == "settled" and r["sets_played"] == 3 and r["result"]["winner"] == 2
+    tr = tlive.track_record([r])
+    assert tr["n"] == 1 and tr["sets"]["n"] == 3
+    assert "Tennis live track record" in (ledger / "TRACK_RECORD.md").read_text()
+
+
+def test_tennis_pages_render_with_a_switch(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.web import app as web
+    from astrofoot.web import tennis_web
+
+    hist, pl = fake_matches(300)
+    monkeypatch.setattr(tennis_web.tlive, "load_matches", lambda ledger=None: hist)
+    monkeypatch.setattr(tennis_web.tlive, "load_players", lambda ledger=None: pl)
+    monkeypatch.setattr(tennis_web, "_sources_key", lambda: ("test", len(hist)))
+    client = TestClient(web.app)
+    for url in ("/tennis", "/tennis/model", "/tennis/dataset?player=player+1", "/tennis/analyze?a=Player+1&b=Player+2&surface=clay"):
+        html = client.get(url).text
+        assert "🎾 Tennis" in html and "Astro Tennis Lab" in html, url
+    assert "Life path number" in client.get("/tennis/analyze?a=Player+1&b=Player+2").text
+    assert "Astro Football Lab" in client.get("/").text

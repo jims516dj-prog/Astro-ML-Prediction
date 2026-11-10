@@ -265,6 +265,45 @@ true" compares live and backtest hit rates per probability band, so you can pick
 - The backtest tiles now score **all** picks (the rule the page applies), not just the top 10 a day.
 - Every Dataset, Live and Analyze view shows all five goal-and-chance predictions as badges/cards.
 
+## Tennis (Soccer / Tennis switch)
+
+The **⚽ Soccer / 🎾 Tennis** switch in the header changes the whole interface. Tennis has its own pages:
+
+- **Forecasts** (`/tennis`): every upcoming ATP and WTA singles match starting within 36 hours, with each player's
+  chance to **win a given set**, **win the first set**, **win at least one set** and **win the match**. Forecasts are sealed
+  (SHA-256) and committed to `ledger/tennis/` before the start by the same GitHub cycle as the soccer record (05:17,
+  11:17, 17:17 UTC), then scored against ESPN's results (`ledger/tennis/TRACK_RECORD.md`).
+- **Match** pages: the probabilities and every factor the model saw, in three groups.
+- **Analyze**: any two players (from the history, or new ones with a date of birth), surface, format and time.
+- **Dataset**: every completed singles match ESPN lists since 2010 (about 110,000), filterable.
+- **ML model**: what the model learned and how well it does (below), with **Retrain** buttons.
+
+**Data.** ESPN's public tennis feed (no key): matches with set-by-set scores, seeds and qualifier/wildcard tags, and
+each player's date and place of birth. ESPN does not publish surfaces, so they are inferred from the tournament name
+(clay and grass events listed in `astrofoot/tennis/surface.py`, hard otherwise). It has no betting odds for tennis.
+
+**Features** (all pre-match, built in time order):
+- *Statistics*: Elo ratings overall and per surface, form (last 10 matches), sets won (last 30 sets), rest days,
+  matches in the last 14 days, head-to-head, seeds, qualifier/wildcard, age, height, left-handedness, playing at home,
+  best of 3 or 5, Grand Slam, round.
+- *Astrology*: the natal chart at 12:00 UTC on the date of birth (birth times are not published, so no houses and the
+  Moon is ±7°) against the sky at the start: solar return (birthday), transit Jupiter, Saturn and Mars to the natal Sun,
+  Mars to Mars, Moon to Sun, Venus to Venus, Jupiter to Moon, Moon element, Sun element, and each player's Mars on the
+  opponent's Sun.
+- *Numerology*: life path, personal year, personal day, expression (name) number, and whether the personal or universal
+  day matches the life path, or is a 1 or 8.
+
+**Machine learning.** Four gradient-boosted models (win a set, first set, at least one set, match), trained on both
+orientations of every match so neither player is favoured by order. Every retrain fine-tunes: it compares statistics
+alone with statistics + astrology, + numerology and + both on the latest 12 months held out, and keeps astrology or
+numerology only if it lowers the held-out log loss by more than one standard error. It then tunes the settings, checks
+the last seasons walk-forward against a plain Elo rating, and refits on everything as a new version. The model is
+retrained weekly on GitHub (workflow `tennis`, Tuesdays: refreshes the history and players, then trains); on the ML model
+page, **Retrain on this computer** runs the same training locally, and **Rebuild data + retrain on GitHub** starts the
+workflow (needs the Update now token).
+
+Commands: `python scripts/tennis.py build` (history + players), `train` (features + training), `cycle` (live forecasts).
+
 ## Women's football (separate section)
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger
