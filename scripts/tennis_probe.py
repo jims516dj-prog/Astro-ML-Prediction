@@ -1,69 +1,42 @@
-"""One-off diagnostics for the tennis sources (run on GitHub Actions; prints only, commits nothing)."""
+"""Diagnostics for tennis odds sources (run on GitHub Actions; prints only, commits nothing)."""
 import json
 import os
 import urllib.request
 
-UA = {"User-Agent": "astro-football-research (GitHub Actions)"}
+HEADERS = {"User-Agent": "astro-football-research (GitHub Actions)"}
 
 
 def get(url):
-    h = dict(UA)
-    if "api.github.com" in url and os.environ.get("GH_TOKEN"):
-        h["Authorization"] = "Bearer " + os.environ["GH_TOKEN"]
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=60) as r:
+        with urllib.request.urlopen(urllib.request.Request(url, headers=HEADERS), timeout=60) as r:
             b = r.read()
-        print(f"OK {url} {len(b)} bytes")
-        return b
+            print(f"OK {url.split('apiKey')[0]} {len(b)} bytes; remaining={r.headers.get('x-requests-remaining')}")
+            return json.loads(b)
     except Exception as e:  # noqa: BLE001
-        print(f"FAIL {url} {type(e).__name__}: {e}")
+        print(f"FAIL {url.split('apiKey')[0]} {type(e).__name__}: {e}")
         return None
 
 
-# 1) Sackmann data: repo status and public mirrors
-for repo in ("JeffSackmann/tennis_atp", "JeffSackmann/tennis_wta"):
-    b = get(f"https://api.github.com/repos/{repo}")
-    if b:
-        d = json.loads(b)
-        print(repo, d.get("full_name"), d.get("default_branch"), d.get("pushed_at"), d.get("size"))
-b = get("https://api.github.com/search/repositories?q=tennis_atp+in:name&sort=updated&per_page=15")
-if b:
-    for it in json.loads(b).get("items", []):
-        print(" ", it["full_name"], it["default_branch"], it["pushed_at"], it["size"], it.get("fork"),
-              (it.get("license") or {}).get("spdx_id"))
-
-# 2) ESPN history, calendar and athletes
-API = "https://site.api.espn.com/apis/site/v2/sports/tennis"
-b = get(f"{API}/atp/scoreboard")
-if b:
-    d = json.loads(b)
-    cal = (d.get("leagues") or [{}])[0].get("calendar") or []
-    print("calendar entries", len(cal), json.dumps(cal[:3])[:800])
-    comp = d["events"][0]["groupings"][0]["competitions"][0]
-    print("competition keys", sorted(comp.keys()))
-    print("competitor keys", sorted(comp["competitors"][0].keys()))
-for tour, day in (("atp", "20250120"), ("wta", "20250120"), ("atp", "20180605"), ("atp", "20100705"), ("atp", "20030616")):
-    b = get(f"{API}/{tour}/scoreboard?dates={day}")
-    if b:
-        d = json.loads(b)
-        for e in d.get("events", []):
-            singles = [g for g in e.get("groupings", []) if "Singles" in ((g.get("grouping") or {}).get("displayName") or "")]
-            n = sum(len(g.get("competitions", [])) for g in singles)
-            print(f"  {tour} {day}: {e.get('name')} | {e.get('date')} -> {e.get('endDate')} | singles {n}")
-            if singles and singles[0].get("competitions"):
-                c = singles[0]["competitions"][0]
-                print("   sample", c.get("date"), c.get("round"), json.dumps(c.get("notes"))[:200],
-                      [x.get("curatedRank") for x in c["competitors"]], "odds" in c, c.get("venue"))
-b = get(f"{API}/atp/scoreboard?dates=20250101-20250131")
-if b:
-    print("range events", len(json.loads(b).get("events", [])))
-for u in ("https://site.web.api.espn.com/apis/common/v3/sports/tennis/athletes/3449",
-          "https://sports.core.api.espn.com/v2/sports/tennis/athletes/3449",
-          "https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/athletes/3449"):
-    b = get(u)
-    if b:
-        d = json.loads(b)
-        ath = d.get("athlete", d)
-        print("  ", {k: ath.get(k) for k in ("displayName", "dateOfBirth", "birthPlace", "hand", "height", "age",
-                                         "citizenship", "displayDOB")})
-        print("   keys", sorted(ath.keys())[:60])
+# 1) ESPN: odds on tennis competitions (core API)
+sb = get("https://site.api.espn.com/apis/site/v2/sports/tennis/atp/scoreboard")
+if sb:
+    for e in sb.get("events", [])[:2]:
+        for g in e.get("groupings", [])[:1]:
+            for c in g.get("competitions", [])[:3]:
+                eid, cid = e["id"], c["id"]
+                for u in (f"https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/events/{eid}/competitions/{cid}/odds",
+                          f"https://sports.core.api.espn.com/v2/sports/tennis/leagues/atp/events/{eid}/competitions/{cid}"):
+                    d = get(u)
+                    if d:
+                        print("   keys", sorted(d.keys())[:40], json.dumps(d)[:600])
+# 2) The Odds API: which tennis sports are active (the sports list costs no credits)
+key = os.environ.get("ODDS_API_KEY")
+if key:
+    sports = get(f"https://api.the-odds-api.com/v4/sports?apiKey={key}&all=true") or []
+    ten = [s for s in sports if s.get("group") == "Tennis"]
+    print("tennis sports:", len(ten), "active:", sum(1 for s in ten if s.get("active")))
+    for s in ten:
+        print("  ", s["key"], s.get("active"), s.get("title"))
+    for s in [s for s in ten if s.get("active")][:6]:
+        ev = get(f"https://api.the-odds-api.com/v4/sports/{s['key']}/events?apiKey={key}") or []
+        print("   events", s["key"], len(ev), [(e["home_team"], e["away_team"], e["commence_time"]) for e in ev[:3]])
