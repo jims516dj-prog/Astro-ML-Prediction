@@ -104,6 +104,11 @@
   "lon": -2.13333,
   "source": "city: Cuenca"
  },
+ "Calvo Sotelo": {
+  "lat": 38.6828,
+  "lon": -4.0887,
+  "source": "wikipedia: Estadio Ciudad de Puertollano"
+ },
  "Cameroon": {
   "lat": 4.0264186,
   "lon": 9.160626,
@@ -128,6 +133,11 @@
   "lat": -32.35970833,
   "lon": -54.16932778,
   "source": "wikipedia: Estadio Arquitecto Antonio Eleuterio Ubilla"
+ },
+ "Club Atlético Morelia": {
+  "lat": 19.71874167,
+  "lon": -101.23362222,
+  "source": "wikipedia: Estadio Morelos"
  },
  "Congo DR": {
   "lat": -4.33041667,
