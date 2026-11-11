@@ -254,6 +254,11 @@
   "lon": 7.415614,
   "source": "stadium"
  },
+ "Montenegro": {
+  "lat": 42.44472222,
+  "lon": 19.26444444,
+  "source": "wikipedia: Podgorica City Stadium"
+ },
  "Mushuc Runa": {
   "lat": -1.30888889,
   "lon": -78.72777778,
