@@ -1,23 +1,34 @@
 {
  "competitions": {
+  "arg.2": "Argentine Nacional B",
+  "arg.copa": "Copa Argentina",
   "bol.1": "Bolivian Liga Profesional",
+  "bra.1": "Brazilian Serie A",
   "bra.2": "Brazilian Serie B",
   "caf.nations_qual": "Africa Cup of Nations Qualifying",
   "col.1": "Colombian Primera A",
   "col.copa": "Copa Colombia",
   "concacaf.nations.league": "Concacaf Nations League",
   "ecu.1": "LigaPro Ecuador",
+  "eng.3": "English League One",
+  "eng.4": "English League Two",
+  "eng.5": "English National League",
   "eng.fa": "English FA Cup",
   "eng.trophy": "English EFL Trophy",
   "esp.2": "Spanish LALIGA 2",
   "esp.copa_del_rey": "Spanish Copa del Rey",
   "fifa.friendly": "International Friendly",
+  "mex.1": "Mexican Liga BBVA MX",
   "mex.2": "Mexican Liga de Expansión MX",
+  "ned.2": "Dutch Keuken Kampioen Divisie",
   "nor.1": "Norwegian Eliteserien",
   "par.1": "Paraguayan Primera División",
+  "sco.2": "Scottish Championship",
   "slv.1": "Salvadoran Primera Division",
+  "uefa.euro_u21_qual": "UEFA European Under-21 Championship Qualifying",
   "uefa.nations": "UEFA Nations League",
-  "uru.1": "Liga AUF Uruguaya"
+  "uru.1": "Liga AUF Uruguaya",
+  "usa.usl.1": "USL Championship"
  },
- "generated_at": "2026-11-10T22:24:04+00:00"
+ "generated_at": "2026-11-11T23:29:42+00:00"
 }
