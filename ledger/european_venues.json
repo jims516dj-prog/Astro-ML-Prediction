@@ -1,4 +1,9 @@
 {
+ "Albania": {
+  "lat": 41.3183889,
+  "lon": 19.8245757,
+  "source": "openstreetmap: Air Albania Stadium, Rruga Dervish Hima, Qyteti Studenti, Njësia Bashkiake Nr. 2, Tiranë, Bashkia Tiranë, Qarku i Tiranës, 2391, Shqipëria"
+ },
  "Anaitasuna": {
   "lat": 43.17744,
   "lon": -2.31129,
@@ -8,6 +13,11 @@
   "lat": 50.83619,
   "lon": 4.31454,
   "source": "city"
+ },
+ "Armenia": {
+  "lat": 40.1720153,
+  "lon": 44.5255451,
+  "source": "openstreetmap: Վազգեն Սարգսյանի մարզադաշտ, Չարենցի փողոց, Կենտրոն, Երևան, 0070, Հայաստան"
  },
  "Atalanta": {
   "lat": 45.69601,
@@ -29,6 +39,11 @@
   "lon": 11.93055556,
   "source": "wikipedia: Nordic Wellness Arena"
  },
+ "Barbados": {
+  "lat": 16.2101272,
+  "lon": -61.5025226,
+  "source": "openstreetmap: Stade Roger ZAMI, Rue Roger Zami, Montauban, Belle Plaine, Le Gosier, Pointe-à-Pitre, Guadeloupe, 97190, France"
+ },
  "Barnet": {
   "lat": 51.6026,
   "lon": -0.2918,
@@ -48,6 +63,16 @@
   "lat": 38.75087,
   "lon": -9.20282,
   "source": "city"
+ },
+ "Benin": {
+  "lat": 5.3283047,
+  "lon": -4.0185225,
+  "source": "openstreetmap: Stade Félix Houphouët-Boigny, Boulevard Lagunaire, Le Plateau, Abidjan, Côte d’Ivoire"
+ },
+ "Bonaire": {
+  "lat": 23.0970914,
+  "lon": -82.4018788,
+  "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
  },
  "Bradford City": {
   "lat": 53.79444444,
@@ -69,6 +94,16 @@
   "lon": -1.6222418,
   "source": "openstreetmap: Municipal Valle de Aranguren, Paseo Mutilnova pasealekua, Mutilva / Mutiloa, Aranguren, Iruñerria, Navarra, Navarra / Nafarroa, 31006, España"
  },
+ "Cameroon": {
+  "lat": 4.0264186,
+  "lon": 9.160626,
+  "source": "openstreetmap: Limbe Omnisport Stadium, East Parking Road, Wovia, Ngeme village, Limbé II, Communauté urbaine de Limbé, Fako, Southwest, Cameroun"
+ },
+ "Cayman Islands": {
+  "lat": 19.283493,
+  "lon": -81.2457325,
+  "source": "openstreetmap: Haig Bodden Stadium, Bodden Town Road, Pease Bay, Bodden Town, KY1-1105, Cayman Islands"
+ },
  "Celta": {
   "lat": 42.211842,
   "lon": -8.739711,
@@ -78,6 +113,16 @@
   "lat": 55.849711,
   "lon": -4.205589,
   "source": "stadium"
+ },
+ "Cerro Largo": {
+  "lat": -32.35970833,
+  "lon": -54.16932778,
+  "source": "wikipedia: Estadio Arquitecto Antonio Eleuterio Ubilla"
+ },
+ "Congo DR": {
+  "lat": -4.33041667,
+  "lon": 15.31,
+  "source": "wikipedia: Martyrs Stadium"
  },
  "Crewe Alexandra": {
   "lat": 53.0875,
@@ -89,6 +134,26 @@
   "lon": -0.085556,
   "source": "stadium"
  },
+ "Curaçao": {
+  "lat": 12.1528263,
+  "lon": -68.8882628,
+  "source": "openstreetmap: Sentro Deportivo Korsou, Plasa M Maduro, Schelpwijk, Sapate, Curaçao, Nederland"
+ },
+ "Czechia": {
+  "lat": 50.0997126,
+  "lon": 14.4158918,
+  "source": "openstreetmap: epet ARENA, 1066/98, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
+ },
+ "England": {
+  "lat": 51.5560695,
+  "lon": -0.2796034,
+  "source": "openstreetmap: Wembley Stadium, Zig-a-Zag Allée Steps, London Borough of Brent, Greater London, England, HA9 0SL, United Kingdom"
+ },
+ "Equatorial Guinea": {
+  "lat": 3.725,
+  "lon": 8.76916667,
+  "source": "wikipedia: Malabo Stadium"
+ },
  "Fuerte San Francisco": {
   "lat": 13.68935,
   "lon": -89.18718,
@@ -98,6 +163,16 @@
   "lat": 40.325556,
   "lon": -3.714722,
   "source": "stadium"
+ },
+ "Ghana": {
+  "lat": 5.55138889,
+  "lon": -0.19194444,
+  "source": "wikipedia: Accra Sports Stadium"
+ },
+ "Guinea": {
+  "lat": 9.54586111,
+  "lon": -13.67291667,
+  "source": "wikipedia: 28 September Stadium"
  },
  "Hapoel Be'er Sheva": {
   "lat": 31.27315,
@@ -119,6 +194,16 @@
   "lon": -89.448998,
   "source": "openstreetmap: Estadio Jorge «Calero» Suárez, 1a Calle Poniente, Barrio San Pedro, Metapán, Santa Ana Norte, Santa Ana, El Salvador"
  },
+ "Italy": {
+  "lat": 45.4782003,
+  "lon": 9.123964,
+  "source": "openstreetmap: Stadio Giuseppe Meazza, Piazzale Angelo Moratti, Quartiere Harar, San Siro, Municipio 7, Milano, Lombardia, 20151, Italia"
+ },
+ "Ivory Coast": {
+  "lat": 7.6829896,
+  "lon": -5.0445635,
+  "source": "openstreetmap: Stade de la Paix de Bouaké, Rue de la Zone Industrielle, Ngattakro, Bouaké, Gbêkê, Vallée du Bandama, Côte d’Ivoire"
+ },
  "Juventus": {
   "lat": 45.07049,
   "lon": 7.68682,
@@ -139,10 +224,20 @@
   "lon": 7.002206,
   "source": "stadium"
  },
+ "Llaneros FC": {
+  "lat": 4.1399078,
+  "lon": -73.6202459,
+  "source": "openstreetmap: Estadio Bello Horizonte - Rey Pelé, Avenida 19, Dos Mil, Comuna 5, Perímetro Urbano Villavicencio, Villavicencio, Meta, RAP (Especial) Central, 500010, Colombia"
+ },
  "Londrina": {
   "lat": -23.31028,
   "lon": -51.16278,
   "source": "city"
+ },
+ "Madagascar": {
+  "lat": 33.8911836,
+  "lon": -5.5394126,
+  "source": "openstreetmap: الملعب الشرفي, Avenue Allal Ben Abdellah شارع علال بن عبدالله, Meknès ⴰⵎⴽⵏⴰⵙ مكناس, Pachalik de Meknes, Prefecture de Meknès عمالة مكناس, Fès-Meknès ⴼⴰⵙ-ⵎⴽⵏⴰⵙ فاس-مكناس, 50000, Maroc ⵍⵎⵖⵔⵉⴱ المغرب"
  },
  "Mansfield Town": {
   "lat": 53.13805556,
@@ -219,6 +314,11 @@
   "lon": -4.14722222,
   "source": "wikipedia: Plymouth Parkway F.C."
  },
+ "Ponte Preta": {
+  "lat": -27.67688,
+  "lon": -52.51736,
+  "source": "city"
+ },
  "Real Madrid": {
   "lat": 40.45306,
   "lon": -3.68835,
@@ -228,6 +328,11 @@
   "lat": 44.78333333,
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
+ },
+ "Senegal": {
+  "lat": 14.7467717,
+  "lon": -17.451914,
+  "source": "openstreetmap: Stade Léopold Sédar Senghor, Avenue Seydina Limamoulaye, Village Grand Médine, Commune de Patte d'Oie, commune d'arrondissement des Parcelles Assainies, Dakar, Région de Dakar, 10168, Sénégal"
  },
  "Sheffield Wednesday": {
   "lat": 53.411379,
@@ -269,6 +374,11 @@
   "lon": -1.3882,
   "source": "stadium"
  },
+ "São Bernardo": {
+  "lat": -3.43614,
+  "lon": -42.40555,
+  "source": "city"
+ },
  "Trabzonspor": {
   "lat": 41.0,
   "lon": 39.72,
@@ -279,9 +389,19 @@
   "lon": -78.62305556,
   "source": "wikipedia: Estadio Bellavista"
  },
+ "Türkiye": {
+  "lat": 38.4178287,
+  "lon": 26.914903,
+  "source": "city: Izmir"
+ },
  "Vietnam": {
   "lat": 20.4358,
   "lon": 106.18,
   "source": "wikipedia: Thiên Trường Stadium"
+ },
+ "Águila": {
+  "lat": 13.4826739,
+  "lon": -88.1690001,
+  "source": "openstreetmap: Estadio Juan Francisco Barraza, Calle Las Águilas, Residencial Las Aguilas, San Miguel, San Miguel Centro, San Miguel, 3321, El Salvador"
  }
 }

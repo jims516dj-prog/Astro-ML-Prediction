@@ -17,3 +17,6 @@
 {"match_id": "186765", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-10T22:28:14+00:00", "source": "", "void": true, "void_reason": "a player was still TBD (not yet known) when forecast", "winner": null}
 {"match_id": "186766", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-10T22:28:14+00:00", "source": "", "void": true, "void_reason": "a player was still TBD (not yet known) when forecast", "winner": null}
 {"match_id": "186767", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-10T22:28:14+00:00", "source": "", "void": true, "void_reason": "a player was still TBD (not yet known) when forecast", "winner": null}
+{"match_id": "186757", "retired": false, "score": "6-7 7-6 6-1", "set_winners": "211", "settled_at": "2026-11-11T08:52:46+00:00", "source": "espn.com", "void": false, "void_reason": null, "winner": 1}
+{"match_id": "186759", "retired": false, "score": "6-3 4-6 6-2", "set_winners": "121", "settled_at": "2026-11-11T08:52:46+00:00", "source": "espn.com", "void": false, "void_reason": null, "winner": 1}
+{"match_id": "187375", "retired": false, "score": "3-6 3-6", "set_winners": "22", "settled_at": "2026-11-11T08:52:46+00:00", "source": "espn.com", "void": false, "void_reason": null, "winner": 2}

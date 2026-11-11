@@ -44,6 +44,11 @@
   "lon": 2.2530693,
   "source": "openstreetmap: Parc des Princes, 24, Rue du Commandant Guilbaud, Quartier d'Auteuil, Paris 16e Arrondissement, Paris, Île-de-France, France métropolitaine, 75016, France"
  },
+ "Spotify Camp Nou | Barcelona": {
+  "lat": 41.38879,
+  "lon": 2.15899,
+  "source": "city: Barcelona"
+ },
  "Stade Robert Bobin | Bondoufle": {
   "lat": 48.622162,
   "lon": 2.393018,
