@@ -89,10 +89,20 @@
   "lon": -1.62694444,
   "source": "wikipedia: Pirelli Stadium"
  },
+ "CD Artistico Navalcarnero": {
+  "lat": 40.33888889,
+  "lon": -3.84055556,
+  "source": "wikipedia: Estadio Municipal de Santo Domingo"
+ },
  "CD Pamplona": {
   "lat": 42.7905115,
   "lon": -1.6222418,
   "source": "openstreetmap: Municipal Valle de Aranguren, Paseo Mutilnova pasealekua, Mutilva / Mutiloa, Aranguren, Iruñerria, Navarra, Navarra / Nafarroa, 31006, España"
+ },
+ "CD Tarancon": {
+  "lat": 40.06667,
+  "lon": -2.13333,
+  "source": "city: Cuenca"
  },
  "Cameroon": {
   "lat": 4.0264186,
@@ -224,6 +234,11 @@
   "lon": 7.002206,
   "source": "stadium"
  },
+ "Lithuania": {
+  "lat": 54.70833333,
+  "lon": 25.25777778,
+  "source": "wikipedia: Lithuania National Stadium"
+ },
  "Llaneros FC": {
   "lat": 4.1399078,
   "lon": -73.6202459,
@@ -238,6 +253,11 @@
   "lat": 33.8911836,
   "lon": -5.5394126,
   "source": "openstreetmap: الملعب الشرفي, Avenue Allal Ben Abdellah شارع علال بن عبدالله, Meknès ⴰⵎⴽⵏⴰⵙ مكناس, Pachalik de Meknes, Prefecture de Meknès عمالة مكناس, Fès-Meknès ⴼⴰⵙ-ⵎⴽⵏⴰⵙ فاس-مكناس, 50000, Maroc ⵍⵎⵖⵔⵉⴱ المغرب"
+ },
+ "Malta": {
+  "lat": 35.895,
+  "lon": 14.41527778,
+  "source": "wikipedia: National Stadium, Ta' Qali"
  },
  "Mansfield Town": {
   "lat": 53.13805556,
@@ -268,6 +288,11 @@
   "lat": 51.8225,
   "lon": 5.83666667,
   "source": "wikipedia: Goffertstadion"
+ },
+ "New Zealand": {
+  "lat": -36.91833333,
+  "lon": 174.8125,
+  "source": "wikipedia: Mount Smart Stadium"
  },
  "Northampton Town": {
   "lat": 52.23527778,
