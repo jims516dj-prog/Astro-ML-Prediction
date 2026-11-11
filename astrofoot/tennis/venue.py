@@ -82,15 +82,46 @@ def venue_tz(venue: str) -> str | None:
     return str(zones[0]) if len(clocks) == 1 else COUNTRY_DEFAULT.get(code)
 
 
-def local_day(venue: str, when) -> tuple[str, str | None]:
-    """(calendar day at the venue 'YYYY-MM-DD', timezone or None). Unknown venues fall back to the UTC day."""
+ESPN_TZ = ZoneInfo("America/New_York")
+
+
+def _dt(when) -> datetime:
     if isinstance(when, str):
         when = datetime.fromisoformat(when.replace("Z", "+00:00"))
     if hasattr(when, "to_pydatetime"):
         when = when.to_pydatetime()
-    if when.tzinfo is None:
-        when = when.replace(tzinfo=timezone.utc)
+    return when if when.tzinfo else when.replace(tzinfo=timezone.utc)
+
+
+def date_only(when) -> bool:
+    """ESPN's placeholder for 'time not set yet': midnight US Eastern (05:00 GMT in winter, 04:00 in summer)."""
+    et = _dt(when).astimezone(ESPN_TZ)
+    return et.hour == 0 and et.minute == 0
+
+
+def day_start_utc(venue: str, day: str) -> datetime:
+    """Midnight at the venue on a day, in UTC (UTC midnight if the venue's timezone is unknown)."""
     tz = venue_tz(venue or "")
+    d = datetime.fromisoformat(day[:10])
+    return d.replace(tzinfo=ZoneInfo(tz) if tz else timezone.utc).astimezone(timezone.utc)
+
+
+def local_time(venue: str, when) -> tuple[str | None, str | None]:
+    """('HH:MM' at the venue, timezone) for a known start time; (None, tz) for ESPN's date-only placeholder."""
+    tz = venue_tz(venue or "")
+    w = _dt(when)
+    if date_only(w):
+        return None, tz
+    return (w.astimezone(ZoneInfo(tz)) if tz else w.astimezone(timezone.utc)).strftime("%H:%M"), tz
+
+
+def local_day(venue: str, when) -> tuple[str, str | None]:
+    """(calendar day at the venue 'YYYY-MM-DD', timezone or None). Unknown venues fall back to the UTC day. ESPN's
+    date-only placeholder (midnight US Eastern) means "that date, time not set", so it keeps ESPN's date."""
+    when = _dt(when)
+    tz = venue_tz(venue or "")
+    if date_only(when):
+        return when.astimezone(ESPN_TZ).strftime("%Y-%m-%d"), tz
     if tz:
         try:
             return when.astimezone(ZoneInfo(tz)).strftime("%Y-%m-%d"), tz

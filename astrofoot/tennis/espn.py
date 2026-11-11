@@ -113,6 +113,7 @@ def parse_competition(c: dict, e: dict, tour: str) -> dict | None:
         "round": ((c.get("round") or {}).get("displayName") or ""),
         "best_of": best_of(tour, e.get("name") or "", ((c.get("round") or {}).get("displayName") or "")),
         "state": st.get("state") or "", "status": st.get("name") or "", "completed": bool(st.get("completed")),
+        "time_valid": c.get("timeValid"),
         "p1_id": p[0]["id"], "p1": p[0]["name"], "p1_country": p[0]["country"], "p1_seed": p[0]["seed"],
         "p1_entry": p[0]["entry"], "p1_rank": p[0]["rank"],
         "p2_id": p[1]["id"], "p2": p[1]["name"], "p2_country": p[1]["country"], "p2_seed": p[1]["seed"],

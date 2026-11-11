@@ -32,11 +32,11 @@ Meanwhile you can still look at the <a href="/tennis/analyze">Analyze</a> page.<
 {% if favours %}<p class="note">{{ rows|length }} match{{ "" if rows|length == 1 else "es" }} shown, {{ hidden }} hidden by “Day favours”.</p>{% endif %}
 
 <div class="scroll"><table class="data small">
-<thead><tr><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th class="num" title="chance to win a given set">Set</th>
+<thead><tr><th>Start (venue time)</th><th>Tournament</th><th>Match</th><th class="num" title="chance to win a given set">Set</th>
 <th class="num">First set</th><th class="num" title="each player's chance to win at least one set">≥1 set</th><th class="num">Match</th>
 <th title="who the date-only astrology and numerology favour for the day">Day favours</th><th>Result</th></tr></thead>
 <tbody>{% for r in rows %}{% set p = r.p %}
-<tr><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
+<tr><td class="small" style="white-space:nowrap">{{ r.when.label }}{% if r.when.moved %}<br><span class="badge" title="ESPN moved it from {{ r.start_utc[11:16] }} GMT when forecast">moved</span>{% endif %}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
 <td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}</td>
 {% for k in ["set", "first", "one_set", "match"] %}<td class="num pp">{{ fmt_pct(r.e["a_" ~ k], 0) }}<br>{{ fmt_pct(r.e["b_" ~ k], 0) }}</td>{% endfor %}

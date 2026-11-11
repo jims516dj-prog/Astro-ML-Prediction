@@ -10,7 +10,7 @@ import numpy as np
 import pandas as pd
 
 from .. import live as football_live
-from . import DATA, LEDGER, build, daychart, espn, features, model
+from . import DATA, LEDGER, build, daychart, espn, features, model, venue
 from . import odds as tennis_odds
 
 HORIZON_H = 36          # forecast matches starting within this many hours
@@ -28,6 +28,14 @@ def _append(path: Path, recs: list[dict]):
     with path.open("a") as f:
         for r in recs:
             f.write(json.dumps(r, sort_keys=True, default=str) + "\n")
+
+
+def effective_start(venue_name: str, when) -> pd.Timestamp:
+    """ESPN's start, or midnight at the venue on the date for its date-only placeholder."""
+    w = pd.Timestamp(when)
+    if venue.date_only(w):
+        return pd.Timestamp(venue.day_start_utc(venue_name, venue.local_day(venue_name, w)[0]))
+    return w
 
 
 def predictions(ledger: Path = LEDGER) -> list[dict]:
@@ -106,8 +114,11 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
         return {"new": 0, "settled": 0}
     # birth details for every player in an upcoming match we do not know yet
     pl = load_players(ledger)
-    up = matches[(matches.state == "pre") & (matches.date >= pd.Timestamp(now))
-                 & (matches.date <= pd.Timestamp(now + timedelta(hours=HORIZON_H)))]
+    # the start used for forecasting: ESPN's time, or for its date-only placeholder (time not set yet) midnight at the
+    # venue that day, so a date-only match is forecast before its day begins and never after it may have started
+    matches = matches.assign(start=[effective_start(v, d) for v, d in zip(matches.venue.fillna(""), matches.date)])
+    up = matches[(matches.state == "pre") & (matches.start >= pd.Timestamp(now))
+                 & (matches.start <= pd.Timestamp(now + timedelta(hours=HORIZON_H)))]
     up = up[pd.Series([not (features.placeholder(a, x) or features.placeholder(b, y))
                        for a, x, b, y in zip(up.p1_id, up.p1, up.p2_id, up.p2)], index=up.index, dtype=bool)]
     need = set(up.p1_id) | set(up.p2_id)
@@ -132,7 +143,8 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
             log("tennis: no trained model yet")
             break
         rec = {"match_id": m["id"], "tour": m["tour"], "event": m["event"], "round": m["round"], "venue": m["venue"],
-               "surface": m["surface"], "best_of": int(m["best_of"]), "start_utc": m["date"].isoformat(),
+               "surface": m["surface"], "best_of": int(m["best_of"]), "start_utc": m["start"].isoformat(),
+               "time_known": not venue.date_only(m["date"]), "scheduled_utc": m["date"].isoformat(),
                "p1": m["p1"], "p1_id": m["p1_id"], "p1_seed": _seed(m.get("p1_seed")), "p1_country": m.get("p1_country"),
                "p2": m["p2"], "p2_id": m["p2_id"], "p2_seed": _seed(m.get("p2_seed")), "p2_country": m.get("p2_country"),
                "model_version": fc["p"]["version"], "p": fc["p"], "features": fc["features"], "day": fc["day"],
@@ -160,7 +172,9 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                             "set_winners": "" if void else str(m["set_winners"]), "score": str(m["score"]),
                             "retired": bool(m["retired"]), "void": void,
                             "void_reason": "walkover" if bool(m["walkover"]) else ("no sets played" if void else None),
-                            "source": "espn.com", "settled_at": now.isoformat(timespec="seconds")})
+                            "source": "espn.com", "settled_at": now.isoformat(timespec="seconds"),
+                            # ESPN's final scheduled start (the order of play moves); None if it never set a time
+                            "start_final": None if venue.date_only(m["date"]) else pd.Timestamp(m["date"]).isoformat()})
         elif now - start > timedelta(days=VOID_DAYS):
             settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
                             "void": True, "void_reason": "no result", "source": "", "settled_at": now.isoformat(timespec="seconds")})
@@ -168,6 +182,17 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     write_report(ledger)
     log(f"tennis: {len(new)} new forecast(s), {len(settled)} settled")
     return {"new": len(new), "settled": len(settled)}
+
+
+def _start_for_scoring(r: dict, res: dict | None) -> str:
+    """A forecast counts only if sealed before the match could have started: the sealed start, or ESPN's final
+    scheduled start if the match was moved earlier. A sealed date-only placeholder (midnight US Eastern) counts as
+    midnight at the venue that day."""
+    start = r["start_utc"]
+    if r.get("time_known") is None and venue.date_only(start):
+        start = venue.day_start_utc(r.get("venue") or "", venue.local_day(r.get("venue") or "", start)[0]).isoformat()
+    final = (res or {}).get("start_final")
+    return min(start, pd.Timestamp(final).isoformat()) if final else start
 
 
 TBD_REASON = "a player was still TBD (not yet known) when forecast"
@@ -197,7 +222,7 @@ def join(r: dict, res: dict | None) -> dict:
         res = {"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False, "void": True,
                "void_reason": TBD_REASON}
     out = {**r, "result": res, "status": "pending" if res is None else ("void" if res.get("void") else "settled"),
-           "verified": football_live.verify(r), "pre_kickoff": r["committed_at"] < r["start_utc"]}
+           "verified": football_live.verify(r), "pre_kickoff": r["committed_at"] < _start_for_scoring(r, res)}
     out["best_of"] = espn.best_of(r.get("tour"), r.get("event"), r.get("round"))   # display: ESPN's was wrong for ATP
     for k in ("p1_seed", "p2_seed"):          # display only: a missing seed may be stored as NaN
         v = r.get(k)

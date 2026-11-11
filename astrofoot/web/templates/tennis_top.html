@@ -37,10 +37,10 @@ bookmaker odds where The Odds API prices the match.</p>
 </form>
 
 <div class="scroll"><table class="data small">
-<thead><tr><th class="num">#</th><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th>Pick</th><th class="num">Chance</th>
+<thead><tr><th class="num">#</th><th>Start (venue time)</th><th>Tournament</th><th>Match</th><th>Pick</th><th class="num">Chance</th>
 <th>Astrology</th><th>Numerology</th><th>Result</th></tr></thead>
 <tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
-<tr><td class="num">{{ loop.index }}</td><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
+<tr><td class="num">{{ loop.index }}</td><td class="small" style="white-space:nowrap">{{ r.when.label }}{% if r.when.moved %}<br><span class="badge" title="ESPN moved it from {{ r.start_utc[11:16] }} GMT when forecast">moved</span>{% endif %}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
 <td><a href="/tennis/match/{{ r.match_id }}">{{ r.p1 }} v {{ r.p2 }}</a>{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
 <td><strong>{{ k.player }}</strong>{% if market == "dog_set" or market == "one_set" %} to win a set{% elif market == "first" %} first set{% endif %}</td>

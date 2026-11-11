@@ -55,7 +55,9 @@ def state():
         if len(m):
             for i, t in zip(pd.concat([m.p1_id, m.p2_id]), pd.concat([m.tour, m.tour])):
                 tours[str(i)] = t
-        _STATE.update(key=key, matches=m, players=pl, pdict=features.players_dict(pl), st=st, names=names, tours=tours)
+        sched = dict(zip(m["id"].astype(str), m["date"])) if len(m) else {}
+        _STATE.update(key=key, matches=m, players=pl, pdict=features.players_dict(pl), st=st, names=names, tours=tours,
+                      schedule=sched)
     return _STATE
 
 
@@ -81,7 +83,30 @@ def records() -> list[dict]:
         j = tlive.join(tlive.with_odds({**rec, "odds": None}, o) if o else rec, res)
         j.update(verified=None, manual=True)
         recs.append(j)
+    sched = state().get("schedule") or {}
+    for r in recs:
+        r["when"] = when_of(r, sched.get(r["match_id"]))
     return sorted(recs, key=lambda r: r["start_utc"])
+
+
+def when_of(r: dict, latest=None) -> dict:
+    """The start to show: ESPN's latest scheduled time (the order of play moves), at the venue and in GMT; or
+    'time not set' while ESPN only has the date."""
+    from ..tennis import venue
+    raw = latest if latest is not None else (r.get("scheduled_utc") or r["start_utc"])
+    if r.get("time_known") is False and latest is None:
+        raw = r.get("scheduled_utc") or raw
+    w = pd.Timestamp(raw)
+    w = w.tz_localize("UTC") if w.tzinfo is None else w.tz_convert("UTC")
+    day, tz = venue.local_day(r.get("venue") or "", w)
+    local, _ = venue.local_time(r.get("venue") or "", w)
+    known = local is not None
+    return {"day": day, "local": local, "tz": tz, "gmt": w.strftime("%H:%M") if known else None, "known": known,
+            "moved": bool(latest is not None and known and r.get("time_known", True)
+                          and abs((w - pd.Timestamp(r["start_utc"])).total_seconds()) >= 600),
+            "label": (f"{pd.Timestamp(day).strftime('%a %d %b')} · {local}" + (" local" if tz else " GMT")
+                      + (f" ({w.strftime('%H:%M')} GMT)" if tz else "")) if known
+            else f"{pd.Timestamp(day).strftime('%a %d %b')} · time not set yet"}
 
 
 def parse_score(text: str, best_of: int = 3, winner: int | None = None) -> dict | None:

@@ -6,7 +6,8 @@
 {% if msg %}<p class="callout small">{{ msg }}</p>{% endif %}
 <h1>{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }} v {% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</h1>
 <p class="lede">{{ r.event }} · {{ r.round }} · {{ r.tour|upper }} · {{ r.surface }} (approximate) · best of {{ r.best_of }} ·
-{{ r.start_utc[:16].replace("T", " ") }} UTC{% if r.venue %} · {{ r.venue }}{% endif %}</p>
+{{ r.when.label }}{% if r.when.tz %} ({{ r.when.tz }}){% endif %}{% if r.venue %} · {{ r.venue }}{% endif %}{% if r.when.moved %} ·
+<span class="small">moved by ESPN from {{ r.start_utc[11:16] }} GMT, the time when the forecast was sealed</span>{% endif %}</p>
 {% if r.status == "settled" %}<p class="callout small"><strong>Result:</strong> {{ r.result.score }}{% if r.result.retired %} (retired){% endif %}:
 {{ r.p1 if r.result.winner == 1 else r.p2 }} won. Sets: the favoured player won {{ r.set_hits }} of {{ r.sets_played }};
 first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit else "✗" }}.</p>

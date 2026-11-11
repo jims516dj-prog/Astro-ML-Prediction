@@ -296,6 +296,12 @@ each player's date and place of birth. ESPN does not publish surfaces, so they a
 - *Numerology*: life path, personal year, personal day, expression (name) number, and whether the personal or universal
   day matches the life path, or is a 1 or 8.
 
+**Start times.** ESPN gives one scheduled time per match (never the actual start), and it moves with the order of play.
+Pages show ESPN's latest scheduled time at the venue and in GMT, with a "moved" badge when it changed after the forecast
+was sealed. ESPN writes "time not set yet" as midnight US Eastern (05:00 GMT in winter): those are treated as date-only,
+forecast before that day begins at the venue, and charted for that date. A forecast is scored only if it was sealed
+before the sealed start and before ESPN's final scheduled start (if the match was moved earlier).
+
 **The match day is the venue's.** ESPN gives start times in GMT/UTC; the day's chart and numbers use the calendar
 day at the venue (its timezone from the cities table, e.g. a 01:30 GMT match in Bogotá is still the 10th there), with the
 day's planets at noon at the venue. About 98% of matches are placed; venues given only as a country with several

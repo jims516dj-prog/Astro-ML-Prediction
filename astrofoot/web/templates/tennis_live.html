@@ -67,11 +67,11 @@ UTC) have already published. Tennis results come from ESPN, usually within an ho
 {{ fmt_pct(subset.expected) }} expected from its own probabilities. Over a handful of matches a gap is noise.</p>{% endif %}
 
 <div class="scroll"><table class="data small">
-<thead><tr><th>Start (UTC)</th><th>Tournament</th><th>Match</th><th>Pick ({{ dict(markets)[q.market]|lower }})</th><th class="num">Chance</th>
+<thead><tr><th>Start (venue time)</th><th>Tournament</th><th>Match</th><th>Pick ({{ dict(markets)[q.market]|lower }})</th><th class="num">Chance</th>
 <th class="num" title="expected chance to win a given set: player 1 / player 2">Set</th><th class="num">Match</th>
 <th>Day favours</th><th>Result</th><th>Seal</th></tr></thead>
 <tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
-<tr><td class="mono">{{ r.start_utc[:16].replace("T", " ") }}</td>
+<tr><td class="small" style="white-space:nowrap">{{ r.when.label }}{% if r.when.moved %}<br><span class="badge" title="ESPN moved it from {{ r.start_utc[11:16] }} GMT when forecast">moved</span>{% endif %}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
 <td><a href="/tennis/match/{{ r.match_id }}">{% if r.p1_seed %}({{ r.p1_seed }}) {% endif %}{{ r.p1 }}<br>{% if r.p2_seed %}({{ r.p2_seed }}) {% endif %}{{ r.p2 }}</a>{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
 <td>{{ k.player }}</td><td class="num">{{ fmt_pct(k.p, 0) }}</td>

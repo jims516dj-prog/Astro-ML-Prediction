@@ -454,3 +454,22 @@ def test_day_chart_follows_the_venue():
     f = features.day_features({"dob": "1995-07-23"}, {"dob": "1999-08-31"}, "A", "B", pd.Timestamp(late), "Bogota, Colombia")
     g = features.day_features({"dob": "1995-07-23"}, {"dob": "1999-08-31"}, "A", "B", pd.Timestamp("2026-11-10T17:00", tz="UTC"), "")
     assert f["d_num_rule"] == g["d_num_rule"]               # same local day → same numerology
+
+
+def test_espn_date_only_placeholders_and_moved_starts():
+    from astrofoot.tennis import live as tlive
+    from astrofoot.tennis import venue
+    if venue.venue_tz("Indian Wells, USA") is None:
+        return
+    ph = "2026-11-13T05:00:00+00:00"                          # midnight US Eastern: ESPN's "time not set"
+    assert venue.date_only(ph) and not venue.date_only("2026-11-13T05:30:00+00:00")
+    assert venue.local_day("Indian Wells, USA", ph)[0] == "2026-11-13"          # not the 12th in California
+    assert venue.local_time("Indian Wells, USA", ph) == (None, "America/Los_Angeles")
+    assert str(tlive.effective_start("Indian Wells, USA", ph)) == "2026-11-13 08:00:00+00:00"   # midnight there
+    # a forecast sealed before the sealed start, but after ESPN moved the match earlier, is not scored
+    rec = {**_rec(), "venue": "Paris, France", "start_utc": "2030-01-02T12:00:00+00:00", "time_known": True,
+           "committed_at": "2030-01-02T10:30:00+00:00"}
+    res = {"winner": 1, "set_winners": "11", "score": "6-1 6-1", "retired": False, "void": False}
+    assert tlive.join(rec, res)["pre_kickoff"]
+    assert not tlive.join(rec, {**res, "start_final": "2030-01-02T10:00:00+00:00"})["pre_kickoff"]
+    assert tlive.join(rec, {**res, "start_final": "2030-01-02T15:00:00+00:00"})["pre_kickoff"]      # moved later: fine
