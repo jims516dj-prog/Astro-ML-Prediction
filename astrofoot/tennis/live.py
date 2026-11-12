@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 
 from .. import live as football_live
+from . import astro_num as an
 from . import DATA, LEDGER, build, daychart, espn, features, model, venue
 from . import lta
 from . import odds as tennis_odds
@@ -63,6 +64,7 @@ def _lta_to_espn_ids(df: pd.DataFrame, matches: pd.DataFrame, ledger: Path) -> p
             by_first.setdefault(n.split()[0], []).append((n, i))
     df = df.copy()
     dobs = {}
+    known_dob = {str(r["id"]): an.clean_dob(r.get("dob")) for r in load_players(ledger).to_dict("records")}
     for side in ("p1", "p2"):
         new_ids = []
         for i, n, dob, hand in zip(df[f"{side}_id"], df[side], df["_dob"], df["_hand"]):
@@ -71,6 +73,9 @@ def _lta_to_espn_ids(df: pd.DataFrame, matches: pd.DataFrame, ledger: Path) -> p
                 cands = {x for nm, s in by_first.get(_norm_name(n).split()[0] if n else "", []) if same_player(n, nm)
                          for x in s}
                 ids = cands
+            mine = an.clean_dob(str(dob.get(i))[:10]) if dob.get(i) else None
+            if mine:           # a different date of birth: a different player, whatever the name
+                ids = {x for x in ids if not known_dob.get(x) or known_dob[x] == mine}
             new = next(iter(ids)) if len(ids) == 1 else i
             new_ids.append(new)
             if dob.get(i):
@@ -143,7 +148,8 @@ def results(ledger: Path = LEDGER) -> dict[str, dict]:
     return {r["match_id"]: r for r in _read(ledger / "results.jsonl")}
 
 
-def load_players(ledger: Path = LEDGER) -> pd.DataFrame:
+def load_players(ledger: Path = LEDGER, raw: bool = False) -> pd.DataFrame:
+    """Players with their birth details; full_name is the legal name where it is known (raw: as the sources give it)."""
     parts = [pd.read_parquet(DATA / "players.parquet")] if (DATA / "players.parquet").exists() else []
     extra = ledger / "players.json"
     if extra.exists():
@@ -152,7 +158,11 @@ def load_players(ledger: Path = LEDGER) -> pd.DataFrame:
         return pd.DataFrame(columns=["id", "name", "full_name", "dob", "birthplace", "hand", "height_in", "country"])
     pl = pd.concat(parts, ignore_index=True)
     pl["id"] = pl["id"].astype(str)
-    return pl.drop_duplicates("id", keep="last").reset_index(drop=True)
+    pl = pl.drop_duplicates("id", keep="last").reset_index(drop=True)
+    if raw:
+        return pl
+    from . import names
+    return names.apply(pl)
 
 
 def load_matches(ledger: Path = LEDGER) -> pd.DataFrame:
@@ -284,12 +294,17 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
         client.save()
         res = {**res, **{x["match_id"]: x for x in settled}}
     espn_preds = [x for x in predictions(ledger) if not x["match_id"].startswith(lta.PREFIX)]
+    espn_names = _id_names(matches)
     for r in predictions(ledger):
         if r["match_id"] in res:
             continue
         if r["match_id"].startswith(lta.PREFIX) and _dup_of_espn(r, espn_preds):
             settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
                             "void": True, "void_reason": DUP_REASON, "source": "", "settled_at": now.isoformat(timespec="seconds")})
+            continue
+        if _wrong_player(r, espn_names):
+            settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
+                            "void": True, "void_reason": WRONG_REASON, "source": "", "settled_at": now.isoformat(timespec="seconds")})
             continue
         if _tbd(r):     # sealed before the fix that skips not-yet-known players
             settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
@@ -333,6 +348,30 @@ def _start_for_scoring(r: dict, res: dict | None) -> str:
 
 
 DUP_REASON = "the same match is forecast from ESPN"
+WRONG_REASON = ("withdrawn: another player's record (ratings, form, birthday) was used, from a name-matching error "
+                "since fixed")
+
+
+def _id_names(matches: pd.DataFrame) -> dict[str, set]:
+    """ESPN's names for each of its player ids."""
+    out: dict[str, set] = {}
+    if len(matches):
+        esp = matches[~matches["id"].astype(str).str.startswith(lta.PREFIX)]
+        for i, n in zip(pd.concat([esp.p1_id, esp.p2_id]), pd.concat([esp.p1, esp.p2])):
+            out.setdefault(str(i), set()).add(n)
+    return out
+
+
+def _wrong_player(r: dict, espn_names: dict[str, set]) -> bool:
+    """A Live Tennis API forecast sealed under an ESPN id that belongs to someone else."""
+    from .odds import same_player
+    if not r["match_id"].startswith(lta.PREFIX):
+        return False
+    for s in ("p1", "p2"):
+        known = espn_names.get(str(r.get(f"{s}_id")))
+        if known and not any(same_player(r[s], n) for n in known):
+            return True
+    return False
 
 
 def _dup_of_espn(r: dict, espn_preds: list[dict]) -> bool:

@@ -706,7 +706,11 @@ official name ("FC Bayern München", "Manchester United FC"), from the club's Wi
 a namesake abroad is never taken. Behind the scenes, the day reading's name numerology uses the full legal name
 (Wikidata's official name, e.g. "Fußball-Club Bayern München e. V."; FIFA's name for a national team). The analysis
 panel names it. A club not matched yet keeps the name the source gives, and women's teams use their own entry, never
-the men's club's name. The names the sources write stay unchanged internally, because ratings, history, founding
+the men's club's name. Tennis players keep the name their tour lists them under (ATP / WTA through ESPN, Challenger
+and ITF through the Live Tennis API), and their name numerology uses their full legal name, the birth name in Wikidata
+(e.g. "Rafael Nadal Parera"). It is matched by date of birth and name, only when exactly one player fits
+(`scripts/fetch_tennis_names.py`). Accented letters count as their base letter in all numerology ("é" as "e", "ß" as
+"ss"). The names the sources write stay unchanged internally, because ratings, history, founding
 dates and results are looked up by them.
 
 ## Data sources and licences

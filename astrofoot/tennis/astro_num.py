@@ -5,6 +5,7 @@ to ~7° off and houses/ascendant are not used. Transits are taken at the match's
 feature is a plain number per player, so the model can weigh it, or learn it is noise."""
 from __future__ import annotations
 
+import unicodedata
 from datetime import date, datetime, timezone
 from functools import lru_cache
 
@@ -143,8 +144,15 @@ def personal_day(dob: str, day: date) -> int:
     return reduce(personal_year(dob, day) + reduce(_digits(day.month)) + reduce(_digits(day.day)))
 
 
+def latin(name: str) -> str:
+    """Letters for the numerology table: accents folded ("é" -> "e"), "ß" -> "ss", "æ" -> "ae", "ø" -> "o"."""
+    s = (name or "").lower().replace("ß", "ss").replace("æ", "ae").replace("œ", "oe").replace("ø", "o").replace("ł", "l") \
+        .replace("đ", "d").replace("ı", "i")
+    return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+
+
 def expression(name: str) -> int:
-    return reduce(sum(LETTER.get(c, 0) for c in (name or "").lower()), True)
+    return reduce(sum(LETTER.get(c, 0) for c in latin(name)), True)
 
 
 def numerology(dob: str | None, name: str, day: date) -> dict:

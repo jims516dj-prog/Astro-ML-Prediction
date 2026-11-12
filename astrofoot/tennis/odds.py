@@ -25,11 +25,13 @@ def _norm(name: str) -> list[str]:
 
 
 def same_player(a: str, b: str) -> bool:
-    """Same surname (last word, or any long word shared) and the same first name (or initial)."""
+    """Same surname (last word, or a long surname word shared) and the same first name (or initial)."""
     wa, wb = _norm(a), _norm(b)
     if not wa or not wb:
         return False
-    if wa[-1] != wb[-1] and not ({w for w in wa if len(w) > 3} & {w for w in wb if len(w) > 3}):
+    # the same surname: the last word, or a long surname word shared ("Bassols Ribera" / "Ribera Bassols"); a
+    # shared first name is not enough ("Zsombor Velcz" is not "Zsombor Piros")
+    if wa[-1] != wb[-1] and not ({w for w in wa[1:] if len(w) > 3} & {w for w in wb[1:] if len(w) > 3}):
         return False
     fa, fb = wa[0], wb[0]
     if len(fa) > 1 and len(fb) > 1:          # full first names must agree (the Pliskova twins)

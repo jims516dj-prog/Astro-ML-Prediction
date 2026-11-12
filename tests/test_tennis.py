@@ -558,6 +558,7 @@ def test_challengers_are_forecast_settled_and_join_the_history(tmp_path, monkeyp
     api = FakeLTA([_lta_match(1, "Player 3", "New Guy", start),                       # Player 3 is in the history
                    _lta_match(2, "Cat C", "Dee D", start, tour="atp", tournament="Hopman Cup"),
                    _lta_match(3, "Eve E", "Fay F", start, tour="atp", tournament="Some ATP 250")])   # not a team event
+    api.matches[0]["players"]["p1"]["birthday"] = "1993-04-04"        # Player 3's birthday in the history
     ledger = tmp_path / "ledger"
     quiet = dict(log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame(), fetch_players=lambda ids, known, log: pd.DataFrame(),
                  odds_fetch=lambda *a, **k: {})
@@ -701,3 +702,37 @@ def test_men_women_switch_on_tennis_pages(monkeypatch):
     for url in ("/tennis?level=women", "/tennis/live?level=women", "/tennis/top?level=women"):
         h = client.get(url).text
         assert 'aria-label="Men or women"' in h and '<span class="btn small">Women</span>' in h, url
+
+
+def test_same_player_needs_the_same_surname_not_just_first_name():
+    from astrofoot.tennis.odds import same_player
+    assert not same_player("Zsombor Velcz", "Zsombor Piros")
+    assert not same_player("Julien De Cuyper", "Julien Benneteau")
+    assert same_player("Marina Bassols Ribera", "Marina Ribera Bassols")
+    assert same_player("K. Pliskova", "Karolina Pliskova") and same_player("Carol Youngsuh Lee", "Carol Young Suh Lee")
+
+
+def test_wrong_player_flags_a_forecast_under_someone_elses_id():
+    import pandas as pd
+    from astrofoot.tennis import live as tl
+    m = pd.DataFrame({"id": ["e1"], "p1_id": ["3110"], "p2_id": ["9"], "p1": ["Zsombor Piros"], "p2": ["X Y"]})
+    names = tl._id_names(m)
+    assert tl._wrong_player({"match_id": "lta:1", "p1": "Zsombor Velcz", "p1_id": "3110", "p2": "A B", "p2_id": "lta:5"}, names)
+    assert not tl._wrong_player({"match_id": "lta:2", "p1": "Zsombor Piros", "p1_id": "3110", "p2": "A B", "p2_id": "lta:5"}, names)
+
+
+def test_legal_names_feed_numerology_not_the_display(tmp_path, monkeypatch):
+    import json as _json
+    from astrofoot.tennis import astro_num as an
+    from astrofoot.tennis import names as tnames
+    f = tmp_path / "n.json"
+    f.write_text(_json.dumps({"7": {"legal": "Rafael Nadal Parera", "qid": "Q10132", "label": "Rafael Nadal"}}))
+    monkeypatch.setattr(tnames, "FILE", f)
+    tnames.reload()
+    try:
+        pl = pd.DataFrame({"id": ["7", "8"], "name": ["Rafael Nadal", "X Y"], "full_name": ["Rafael Nadal", "X Y"]})
+        out = tnames.apply(pl)
+        assert list(out.full_name) == ["Rafael Nadal Parera", "X Y"] and list(out.name) == ["Rafael Nadal", "X Y"]
+    finally:
+        tnames.reload()
+    assert an.expression("Đoković") == an.expression("Dokovic") and an.latin("Müller ß") == "muller ss"

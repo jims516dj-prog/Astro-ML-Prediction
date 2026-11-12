@@ -24,10 +24,13 @@ jobs:
       - name: Official club names (Wikidata)
         run: python scripts/fetch_official_names.py
         continue-on-error: true
+      - name: Tennis players' legal names (Wikidata)
+        run: python scripts/fetch_tennis_names.py
+        continue-on-error: true
       - name: Publish (whatever was found, even if the run stopped early)
         if: always()
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"
-          git add data/ref/team_founding_days.json data/ref/team_names.json 2>/dev/null || git add data/ref/team_founding_days.json
+          for f in data/ref/team_founding_days.json data/ref/team_names.json data/ref/tennis_names.json; do [ -f "$f" ] && git add "$f"; done
           git diff --cached --quiet || { git commit -m "founding dates: Wikidata / Wikipedia $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
