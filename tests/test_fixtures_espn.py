@@ -174,3 +174,13 @@ def test_national_team_grounds_stay_in_the_country_unless_espn_says_otherwise(tm
     got = mod.EuropeanGrounds(tmp_path / "b", [])("Comoros", "X:caf.nations_qual",
                                                   {"name": "Prince Moulay Abdellah Stadium", "city": "Rabat", "country": "Morocco"})
     assert got[2].startswith("wikipedia: Prince Moulay")
+
+
+def test_thesportsdb_location(monkeypatch):
+    from astrofoot import nations, venues
+    if nations.country_at(12.05, -61.75) is None:
+        return
+    monkeypatch.setattr(venues, "_get", lambda url, timeout=3.0: {"teams": [
+        {"strTeam": "Grenada", "strSport": "Soccer", "strStadium": "", "strLocation": "St. Georges, Grenada"}]})
+    got = venues.thesportsdb_location("Grenada")
+    assert got is not None and nations.in_country(got[0], got[1], "GD")

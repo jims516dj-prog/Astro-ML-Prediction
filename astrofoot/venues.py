@@ -73,6 +73,44 @@ def nominatim_stadium(query: str):
     return None
 
 
+def thesportsdb_location(team: str):
+    """(lat, lon, label) of a team's home city from TheSportsDB (free public key): its "location" field, e.g.
+    "St. Georges, Grenada", placed with the cities table. None if unknown."""
+    import urllib.parse
+    from . import geo
+    from .nations import NATIONS
+    try:
+        d = _get("https://www.thesportsdb.com/api/v1/json/123/searchteams.php?t=" + urllib.parse.quote(team), timeout=8.0)
+    except Exception:  # noqa: BLE001
+        return None
+    teams = [t for t in (d or {}).get("teams") or [] if (t.get("strSport") or "Soccer") == "Soccer"]
+    for t in teams[:1]:
+        loc = (t.get("strLocation") or "").strip()
+        if not loc:
+            continue
+        parts = [x.strip() for x in loc.split(",") if x.strip()]
+        city, country = parts[0], (parts[-1] if len(parts) > 1 else (t.get("strCountry") or ""))
+        code = geo.COUNTRY_CODE.get(country) or NATIONS.get(country)
+        if not code:
+            continue
+        name = city.replace("St. ", "Saint ").replace("St ", "Saint ")
+        try:
+            c = geo.cities()
+        except Exception:  # noqa: BLE001
+            return None
+        rows = c[c.country_code == code]
+        import difflib
+        for q in (geo.norm(city), geo.norm(name)):
+            hit = rows[rows.key == q]
+            if not len(hit):            # "St. Georges" → "Saint George's"
+                close = difflib.get_close_matches(q, list(rows.key), n=1, cutoff=0.85)
+                hit = rows[rows.key == close[0]] if close else hit
+            if len(hit):
+                r = hit.sort_values("population", ascending=False).iloc[0]
+                return float(r.latitude), float(r.longitude), f"{t.get('strStadium') or city}, {loc}"
+    return None
+
+
 def km(a, b) -> float:
     """Great-circle distance in km between (lat, lon) pairs."""
     import math

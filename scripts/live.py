@@ -168,6 +168,13 @@ class EuropeanGrounds:
                 got = self(base, division, hint)
                 if got:
                     loc = (got[0], got[1], f"senior team's ground: {got[2]}")
+            if loc is None:                     # TheSportsDB's home city for the team (free public key)
+                try:
+                    hit = venues.thesportsdb_location(base or team)
+                except Exception:  # noqa: BLE001
+                    hit = None
+                if hit and (not nation or nations.in_country(hit[0], hit[1], nation)):
+                    loc = (hit[0], hit[1], f"thesportsdb: {hit[2]}")
             if loc is None:                     # a national team: the country's largest city
                 ll = country_city(base or team)
                 if ll:
