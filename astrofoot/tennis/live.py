@@ -235,7 +235,7 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
             extra_up = extra_up[(extra_up.start >= pd.Timestamp(now))
                                 & (extra_up.start <= pd.Timestamp(now + timedelta(hours=HORIZON_H)))]
             extra_up = extra_up[[not _espn_has(r, up) for r in extra_up.to_dict("records")]]
-            log(f"tennis: {len(extra_up)} Challenger / team-event match(es) from {lta.SOURCE} within {HORIZON_H} h")
+            log(f"tennis: {len(extra_up)} Challenger / ITF / team-event match(es) from {lta.SOURCE} within {HORIZON_H} h")
             up = pd.concat([up, extra_up.drop(columns=[c for c in extra_up.columns if c.startswith("_")])],
                            ignore_index=True)
             pl = load_players(ledger)          # with the birthdays the API just gave
