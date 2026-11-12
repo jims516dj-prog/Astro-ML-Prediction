@@ -1,0 +1,117 @@
+{
+ "Brighton and Hove Albion WFC": {
+  "lat": 50.86182222,
+  "lon": -0.08327778,
+  "source": "wikipedia: Falmer Stadium"
+ },
+ "CA Banfield": {
+  "lat": -34.75083333,
+  "lon": -58.3875,
+  "source": "wikipedia: Estadio Florencio Sola"
+ },
+ "CA Talleres de Cordoba": {
+  "lat": -31.36888889,
+  "lon": -64.24611111,
+  "source": "wikipedia: Estadio Mario Alberto Kempes"
+ },
+ "CE Europa": {
+  "lat": 41.38879,
+  "lon": 2.15899,
+  "source": "thesportsdb: Camp Municipal de Fútbol Nou Sardenya, Barcelona"
+ },
+ "CF Tigres UANL": {
+  "lat": 25.723,
+  "lon": -100.312,
+  "source": "wikipedia: Estadio Universitario (UANL)"
+ },
+ "Central Coast Mariners": {
+  "lat": -33.4244,
+  "lon": 151.34399,
+  "source": "thesportsdb: Central Coast Stadium, Gosford, Australia"
+ },
+ "EC Bahia BA": {
+  "lat": -12.97111,
+  "lon": -38.51083,
+  "source": "thesportsdb: Arena Fonte Nova, Salvador, Bahia, Brazil"
+ },
+ "FC Barcelona B": {
+  "lat": 41.37416667,
+  "lon": 2.05055556,
+  "source": "wikipedia: Johan Cruyff Stadium"
+ },
+ "FC Dinamo Moscow": {
+  "lat": 41.72305556,
+  "lon": 44.78972222,
+  "source": "wikipedia: Boris Paichadze Dinamo Arena"
+ },
+ "FC Nantes": {
+  "lat": 47.21725,
+  "lon": -1.55336,
+  "source": "thesportsdb: Stade de la Beaujoire - Louis Fonteneau, Nantes"
+ },
+ "Ferro Carril Oeste": {
+  "lat": -34.6185,
+  "lon": -58.4476,
+  "source": "wikipedia: Estadio Arquitecto Ricardo Etcheverri"
+ },
+ "Kks Lech Poznan": {
+  "lat": 52.3975,
+  "lon": 16.85777778,
+  "source": "wikipedia: Poznań Stadium"
+ },
+ "Lexington SC": {
+  "lat": 42.44732,
+  "lon": -71.2245,
+  "source": "thesportsdb: Lexington SC Stadium, Lexington, Kentucky, USA"
+ },
+ "RCD Espanyol Barcelona": {
+  "lat": 41.34777778,
+  "lon": 2.07555556,
+  "source": "wikipedia: RCDE Stadium"
+ },
+ "Racing Club": {
+  "lat": -29.11761,
+  "lon": -59.65834,
+  "source": "thesportsdb: Estadio Presidente Perón, Avellaneda, Gran Buenos Aires, Argentina"
+ },
+ "Real Madrid": {
+  "lat": 40.45306,
+  "lon": -3.68835,
+  "source": "stadium"
+ },
+ "Real Sociedad San Sebastian B": {
+  "lat": 43.30138889,
+  "lon": -1.97361111,
+  "source": "wikipedia: Anoeta Stadium"
+ },
+ "Sheffield United LFC": {
+  "lat": 50.895,
+  "lon": 4.33388889,
+  "source": "wikipedia: Heysel Stadium disaster"
+ },
+ "TSG Hoffenheim": {
+  "lat": 49.23805556,
+  "lon": 8.8875,
+  "source": "wikipedia: Rhein-Neckar-Arena"
+ },
+ "Universitario de Deportes": {
+  "lat": 19.38333333,
+  "lon": -99.17833333,
+  "source": "wikipedia: Estadio Ciudad de los Deportes"
+ },
+ "Washington Spirit": {
+  "lat": 38.868411,
+  "lon": -77.012869,
+  "source": "wikipedia: Audi Field"
+ },
+ "Werder Bremen": {
+  "lat": 53.066394,
+  "lon": 8.837628,
+  "source": "stadium"
+ },
+ "ZNK Olimpija Ljubljana": {
+  "lat": 46.08055556,
+  "lon": 14.52444444,
+  "source": "wikipedia: Stožice Stadium"
+ }
+}

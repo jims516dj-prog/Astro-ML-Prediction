@@ -56,3 +56,11 @@
 {"match_id": "lta:219376", "retired": false, "score": "4-6 6-4 6-4", "set_winners": "211", "settled_at": "2026-11-12T09:43:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
 {"match_id": "lta:219236", "retired": false, "score": "6-3 2-6 6-4", "set_winners": "121", "settled_at": "2026-11-12T09:43:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
 {"match_id": "lta:219293", "retired": false, "score": "6-4 6-7 6-7", "set_winners": "122", "settled_at": "2026-11-12T09:43:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:218717", "retired": false, "score": "7-6 6-4", "set_winners": "11", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:219008", "retired": false, "score": "2-6 5-7", "set_winners": "22", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:218841", "retired": false, "score": "6-3 6-0", "set_winners": "11", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:219007", "retired": false, "score": "1-6 1-6", "set_winners": "22", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:218912", "retired": true, "score": "6-7 0-3", "set_winners": "2", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:219394", "retired": false, "score": "1-6 3-6", "set_winners": "22", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:219456", "retired": false, "score": "6-1 6-0", "set_winners": "11", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:219393", "retired": false, "score": "6-1 7-5", "set_winners": "11", "settled_at": "2026-11-12T11:36:07+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}

@@ -4828,5 +4828,125 @@
 "hand": "L",
 "height_in": null,
 "country": ""
+},
+{
+"id": "lta:600",
+"name": "Christian Langmo",
+"full_name": "Christian Langmo",
+"dob": "1996-06-01",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:1945",
+"name": "Muhamad Rifqi Fitriadi",
+"full_name": "Muhamad Rifqi Fitriadi",
+"dob": "1999-01-23",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:471",
+"name": "Yuto Oki",
+"full_name": "Yuto Oki",
+"dob": "2005-10-18",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:1997",
+"name": "Daniil Sarksian",
+"full_name": "Daniil Sarksian",
+"dob": "2006-06-20",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "3515",
+"name": "Denis Yevseyev",
+"full_name": "Denis Yevseyev",
+"dob": "1993-05-22",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:1306",
+"name": "Thanapet Chanta",
+"full_name": "Thanapet Chanta",
+"dob": "1999-09-09",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:9151",
+"name": "Azuma Visaya",
+"full_name": "Azuma Visaya",
+"dob": "2003-08-19",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "10117",
+"name": "Edoardo Cherie Ligniere",
+"full_name": "Edoardo Cherie Ligniere",
+"dob": "2004-06-19",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:1249",
+"name": "Dev Javia",
+"full_name": "Dev Javia",
+"dob": "2002-03-16",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:6101",
+"name": "Fons Van Sambeek",
+"full_name": "Fons Van Sambeek",
+"dob": "2002-02-10",
+"birthplace": "",
+"hand": "L",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:11220",
+"name": "Hao Sheng Koay",
+"full_name": "Hao Sheng Koay",
+"dob": "1998-07-27",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:5553",
+"name": "Kuan-Shou Chen",
+"full_name": "Kuan-Shou Chen",
+"dob": "2008-04-26",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
 }
 ]

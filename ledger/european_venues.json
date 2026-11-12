@@ -1,8 +1,28 @@
 {
+ "1. Wiener Neustadter SC": {
+  "lat": 47.82277778,
+  "lon": 16.25527778,
+  "source": "wikipedia: Stadion Wiener Neustadt"
+ },
+ "Al Aqaba": {
+  "lat": 29.5426089,
+  "lon": 35.0044278,
+  "source": "openstreetmap: Aqaba Stadium, Omar Al Mokhtar Street, العقبة, قضاء العقبة, لواء قصبة العقبة, العقبة, 77100, الأردن"
+ },
+ "Al Nasr Cairo": {
+  "lat": 30.06916667,
+  "lon": 31.31222222,
+  "source": "wikipedia: Cairo International Stadium"
+ },
  "Albania": {
   "lat": 41.3183889,
   "lon": 19.8245757,
   "source": "openstreetmap: Air Albania Stadium, Rruga Dervish Hima, Qyteti Studenti, Njësia Bashkiake Nr. 2, Tiranë, Bashkia Tiranë, Qarku i Tiranës, 2391, Shqipëria"
+ },
+ "Albirex Niigata": {
+  "lat": 37.8825,
+  "lon": 139.05916667,
+  "source": "wikipedia: Denka Big Swan Stadium"
  },
  "Anaitasuna": {
   "lat": 43.17744,
@@ -14,6 +34,16 @@
   "lon": 4.31454,
   "source": "city"
  },
+ "Angola": {
+  "lat": -8.9635073,
+  "lon": 13.2845113,
+  "source": "openstreetmap: Estadio Nacional 11 de Novembro, Rua Vacaria Nova, Município de Viana, Luanda, Angola"
+ },
+ "Antigua and Barbuda": {
+  "lat": 17.1027029,
+  "lon": -61.7848897,
+  "source": "openstreetmap: Sir Vivian Richards Stadium, Sir Sidney Walling Highway, Piggotts, Saint George, Antigua, Antigua and Barbuda"
+ },
  "Argentina": {
   "lat": -34.54527778,
   "lon": -58.44972222,
@@ -23,6 +53,11 @@
   "lat": 40.1720153,
   "lon": 44.5255451,
   "source": "openstreetmap: Վազգեն Սարգսյանի մարզադաշտ, Չարենցի փողոց, Կենտրոն, Երևան, 0070, Հայաստան"
+ },
+ "Aruba": {
+  "lat": 12.4973297,
+  "lon": -69.9784629,
+  "source": "openstreetmap: Nadi Croes/Crismo Angela Stadium, Rooi Bosal, Wayaca, Santa Cruz, Aruba, Nederland"
  },
  "Atalanta": {
   "lat": 45.69601,
@@ -44,10 +79,20 @@
   "lon": -66.1618,
   "source": "wikipedia: Estadio Félix Capriles"
  },
+ "Aurora FC": {
+  "lat": -41.42583333,
+  "lon": 147.13888889,
+  "source": "wikipedia: York Park"
+ },
  "BK Häcken": {
   "lat": 57.71916667,
   "lon": 11.93055556,
   "source": "wikipedia: Nordic Wellness Arena"
+ },
+ "Ballymena United": {
+  "lat": 54.8701,
+  "lon": -6.26507,
+  "source": "wikipedia: Ballymena Showgrounds"
  },
  "Barnet": {
   "lat": 51.6026,
@@ -68,6 +113,16 @@
   "lat": 38.75087,
   "lon": -9.20282,
   "source": "city"
+ },
+ "Boca Juniors": {
+  "lat": -34.6,
+  "lon": -58.38,
+  "source": "manual"
+ },
+ "Borussia Monchengladbach": {
+  "lat": 51.1746249,
+  "lon": 6.3854094,
+  "source": "openstreetmap: ista-Borussia-Park, Dr.-Adalbert-Jordan-Straße, Dorthausen, Rheindahlen-Land, West, Mönchengladbach, Nordrhein-Westfalen, 41179, Deutschland"
  },
  "Bradford City": {
   "lat": 53.79444444,
@@ -124,6 +179,11 @@
   "lon": 9.160626,
   "source": "openstreetmap: Limbe Omnisport Stadium, East Parking Road, Wovia, Ngeme village, Limbé II, Communauté urbaine de Limbé, Fako, Southwest, Cameroun"
  },
+ "Cape Verde": {
+  "lat": 14.93152,
+  "lon": -23.51254,
+  "source": "city: Praia"
+ },
  "Cayman Islands": {
   "lat": 19.283493,
   "lon": -81.2457325,
@@ -144,15 +204,30 @@
   "lon": -54.16932778,
   "source": "wikipedia: Estadio Arquitecto Antonio Eleuterio Ubilla"
  },
+ "Chambery SF": {
+  "lat": 45.56628,
+  "lon": 5.92079,
+  "source": "thesportsdb: Chambéry, Chambéry, France"
+ },
  "Club Atlético Morelia": {
   "lat": 19.71874167,
   "lon": -101.23362222,
   "source": "wikipedia: Estadio Morelos"
  },
+ "Coleraine FC": {
+  "lat": 55.13277778,
+  "lon": -6.66027778,
+  "source": "wikipedia: The Showgrounds (Coleraine)"
+ },
  "Colombia": {
   "lat": 3.41033,
   "lon": -76.58097,
   "source": "city: Cali"
+ },
+ "Comoros": {
+  "lat": -11.70216,
+  "lon": 43.25506,
+  "source": "national team: Moroni (largest city)"
  },
  "Congo DR": {
   "lat": -4.33041667,
@@ -164,6 +239,11 @@
   "lon": -2.43583333,
   "source": "wikipedia: Gresty Road"
  },
+ "Crusaders FC": {
+  "lat": 53.05194444,
+  "lon": -3.00361111,
+  "source": "wikipedia: Racecourse Ground"
+ },
  "Crystal Palace": {
   "lat": 51.398333,
   "lon": -0.085556,
@@ -173,6 +253,16 @@
   "lat": 50.0997126,
   "lon": 14.4158918,
   "source": "openstreetmap: epet ARENA, 1066/98, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
+ },
+ "Delta United FC": {
+  "lat": 37.767,
+  "lon": -122.456,
+  "source": "wikipedia: Kezar Stadium"
+ },
+ "Denbigh Town": {
+  "lat": 52.00944444,
+  "lon": -0.73333333,
+  "source": "wikipedia: Stadium MK"
  },
  "Denmark U21": {
   "lat": 55.7137241,
@@ -184,6 +274,16 @@
   "lon": -77.27865,
   "source": "city"
  },
+ "Dijon FCO": {
+  "lat": 47.3243847,
+  "lon": 5.0683365,
+  "source": "openstreetmap: Stade Gaston-Gérard, Rue du Stade, Montmuzard, Dijon, Côte-d'Or, Bourgogne-Franche-Comté, France métropolitaine, 21000, France"
+ },
+ "Don Bosco Bamberg": {
+  "lat": 49.89873,
+  "lon": 10.90067,
+  "source": "thesportsdb: Rudi-Ziegler-Sportanlage, Bamberg, Bavaria, Germany"
+ },
  "Ecuador": {
   "lat": -0.1775141,
   "lon": -78.4766126,
@@ -193,6 +293,16 @@
   "lat": 30.0690313,
   "lon": 31.3122096,
   "source": "openstreetmap: إستاد القاهرة الدولي, شارع الاستاد, ثان مدينة نصر, القاهرة, 11153, مصر"
+ },
+ "El Entag El Harby": {
+  "lat": 30.1745,
+  "lon": 31.435,
+  "source": "wikipedia: Al Salam Stadium (Egypt)"
+ },
+ "Elche CF": {
+  "lat": 38.26694444,
+  "lon": -0.66333333,
+  "source": "wikipedia: Estadio Martínez Valero"
  },
  "England": {
   "lat": 51.5560695,
@@ -204,15 +314,50 @@
   "lon": 8.76916667,
   "source": "wikipedia: Malabo Stadium"
  },
+ "FC Masar": {
+  "lat": 30.06263,
+  "lon": 31.24967,
+  "source": "thesportsdb: Cairo, Cairo, Egypt"
+ },
+ "FC Roskilde": {
+  "lat": 55.64152,
+  "lon": 12.08035,
+  "source": "thesportsdb: Roskilde Idrætspark, Roskilde, Denmark"
+ },
+ "FC Viktoria Plzen B": {
+  "lat": 49.75,
+  "lon": 13.38555556,
+  "source": "wikipedia: Doosan Arena"
+ },
+ "Finland": {
+  "lat": 60.16952,
+  "lon": 24.93545,
+  "source": "national team: Helsinki (largest city)"
+ },
+ "France": {
+  "lat": 48.9244726,
+  "lon": 2.3601325,
+  "source": "openstreetmap: Stade de France, Avenue du Stade de France, Franc-Moisin - Bel-Air - Stade de France, Saint-Denis, Seine-Saint-Denis, Île-de-France, France métropolitaine, 93200, France"
+ },
  "Fuerte San Francisco": {
   "lat": 13.68935,
   "lon": -89.18718,
   "source": "city: San Salvador"
  },
+ "Fujieda MYFC": {
+  "lat": 34.8815,
+  "lon": 138.2328,
+  "source": "wikipedia: Fujieda Soccer Stadium"
+ },
  "Gabon": {
   "lat": -1.63861111,
   "lon": 13.57444444,
   "source": "wikipedia: Franceville Stadium"
+ },
+ "Germany": {
+  "lat": 48.17305556,
+  "lon": 11.54666667,
+  "source": "wikipedia: Olympiastadion (Munich)"
  },
  "Getafe": {
   "lat": 40.325556,
@@ -224,6 +369,11 @@
   "lon": -0.19194444,
   "source": "wikipedia: Accra Sports Stadium"
  },
+ "Glentoran FC": {
+  "lat": 54.582625,
+  "lon": -5.95518889,
+  "source": "wikipedia: Linfield F.C."
+ },
  "Guatemala": {
   "lat": 14.9717343,
   "lon": -91.7785216,
@@ -234,6 +384,11 @@
   "lon": -13.67291667,
   "source": "wikipedia: 28 September Stadium"
  },
+ "Gunners FC": {
+  "lat": 51.555,
+  "lon": -0.10833333,
+  "source": "wikipedia: Emirates Stadium"
+ },
  "Hannover 96": {
   "lat": 52.37658889,
   "lon": 9.7729,
@@ -243,6 +398,11 @@
   "lat": 31.27315,
   "lon": 34.77936111,
   "source": "wikipedia: Turner Stadium"
+ },
+ "Hetten FC": {
+  "lat": 16.84027778,
+  "lon": 42.59611111,
+  "source": "wikipedia: King Faisal Sports City Stadium"
  },
  "Iceland": {
   "lat": 64.13548,
@@ -284,10 +444,40 @@
   "lon": 7.68682,
   "source": "manual"
  },
+ "KS Polonia Nysa": {
+  "lat": 50.47138889,
+  "lon": 17.33388889,
+  "source": "thesportsdb: Stadion KS Polonia, Nysa, Poland"
+ },
+ "KS Wisloka Debica": {
+  "lat": 50.05146,
+  "lon": 21.41141,
+  "source": "thesportsdb: Park Arena, Dębica, Poland"
+ },
+ "Kigezi Homeboyz FC": {
+  "lat": -1.24857,
+  "lon": 29.98993,
+  "source": "thesportsdb: KHB Al-Madinah Stadium, Kabale, Uganda"
+ },
+ "Kimberley de Mar Del Plata": {
+  "lat": -38.01805556,
+  "lon": -57.58222222,
+  "source": "wikipedia: Estadio José María Minella"
+ },
  "KuPS Kuopio": {
   "lat": 62.88463,
   "lon": 27.6718,
   "source": "wikipedia: Kuopio Football Stadium"
+ },
+ "Kuwait": {
+  "lat": 29.36972,
+  "lon": 47.97833,
+  "source": "national team: Kuwait City (largest city)"
+ },
+ "Latina Calcio": {
+  "lat": 41.46361111,
+  "lon": 12.89888889,
+  "source": "wikipedia: Stadio Domenico Francioni"
  },
  "Leicester City": {
   "lat": 52.62027778,
@@ -303,6 +493,11 @@
   "lat": 47.14027778,
   "lon": 9.51027778,
   "source": "wikipedia: Rheinpark Stadion"
+ },
+ "Limavady United FC": {
+  "lat": 55.04923889,
+  "lon": -6.936775,
+  "source": "wikipedia: The Showgrounds (Limavady)"
  },
  "Lithuania": {
   "lat": 54.70833333,
@@ -323,6 +518,11 @@
   "lat": 49.57722222,
   "lon": 6.11472222,
   "source": "wikipedia: Stade de Luxembourg"
+ },
+ "Maan SC": {
+  "lat": 30.19624,
+  "lon": 35.73405,
+  "source": "thesportsdb: Ma'an, Ma'an, Jordan"
  },
  "Mali": {
   "lat": 12.6043766,
@@ -369,6 +569,11 @@
   "lon": -7.55785,
   "source": "city: Casablanca"
  },
+ "Mount Pleasant FC": {
+  "lat": 50.7852389,
+  "lon": 0.0500014,
+  "source": "openstreetmap: Newhaven Town FC, Court Farm Road, Newhaven, Mount Pleasant, Lewes, East Sussex, England, BN9 9DB, United Kingdom"
+ },
  "Mozambique": {
   "lat": -25.828,
   "lon": 32.575,
@@ -403,6 +608,11 @@
   "lat": 52.23527778,
   "lon": -0.93333333,
   "source": "wikipedia: Sixfields Stadium"
+ },
+ "Norway": {
+  "lat": 59.91273,
+  "lon": 10.74609,
+  "source": "national team: Oslo (largest city)"
  },
  "OH Leuven": {
   "lat": 50.8684105,
@@ -439,6 +649,11 @@
   "lon": -96.125,
   "source": "wikipedia: Estadio Luis \"Pirata\" Fuente"
  },
+ "Plaza Colonia": {
+  "lat": -34.46694444,
+  "lon": -57.84527778,
+  "source": "wikipedia: Estadio Profesor Alberto Suppici"
+ },
  "Plymouth Argyle": {
   "lat": 50.38805556,
   "lon": -4.15083333,
@@ -454,10 +669,20 @@
   "lon": -4.14722222,
   "source": "wikipedia: Plymouth Parkway F.C."
  },
+ "Poland": {
+  "lat": 52.22977,
+  "lon": 21.01178,
+  "source": "national team: Warsaw (largest city)"
+ },
  "Ponte Preta": {
   "lat": -27.67688,
   "lon": -52.51736,
   "source": "city"
+ },
+ "Portugal": {
+  "lat": 41.1618235,
+  "lon": -8.5837492,
+  "source": "openstreetmap: Estádio do Dragão, Via Futebol Clube do Porto, Monte Aventino, Campanhã, Porto, 4350-415, Portugal"
  },
  "Puerto Rico": {
   "lat": 18.1925088,
@@ -474,15 +699,40 @@
   "lon": -3.68835,
   "source": "stadium"
  },
+ "Red Bull Bragantino SP": {
+  "lat": -22.9653902,
+  "lon": -46.5368855,
+  "source": "openstreetmap: Estádio Nabi Abi Chedid, 157, Rua Emílio Colela, Vila Davis Lang, Bragança Paulista, São Paulo, Região Sudeste, 12914-410, Brasil"
+ },
  "Red Star Belgrade": {
   "lat": 44.78333333,
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
  },
+ "SK Sigma Olomouc": {
+  "lat": 49.6,
+  "lon": 17.24833333,
+  "source": "wikipedia: Andrův stadion"
+ },
+ "SK Sigma Olomouc B": {
+  "lat": 49.6,
+  "lon": 17.24833333,
+  "source": "senior team's ground: wikipedia: Andrův stadion"
+ },
  "Salamanca UDS": {
   "lat": 40.99527778,
   "lon": -5.665,
   "source": "wikipedia: Helmántico Stadium"
+ },
+ "San Marino": {
+  "lat": 43.97138889,
+  "lon": 12.47694444,
+  "source": "wikipedia: San Marino Stadium"
+ },
+ "Saudi Arabia": {
+  "lat": 24.78833333,
+  "lon": 46.83916667,
+  "source": "wikipedia: King Fahd Sports City Stadium"
  },
  "Scotland": {
   "lat": 55.82583333,
@@ -514,6 +764,11 @@
   "lon": 5.1661364,
   "source": "openstreetmap: Daio Wasabi Stayen Stadium, Tiensesteenweg, Sint-Truiden, Hasselt, Limburg, Vlaanderen, 3800, België / Belgique / Belgien"
  },
+ "Skive IK": {
+  "lat": 56.56813889,
+  "lon": 9.03772222,
+  "source": "wikipedia: Skive Stadium"
+ },
  "Slovakia": {
   "lat": 48.37333333,
   "lon": 17.59166667,
@@ -533,6 +788,11 @@
   "lat": -26.2317243,
   "lon": 27.9227989,
   "source": "openstreetmap: Orlando Amstel Arena, Klipspruit Valley Road, Johannesburg Ward 39, Johannesburg, City of Johannesburg Metropolitan Municipality, Gauteng, 1804, South Africa"
+ },
+ "Spain": {
+  "lat": 40.45306,
+  "lon": -3.68835,
+  "source": "wikipedia: Bernabéu (stadium)"
  },
  "Sportivo Luqueño": {
   "lat": -25.27222222,
@@ -564,10 +824,25 @@
   "lon": -42.40555,
   "source": "city"
  },
+ "TSV 1860 Munich": {
+  "lat": 48.13743,
+  "lon": 11.57549,
+  "source": "thesportsdb: Grünwalder Stadion, Munich"
+ },
+ "TSV 1860 Munich II": {
+  "lat": 48.13743,
+  "lon": 11.57549,
+  "source": "senior team's ground: thesportsdb: Grünwalder Stadion, Munich"
+ },
  "Trabzonspor": {
   "lat": 41.0,
   "lon": 39.72,
   "source": "manual"
+ },
+ "Transit Camp FC": {
+  "lat": 32.78444444,
+  "lon": -117.12277778,
+  "source": "wikipedia: Snapdragon Stadium"
  },
  "Tunisia": {
   "lat": 34.7329314,
@@ -583,6 +858,21 @@
   "lat": 38.4178287,
   "lon": 26.914903,
   "source": "city: Izmir"
+ },
+ "United Arab Emirates": {
+  "lat": 25.0657,
+  "lon": 55.17128,
+  "source": "national team: Dubai (largest city)"
+ },
+ "Uzbekistan": {
+  "lat": 39.7410223,
+  "lon": 64.1901291,
+  "source": "openstreetmap: Stadion, 80V140, Jondor, Jondor tumani, Buxoro Viloyati, 200600, Oʻzbekiston"
+ },
+ "VfL Wolfsburg": {
+  "lat": 52.4346,
+  "lon": 10.807,
+  "source": "wikipedia: AOK Stadion"
  },
  "Vietnam": {
   "lat": 20.4358,
