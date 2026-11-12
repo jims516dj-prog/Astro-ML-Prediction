@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 2          # entries made by an older version of the rules are redone (their item is kept)
+VERSION = 3          # entries made by an older version of the rules are redone (their item is kept)
 START = time.time()
 
 
@@ -120,6 +120,26 @@ def names_agree(team: str, e) -> bool:
                for a in mine for b in theirs)
 
 
+def competition_country(division: str) -> str | None:
+    """ISO code of a domestic competition's country, from its name ("Oman: FA Cup", "Germany Amateur: Bayernliga",
+    "England FA Cup"); None for an international one ("International: ...", "World: ...", "UEFA ...")."""
+    from astrofoot import dataset
+    from astrofoot.live import team_identity
+    name = dataset.league_name(division) or ""
+    if ":" in name:
+        heads = [re.sub(r"\s+Amateur$", "", name.split(":", 1)[0].strip())]
+    else:
+        words = name.split()
+        heads = [" ".join(words[:i]) for i in range(min(3, len(words) - 1), 0, -1)]
+    for h in heads:
+        if re.match(r"(?i)(international|world|uefa|caf|concacaf|conmebol|afc|club|africa|europe|asia)\b", h):
+            return None
+        code = team_identity(h)[0]
+        if code:
+            return "GB" if code.startswith("GB-") else code
+    return None
+
+
 def teams_and_countries():
     """{team: ISO code or None} for every club in the history and the live records (men's)."""
     out = {}
@@ -132,12 +152,16 @@ def teams_and_countries():
                 out.setdefault(t, c)
     try:
         from astrofoot import live
+        comp: dict[str, str | None] = {}
         for r in live.read_predictions():
-            c = geo.DIVISION_COUNTRY.get(r["division"])
-            if not c and r.get("venue_lat") is not None and r["division"] not in live.MULTI_CLUB:
-                c = nations.country_at(r["venue_lat"], r["venue_lon"])   # the home side's ground
+            div = r["division"]
+            if div not in comp:
+                comp[div] = geo.DIVISION_COUNTRY.get(div) or competition_country(div)
+            c = comp[div]                             # a domestic competition: both sides are from its country
+            out[r["away"]] = out.get(r["away"]) or c
+            if not c and r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
+                c = nations.country_at(r["venue_lat"], r["venue_lon"])   # else the home side's ground
             out[r["home"]] = out.get(r["home"]) or c
-            out.setdefault(r["away"], None)
     except Exception as e:  # noqa: BLE001
         print("live record unavailable:", e)
     clubs = {}
@@ -158,7 +182,8 @@ def merge(theirs_file: str) -> None:
         theirs = json.loads(Path(theirs_file).read_text())
     except (OSError, ValueError):
         theirs = {}
-    rank = lambda v: (bool((v or {}).get("short")), (v or {}).get("v") == VERSION)  # noqa: E731
+    # a decision made under the current rules wins (a rejection included); then a name over none
+    rank = lambda v: ((v or {}).get("v") == VERSION, bool((v or {}).get("short")))  # noqa: E731
     out = dict(theirs)
     for k, v in mine.items():
         if k not in out or rank(v) >= rank(out[k]):
@@ -225,18 +250,19 @@ def main():
                 why.append(f"{q}: no country to confirm with")
                 continue                              # nothing to confirm the match with
             if not names_agree(t, e):
+                why.append(f"{q}: names differ")
                 print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
                 continue
             pick = (q, e)
             break
         if not pick:
-            cache[t] = {"tried": month, "why": "; ".join(why[1:] or why)}
+            cache[t] = {"tried": month, "why": "; ".join(why[1:] or why), "v": VERSION}
             continue
         q, e = pick
         legal, lang = official(e)
         short = short_name(e, lang)
         if not short:
-            cache[t] = {"tried": month, "why": f"{q}: no Latin-script name"}
+            cache[t] = {"tried": month, "why": f"{q}: no Latin-script name", "v": VERSION}
             continue
         cache[t] = {"short": short, "legal": legal or short, "qid": q, "v": VERSION}
         found += 1

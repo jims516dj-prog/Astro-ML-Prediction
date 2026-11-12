@@ -150,10 +150,9 @@
 "v": 2
 },
 "Al Nasr": {
-"legal": "Alshariqa",
-"qid": "Q812723",
-"short": "Alshariqa",
-"v": 2
+"tried": "2026-11",
+"v": 3,
+"why": "Q812723: in ['AE'], not OM"
 },
 "Al Nasr Cairo": {
 "tried": "2026-11"

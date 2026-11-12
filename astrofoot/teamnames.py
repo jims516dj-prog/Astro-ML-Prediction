@@ -111,13 +111,20 @@ def display(name: str) -> str:
     if n:
         return n
     c = _clubs().get(name)
-    if c and c.get("short"):
+    if c and _latin(c.get("short")):
         return c["short"]
     base, suffix = split(name)
     c = _clubs().get(base) if suffix else None
-    if c and c.get("short"):
+    if c and _latin(c.get("short")):
         return f"{c['short']}{_suffix(suffix)}"
     return name
+
+
+def _latin(s: str | None) -> str | None:
+    """The name when written in the Latin script (name numerology reads Latin letters), else None."""
+    import unicodedata
+    letters = [ch for ch in s or "" if ch.isalpha()]
+    return s if letters and all("LATIN" in unicodedata.name(ch, "") for ch in letters) else None
 
 
 def legal(name: str, women: bool = False) -> str | None:
@@ -129,11 +136,11 @@ def legal(name: str, women: bool = False) -> str | None:
         return split(n)[0]
     for key in ((f"W:{name}",) if women else (name,)):     # a women's team never takes the men's club's name
         c = _clubs().get(key)
-        if c and c.get("legal"):
-            return c["legal"]
+        if c and (_latin(c.get("legal")) or _latin(c.get("short"))):
+            return _latin(c.get("legal")) or _latin(c.get("short"))
     base, suffix = split(name)
     if suffix and not women:
         c = _clubs().get(base)
-        if c and c.get("legal"):
-            return c["legal"]
+        if c and (_latin(c.get("legal")) or _latin(c.get("short"))):
+            return _latin(c.get("legal")) or _latin(c.get("short"))
     return None
