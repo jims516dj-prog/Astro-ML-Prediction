@@ -80,6 +80,18 @@ def ground(f: dict, team: str, div: str, venue_of):
     return (got[0], got[1], f"{cat}: {got[2]} (main city; ground unknown)") if got else None
 
 
+AGE = re.compile(r"(?i)\b(?:U-?|Under[- ]?|Sub-?)(\d{2})\b")
+
+
+def with_age(team: str, f: dict) -> str:
+    """OddsPapi names youth sides like the senior ones ("England" in its "U21 Friendly Games"): add the age group,
+    so that the game is never taken for (or forecast with the data of) the senior teams."""
+    m = AGE.search(f"{f.get('tournamentName') or ''} {f.get('categoryName') or ''}")
+    if not m or AGE.search(team):
+        return team
+    return f"{team} U{m.group(1)}"
+
+
 def league_name(code: str) -> str | None:
     if code.startswith(MEN):
         return names().get(code[len(MEN):])
@@ -234,6 +246,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
         h, a = (f.get("participant1Name") or "").strip(), (f.get("participant2Name") or "").strip()
         if not h or not a:
             continue
+        h, a = with_age(h, f), with_age(a, f)
         tid = str(f.get("tournamentId"))
         tn[tid] = f"{f.get('categoryName')}: {f.get('tournamentName')}"
         div = (WOMEN if women else MEN) + tid

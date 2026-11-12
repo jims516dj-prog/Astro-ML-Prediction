@@ -486,7 +486,13 @@ publishes odds for African domestic leagues (Egypt, Morocco, Nigeria…), so tho
 These competitions are handled like the UEFA ones: names matched strictly (cups use every club name we know), grounds
 found from our tables, the stadium ESPN names (its Wikipedia page) or its city, then a search, and cached in
 `ledger/european_venues.json`; results from ESPN (and football-data.org where it covers them); void after 3 days without a
-result. A game never gets two forecasts across sources (same competition, kickoff within 6 hours, matching names).
+result. A game never gets two forecasts across sources or competition codes: kickoffs within 6 hours and both teams
+the same, where national sides are compared by country ("South Korea" = "Korea Republic", "Czechia" = "Czech Republic";
+England, Scotland, Wales and Northern Ireland stay apart) and age, reserve and level markers must agree ("Denmark U21"
+is not "Denmark"). One national side alone is enough within 2 hours, since a team does not play twice at once; a source
+that names the wrong opponent still lists that one game. Every cycle also withdraws the later of any two open forecasts
+for one game, and any youth game sealed under the senior teams' names. A withdrawal never depends on the result: the
+earlier forecast stands, the withdrawn one stays in the ledger with its reason and is listed only under "void".
 Worldwide lists such as Flashscore also include women's, youth and many lower or regional leagues without published odds,
 which cannot be forecast this way.
 

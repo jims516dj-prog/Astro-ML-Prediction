@@ -16,6 +16,7 @@ import hashlib
 import io
 import json
 import os
+import re
 import urllib.request
 from zoneinfo import ZoneInfo
 from datetime import datetime, timedelta, timezone
@@ -255,20 +256,140 @@ def predict_fixture(fx: dict, now: datetime) -> dict | None:
 SAME_GAME_HOURS = 6
 
 
-def same_game(home1: str, away1: str, ko1: str, home2: str, away2: str, ko2: str, threshold: float = 0.6) -> bool:
-    """Two entries are one game: kickoffs within SAME_GAME_HOURS and both clubs' names match (either way
-    round), so "Sheffield United" and "Sheffield Utd", or "Bayer Leverkusen" and "Leverkusen", are one game."""
-    from .results2 import similarity
-    if abs((datetime.fromisoformat(ko1) - datetime.fromisoformat(ko2)).total_seconds()) > SAME_GAME_HOURS * 3600:
+ONE_SIDE_HOURS = 2          # one side the same team, the other side spelt differently (or wrongly) by a source
+
+# age, reserve and women's markers: "Rosario Central" and "Rosario Central Reserve" are different teams
+_LEVELS = [(re.compile(r"(?i)\b(?:u-?|under[- ]?|sub-?)(\d{2})\b"), lambda m: f"u{m.group(1)}"),
+           (re.compile(r"(?i)\b(?:reserves?|res\.?|ii|b|2)$|\b(?:reserves?|res\.)(?=\s|$)"), lambda m: "res"),
+           (re.compile(r"(?i)\b(?:women|woman|ladies|femenil|femenino|feminino|f[ée]minine|frauen|femminile|dames|w)\b"
+                       r"|\(w\)"), lambda m: "w")]
+
+
+def team_identity(name: str) -> tuple[str | None, str, frozenset]:
+    """(national code or None, name without level markers, level markers) of a team name."""
+    from .nations import code_of
+    base, level = (name or "").strip(), set()
+    for rx, tag in _LEVELS:
+        for m in rx.finditer(base):
+            level.add(tag(m))
+        base = rx.sub(" ", base)
+    base = re.sub(r"\s+", " ", base.replace("()", " ")).strip(" .-")
+    code = code_of(base)
+    if code == "GB":                                  # England, Scotland, Wales, Northern Ireland: four teams
+        code = f"GB-{base.lower()}"
+    # women's markers are not compared: men's and women's games never share a ledger, and sources differ in
+    # whether they write "Spain" or "Spain W" for a women's side
+    return code, base, frozenset(level - {"w"})
+
+
+def same_team(a: str, b: str) -> bool | None:
+    """True / False when the names surely are / are not one team; None when only the spelling can tell.
+    National sides compare by country code ("South Korea" = "Korea Republic"), and the level must agree."""
+    ca, ba, la = team_identity(a)
+    cb, bb, lb = team_identity(b)
+    if la != lb:
         return False
-    straight = similarity(home1, home2) >= threshold and similarity(away1, away2) >= threshold
-    swapped = similarity(home1, away2) >= threshold and similarity(away1, home2) >= threshold
-    return straight or swapped
+    if ca and cb:
+        return ca == cb
+    if bool(ca) != bool(cb):
+        return False                    # a country and a club
+    return None
+
+
+def same_game(home1: str, away1: str, ko1: str, home2: str, away2: str, ko2: str, threshold: float = 0.6) -> bool:
+    """Two entries are one game. Kickoffs within SAME_GAME_HOURS and both teams the same ("Sheffield United" and
+    "Sheffield Utd", "South Korea" and "Korea Republic"), either way round; or kickoffs within ONE_SIDE_HOURS and one
+    side surely the same team, since a team does not play two games in two hours (a source that names the wrong
+    opponent, such as "Congo Republic" for "Congo DR", still lists that one game). Age, reserve and women's markers
+    must agree: "Rosario Central" and "Rosario Central Reserve" are different teams."""
+    from .results2 import similarity
+    gap = abs((datetime.fromisoformat(ko1) - datetime.fromisoformat(ko2)).total_seconds())
+    if gap > SAME_GAME_HOURS * 3600:
+        return False
+
+    def same(a, b, th):
+        t = same_team(a, b)
+        return t if t is not None else similarity(a, b) >= th
+
+    def sure(a, b):                      # one side certainly the same national team (clubs share names:
+        return bool(same_team(a, b))     # Nacional of Uruguay and of Madeira)
+
+    straight = same(home1, home2, threshold) and same(away1, away2, threshold)
+    swapped = same(home1, away2, threshold) and same(away1, home2, threshold)
+    if straight or swapped:
+        return True
+    if gap <= ONE_SIDE_HOURS * 3600:
+        return any(sure(x, y) for x, y in ((home1, home2), (away1, away2), (home1, away2), (away1, home2)))
+    return False
+
+
+AGE_GROUP = re.compile(r"(?i)\b(?:U-?|Under[- ]?|Sub-?)(\d{2})\b")
+
+
+def misnamed_youth(rec: dict) -> bool:
+    """A youth game sealed under the senior teams' names (the competition names an age group, the teams none)."""
+    return bool(AGE_GROUP.search(str(rec.get("league") or ""))) and not any(
+        AGE_GROUP.search(rec[s]) for s in ("home", "away"))
+
+
+def _names(rec: dict) -> tuple[str, str]:
+    m = AGE_GROUP.search(str(rec.get("league") or ""))
+    if m and misnamed_youth(rec):
+        return f"{rec['home']} U{m.group(1)}", f"{rec['away']} U{m.group(1)}"
+    return rec["home"], rec["away"]
+
+
+def duplicates(preds: list[dict], withdrawn: set[str]) -> list[tuple[dict, dict]]:
+    """(later, earlier) pairs of active forecasts for one game, across competitions and sources."""
+    act = sorted((r for r in preds if r["match_key"] not in withdrawn), key=lambda r: r["committed_at"])
+    out, gone = [], set()
+    for i, r in enumerate(act):
+        for e in act[:i]:
+            if e["match_key"] in gone or e["match_key"] == r["match_key"]:
+                continue
+            if same_game(*_names(r), r["kickoff_utc"], *_names(e), e["kickoff_utc"]):
+                out.append((r, e))
+                gone.add(r["match_key"])
+                break
+    return out
+
+
+def withdraw_duplicates(now: datetime, ledger: Path = LEDGER) -> list[str]:
+    """Withdraw unsettled forecasts that should not stand, never depending on the result:
+    a youth game sealed under the senior teams' names (their ratings and founding days were used), then the
+    later of two forecasts for one game (sealed from two sources under different names or codes)."""
+    preds = read_predictions(ledger)
+    res = read_results(ledger)
+    withdrawn = {k for k, v in res.items() if str(v.get("reason", "")).startswith("withdrawn")}
+    stamp = now.isoformat(timespec="seconds")
+    new, notes = [], []
+
+    def withdraw(rec, why):
+        when = "before kickoff" if now < datetime.fromisoformat(rec["kickoff_utc"]) else "after kickoff"
+        new.append(seal({"match_key": rec["match_key"], "void": True, "settled_at": stamp, "source": "none",
+                         "reason": f"withdrawn {when}: {why}"}))
+        withdrawn.add(rec["match_key"])
+    for r in preds:
+        if r["match_key"] not in res and r["match_key"] not in withdrawn and misnamed_youth(r):
+            withdraw(r, f"a youth game ({r.get('league')}) sealed under the senior teams' names, so their ratings "
+                        "and founding days were used")
+            notes.append(f"{r['home']} v {r['away']} ({r.get('league')}): youth game under senior names")
+    for later, earlier in duplicates(preds, withdrawn):
+        if later["match_key"] in res:
+            continue                                  # already settled: the ledger stays as it is
+        withdraw(later, f"duplicate of {earlier['home']} v {earlier['away']} ({earlier.get('league') or earlier['division']}, "
+                        f"{earlier['match_key']}), forecast earlier from another source")
+        notes.append(f"{later['home']} v {later['away']} ({later['division']}) = {earlier['home']} v {earlier['away']} "
+                     f"({earlier['division']})")
+    if new:
+        _append(ledger / "results.jsonl", new)
+    return notes
 
 
 def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledger: Path = LEDGER) -> dict:
     """Seal forecasts for fixtures kicking off within the horizon. A fixture is never sealed twice: not under
-    the same key, and not under another spelling from another source (same_game, within its competition)."""
+    the same key, and not under another spelling from another source or competition code (same_game)."""
+    dup = withdraw_duplicates(now, ledger)
     preds = read_predictions(ledger)
     withdrawn = {k for k, v in read_results(ledger).items() if str(v.get("reason", "")).startswith("withdrawn")}
     done = {r["match_key"] for r in preds}
@@ -278,8 +399,8 @@ def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledge
         ko = datetime.fromisoformat(fx["kickoff_utc"])
         if fx["match_key"] in done or not (now < ko <= now + timedelta(days=horizon_days)):
             continue
-        twin = next((r for r in active if r["division"] == fx["division"] and
-                     same_game(fx["home"], fx["away"], fx["kickoff_utc"], r["home"], r["away"], r["kickoff_utc"])), None)
+        twin = next((r for r in active
+                     if same_game(fx["home"], fx["away"], fx["kickoff_utc"], r["home"], r["away"], r["kickoff_utc"])), None)
         if twin is not None:
             skipped.append(f"{fx['home']} v {fx['away']} ({fx['division']}): already forecast as "
                            f"{twin['home']} v {twin['away']} ({twin['match_key']})")
@@ -293,7 +414,7 @@ def commit(fixtures: list[dict], now: datetime, horizon_days: float = 4.0, ledge
         active.append(rec)
     if new:
         _append(ledger / "predictions" / f"{now:%Y-%m-%d}.jsonl", new)
-    return {"committed": len(new), "skipped": skipped}
+    return {"committed": len(new), "skipped": [f"withdrawn as a duplicate: {d}" for d in dup] + skipped}
 
 
 # ----------------------------------------------------------------------------- settle
