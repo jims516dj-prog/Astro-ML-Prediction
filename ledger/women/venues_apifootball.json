@@ -1,7 +1,22 @@
 {
+ "Hamburger SV W": {
+  "lat": 53.588637,
+  "lon": 9.9442513,
+  "source": "openstreetmap: Sportpark Eimsbüttel, Hagenbeckstraße, Stellingen, Eimsbüttel, Hamburg, 22527, Deutschland"
+ },
  "Osasuna": {
   "lat": 42.796667,
   "lon": -1.636944,
   "source": "stadium"
+ },
+ "Sturm Graz W": {
+  "lat": 47.0462785,
+  "lon": 15.4790081,
+  "source": "openstreetmap: SK Sturm Graz, 118, Sternäckerweg, Katastralgemeinde Graz Stadt-Messendorf, Sankt Peter, Graz, Steiermark, 8042, Österreich"
+ },
+ "Torreense W": {
+  "lat": 39.0947815,
+  "lon": -9.256795,
+  "source": "openstreetmap: Estádio Manuel Marques, Rua Cândido dos Reis, Santa Maria, São Pedro e Matacães, Torres Vedras, Lisboa, 2560-273, Portugal"
  }
 }

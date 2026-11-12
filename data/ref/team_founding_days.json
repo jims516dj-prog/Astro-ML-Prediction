@@ -126,6 +126,7 @@
 "source": "wikidata (Q65124755)"
 },
 "Al Aqaba": null,
+"Al Nasr": null,
 "Al Nasr Cairo": null,
 "Al Yarmouk": null,
 "Alanyaspor": {
@@ -307,6 +308,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Argentinos Juniors Res.": null,
 "Aris": {
 "date": "1914-03-25",
 "name": "Aris Thessaloniki F.C."
@@ -503,6 +505,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Bahla": null,
 "Baladiyyat AL Mehalla": null,
 "Ballymena United": null,
 "Baltika": {
@@ -541,6 +544,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Barracas Central Res.": null,
 "Barrow": {
 "date": null,
 "name": "Barrow A.F.C.",
@@ -1426,6 +1430,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Czechia U21": null,
 "C\u00facuta Deportivo": {
 "date": "1924-09-10",
 "name": "C\u00facuta Deportivo"
@@ -1510,6 +1515,10 @@
 "date": null,
 "name": "Derry City F.C.",
 "tried": "2026-11"
+},
+"Dhofar": {
+"date": "1972-05-20",
+"name": "Dhofar Club"
 },
 "Dijon": {
 "date": "1998-05-25",
@@ -1959,6 +1968,7 @@
 "date": "1917-12-06",
 "name": "Finland"
 },
+"Finland U21": null,
 "Finn Harps": {
 "date": null,
 "name": "Finn Harps F.C.",
@@ -3705,6 +3715,10 @@
 "date": "1925-03-10",
 "name": "Olympiacos F.C."
 },
+"Oman Club": {
+"date": "1970-07-23",
+"name": "Oman"
+},
 "Omiya Ardija": {
 "date": null,
 "name": "RB Omiya Ardija",
@@ -4244,6 +4258,7 @@
 "date": "1901-03-10",
 "name": "Stade Rennais F.C."
 },
+"Republic of Ireland U21": null,
 "Ried": {
 "date": "1912-05-05",
 "name": "SV Ried"
@@ -4665,6 +4680,7 @@
 "name": "Slovenia",
 "tried": "2026-11"
 },
+"Smail": null,
 "Sochaux": {
 "date": null,
 "tried": "2026-11"
@@ -4916,6 +4932,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Sur": null,
 "Suriname": {
 "date": "1975-11-25",
 "name": "Suriname"
@@ -5155,6 +5172,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"T\u00fcrkiye U21": null,
 "U Craiova": {
 "date": null,
 "name": "CS Universitatea Craiova",

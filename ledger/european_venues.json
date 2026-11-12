@@ -519,6 +519,11 @@
   "lon": 24.93545,
   "source": "national team: Helsinki (largest city)"
  },
+ "Finland U21": {
+  "lat": 61.5003,
+  "lon": 23.7853,
+  "source": "wikipedia: Tammelan Stadion"
+ },
  "France": {
   "lat": 48.9244726,
   "lon": 2.3601325,
@@ -1308,6 +1313,11 @@
   "lat": 38.4178287,
   "lon": 26.914903,
   "source": "city: Izmir"
+ },
+ "Türkiye U21": {
+  "lat": 41.0420212,
+  "lon": 40.5725731,
+  "source": "openstreetmap: Çaykur Didi Stadyumu, Menderes Bulvarı , İslampaşa Mahallesi, Rize Merkez, Rize, Karadeniz Bölgesi, 53020, Türkiye"
  },
  "Ulaanbaatar": {
   "lat": 47.90213889,
