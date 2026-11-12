@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_teamday.html" as tdm %}
 {% block title %}{{ r.team_a }} v {{ r.team_b }} · Astro Football Lab{% endblock %}
 {% set S = a.synthesis %}{% set E4 = a.engine4 %}
 {% set name = {"fav": a.fav, "dog": a.dog, "draw": "Draw", "disabled": "— disabled —"} %}
@@ -16,6 +17,7 @@
 {% if r.post_hoc %}<p class="callout small">Post-hoc analysis: the result was already known when this record was created. Inputs may be biased by that knowledge; the record is down-weighted in training.</p>{% endif %}
 
 {% with team_a = r.team_a, team_b = r.team_b %}{% include "_analysis.html" %}{% endwith %}
+{% if td %}{{ tdm.panel(td, td_research) }}{% endif %}
 
 <section class="two">
   <div class="card">

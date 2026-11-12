@@ -103,8 +103,10 @@ def _team_day(dob: str, name: str, day: str, tz: str | None) -> dict:
             "num": dc.num_day(dob, name, day), "num_attack": num_attack(dob, day)}
 
 
-def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, resolve: bool = True) -> dict:
-    """Both teams' day and scoring readings for a match, and who each reading favours."""
+def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, resolve: bool = True,
+            founded: dict | None = None) -> dict:
+    """Both teams' day and scoring readings for a match, and who each reading favours. `founded` ({"home": date,
+    "away": date}) uses founding dates given on Analyze instead of looking the teams up."""
     from . import geo
     from .tennis.venue import _dt
     from zoneinfo import ZoneInfo
@@ -117,7 +119,8 @@ def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, res
     day = (w.astimezone(ZoneInfo(tz)) if tz else w).strftime("%Y-%m-%d")
     out = {"day": day, "tz": tz}
     for side, team in (("home", home), ("away", away)):
-        f = founding(team, con, resolve)
+        given = an.clean_dob((founded or {}).get(side))
+        f = {"date": given, "name": team} if given else founding(team, con, resolve)
         r = _team_day(f["date"], f["name"], day, tz) if f else None
         out[side] = {"team": team, "founded": f["date"] if f else None, "chart_name": f["name"] if f else None,
                      **(r or {"astro": {"score": None, "contacts": []}, "attack": {"score": None, "contacts": []},

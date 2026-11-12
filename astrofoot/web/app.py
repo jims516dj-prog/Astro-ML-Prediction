@@ -231,6 +231,7 @@ def match_page(request: Request, mid: str, dup: int = 0):
     wheels = {z: chart_wheel(a["chart"][z], z) for z in ("tropical", "lahiri")}
     return T.TemplateResponse(request, "match.html", {
         "r": r, "a": a, "wheels": wheels, "audit": db.audit_trail(c, mid), "preds": db.predictions_for(c, mid),
+        "td": _manual_teamday(dict(r), c), "td_research": teamday.research(),
         "versions": json.loads(r["versions_json"] or "[]"), "dup": dup, "page": "dataset"})
 
 
@@ -485,6 +486,20 @@ def _teamday(r: dict) -> dict | None:
     """The day reading of a soccer game (founding dates already looked up; none are looked up while a page loads)."""
     try:
         return teamday.reading(r["home"], r["away"], r["kickoff_utc"], r.get("venue_lat"), r.get("venue_lon"), resolve=False)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _manual_teamday(r: dict, c=None) -> dict | None:
+    """The day reading of a game analysed by hand: home and away from its home side; founding dates given on
+    Analyze (your own chart or the table's) first, else looked up by name."""
+    try:
+        home_a = (r.get("home_side") or "A") != "B"
+        home, away = (r["team_a"], r["team_b"]) if home_a else (r["team_b"], r["team_a"])
+        fj = json.loads(r.get("founding_json") or "{}") or {}
+        fa, fb = (fj.get("founding_a") or {}).get("founded_date"), (fj.get("founding_b") or {}).get("founded_date")
+        founded = {"home": fa if home_a else fb, "away": fb if home_a else fa}
+        return teamday.reading(home, away, r["kickoff_utc"], r.get("lat"), r.get("lon"), con=c, founded=founded)
     except Exception:  # noqa: BLE001
         return None
 
