@@ -2004,6 +2004,11 @@
 "name": "FC Roskilde",
 "tried": "2026-11"
 },
+"FC Stade Lausanne-Ouchy": {
+"date": "2000-07-01",
+"name": "FC Stade Lausanne-Ouchy",
+"source": "wikidata (Q869907)"
+},
 "FC Thun": {
 "date": "1898-05-01",
 "name": "FC Thun"
