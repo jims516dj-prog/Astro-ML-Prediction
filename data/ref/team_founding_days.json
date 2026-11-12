@@ -119,7 +119,11 @@
 "date": "1966-07-02",
 "name": "Antalyaspor"
 },
-"Antwerp": null,
+"Antwerp": {
+"date": "1880-09-01",
+"name": "Royal Antwerp F.C.",
+"source": "wikipedia:de (Q732002)"
+},
 "Apollon": null,
 "Arbroath": {
 "date": "1878-07-01",
@@ -150,7 +154,11 @@
 },
 "Arsenal Sarandi": null,
 "Arsenal Tula": null,
-"Ascoli": null,
+"Ascoli": {
+"date": "2018-07-18",
+"name": "Ascoli Calcio 1898 FC",
+"source": "wikipedia:en (Q6630)"
+},
 "Asteras Tripolis": {
 "date": "1931-03-26",
 "name": "Asteras Tripoli F.C."
@@ -176,7 +184,11 @@
 "date": "1966-08-18",
 "name": "Athens Kallithea F.C."
 },
-"Athletic": null,
+"Athletic": {
+"date": "1898-07-18",
+"name": "Athletic Club",
+"source": "wikidata (Q8687)"
+},
 "Athletico-PR": null,
 "Athlone": null,
 "Atl. Rafaela": null,
@@ -242,7 +254,11 @@
 "date": "1930-11-12",
 "name": "Clube Desportivo das Aves"
 },
-"Avispa Fukuoka": null,
+"Avispa Fukuoka": {
+"date": "1994-09-29",
+"name": "Avispa Fukuoka",
+"source": "wikipedia:de (Q791164)"
+},
 "Ayr": null,
 "Azerbaijan": null,
 "BK H\u00e4cken": {
@@ -317,7 +333,11 @@
 "name": "Be\u015fikta\u015f J.K."
 },
 "Betis": null,
-"Beveren": null,
+"Beveren": {
+"date": "1936-05-01",
+"name": "Sportkring Beveren",
+"source": "wikipedia:de (Q509170)"
+},
 "Bielefeld": null,
 "Birmingham": null,
 "Bistrita": null,
@@ -341,7 +361,11 @@
 "date": "1938-04-14",
 "name": "VfL Bochum"
 },
-"Bodo/Glimt": null,
+"Bodo/Glimt": {
+"date": "1916-02-29",
+"name": "FK Bod\u00f8/Glimt",
+"source": "wikidata (Q478167)"
+},
 "Bodrumspor": null,
 "Bohemians": null,
 "Bologna": {
@@ -355,7 +379,11 @@
 "date": "1881-10-01",
 "name": "FC Girondins de Bordeaux"
 },
-"Boreham Wood": null,
+"Boreham Wood": {
+"date": "1948-06-24",
+"name": "Boreham Wood F.C.",
+"source": "wikipedia:de (Q4094837)"
+},
 "Boston Utd": null,
 "Botafogo RJ": null,
 "Boulogne": null,
@@ -367,7 +395,11 @@
 "Brackley Town": null,
 "Bradford": null,
 "Bradford City": null,
-"Bragantino": null,
+"Bragantino": {
+"date": "2020-01-01",
+"name": "Red Bull Bragantino",
+"source": "wikipedia:en (Q541744)"
+},
 "Brage": null,
 "Braintree Town": {
 "date": "1898-09-24",
@@ -401,7 +433,11 @@
 "Bristol Rovers": null,
 "Bristol Rvs": null,
 "Bromley": null,
-"Brommapojkarna": null,
+"Brommapojkarna": {
+"date": "1942-04-13",
+"name": "IF Brommapojkarna",
+"source": "wikipedia:en (Q754339)"
+},
 "Brondby": {
 "date": "1964-12-03",
 "name": "Br\u00f8ndby IF"
@@ -410,7 +446,11 @@
 "date": "1878-07-13",
 "name": "Bulgaria"
 },
-"Burgos": null,
+"Burgos": {
+"date": "1985-08-13",
+"name": "Burgos CF",
+"source": "wikipedia:en (Q852079)"
+},
 "Burkina Faso": null,
 "Burnley": {
 "date": "1882-05-18",
@@ -576,7 +616,11 @@
 "Chorley": null,
 "Cittadella": null,
 "Clermont": null,
-"Club America": null,
+"Club America": {
+"date": "1916-10-12",
+"name": "Club Am\u00e9rica",
+"source": "wikipedia:en (Q459090)"
+},
 "Club Atl\u00e9tico La Paz": null,
 "Club Atl\u00e9tico Morelia": null,
 "Club Brugge": {
@@ -587,7 +631,11 @@
 "date": "1944-08-20",
 "name": "Club Le\u00f3n"
 },
-"Club Tijuana": null,
+"Club Tijuana": {
+"date": "2016-12-05",
+"name": "Club Tijuana",
+"source": "wikipedia:en (Q60829969)"
+},
 "Clyde": null,
 "Cobh Ramblers": null,
 "Colchester": null,
@@ -821,7 +869,11 @@
 "date": "1939-05-17",
 "name": "G.D. Estoril Praia"
 },
-"Estrela": null,
+"Estrela": {
+"date": "2020-07-11",
+"name": "C.F. Estrela da Amadora",
+"source": "wikipedia:en (Q838134)"
+},
 "Estudiantes L.P.": {
 "date": "1905-08-04",
 "name": "Estudiantes de La Plata"
@@ -839,7 +891,11 @@
 "Everton": null,
 "Excelsior": null,
 "Exeter": null,
-"Extremadura UD": null,
+"Extremadura UD": {
+"date": "2007-08-21",
+"name": "Extremadura UD",
+"source": "wikipedia:en (Q994224)"
+},
 "Eyupspor": null,
 "FC Ararat-Armenia": null,
 "FC Arges": {
@@ -892,7 +948,11 @@
 "date": "1898-05-01",
 "name": "FC Thun"
 },
-"FC Tokyo": null,
+"FC Tokyo": {
+"date": "1998-10-01",
+"name": "FC Tokyo",
+"source": "wikipedia:de (Q856619)"
+},
 "FC Voluntari": null,
 "FCSB": {
 "date": "1947-06-07",
@@ -1048,8 +1108,16 @@
 "date": "1902-12-02",
 "name": "Go Ahead Eagles"
 },
-"Godoy Cruz": null,
-"Goias": null,
+"Godoy Cruz": {
+"date": "1921-06-01",
+"name": "Godoy Cruz Antonio Tomba",
+"source": "wikidata (Q80882)"
+},
+"Goias": {
+"date": "1943-04-06",
+"name": "Goi\u00e1s Esporte Clube",
+"source": "wikidata (Q816779)"
+},
 "Gornik Z.": null,
 "Gornik Zabrze": {
 "date": "1948-12-14",
@@ -1126,7 +1194,11 @@
 },
 "Haka": null,
 "Halifax": null,
-"Halmstad": null,
+"Halmstad": {
+"date": "1914-02-07",
+"name": "Halmstads BK",
+"source": "wikidata (Q584858)"
+},
 "Ham-Kam": null,
 "HamKam": {
 "date": "1918-08-10",
@@ -1166,7 +1238,11 @@
 "name": "FK Haugesund"
 },
 "Hearts": null,
-"Hebei": null,
+"Hebei": {
+"date": "2010-05-28",
+"name": "Hebei F.C.",
+"source": "wikipedia:de (Q402038)"
+},
 "Heerenveen": {
 "date": "1920-07-20",
 "name": "SC Heerenveen"
@@ -1197,7 +1273,11 @@
 "date": "1900-10-07",
 "name": "Holstein Kiel"
 },
-"Honefoss": null,
+"Honefoss": {
+"date": "1895-02-04",
+"name": "H\u00f8nefoss BK",
+"source": "wikidata (Q304060)"
+},
 "Honka": null,
 "Hornchurch": null,
 "Horsens": null,
@@ -1214,7 +1294,11 @@
 "date": "1904-06-28",
 "name": "Hull City A.F.C."
 },
-"Huracan": null,
+"Huracan": {
+"date": "1954-08-01",
+"name": "Hurac\u00e1n Football Club",
+"source": "wikipedia:en (Q923308)"
+},
 "Hvidovre IF": {
 "date": "1925-10-15",
 "name": "Hvidovre IF"
@@ -1273,8 +1357,16 @@
 },
 "Iraklis": null,
 "Isidro Metap\u00e1n": null,
-"Istanbulspor": null,
-"Italy": null,
+"Istanbulspor": {
+"date": "1926-01-04",
+"name": "\u0130stanbulspor A.\u015e.",
+"source": "wikipedia:en (Q344328)"
+},
+"Italy": {
+"date": "1946-06-18",
+"name": "Italy",
+"source": "wikidata (Q38)"
+},
 "Ivory Coast": null,
 "Iwata": null,
 "JJK Jyvaskyla": null,
@@ -1292,7 +1384,11 @@
 "Jonkopings": null,
 "Juarez": null,
 "Juve Stabia": null,
-"Juventude": null,
+"Juventude": {
+"date": "1962-02-26",
+"name": "Juventude",
+"source": "wikidata (Q3070729)"
+},
 "Juventus": {
 "date": "1897-11-01",
 "name": "Juventus FC"
@@ -1314,9 +1410,17 @@
 "Karagumruk": null,
 "Karlsruhe": null,
 "Kashima Antlers": null,
-"Kashiwa Reysol": null,
+"Kashiwa Reysol": {
+"date": "1992-04-01",
+"name": "Kashiwa Reysol",
+"source": "wikipedia:de (Q844931)"
+},
 "Kasimpasa": null,
-"Kawasaki Frontale": null,
+"Kawasaki Frontale": {
+"date": "1996-11-21",
+"name": "Kawasaki Frontale",
+"source": "wikipedia:de (Q874016)"
+},
 "Kayserispor": {
 "date": "1966-07-01",
 "name": "Kayserispor"
@@ -1324,7 +1428,11 @@
 "Kazakhstan": null,
 "Kelty Hearts": null,
 "Kenya": null,
-"Khimki": null,
+"Khimki": {
+"date": "1997-01-30",
+"name": "FC Khimki",
+"source": "wikipedia:en (Q727147)"
+},
 "Kidderminster": null,
 "Kifisia": null,
 "Kilmarnock": {
@@ -1398,7 +1506,11 @@
 "date": "1908-03-17",
 "name": "US Lecce"
 },
-"Lecco": null,
+"Lecco": {
+"date": "1912-12-22",
+"name": "Calcio Lecco 1912",
+"source": "wikipedia:de (Q944876)"
+},
 "Lech Poznan": {
 "date": "1922-03-19",
 "name": "Lech Pozna\u0144"
@@ -2627,7 +2739,11 @@
 "W:Austria Vienna": null,
 "W:BK H\u00e4cken": null,
 "W:Barcelona": null,
-"W:Bayern Munich": null,
+"W:Bayern Munich": {
+"date": "1970-06-07",
+"name": "FC Bayern Munich Women",
+"source": "wikipedia:en (Q540384)"
+},
 "W:Benfica": null,
 "W:Chelsea": null,
 "W:FC Fleury 91": null,
@@ -2638,7 +2754,11 @@
 "date": "2018-10-23",
 "name": "Inter Women"
 },
-"W:Juventus": null,
+"W:Juventus": {
+"date": "2017-07-01",
+"name": "Juventus FC (women)",
+"source": "wikipedia:en (Q17621653)"
+},
 "W:Manchester City": null,
 "W:Melbourne City": null,
 "W:Melbourne Victory": null,
@@ -2650,7 +2770,11 @@
 "W:Paris FC": null,
 "W:Paris Saint-Germain": null,
 "W:Pumas UNAM": null,
-"W:Real Madrid": null,
+"W:Real Madrid": {
+"date": "2020-07-01",
+"name": "Real Madrid Femenino",
+"source": "wikidata (Q96791589)"
+},
 "W:Tigres UANL": null,
 "W:Toluca": null,
 "W:Toulouse": null,
