@@ -124,9 +124,13 @@ def from_entity(ent):
     if got:
         return got, "wikidata"
     links = ent.get("sitelinks") or {}
+    tried = 0
     for lang in LANGS:
         sl = links.get(f"{lang}wiki")
         if sl:
+            tried += 1
+            if tried > 4:            # English and at most three other editions
+                break
             got = infobox_date(lang, sl["title"])
             time.sleep(0.1)
             if got:
@@ -185,6 +189,14 @@ def women_teams(cache: dict) -> dict:
     return out
 
 
+START = time.time()
+BUDGET_S = 70 * 60
+
+
+def out_of_time() -> bool:
+    return time.time() - START > BUDGET_S
+
+
 def main():
     teams = set()
     w = Path("data/work/matches.parquet")
@@ -197,8 +209,11 @@ def main():
     except Exception as e:  # noqa: BLE001
         print("live record unavailable:", e)
     cache = json.loads(teamday.CACHE.read_text()) if teamday.CACHE.exists() else {}
+    # teams already tried by an earlier run (the source noted as "none") are skipped until next month
     todo = sorted(t for t in teams if not (cache.get(t) or {}).get("date"))
     women_found = women_teams(cache)
+    cache.update(women_found)
+    teamday.CACHE.write_text(json.dumps(cache, indent=0, sort_keys=True))
     print(f"{len(teams)} teams; {len(todo)} without a founding date known to the day")
     cand = {}
     for t in todo:
@@ -246,6 +261,9 @@ def main():
     op_ents = wikidata(sorted(set(ops.values()))) if ops else {}
     found = {}
     for n, (t, c) in enumerate(sorted(cand.items())):
+        if out_of_time():
+            print(f"  time budget reached after {n} teams; the rest wait for the next run")
+            break
         q = c["source"].split(":", 1)[1]
         date, src = (None, None)
         if t in ops and ops[t] in op_ents:
@@ -257,6 +275,7 @@ def main():
             found[t] = {"date": date, "name": c["team"], "source": f"{src} ({q})"}
         if n % 100 == 0:
             print(f"  {n}/{len(cand)}: {len(found)} found")
+            teamday.CACHE.write_text(json.dumps({**cache, **found}, indent=0, sort_keys=True))     # progress
     cache.update(found)
     cache.update(women_found)
     teamday.CACHE.write_text(json.dumps(cache, indent=0, sort_keys=True))

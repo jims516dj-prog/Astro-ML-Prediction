@@ -7,11 +7,11 @@ on:
     - cron: "11 4 9 * *"
 permissions:
   contents: write
-concurrency: track-record
+concurrency: founding-days
 jobs:
   fetch:
     runs-on: ubuntu-latest
-    timeout-minutes: 120
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -20,7 +20,9 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python scripts/fetch_founding_days.py
-      - name: Publish
+        continue-on-error: true
+      - name: Publish (whatever was found, even if the run stopped early)
+        if: always()
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"
