@@ -137,3 +137,13 @@ def test_untrusted_official_names_dropped():
     assert not fon._agrees("Spal", "Ars et Labor Ferrara Calcio")
     assert fon._agrees("Bristol Rvs", "Bristol Rovers FC")
     assert fon.names_agree("Nykoebing FC", {"labels": {"en": {"value": "Nykøbing FC"}}})
+
+
+def test_initials_must_match():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    lab = lambda n: {"labels": {"en": {"value": n}}}  # noqa: E731
+    assert not fon.names_agree("T. Moscow", lab("FC Spartak Moscow"))
+    assert fon.names_agree("T. Moscow", lab("FC Torpedo Moscow"))
+    assert fon.names_agree("San Martin S.J.", lab("Club Atlético San Martín de San Juan"))

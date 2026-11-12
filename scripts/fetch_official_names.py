@@ -165,6 +165,9 @@ def names_agree(team: str, e) -> bool:
         for v in vs:
             theirs |= _words(v.get("value"))
     theirs |= _words(official(e)[0] or "")
+    initials = {ch.lower() for ch in re.findall(r"(?<![A-Za-z])([A-Z])(?:\.|\b)(?![A-Za-z])", base)}
+    if initials and not all(any(w.startswith(i) for w in theirs) for i in initials):
+        return False                                  # "T. Moscow" is Torpedo, not Spartak
     return any(_abbrev_ok(a, theirs) for a in mine)   # "nykoebing" ~ "nykobing", "dynamo" ~ "dinamo"
 
 
@@ -301,6 +304,11 @@ def _initials_ok(abbr: str, names: list[str]) -> bool:
         w = re.findall(r"[a-z]+", _fold(n))
         if a in w or "".join(x[0] for x in w).startswith(a):
             return True
+        # initials that run into a compound word: "VPS" = Vaasan PalloSeura, "HJK" = Helsingin JalkapalloKlubi
+        if len(w) >= 2 and len(a) > len(w) and a[0] == w[0][0] and a[1] == w[1][0]:
+            rest = iter("".join(w[1:])[1:])
+            if all(ch in rest for ch in a[2:]):
+                return True
     return False
 
 
@@ -473,6 +481,18 @@ def merge(theirs_file: str) -> None:
     print(f"merged: {sum(1 for v in out.values() if v.get('short'))} clubs named")
 
 
+def club_search(base: str) -> list[str]:
+    """Wikidata full-text search limited to association football clubs (P31 = Q476028), on the team's name words
+    (initials like "T." left out): finds "Royal Excel Mouscron" for "Mouscron", "WSG Tirol" for "Tirol"."""
+    words = [w for w in re.findall(r"[^\W\d_]{2,}|\d+", base.replace(".", ". ")) if len(w) > 1]
+    if not words:
+        return []
+    q = " ".join(words) + " haswbstatement:P31=Q476028"
+    d = get("https://www.wikidata.org/w/api.php?action=query&list=search&format=json&srnamespace=0&srlimit=8"
+            "&srsearch=" + urllib.parse.quote(q))
+    return [h["title"] for h in ((d or {}).get("query") or {}).get("search", []) if h.get("title", "").startswith("Q")]
+
+
 def main():
     cache = json.loads(teamnames.FILE.read_text()) if teamnames.FILE.exists() else {}
     month = time.strftime("%Y-%m")
@@ -488,6 +508,9 @@ def main():
     print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone, {len(unnamed)} not named yet)")
     for t in todo:
         if t in cand:
+            better = table_candidates(t, teams.get(t))[0]
+            if better and better[0] not in cand[t]:
+                cand[t] = better                      # the table now points elsewhere (a stray alias before)
             continue
         c, country = table_candidates(t, teams.get(t))
         if c:
@@ -507,6 +530,8 @@ def main():
                 if similar(base, h.get("label") or "") or similar(t, h.get("label") or "")
                 or (_words(base) and all(_abbrev_ok(w, _words(h.get("label") or "") | _words(" ".join(
                     (h.get("aliases") or []) + [h.get("match", {}).get("text") or ""]))) for w in _words(base)))]
+        hits += club_search(base)                     # full-text, football clubs only ("Mouscron" -> the club)
+        hits = list(dict.fromkeys(hits))
         time.sleep(0.15)
         if hits:
             cand[t] = hits
@@ -565,10 +590,15 @@ def main():
         q, e = pick
         legal, lang = official(e)
         short = short_name(e, lang)
-        en = tidy(((e.get("labels") or {}).get("en") or {}).get("value") or "")
-        if short and en and is_latin(en) and not _agrees(t, short) and _agrees(t, en):
-            short = en                                # a label from another era or language ("Ars et Labor
-            # Ferrara Calcio" for SPAL): the English label names the club as the team is known
+        if short and not _agrees(t, short):
+            # a label from another era, or a vandalised one ("Real Madrid" on Barracas Central's item): the first
+            # Latin label, English first, that names the club as the team is known
+            labels = e.get("labels") or {}
+            for lang in ["en", lang or "", "es", "pt", "fr", "de", "it", "nl", *sorted(labels)]:
+                v = tidy((labels.get(lang) or {}).get("value") or "")
+                if v and is_latin(v) and _agrees(t, v):
+                    short = v
+                    break
         if legal and (sum(ch.isupper() for ch in legal) > 0.8 * sum(ch.isalpha() for ch in legal) > 8
                       or not (_agrees(t, legal) or _agrees(short, legal))):
             legal = None                              # a vandalised or unrelated official name: not trusted
