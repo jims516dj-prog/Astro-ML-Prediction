@@ -273,7 +273,10 @@ def home_location(team: str):
     if v:
         return statistics.median(x[0] for x in v), statistics.median(x[1] for x in v)
     if team in HOME_DIV:
-        got = geo.resolve(team, HOME_DIV[team])
+        try:
+            got = geo.resolve(team, HOME_DIV[team])
+        except (OSError, ValueError):                 # venue tables not downloaded: no location
+            got = None
         if got:
             return got[0], got[1]
     return None
