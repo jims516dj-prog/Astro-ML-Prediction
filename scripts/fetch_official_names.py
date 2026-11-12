@@ -30,7 +30,12 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 3          # entries made by an older version of the rules are redone (their item is kept)
+VERSION = 4          # unnamed clubs decided under an older version of the rules are tried again
+NAMED_SINCE = 3      # named clubs are redone only when named under an older version than this
+DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
+SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
+TABLE_COUNTRY = {"People's Republic of China": "CN", "United States": "US", "Russia": "RU", "United Kingdom": "GB", "Kingdom of the Netherlands": "NL", "England": "GB", "Scotland": "GB",
+                 "Wales": "GB", "Northern Ireland": "GB"}
 START = time.time()
 
 
@@ -94,8 +99,16 @@ def short_name(e, legal_lang):
     return tidy(en or native or "")
 
 
+def _fold(s: str) -> str:
+    """Lower case, accents off, and the letters that do not decompose spelled out ("Zagłębie" -> "zaglebie")."""
+    s = (s or "").lower()
+    for a, b in (("ł", "l"), ("ø", "o"), ("æ", "ae"), ("œ", "oe"), ("ß", "ss"), ("đ", "d"), ("ı", "i"), ("þ", "th")):
+        s = s.replace(a, b)
+    return unicodedata.normalize("NFKD", s).encode("ascii", "ignore").decode()
+
+
 def _words(s: str) -> set[str]:
-    s = unicodedata.normalize("NFKD", (s or "").lower()).encode("ascii", "ignore").decode()
+    s = _fold(s)
     return {w for w in re.findall(r"[a-z]{3,}", s)} - {
         "club", "football", "futbol", "futebol", "fussball", "clube", "sport", "sporting", "calcio", "united", "city",
         "athletic", "deportivo", "real", "the", "and", "spor", "esporte"}
@@ -140,9 +153,145 @@ def competition_country(division: str) -> str | None:
     return None
 
 
+def _abbrev_ok(word: str, theirs: set[str]) -> bool:
+    """"rvs" ~ "rovers", "atl" ~ "atletico", "dynamo" ~ "dinamo", "go" ~ "goianiense": a prefix, a close spelling or
+    an in-order contraction (same first letter)."""
+    import difflib
+    for t in theirs:
+        if t.startswith(word) or (len(t) >= 3 and word.startswith(t)):
+            return True
+        if (len(word) >= 4 and word[0] == t[0] and abs(len(word) - len(t)) <= 1
+                and difflib.SequenceMatcher(None, word, t).ratio() >= 0.8):    # "dynamo" ~ "dinamo", not "remo" ~ "gremio"
+            return True
+        if len(word) >= 3 and word[0] == t[0]:
+            it = iter(t)
+            if all(ch in it for ch in word):
+                return True
+    return False
+
+
+def _tokens(s: str) -> set[str]:
+    """Name words for matching, two-letter ones included ("Atletico GO", "Botafogo RJ")."""
+    s = _fold(s).replace("&", "").replace(".", "").replace("'", "").replace("\u2019", "")
+    return {w for w in re.findall(r"[a-z]{2,}", s)} - {
+        "fc", "cf", "sc", "ac", "cd", "club", "football", "futbol", "futebol", "fussball", "clube", "the", "and", "de",
+        "do", "da", "la", "el", "al", "of", "y", "e"}
+
+
+def same_country(want: str | None, have: set) -> bool:
+    """A club playing in this country's competitions may be registered next door: Toronto and Vancouver in MLS,
+    Vaduz in Switzerland, Monaco in France, Derry City in Ireland, FC Andorra in Spain, Welsh clubs in England."""
+    if not want or not have:
+        return True
+    ok = set(nations.SAME.get(want, {want})) | SHARED.get(want, set())
+    return bool(set(have) & ok)
+
+
+def _row_words(source: str) -> set[str]:
+    from astrofoot import foundings as fd
+    t = fd.table()
+    if not len(t):
+        return set()
+    if "_by_source" not in _row_words.__dict__:
+        _row_words._by_source = {s: names for s, names in zip(t.source, t.names)}
+    out = set()
+    for n in _row_words._by_source.get(source, []):
+        out |= _words(n)
+    return out
+
+
+RESERVE_ITEM = re.compile(r"(?i)(-2\b|\bII\b|\bB\b$|\bU-?\d{2}\b|\breserves?\b|\bwomen\b|\bfeminin|\bladies\b)")
+
+
+WOMEN_NAME = re.compile(r"(?i)\b(women|ladies|f[eé]minin\w*|lyonnes|frauen|damen|kvinner|dam)\b")
+
+
+def _row_ok(source: str, mine: set[str]) -> bool:
+    """The team's words are found in one of the table row's names, and that name belongs with the row's own label
+    (a row whose alias is another club's name, e.g. "Olimpo de Bahia Blanca" on "Sarmiento", does not count)."""
+    from astrofoot import foundings as fd
+    t = fd.table()
+    if "_rows" not in _row_ok.__dict__:
+        _row_ok._rows = {s: names for s, names in zip(t.source, t.names)} if len(t) else {}
+    names = _row_ok._rows.get(source) or []
+    if not names:
+        return False
+    main = _tokens(names[0])
+    for i, n in enumerate(names):
+        words = _tokens(n)
+        if all(_abbrev_ok(w, words) for w in mine) and (i == 0 or words & main or
+                                                          any(_abbrev_ok(w, main) for w in words)):
+            return True
+    return False
+
+
+def namesakes(mine: set[str], want: str | None) -> list[dict]:
+    """Every club in the table, in the team's country, whose names carry all of the team's words ("Zaglebie":
+    Zagłębie Lubin and Zagłębie Sosnowiec), so a namesake the name search did not return still counts."""
+    from astrofoot import foundings as fd
+    if not want or not mine:
+        return []
+    t = fd.table()
+    if "_idx" not in namesakes.__dict__:
+        namesakes._idx = []
+        for r in t.itertuples():
+            if r.kind == "club" and str(r.source).startswith("wikidata:"):
+                toks = set().union(*(_tokens(n) for n in r.names)) if r.names else set()
+                namesakes._idx.append((toks, r))
+    out = []
+    for toks, r in namesakes._idx:
+        if mine <= toks:
+            c = TABLE_COUNTRY.get(r.country) or nations.code_of(r.country or "")
+            if c and same_country(want, {c}):
+                out.append({**fd._from_table(r), "match": "close"})
+    return out
+
+
+def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None]:
+    """(Wikidata item, the club's country) from the founding table, or ([], None).
+
+    The candidates are the table's clubs in the team's country (when known) whose names carry the team's words
+    ("Bielefeld" -> Arminia Bielefeld, "Bristol Rvs" -> Bristol Rovers, "Guimaraes" -> Vitória S.C. through its
+    aliases); the most prominent is taken only when it clearly stands out (DOMINANCE times the next by Wikipedia
+    editions), and a close spelling only for a club with an article in 10 or more of them."""
+    base = teamnames.split(team)[0]
+    if WOMEN_NAME.search(base):
+        return [], None                               # a women's side under its own name: not the men's club
+    iso = lambda x: TABLE_COUNTRY.get(x.get("country")) or nations.code_of(x.get("country") or "")  # noqa: E731
+    initialism = bool(re.fullmatch(r"[A-Z]{2,5}", base))
+    mine = _tokens(base)
+    if not mine:
+        return [], None
+    pool = []
+    for x in foundings.search(base, limit=12) + namesakes(mine, want):
+        if not str(x.get("source", "")).startswith("wikidata:") or x.get("kind") != "club":
+            continue
+        if RESERVE_ITEM.search(x.get("team") or ""):
+            continue                                  # a reserve, youth or women's side
+        c = iso(x)
+        if want and c and not same_country(want, {c}):
+            continue
+        if not want and not c:
+            continue
+        if not initialism and not _row_ok(x["source"], mine):
+            continue
+        pool.append(x)
+    if not pool:
+        return [], None
+    pool = list({x["source"]: x for x in pool}.values())
+    pool.sort(key=lambda x: -int(x.get("sitelinks") or 0))
+    top, links = pool[0], int(pool[0].get("sitelinks") or 0)
+    second = int(pool[1].get("sitelinks") or 0) if len(pool) > 1 else 0
+    if links < max(DOMINANCE * second, 1):
+        return [], None                               # namesakes of similar standing: left to the Wikidata search
+    if top["match"] == "close" and links < 10:
+        return [], None
+    return [top["source"].split(":", 1)[1]], want or iso(top)
+
+
 def teams_and_countries():
     """{team: ISO code or None} for every club in the history and the live records (men's)."""
-    out = {}
+    out, pairs = {}, []
     w = Path("data/work/matches.parquet")
     if w.exists():
         m = pd.read_parquet(w, columns=["division", "home", "away"])
@@ -158,12 +307,25 @@ def teams_and_countries():
             if div not in comp:
                 comp[div] = geo.DIVISION_COUNTRY.get(div) or competition_country(div)
             c = comp[div]                             # a domestic competition: both sides are from its country
+            pairs.append((r["home"], r["away"]))
             out[r["away"]] = out.get(r["away"]) or c
             if not c and r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
                 c = nations.country_at(r["venue_lat"], r["venue_lon"])   # else the home side's ground
             out[r["home"]] = out.get(r["home"]) or c
     except Exception as e:  # noqa: BLE001
         print("live record unavailable:", e)
+    # a club whose country is still unknown takes the country most of its opponents are from (2 or more, 2 in 3)
+    from collections import Counter, defaultdict
+    opp = defaultdict(list)
+    for h, a in pairs:
+        opp[h].append(a)
+        opp[a].append(h)
+    for t in [t for t, c in out.items() if not c and t in opp]:
+        votes = Counter(out.get(o) for o in opp[t] if out.get(o) and not teamnames.nation(o))
+        if votes:
+            c, n = votes.most_common(1)[0]
+            if n >= 2 and n * 3 >= sum(votes.values()) * 2:
+                out[t] = c
     clubs = {}
     for t, c in out.items():
         if not isinstance(t, str) or teamnames.nation(t):
@@ -183,7 +345,7 @@ def merge(theirs_file: str) -> None:
     except (OSError, ValueError):
         theirs = {}
     # a decision made under the current rules wins (a rejection included); then a name over none
-    rank = lambda v: ((v or {}).get("v") == VERSION, bool((v or {}).get("short")))  # noqa: E731
+    rank = lambda v: ((v or {}).get("v") or 0, bool((v or {}).get("short")))  # noqa: E731
     out = dict(theirs)
     for k, v in mine.items():
         if k not in out or rank(v) >= rank(out[k]):
@@ -198,19 +360,22 @@ def main():
     teams = teams_and_countries()
     for k in [k for k in cache if teamnames.split(k)[1] and not k.startswith("W:")]:
         del cache[k]                                  # reserve / youth sides go through their club
-    cand = {t: [cache[t]["qid"]] for t in teams if (cache.get(t) or {}).get("qid")
-            and cache[t].get("v") != VERSION}         # redo with the current rules, same item
-    todo = sorted(t for t in teams if t in cand or (not (cache.get(t) or {}).get("short")
-                                                     and (cache.get(t) or {}).get("tried") != month))
-    print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone under the current rules)")
+    cand = {t: [cache[t]["qid"]] for t in teams if (cache.get(t) or {}).get("short") and cache[t].get("qid")
+            and (cache[t].get("v") or 0) < NAMED_SINCE}   # redo with the current rules, same item
+    unnamed = [t for t in teams if not (cache.get(t) or {}).get("short")
+               and ((cache.get(t) or {}).get("v") or 0) < VERSION or
+               (not (cache.get(t) or {}).get("short") and (cache.get(t) or {}).get("tried") != month)]
+    todo = sorted(set(cand) | set(unnamed))
+    print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone, {len(unnamed)} not named yet)")
     for t in todo:
         if t in cand:
             continue
-        base = teamnames.split(t)[0]
-        c = [x for x in foundings.search(base, limit=4) if x["match"] in ("exact", "alias")]
-        if c and str(c[0].get("source", "")).startswith("wikidata:"):
-            cand[t] = [c[0]["source"].split(":", 1)[1]]
+        c, country = table_candidates(t, teams.get(t))
+        if c:
+            cand[t] = c
+            teams[t] = teams.get(t) or country     # the table's country confirms the item below
     rest = [t for t in todo if t not in cand]
+    searched: set[str] = set()                        # candidates from the search: several may pass the checks
     print(f"searching Wikidata for {len(rest)} clubs the founding table does not match")
     for t in rest:
         if time.time() - START > BUDGET_S / 2:
@@ -218,11 +383,15 @@ def main():
             break
         d = get("https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&type=item&limit=5"
                 "&search=" + urllib.parse.quote(teamnames.split(t)[0]))
+        base = teamnames.split(t)[0]
         hits = [h["id"] for h in (d or {}).get("search", [])
-                if similar(teamnames.split(t)[0], h.get("label") or "") or similar(t, h.get("label") or "")]
+                if similar(base, h.get("label") or "") or similar(t, h.get("label") or "")
+                or (_words(base) and all(_abbrev_ok(w, _words(h.get("label") or "") | _words(" ".join(
+                    (h.get("aliases") or []) + [h.get("match", {}).get("text") or ""]))) for w in _words(base)))]
         time.sleep(0.15)
         if hits:
             cand[t] = hits
+            searched.add(t)
     qids = sorted({q for qs in cand.values() for q in qs})
     print(f"{len(cand)} clubs with candidates; fetching {len(qids)} items")
     ents = entities(qids)
@@ -235,7 +404,7 @@ def main():
     for t in todo:
         if cand.get(t) and not any(q in ents for q in cand[t]):
             continue                                  # the lookup failed: try again next run, keep the entry
-        pick, why = None, ["no Wikidata item found"]
+        pick, why, passing = None, ["no Wikidata item found"], []
         for q in cand.get(t, []):
             e = ents.get(q) or {}
             if not set(claim_ids(e, "P31")) & FOOTBALL:
@@ -243,7 +412,7 @@ def main():
                 continue
             want = teams.get(t)
             have = {iso.get(c) for c in claim_ids(e, "P17")} - {None}
-            if want and have and not (have & nations.SAME.get(want, {want})):
+            if want and have and not same_country(want, have):
                 why.append(f"{q}: in {sorted(have)}, not {want}")
                 continue                              # a namesake in another country
             if not want and not have:
@@ -253,8 +422,16 @@ def main():
                 why.append(f"{q}: names differ")
                 print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
                 continue
-            pick = (q, e)
-            break
+            if t not in searched:
+                pick = (q, e)
+                break
+            passing.append((len(e.get("labels") or {}), q, e))
+        if passing:
+            passing.sort(key=lambda x: -x[0])         # prominence: the number of languages it is named in
+            if len(passing) == 1 or passing[0][0] >= DOMINANCE * passing[1][0]:
+                pick = passing[0][1:]
+            else:
+                why.append("namesakes: " + ", ".join(f"{q} ({n})" for n, q, _ in passing[:3]))
         if not pick:
             cache[t] = {"tried": month, "why": "; ".join(why[1:] or why), "v": VERSION}
             continue
@@ -269,8 +446,10 @@ def main():
     teamnames.FILE.parent.mkdir(parents=True, exist_ok=True)
     teamnames.FILE.write_text(json.dumps(cache, indent=0, sort_keys=True, ensure_ascii=False))
     print(f"found {found} official names; {sum(1 for v in cache.values() if v.get('short'))} clubs named in all")
-    for t in sorted(t for t in todo if (cache.get(t) or {}).get("short"))[:60]:
+    for t in sorted(t for t in todo if (cache.get(t) or {}).get("short")):
         print(f"  {t} -> {cache[t]['short']}  |  {cache[t]['legal']}")
+    for t in sorted(t for t in todo if not (cache.get(t) or {}).get("short")):
+        print(f"  not named: {t} ({teams.get(t)}): {(cache.get(t) or {}).get('why', 'lookup failed')}")
 
 
 if __name__ == "__main__":

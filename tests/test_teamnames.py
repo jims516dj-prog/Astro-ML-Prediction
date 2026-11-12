@@ -87,3 +87,25 @@ def test_names_merge_never_loses_a_name(tmp_path, monkeypatch):
     assert out["Ajax"]["short"] == "AFC Ajax"                 # the current rules win
     assert out["Celta"]["short"] == "RC Celta de Vigo"
     assert "short" not in out["Al Nasr"]                      # a rejection under the current rules wins
+
+
+def test_table_candidates_pick_the_right_club():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    from astrofoot import foundings
+    if not len(foundings.table()):
+        return
+    name = {s.split(":", 1)[1]: t for s, t in zip(foundings.table().source, foundings.table().team)}
+    pick = lambda team, c: [name.get(q) for q in fon.table_candidates(team, c)[0]]  # noqa: E731
+    assert pick("Bielefeld", "DE") == ["Arminia Bielefeld"]
+    assert pick("Bristol Rvs", "GB") == ["Bristol Rovers F.C."]
+    assert pick("Dynamo Moscow", "RU") == ["FC Dinamo Moscow"]          # not its reserve side
+    assert pick("Huracan", "AR") == ["Club Atlético Huracán"]           # not the Posadas namesake
+    assert pick("Toronto FC", "US") == ["Toronto FC"]                   # a Canadian club in MLS
+    assert pick("Zaglebie", "PL") == []                                 # Lubin or Sosnowiec: not guessed
+    assert "Guangzhou F.C." not in pick("Cangzhou", "CN")
+    assert "Grêmio FBPA" not in pick("Remo", "BR")
+    assert "Watford F.C." not in pick("Waterford", "IE")
+    assert pick("OL Lyonnes", None) == []                               # the women's club
+    assert fon.table_candidates("Torreense", None)[1] == "PT"           # the country comes from the table
