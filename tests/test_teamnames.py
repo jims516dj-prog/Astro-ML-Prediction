@@ -65,3 +65,22 @@ def test_official_names_rules():
     assert fon.names_agree("KuPS", {"labels": {"en": {"value": "Kuopion Palloseura"}}})
     bilbao = {"labels": {"en": {"value": "Athletic Club"}, "de": {"value": "Athletic Bilbao"}}}
     assert fon.names_agree("Ath Bilbao", bilbao)
+
+
+def test_names_merge_never_loses_a_name(tmp_path, monkeypatch):
+    import json
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    mine = tmp_path / "mine.json"
+    main = tmp_path / "main.json"
+    mine.write_text(json.dumps({"Zenit": {"tried": "2026-11"}, "Ajax": {"short": "AFC Ajax", "legal": "x", "v": 2},
+                                "Celta": {"short": "RC Celta de Vigo", "legal": "RC Celta de Vigo", "v": 2}}))
+    main.write_text(json.dumps({"Zenit": {"short": "FC Zenit", "legal": "FC Zenit", "v": 2},
+                                "Ajax": {"short": "Ajax", "legal": "Ajax"}, "Celta": {"tried": "2026-11"}}))
+    monkeypatch.setattr(fon.teamnames, "FILE", mine)
+    fon.merge(str(main))
+    out = json.loads(mine.read_text())
+    assert out["Zenit"]["short"] == "FC Zenit"                # a run whose lookup failed keeps main's name
+    assert out["Ajax"]["short"] == "AFC Ajax"                 # the current rules win
+    assert out["Celta"]["short"] == "RC Celta de Vigo"

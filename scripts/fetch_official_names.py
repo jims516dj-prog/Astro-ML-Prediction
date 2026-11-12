@@ -149,6 +149,24 @@ def teams_and_countries():
     return clubs
 
 
+def merge(theirs_file: str) -> None:
+    """Merge the names file on main into this run's before publishing: a club named on either side stays named
+    (the entry made under the current rules wins), so a run that started from an older copy, or whose lookups
+    failed, never wipes names out."""
+    mine = json.loads(teamnames.FILE.read_text()) if teamnames.FILE.exists() else {}
+    try:
+        theirs = json.loads(Path(theirs_file).read_text())
+    except (OSError, ValueError):
+        theirs = {}
+    rank = lambda v: (bool((v or {}).get("short")), (v or {}).get("v") == VERSION)  # noqa: E731
+    out = dict(theirs)
+    for k, v in mine.items():
+        if k not in out or rank(v) >= rank(out[k]):
+            out[k] = v
+    teamnames.FILE.write_text(json.dumps(out, indent=0, sort_keys=True, ensure_ascii=False))
+    print(f"merged: {sum(1 for v in out.values() if v.get('short'))} clubs named")
+
+
 def main():
     cache = json.loads(teamnames.FILE.read_text()) if teamnames.FILE.exists() else {}
     month = time.strftime("%Y-%m")
@@ -192,16 +210,19 @@ def main():
     for t in todo:
         if cand.get(t) and not any(q in ents for q in cand[t]):
             continue                                  # the lookup failed: try again next run, keep the entry
-        pick = None
+        pick, why = None, ["no Wikidata item found"]
         for q in cand.get(t, []):
             e = ents.get(q) or {}
             if not set(claim_ids(e, "P31")) & FOOTBALL:
+                why.append(f"{q}: not a football club")
                 continue
             want = teams.get(t)
             have = {iso.get(c) for c in claim_ids(e, "P17")} - {None}
             if want and have and not (have & nations.SAME.get(want, {want})):
+                why.append(f"{q}: in {sorted(have)}, not {want}")
                 continue                              # a namesake in another country
             if not want and not have:
+                why.append(f"{q}: no country to confirm with")
                 continue                              # nothing to confirm the match with
             if not names_agree(t, e):
                 print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
@@ -209,13 +230,13 @@ def main():
             pick = (q, e)
             break
         if not pick:
-            cache[t] = {"tried": month}
+            cache[t] = {"tried": month, "why": "; ".join(why[1:] or why)}
             continue
         q, e = pick
         legal, lang = official(e)
         short = short_name(e, lang)
         if not short:
-            cache[t] = {"tried": month}
+            cache[t] = {"tried": month, "why": f"{q}: no Latin-script name"}
             continue
         cache[t] = {"short": short, "legal": legal or short, "qid": q, "v": VERSION}
         found += 1
@@ -227,4 +248,7 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    if len(sys.argv) == 3 and sys.argv[1] == "--merge":
+        merge(sys.argv[2])
+    else:
+        main()
