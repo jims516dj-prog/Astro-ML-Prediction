@@ -1,7 +1,9 @@
 {% extends "base.html" %}
+{% from "_tennis.html" import sex_switch, final %}
 {% block title %}Top picks · Astro Tennis Lab{% endblock %}
 {% block body %}
 <h1>Tennis top picks</h1>
+{{ sex_switch(level, "/tennis/top?market=" ~ market) }}
 <nav class="seg" aria-label="Market">
   {% for k, label in markets %}<a href="/tennis/top?market={{ k }}{% if qs %}&{{ qs }}{% endif %}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
 </nav>

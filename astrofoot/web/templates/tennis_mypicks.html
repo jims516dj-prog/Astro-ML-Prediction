@@ -1,9 +1,11 @@
 {% extends "base.html" %}
+{% from "_tennis.html" import sex_switch, final %}
 {% from "_tennis_fav.html" import fav_badges %}
 {% block title %}My picks · Astro Tennis Lab{% endblock %}
 {% set STATE = {"won": ("ok", "won"), "lost": ("warn", "lost"), "open": ("", "open"), "empty": ("", "empty")} %}
 {% block body %}
 <h1>My tennis picks</h1>
+{{ sex_switch(level, "/tennis/mypicks?day=" ~ day) }}
 <p class="lede">Choose a day: its tennis forecasts load below. Build as many <strong>slips</strong> as you like: tick
 matches, choose an outcome for each (the most likely one is preselected; every outcome shows its expected probability) and
 <strong>add</strong> them. Picks stay editable and are scored once the matches are played. Tennis slips are kept apart

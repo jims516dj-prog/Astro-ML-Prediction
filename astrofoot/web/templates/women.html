@@ -45,7 +45,7 @@ women's results only. The track record below shows how well this holds up.</p>
 <th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th></tr></thead>
 <tbody>{% for r in rows %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T", " ") }}</td><td>{{ league_name(r.division) }}</td>
-<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}{{ tdm.line(r.td) }}</td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.result and r.result.goals_home is not none %} <span class="badge {{ 'ok' if r.pick_hit else '' }}" title="final score{{ '; the most likely result was right' if r.pick_hit else '' }}"><strong>FT {{ r.result.goals_home }}–{{ r.result.goals_away }}</strong></span>{% elif r.status == "void" %} <span class="badge warn">{{ "withdrawn" if r.withdrawn else "void" }}</span>{% endif %}{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}{{ tdm.line(r.td) }}</td>
 <td class="num mono" style="white-space:nowrap">{{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</td>
 <td>{{ r.favourite }}</td>
 <td class="num">{{ fmt_pct(p.market.fav, 0) }}/{{ fmt_pct(p.market.draw, 0) }}/{{ fmt_pct(p.market.dog, 0) }}</td>

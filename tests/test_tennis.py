@@ -688,3 +688,16 @@ def test_dataset_levels():
                       {"tour": "wta", "event": "W15 Antalya", "level": "itf"}, {"tour": "atp", "event": "Lima 2", "level": "challenger"},
                       {"tour": "atp", "event": "M15 Monastir", "level": "itf"}])
     assert list(tw.categories(m)) == ["wta125", "tour", "itf_w", "challenger", "itf_m"]
+
+
+def test_men_women_switch_on_tennis_pages(monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot.tennis import live as tlive
+    from astrofoot.web import app as web
+
+    monkeypatch.setattr(tlive, "records", lambda ledger=None, **kw: [])
+    client = TestClient(web.app)
+    for url in ("/tennis?level=women", "/tennis/live?level=women", "/tennis/top?level=women"):
+        h = client.get(url).text
+        assert 'aria-label="Men or women"' in h and '<span class="btn small">Women</span>' in h, url

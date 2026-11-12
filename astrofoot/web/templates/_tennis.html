@@ -86,3 +86,11 @@ newest first.</p>
 Cup, Challengers or ITF events are missing. To include one, add it on <a href="/tennis/analyze">Analyze</a> with its date and
 enter its score on its match page: it then counts in these tables (not in the model's training).</p>
 {% endmacro %}
+
+{% macro sex_switch(level, base) %}{% set sep = "&" if "?" in base else "?" %}
+<nav class="row" aria-label="Men or women" style="margin:4px 0 8px">
+  {% for k, l in [("", "All"), ("men", "Men"), ("women", "Women")] %}{% if (level or "") == k %}<span class="btn small">{{ l }}</span>{% else %}<a class="btn ghost small" href="{{ base }}{% if k %}{{ sep }}level={{ k }}{% endif %}">{{ l }}</a>{% endif %}{% endfor %}
+  <span class="small">Women: WTA tour, WTA 125 and ITF women's events; the Level filter narrows further.</span>
+</nav>{% endmacro %}
+
+{% macro final(r) %}{% if r.status == "settled" and r.result and r.result.score %} <span class="badge {{ 'ok' if r.match_hit else '' }}" title="final score{{ '; the favourite won' if r.match_hit else '' }}"><strong>{{ r.result.score }}{% if r.result.retired %} ret.{% endif %}</strong></span>{% endif %}{% endmacro %}

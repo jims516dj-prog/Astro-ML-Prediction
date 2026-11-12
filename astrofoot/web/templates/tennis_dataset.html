@@ -1,8 +1,10 @@
 {% extends "base.html" %}
+{% from "_tennis.html" import sex_switch, final %}
 {% import "_section.html" as section_ui %}
 {% block title %}Dataset · Astro Tennis Lab{% endblock %}
 {% block body %}
 <h1>Tennis dataset</h1>
+{{ sex_switch(q.level, "/tennis/dataset") }}
 {{ section_ui.switch("tennis", sections, "/dataset", {"men": "/dataset", "women": "/dataset?section=women"}) }}
 <p class="lede">Every completed ATP and WTA singles match ESPN lists since 2010 (main draws and qualifying), with set
 scores and seeds: the history the model learns from. {{ "{:,}".format(n_dob) }} of {{ "{:,}".format(n_players) }}
