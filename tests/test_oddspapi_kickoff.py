@@ -74,3 +74,13 @@ def test_kickoff_results_pair_and_skip_extra_time():
 def test_new_divisions_are_secondary():
     from astrofoot import dataset
     assert "O:77" in dataset.NO_PRIMARY and "W:o77" in dataset.NO_PRIMARY
+
+
+def test_ground_falls_back_to_first_team_then_country_city():
+    own = lambda n, **kw: (1.0, 2.0, "g") if n == "Rosario Central" else None  # noqa: E731
+    assert op.ground({"categoryName": "Argentina"}, "Rosario Central Reserve", "O:1", own) == (1.0, 2.0, "g (first team's ground)")
+    lat, lon, src = op.ground({"categoryName": "Egypt"}, "Tanta FC", "O:1", own)
+    assert round(lat) == 30 and "Cairo" in src
+    assert "Berlin" in op.ground({"categoryName": "Germany Amateur"}, "X", "O:1", None)[2]
+    assert "Belfast" in op.ground({"categoryName": "Northern Ireland"}, "X", "O:1", None)[2]
+    assert op.ground({"categoryName": "International Clubs"}, "X", "O:1", None) is None

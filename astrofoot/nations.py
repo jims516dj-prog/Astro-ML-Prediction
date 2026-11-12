@@ -91,3 +91,26 @@ SAME = {"GB": {"GB", "IM", "JE", "GG"}, "BQ": {"BQ", "CW", "AW"}, "CW": {"CW", "
 def in_country(lat: float, lon: float, code: str) -> bool:
     at = country_at(lat, lon)
     return at is None or at == code or at in SAME.get(code, set())
+
+
+# the cities table also lists some regions with their population; those are never the answer
+REGION = re.compile(r"(?i)\b(?:metropolitan|province|county|region|district|prefecture|upper|lower|oblast|parganas|"
+                    r"governorate)\b|shire$|^(?:swabia|franconia|bavaria)$")
+# home nations share the code GB: their own main city
+HOME_NATION = {"England": "London", "Scotland": "Glasgow", "Wales": "Cardiff", "Northern Ireland": "Belfast"}
+
+
+def largest_city(code: str, city: str | None = None):
+    """(lat, lon, city name) of the most populous city in the cities table for an ISO code, or None."""
+    try:
+        c = geo.cities()
+    except Exception:  # noqa: BLE001
+        return None
+    rows = c[c.country_code == code]
+    if city:
+        rows = rows[rows["name"] == city]
+    rows = rows[~rows["name"].str.contains(REGION, na=False)].sort_values("population", ascending=False)
+    if not len(rows):
+        return None
+    r = rows.iloc[0]
+    return float(r.latitude), float(r.longitude), str(r["name"])

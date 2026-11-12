@@ -494,7 +494,9 @@ which cannot be forecast this way.
 the sources above cover: youth (U19, U21), international and club friendlies, reserve and lower leagues, and women's
 games for the women's section. Prices are Pinnacle's when offered, otherwise the median over bookmakers; the over/under
 2.5 line is used for ranking when present. Simulated and e-sports games are dropped, and a game already forecast from
-another source is skipped. These games appear under the OddsPapi category and tournament name (code `O:` for men,
+another source is skipped. OddsPapi names no stadium: the home side's ground comes from our tables, else its first
+team's ground (for reserve, B and women's sides), else the main city of the country the game is filed under (enough for
+the venue's local day and time zone). These games appear under the OddsPapi category and tournament name (code `O:` for men,
 `W:o` for women). With `KICKOFF_API` (kickoffapi.com) their results come from KickoffAPI's daily list (full-time scores
 only; games decided after extra time or penalties wait for another source or become void after 3 days).
 

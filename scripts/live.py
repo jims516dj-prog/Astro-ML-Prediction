@@ -67,15 +67,8 @@ def country_city(name: str):
     code = nations.code_of(name)
     if not code:
         return None
-    try:
-        c = geo.cities()
-    except Exception:  # noqa: BLE001
-        return None
-    rows = c[c.country_code == code].sort_values("population", ascending=False)
-    if not len(rows):
-        return None
-    r = rows.iloc[0]
-    return float(r.latitude), float(r.longitude), f"national team: {r['name']} (largest city)"
+    got = nations.largest_city(code, nations.HOME_NATION.get(YOUTH_SUFFIX.sub("", name.strip())))
+    return (got[0], got[1], f"national team: {got[2]} (largest city)") if got else None
 
 
 class EuropeanGrounds:

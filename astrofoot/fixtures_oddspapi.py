@@ -17,6 +17,8 @@ import urllib.request
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
+from . import nations
+
 API = "https://api.oddspapi.io/v4"
 SOURCE = "oddspapi.io"
 MEN, WOMEN = "O:", "W:o"
@@ -49,6 +51,34 @@ def names() -> dict[str, str]:
         return json.loads(FILE.read_text())
     except (OSError, ValueError):
         return {}
+
+
+SIDE = re.compile(r"\s+(Reserves?|Res\.?|Women|W|Ladies|Fem\.?|Femenino|Feminino|Frauen|Dames|II|III|B|2|3|"
+                  r"U-?\d{2}|Under[- ]?\d{2}|Sub-?\d{2}|Youth|Academy)$", re.I)
+COUNTRY_WORDS = re.compile(r"\s+(Amateur|Youth|Women|Cup|Cups)$", re.I)
+
+
+def ground(f: dict, team: str, div: str, venue_of):
+    """(lat, lon, source) for the home side: its own ground, else its first team's, else the main city of the
+    country OddsPapi files the game under (good enough for the day and the venue's time zone; OddsPapi names no
+    venue). International categories without a country have no fallback."""
+    if venue_of:
+        names = [team]
+        base = team
+        while (b := SIDE.sub("", base).strip()) and b != base:
+            names.append(b)
+            base = b
+        for n in names:
+            try:
+                loc = venue_of(n, division=div, hint=None)
+            except Exception:  # noqa: BLE001
+                loc = None
+            if loc:
+                return loc if n == team else (loc[0], loc[1], f"{loc[2]} (first team's ground)")
+    cat = COUNTRY_WORDS.sub("", (f.get("categoryName") or "").strip())
+    code = nations.code_of(cat)
+    got = nations.largest_city(code, nations.HOME_NATION.get(cat)) if code else None
+    return (got[0], got[1], f"{cat}: {got[2]} (main city; ground unknown)") if got else None
 
 
 def league_name(code: str) -> str | None:
@@ -141,6 +171,10 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             continue
         if same_game and any(same_game(h, a, ko.isoformat(), o["home"], o["away"], o["kickoff_utc"]) for o in others):
             continue                         # another source has the game already
+        loc = ground(f, h, div, venue_of)
+        if not loc:
+            skipped.append(f"{h} v {a} ({tn[tid]}): home ground not found")
+            continue
         if client.calls >= MAX_ODDS_CALLS:
             skipped.append(f"{h} v {a}: odds request budget for this run used")
             continue
@@ -154,10 +188,6 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             skipped.append(f"{h} v {a}: no match-result odds")
             continue
         odds, book, p_over = got
-        loc = venue_of(h, division=div, hint=None) if venue_of else None
-        if not loc:
-            skipped.append(f"{h} v {a} ({tn[tid]}): home ground not found")
-            continue
         fxd = {"match_key": key, "division": div, "league": tn[tid], "home": h, "away": a, "kickoff_utc": ko.isoformat(),
                "odds": {"home": odds[0], "draw": odds[1], "away": odds[2]}, "odds_source": book, "p_over25": p_over,
                "venue_lat": loc[0], "venue_lon": loc[1], "venue_source": loc[2]}
