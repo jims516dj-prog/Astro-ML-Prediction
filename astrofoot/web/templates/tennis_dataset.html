@@ -10,6 +10,8 @@ players have a date of birth. Surfaces are inferred from the tournament (ESPN do
 <form method="get" class="filters">
   <label>Tour<select name="tour" onchange="this.form.submit()"><option value="">Both</option>
     {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if q.tour == k }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Level<select name="level" onchange="this.form.submit()">
+    {% for k, l in levels %}<option value="{{ k }}" {{ "selected" if q.level == k }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Surface<select name="surface" onchange="this.form.submit()"><option value="">All</option>
     {% for s in ["hard", "clay", "grass"] %}<option {{ "selected" if q.surface == s }}>{{ s }}</option>{% endfor %}</select></label>
   <label>Year<select name="year" onchange="this.form.submit()"><option value="">All</option>
@@ -38,17 +40,22 @@ day), as on the forecasts. The first filter on them reads every chart once (abou
 {% for k, v in stats.items() %}{{ k }} favoured a player in {{ "{:,}".format(v.n) }} matches; that player won
 {{ "{:,}".format(v.won) }} ({{ fmt_pct(v.won / v.n) if v.n else "—" }}){{ "; " if not loop.last else "." }}{% endfor %}
 50% would mean no edge.</p>{% endif %}
-<p class="note">{{ "{:,}".format(n) }} matches{% if by_surface %} ({% for s, c in by_surface.items() %}{{ s }} {{ "{:,}".format(c) }}{{ ", " if not loop.last }}{% endfor %}){% endif %}.</p>
+<p class="note">{% if by_level %}By level: {% for k, c in by_level.items() %}{{ {"tour": "ATP/WTA tour", "wta125": "WTA 125", "challenger": "Challenger", "itf_w": "ITF women", "itf_m": "ITF men", "team": "team events"}.get(k, k) }} {{ "{:,}".format(c) }}{{ ", " if not loop.last }}{% endfor %}.
+WTA 125 events are recognised by "125" in ESPN's name or by the Live Tennis API's listing (some older WTA 125 events have
+other names and count as tour events); ITF and Challenger results come from the API's settled matches, from November 2026.</p>
+<p class="note">{% endif %}{{ "{:,}".format(n) }} matches{% if by_surface %} ({% for s, c in by_surface.items() %}{{ s }} {{ "{:,}".format(c) }}{{ ", " if not loop.last }}{% endfor %}){% endif %}.</p>
 <div class="scroll"><table class="data small">
 <thead><tr><th>Date (UTC)</th><th>Tour</th><th>Tournament</th><th>Round</th><th>Surface</th><th>Winner</th><th>Loser</th><th>Score</th>
 <th title="who the day's astrology / numerology favoured: W = the winner, L = the loser, – = level">Day: astro · num</th></tr></thead>
 <tbody>{% for r in rows %}{% set w1 = r.winner == 1 %}
-<tr><td class="mono">{{ r.date.strftime("%Y-%m-%d") }}</td><td>{{ r.tour|upper }}</td><td>{{ r.event }}</td><td>{{ r.round }}</td><td>{{ r.surface }}</td>
+<tr><td class="mono">{{ r.date.strftime("%Y-%m-%d") }}</td><td>{{ r.tour|upper }}</td><td>{{ r.event }}{% set cn = {"wta125": "WTA 125", "challenger": "Challenger", "itf_w": "ITF", "itf_m": "ITF", "team": "team event"}.get(r.cat) %}{% if cn %} <span class="badge">{{ cn }}</span>{% endif %}</td><td>{{ r.round }}</td><td>{{ r.surface }}</td>
 <td>{% set s = r.p1_seed if w1 else r.p2_seed %}{% if s and s == s %}({{ s|int }}) {% endif %}{{ r.p1 if w1 else r.p2 }}</td>
 <td>{% set s = r.p2_seed if w1 else r.p1_seed %}{% if s and s == s %}({{ s|int }}) {% endif %}{{ r.p2 if w1 else r.p1 }}</td>
 <td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td>
 <td class="mono">{% for f in [r.astro_fav, r.num_fav] %}{{ "–" if not f else ("W" if f == r.winner else "L") }}{{ " · " if loop.first }}{% endfor %}</td></tr>
-{% else %}<tr><td colspan="9">No matches{% if not years %}: the history is built by the first GitHub tennis run (then git pull){% endif %}.</td></tr>{% endfor %}</tbody>
+{% else %}<tr><td colspan="9">No matches{% if not years %}: the history is built by the first GitHub tennis run (then git pull){% elif q.level in ("itf_w", "itf_m", "challenger", "team") %}
+yet at this level: ESPN has no ITF, Challenger or team-event matches, so they come from the Live Tennis API as its results
+are settled (since November 2026; ITF only as far as the free daily quota reaches){% endif %}.</td></tr>{% endfor %}</tbody>
 </table></div>
 <p class="row">{% if page_no > 1 %}<a href="?{{ qs }}&page_no={{ page_no - 1 }}">← newer</a>{% endif %}
 <span>page {{ page_no }} / {{ pages }}</span>{% if page_no < pages %}<a href="?{{ qs }}&page_no={{ page_no + 1 }}">older →</a>{% endif %}</p>

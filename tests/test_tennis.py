@@ -680,3 +680,11 @@ def test_levels_and_wta125_detection():
 def test_short_round():
     from astrofoot.tennis.lta import short_round
     assert short_round("W50 Chihuahua 2 - Quarter-finals") == "Quarter-finals" and short_round("Final") == "Final"
+
+
+def test_dataset_levels():
+    from astrofoot.web import tennis_web as tw
+    m = pd.DataFrame([{"tour": "wta", "event": "Belgrade 125", "level": None}, {"tour": "wta", "event": "WTA Finals", "level": None},
+                      {"tour": "wta", "event": "W15 Antalya", "level": "itf"}, {"tour": "atp", "event": "Lima 2", "level": "challenger"},
+                      {"tour": "atp", "event": "M15 Monastir", "level": "itf"}])
+    assert list(tw.categories(m)) == ["wta125", "tour", "itf_w", "challenger", "itf_m"]

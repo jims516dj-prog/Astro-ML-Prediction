@@ -128,6 +128,20 @@ def category(r: dict, wta125: set[str] = frozenset()) -> str:
     return "challenger" if lvl == "challenger" else "tour"
 
 
+def categories(m: pd.DataFrame) -> pd.Series:
+    """category() for a whole matches table (the Dataset)."""
+    wta125 = _wta125_events(tlive.predictions())
+    lvl = m["level"].fillna("tour") if "level" in m else pd.Series("tour", index=m.index)
+    wta = m["tour"] == "wta"
+    out = pd.Series("tour", index=m.index)
+    out[(lvl == "challenger") & ~wta] = "challenger"
+    out[wta & ((lvl == "challenger") | m["event"].str.contains("125", regex=False) | m["event"].isin(wta125))] = "wta125"
+    out[lvl == "itf"] = "itf_m"
+    out[(lvl == "itf") & wta] = "itf_w"
+    out[lvl == "team"] = "team"
+    return out
+
+
 def level_ok(r: dict, want: str) -> bool:
     if not want:
         return True
@@ -618,7 +632,7 @@ def _day_ok(fav: pd.Series, winner: pd.Series, want: str) -> pd.Series:
 @router.get("/tennis/dataset", response_class=HTMLResponse)
 def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: str = "", player: str = "", event: str = "",
                    date_from: str = "", date_to: str = "", round: str = "", seeds: str = "", best_of: str = "",
-                   astro: str = "", num: str = "", check: str = "", page_no: int = 1):
+                   astro: str = "", num: str = "", check: str = "", level: str = "", page_no: int = 1):
     s = state()
     m = s["matches"]
     years, stats = [], None
@@ -627,6 +641,13 @@ def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: st
         years = sorted({int(y) for y in m.date.dt.year.unique()}, reverse=True)
         if tour:
             m = m[m.tour == tour]
+        m = m.assign(cat=categories(m))
+        if level == "women":
+            m = m[m.tour == "wta"]
+        elif level == "men":
+            m = m[m.tour != "wta"]
+        elif level:
+            m = m[m.cat == level]
         if surface:
             m = m[m.surface == surface]
         if year.isdigit():
@@ -677,13 +698,15 @@ def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: st
         if r.get("winner") == 2:
             r["score"] = " ".join("-".join(reversed(x.split("-"))) for x in str(r["score"]).split())
     q = {"tour": tour, "surface": surface, "year": year, "player": player, "event": event, "date_from": date_from,
-         "date_to": date_to, "round": round, "seeds": seeds, "best_of": best_of, "astro": astro, "num": num, "check": check}
+         "date_to": date_to, "round": round, "seeds": seeds, "best_of": best_of, "astro": astro, "num": num, "check": check,
+         "level": level}
     by_surface = m.surface.value_counts().to_dict() if len(m) else {}
     from .app import SECTIONS
     return _T().TemplateResponse(request, "tennis_dataset.html", {
         "rows": rows, "n": len(m), "page_no": page_no, "pages": pages, "years": years, "q": q, "tours": TOUR,
         "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "by_surface": by_surface, "stats": stats,
-        "rounds": DATASET_ROUNDS, "seed_choices": SEEDS, "day_filter": DAY_FILTER,
+        "rounds": DATASET_ROUNDS, "seed_choices": SEEDS, "day_filter": DAY_FILTER, "levels": LEVELS,
+        "by_level": m.cat.value_counts().to_dict() if len(m) and "cat" in m else {},
         "sections": {**SECTIONS, "tennis": "Tennis"},
         "n_players": len(s["players"]), "n_dob": int(s["players"].dob.notna().sum()) if len(s["players"]) else 0,
         "page": "tennis_dataset"})

@@ -276,7 +276,8 @@ The **⚽ Soccer / 🎾 Tennis** switch in the header changes the whole interfac
 - **Match** pages: the probabilities and every factor the model saw, in three groups.
 - **Analyze**: any two players (from the history, or new ones with a date of birth), surface, format and time.
 - **Dataset**: every completed singles match ESPN lists since 2010 (about 110,000). Filters: tour, surface, year, date
-  range, round, best of 3/5, seeds (both, one, neither, unseeded beat a seed), player, tournament, and whether the day's
+  range, round, best of 3/5, seeds (both, one, neither, unseeded beat a seed), level (tour, WTA 125, Challenger, ITF women /
+  men, team events, all women's / men's), player, tournament, and whether the day's
   astrology / numerology favourite won, lost or was level; plus how often the day's favourites won under the other filters.
   The soccer Dataset's Men / Women switch also has Tennis.
 - **ML model**: what the model learned and how well it does (below), with **Retrain** buttons.
