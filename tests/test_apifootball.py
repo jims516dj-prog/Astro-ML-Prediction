@@ -26,15 +26,19 @@ class Fake(af.Client):
     def __init__(self, fixtures, odds, used=0):
         super().__init__("k")
         self.fixtures, self.odds, self.used_today, self.paths = fixtures, odds, used, []
+        self.paged = {o["fixture"]["id"] for o in odds}
 
     def _get(self, q):
         self.paths.append(q)
         if q.startswith("fixtures"):
             day = q.split("date=")[1][:10]
             return {"errors": [], "response": [f for f in self.fixtures if f["fixture"]["date"][:10] == day]}
+        if q.startswith("odds?fixture="):
+            fid = int(q.split("=")[1])
+            return {"errors": [], "response": [o for o in self.odds if o["fixture"]["id"] == fid]}
         if q.startswith("odds"):
             day = q.split("date=")[1][:10]
-            rows = [o for o in self.odds if any(f["fixture"]["id"] == o["fixture"]["id"] and f["fixture"]["date"][:10] == day
+            rows = [o for o in self.odds if o["fixture"]["id"] in self.paged and any(f["fixture"]["id"] == o["fixture"]["id"] and f["fixture"]["date"][:10] == day
                                                 for f in self.fixtures)]
             return {"errors": [], "paging": {"current": 1, "total": 1}, "response": rows}
         raise AssertionError(q)
@@ -56,6 +60,7 @@ def test_extra_fixtures_men_women_dedupe_and_shared_cache(tmp_path, monkeypatch)
                 game(5, "Played", "Before", status="FT")]
     odds = [odds_entry(i, {"Pinnacle": (2.0, 3.3, 3.9)}) for i in (1, 2, 3, 4, 5)]
     c = Fake(fixtures, odds)
+    c.paged = {1, 2, 3}                       # game 4's odds need a request of its own
     primary = [{"match_key": "x", "division": "X:fifa.friendly", "home": "Peru", "away": "Bolivia",
                 "kickoff_utc": "2026-11-12T18:00:00+00:00"}]
     own = lambda team, division=None, hint=None: (55.7, 9.5, "vejle") if hint and hint.get("city") == "Vejle" else None  # noqa: E731
@@ -64,6 +69,7 @@ def test_extra_fixtures_men_women_dedupe_and_shared_cache(tmp_path, monkeypatch)
     assert [(g["home"], g["division"]) for g in men] == [("Denmark U21", "A:38"), ("Club A", "A:99")]
     assert men[0]["venue_source"] == "vejle" and "San Salvador" in men[1]["venue_source"]
     assert men[0]["odds_source"].endswith("Pinnacle") and men[0]["p_over25"] == 0.5
+    assert any(p.startswith("odds?fixture=4") for p in c.paths)
     n = c.calls
     women = af.extra_fixtures([], NOW, 4, live.match_key, lambda k: k[:10], [], own, c=c, log=lambda *a: None, women=True)
     assert [(g["home"], g["division"]) for g in women] == [("Spain W", "W:a666")] and c.calls == n   # answers reused
@@ -84,5 +90,5 @@ def test_results_use_90_minute_score():
     c = Fake(fixtures, [])
     pending = [{"match_key": "k1", "division": "A:38", "home": "Denmark U21", "away": "Netherlands U21",
                 "kickoff_utc": "2026-11-11T18:00:00+00:00"}]
-    got = af.match_results(pending, c=c, log=lambda *a: None)
+    got = af.match_results(pending, c=c, log=lambda *a: None, now=NOW)
     assert got["k1"]["goals_home"] == 1 and got["k1"]["goals_away"] == 1

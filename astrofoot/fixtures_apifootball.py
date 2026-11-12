@@ -29,7 +29,8 @@ MEN, WOMEN = "A:", "W:a"
 DAY_LIMIT = 100
 RESERVE = 12                 # requests left for results and the other cycles of the day
 CYCLES_PER_DAY = 3
-MAX_ODDS_PAGES = 12          # per day of games
+MAX_ODDS_PAGES = 3           # per day of games (the free plan allows pages 1-3)
+WOMEN_SHARE = 0.35           # of a cycle's requests, for the women's pass
 FILE = Path(__file__).resolve().parents[1] / "ledger" / "apifootball_leagues.json"
 FAKE = re.compile(r"e-?soccer|esports?|cyber|virtual|e-?football|simulated", re.I)
 WOMEN_WORDS = re.compile(r"women|woman|ladies|femen|femin|frauen|femminil|damen|dames|\bw-league\b|wk-league|"
@@ -186,10 +187,14 @@ def prices(entry: dict) -> tuple[list[float], str, float | None] | None:
     return med, f"{SOURCE}, median of {len(trios)} bookmakers", p_over
 
 
-def day_odds(c: Client, day: str, pages: int) -> dict[int, dict]:
+def day_odds(c: Client, day: str, pages: int, log=print) -> dict[int, dict]:
     out, total, page = {}, 1, 1
     while page <= min(total, pages):
-        d = c.get("odds", date=day, page=page)
+        try:
+            d = c.get("odds", date=day, page=page)
+        except Exception as e:  # noqa: BLE001 - keep the pages already read
+            log(f"api-football odds {day} page {page}: unavailable ({type(e).__name__}: {e})")
+            break
         total = int((d.get("paging") or {}).get("total") or 1)
         for e in d.get("response") or []:
             fid = (e.get("fixture") or {}).get("id")
@@ -211,15 +216,18 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
     fx, odds = [], {}
     # this cycle's share of the day's requests (the women's pass reuses the men's answers)
     share = max(0, (c.left() - RESERVE) // max(1, CYCLES_PER_DAY - now.hour // 8))
-    pages = max(1, min(MAX_ODDS_PAGES, (share - len(days)) // max(1, len(days))))
+    if women:
+        share = int(share * WOMEN_SHARE)
+    start = c.calls
     for d in days:
         try:
             fx += c.get("fixtures", date=d).get("response") or []
-            odds.update(day_odds(c, d, pages))
         except Exception as e:  # noqa: BLE001
             log(f"api-football {d}: unavailable ({type(e).__name__}: {e})")
+            continue
+        odds.update(day_odds(c, d, MAX_ODDS_PAGES, log))
     tn = names()
-    out, skipped, no_odds = [], [], 0
+    out, skipped, no_odds, cands = [], [], 0, []
     have = {f["match_key"] for f in primary} | {r["match_key"] for r in ledger_preds}
     others = list(primary) + list(ledger_preds)
     for f in fx:
@@ -245,13 +253,26 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             continue
         if same_game and any(same_game(h, a, ko.isoformat(), o["home"], o["away"], o["kickoff_utc"]) for o in others):
             continue
-        got = prices(odds[fi["id"]]) if fi.get("id") in odds else None
-        if not got:
-            no_odds += 1
-            continue
         loc = ground(f, h, div, venue_of)
         if not loc:
             skipped.append(f"{h} v {a} ({tn[lid]}): home ground not found")
+            continue
+        cands.append((f, key, div, ko, h, a, loc, lid))
+    # odds for the games the day's pages did not price: one request each, soonest first, within this cycle's share
+    cands.sort(key=lambda x: x[3])
+    for f, key, div, ko, h, a, loc, lid in cands:
+        fid = (f.get("fixture") or {}).get("id")
+        if fid not in odds and c.calls - start < share:
+            try:
+                for e in c.get("odds", fixture=fid).get("response") or []:
+                    odds[fid] = e
+            except Exception as e:  # noqa: BLE001
+                skipped.append(f"{h} v {a}: odds unavailable ({type(e).__name__}: {e})")
+        got = prices(odds[fid]) if fid in odds else None
+        if not got:
+            no_odds += 1
+            continue
+        if any(same_game and same_game(h, a, ko.isoformat(), o["home"], o["away"], o["kickoff_utc"]) for o in out):
             continue
         o3, book, p_over = got
         fxd = {"match_key": key, "division": div, "league": tn[lid], "home": h, "away": a, "kickoff_utc": ko.isoformat(),
@@ -290,21 +311,25 @@ def normalise(rows: list[dict]) -> list[dict]:
     return out
 
 
-def match_results(pending: list[dict], c: Client | None = None, log=print) -> dict[str, dict]:
+def match_results(pending: list[dict], c: Client | None = None, log=print, now: datetime | None = None) -> dict[str, dict]:
     """Scores after 90 minutes for pending games without a football-data.co.uk file (one request per day of games)."""
     c = c or client()
     if c is None or not pending:
         return {}
-    days = sorted({datetime.fromisoformat(r["kickoff_utc"]).astimezone(timezone.utc).date().isoformat() for r in pending})
+    first = (now or datetime.now(timezone.utc)) - timedelta(days=1)     # the free plan: yesterday to tomorrow
+    days = sorted({datetime.fromisoformat(r["kickoff_utc"]).astimezone(timezone.utc).date().isoformat() for r in pending}
+                  & {first.date().isoformat(), (first + timedelta(days=1)).date().isoformat()})
+    if not days:
+        return {}
     games = []
-    for d in days[-6:]:
+    for d in days:
         try:
             games += normalise(c.get("fixtures", date=d).get("response") or [])
         except Exception as e:  # noqa: BLE001
             log(f"api-football results {d}: unavailable ({type(e).__name__}: {e})")
     divs = {r["division"] for r in pending}
     found, notes = pair(pending, [{**g, "division": dv} for g in games for dv in divs], SOURCE)
-    log(f"api-football: {len(games)} finished game(s) over {len(days[-6:])} day(s); {len(found)} of {len(pending)} pending found")
+    log(f"api-football: {len(games)} finished game(s) over {len(days)} day(s); {len(found)} of {len(pending)} pending found")
     for n in notes[:20]:
         log("  unmatched:", n)
     return found
