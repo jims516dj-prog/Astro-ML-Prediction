@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 4          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 5          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 3      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -66,6 +66,33 @@ def is_latin(s: str) -> bool:
     """True when every letter is in the Latin script (name numerology reads Latin letters only)."""
     letters = [ch for ch in s or "" if ch.isalpha()]
     return bool(letters) and all("LATIN" in unicodedata.name(ch, "") for ch in letters)
+
+
+_PLACES: dict = {}
+
+
+def _coord(e):
+    for c in (e.get("claims") or {}).get("P625", []):
+        v = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value") or {}
+        if "latitude" in v:
+            return v["latitude"], v["longitude"]
+    return None
+
+
+def item_location(e):
+    """(lat, lon) of a club: its own coordinates, else its home ground's (P115), else its seat's (P159)."""
+    ll = _coord(e)
+    if ll:
+        return ll
+    for prop in ("P115", "P159"):
+        ids = [q for q in claim_ids(e, prop) if q]
+        missing = [q for q in ids if q not in _PLACES]
+        if missing:
+            _PLACES.update({q: _coord(x) for q, x in entities(missing, labels=False).items()})
+        for q in ids:
+            if _PLACES.get(q):
+                return _PLACES[q]
+    return None
 
 
 def official(e):
@@ -225,6 +252,72 @@ def _row_ok(source: str, mine: set[str]) -> bool:
     return False
 
 
+HOME_AT: dict[str, list] = {}     # team -> home-game venues in the live record
+HOME_DIV: dict[str, str] = {}     # team -> a division it hosted games in (history)
+NEAR_KM = 40
+
+
+def home_location(team: str):
+    """(lat, lon) where the club plays its home games: its venues in the live record, else its stadium or
+    curated home city (geo.resolve; a city guessed from the name only when nothing better is known)."""
+    import statistics
+    v = HOME_AT.get(team)
+    if v:
+        return statistics.median(x[0] for x in v), statistics.median(x[1] for x in v)
+    if team in HOME_DIV:
+        got = geo.resolve(team, HOME_DIV[team])
+        if got:
+            return got[0], got[1]
+    return None
+
+
+def _km(a, b) -> float:
+    import math
+    la1, lo1, la2, lo2 = map(math.radians, (a[0], a[1], b[0], b[1]))
+    h = math.sin((la2 - la1) / 2) ** 2 + math.cos(la1) * math.cos(la2) * math.sin((lo2 - lo1) / 2) ** 2
+    return 12742 * math.asin(min(1.0, math.sqrt(h)))
+
+
+def _row_names(source: str) -> list[str]:
+    _row_ok(source, set())                            # builds the index
+    return _row_ok._rows.get(source) or []
+
+
+def _initials_ok(abbr: str, names: list[str]) -> bool:
+    """"HJK" is one of the club's names, or the initials of one ("Helsingin Jalkapalloklubi")."""
+    a = abbr.lower()
+    for n in names:
+        w = re.findall(r"[a-z]+", _fold(n))
+        if a in w or "".join(x[0] for x in w).startswith(a):
+            return True
+    return False
+
+
+def nearby(mine: set[str], at, initialism: bool, want: str | None = None, abbr: str = "") -> list[dict]:
+    """The table's clubs based within NEAR_KM of the club's home whose names carry its words (abbreviations
+    allowed: "M'gladbach" -> Borussia Mönchengladbach)."""
+    from astrofoot import foundings as fd
+    import numpy as np
+    t = fd.table()
+    if "_arr" not in nearby.__dict__:
+        lat = pd.to_numeric(t.lat, errors="coerce").to_numpy()
+        lon = pd.to_numeric(t.lon, errors="coerce").to_numpy()
+        nearby._arr = (lat, lon)
+    lat, lon = nearby._arr
+    d = 6371 * np.hypot(np.radians(lat - at[0]), np.radians(lon - at[1]) * np.cos(np.radians(at[0])))
+    out = []
+    for i in np.where(d <= NEAR_KM)[0]:
+        r = t.iloc[i]
+        if r.kind != "club" or not str(r.source).startswith("wikidata:") or RESERVE_ITEM.search(r.team or ""):
+            continue
+        c = TABLE_COUNTRY.get(r.country) or nations.code_of(r.country or "")
+        if want and c and not same_country(want, {c}):
+            continue                                  # across a border: Helsingør is not Helsingborg
+        if (_initials_ok(abbr, r.names) if initialism else _row_ok(r.source, mine)):
+            out.append({**fd._from_table(r), "match": "close"})
+    return out
+
+
 def namesakes(mine: set[str], want: str | None) -> list[dict]:
     """Every club in the table, in the team's country, whose names carry all of the team's words ("Zaglebie":
     Zagłębie Lubin and Zagłębie Sosnowiec), so a namesake the name search did not return still counts."""
@@ -273,30 +366,43 @@ def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None
             continue
         if not want and not c:
             continue
-        if not initialism and not _row_ok(x["source"], mine):
+        if not (_initials_ok(base, _row_names(x["source"])) if initialism else _row_ok(x["source"], mine)):
             continue
         pool.append(x)
+    at = home_location(team)
+    if at:
+        pool += nearby(mine, at, initialism, want, base)
     if not pool:
         return [], None
     pool = list({x["source"]: x for x in pool}.values())
     pool.sort(key=lambda x: -int(x.get("sitelinks") or 0))
     top, links = pool[0], int(pool[0].get("sitelinks") or 0)
     second = int(pool[1].get("sitelinks") or 0) if len(pool) > 1 else 0
-    if links < max(DOMINANCE * second, 1):
-        return [], None                               # namesakes of similar standing: left to the Wikidata search
-    if top["match"] == "close" and links < 10:
-        return [], None
-    return [top["source"].split(":", 1)[1]], want or iso(top)
+    if links >= max(DOMINANCE * second, 1) and (top["match"] != "close" or links >= 10):
+        return [top["source"].split(":", 1)[1]], want or iso(top)
+    if at:
+        # namesakes of similar standing ("Zaglebie": Lubin or Sosnowiec): the one based where the club plays
+        near = [x for x in pool if x.get("lat") is not None and _km(at, (x["lat"], x["lon"])) <= NEAR_KM]
+        near.sort(key=lambda x: -int(x.get("sitelinks") or 0))
+        if near:
+            n1 = int(near[0].get("sitelinks") or 0)
+            n2 = int(near[1].get("sitelinks") or 0) if len(near) > 1 else 0
+            if n1 >= max(DOMINANCE * n2, 10):          # a professional club: small namesakes are not guessed
+                return [near[0]["source"].split(":", 1)[1]], want or iso(near[0])
+    return [], None
 
 
 def teams_and_countries():
     """{team: ISO code or None} for every club in the history and the live records (men's)."""
     out, pairs = {}, []
+    HOME_DIV.clear()
+    HOME_AT.clear()
     w = Path("data/work/matches.parquet")
     if w.exists():
         m = pd.read_parquet(w, columns=["division", "home", "away"])
         for div, h, a in m.itertuples(index=False):
             c = geo.DIVISION_COUNTRY.get(div)
+            HOME_DIV.setdefault(h, div)
             for t in (h, a):
                 out.setdefault(t, c)
     try:
@@ -308,6 +414,8 @@ def teams_and_countries():
                 comp[div] = geo.DIVISION_COUNTRY.get(div) or competition_country(div)
             c = comp[div]                             # a domestic competition: both sides are from its country
             pairs.append((r["home"], r["away"]))
+            if r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
+                HOME_AT.setdefault(r["home"], []).append((r["venue_lat"], r["venue_lon"]))
             out[r["away"]] = out.get(r["away"]) or c
             if not c and r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
                 c = nations.country_at(r["venue_lat"], r["venue_lon"])   # else the home side's ground
@@ -416,8 +524,10 @@ def main():
                 why.append(f"{q}: in {sorted(have)}, not {want}")
                 continue                              # a namesake in another country
             if not want and not have:
-                why.append(f"{q}: no country to confirm with")
-                continue                              # nothing to confirm the match with
+                at, ll = home_location(t), item_location(e)
+                if not (at and ll and _km(at, ll) <= NEAR_KM):
+                    why.append(f"{q}: no country to confirm with")
+                    continue                          # nothing to confirm the match with
             if not names_agree(t, e):
                 why.append(f"{q}: names differ")
                 print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
@@ -430,7 +540,13 @@ def main():
             passing.sort(key=lambda x: -x[0])         # prominence: the number of languages it is named in
             if len(passing) == 1 or passing[0][0] >= DOMINANCE * passing[1][0]:
                 pick = passing[0][1:]
-            else:
+            elif (at := home_location(t)):
+                # namesakes of similar standing: the one whose ground or seat is where the club plays
+                near = [(n, q, e) for n, q, e in passing
+                        if (ll := item_location(e)) and _km(at, ll) <= NEAR_KM]
+                if len(near) == 1:
+                    pick = near[0][1:]
+            if not pick and len(passing) > 1:
                 why.append("namesakes: " + ", ".join(f"{q} ({n})" for n, q, _ in passing[:3]))
         if not pick:
             cache[t] = {"tried": month, "why": "; ".join(why[1:] or why), "v": VERSION}

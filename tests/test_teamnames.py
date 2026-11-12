@@ -109,3 +109,22 @@ def test_table_candidates_pick_the_right_club():
     assert "Watford F.C." not in pick("Waterford", "IE")
     assert pick("OL Lyonnes", None) == []                               # the women's club
     assert fon.table_candidates("Torreense", None)[1] == "PT"           # the country comes from the table
+
+
+def test_namesakes_resolved_by_where_the_club_plays(monkeypatch):
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    from astrofoot import foundings
+    if not len(foundings.table()):
+        return
+    name = {s.split(":", 1)[1]: t for s, t in zip(foundings.table().source, foundings.table().team)}
+    monkeypatch.setattr(fon, "HOME_AT", {"Zaglebie": [(51.40, 16.20)], "Wisla": [(50.07, 19.93)],
+                                         "Helsingor": [(56.03, 12.59)], "Tambov": [(52.72, 41.45)]})
+    pick = lambda team, c: [name.get(q) for q in fon.table_candidates(team, c)[0]]  # noqa: E731
+    assert pick("Zaglebie", "PL") == ["Zagłębie Lubin"]
+    assert pick("Wisla", "PL") == ["Wisła Kraków"]
+    assert pick("Helsingor", "DK") == ["FC Helsingør"]                 # not Helsingborg, across the strait
+    assert pick("Tambov", "RU") == []                                  # not Spartak Tambov, a small namesake
+    e = {"claims": {"P625": [{"mainsnak": {"datavalue": {"value": {"latitude": 51.4, "longitude": 16.2}}}}]}}
+    assert fon.item_location(e) == (51.4, 16.2)
