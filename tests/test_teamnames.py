@@ -156,3 +156,13 @@ def test_club_abbreviations_are_not_initials_and_search_needs_every_word():
     lab = lambda n: {"labels": {"en": {"value": n}}}  # noqa: E731
     assert fon.names_agree("Manta F.C.", lab("Manta Fútbol Club"))
     assert not fon.names_agree("Volga N. Novgorod", lab("FC Nizhny Novgorod"), strict=True)
+
+
+def test_club_must_have_existed_while_the_team_played(monkeypatch):
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    monkeypatch.setattr(fon, "PLAYED", {"Volga N. Novgorod": [2012, 2016]})
+    born = lambda y: {"claims": {"P571": [{"mainsnak": {"datavalue": {"value": {"time": f"+{y}-01-01T00:00:00Z"}}}}]}}  # noqa: E731
+    assert not fon.lifetime_ok("Volga N. Novgorod", born(2015))
+    assert fon.lifetime_ok("Volga N. Novgorod", born(1963))

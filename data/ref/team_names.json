@@ -7028,10 +7028,8 @@
 "v": 6
 },
 "Volga N. Novgorod": {
-"legal": "FC Nizhny Novgorod",
-"qid": "Q20740338",
-"short": "FC Nizhny Novgorod",
-"v": 9
+"tried": "reset",
+"why": "was FC Nizhny Novgorod (founded 2015), a different club"
 },
 "Volgar-Astrakhan": {
 "legal": "FC Volgar Astrakhan",

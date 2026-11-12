@@ -30,8 +30,8 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 9          # unnamed clubs decided under an older version of the rules are tried again
-NAMED_SINCE = 6      # named clubs are redone only when named under an older version than this
+VERSION = 10          # unnamed clubs decided under an older version of the rules are tried again
+NAMED_SINCE = 10      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
 TABLE_COUNTRY = {"People's Republic of China": "CN", "United States": "US", "Russia": "RU", "United Kingdom": "GB", "Kingdom of the Netherlands": "NL", "England": "GB", "Scotland": "GB",
@@ -266,6 +266,37 @@ def _row_ok(source: str, mine: set[str]) -> bool:
     return False
 
 
+PLAYED: dict[str, list] = {}      # team -> [first year, last year] it played in our records
+
+
+def _played(team, kickoff) -> None:
+    y = str(kickoff or "")[:4]
+    if not y.isdigit():
+        return
+    y = int(y)
+    span = PLAYED.setdefault(teamnames.split(team)[0], [y, y])
+    span[0], span[1] = min(span[0], y), max(span[1], y)
+
+
+def _year(e, prop):
+    for c in (e.get("claims") or {}).get(prop, []):
+        v = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value") or {}
+        t = str(v.get("time") or "")
+        if len(t) > 5 and t[1:5].isdigit():
+            return int(t[1:5])
+    return None
+
+
+def lifetime_ok(team: str, e) -> bool:
+    """The club existed while the team played: not founded after its first game in our records, nor dissolved
+    before its last (a year's slack): "Volga N. Novgorod" (2011-2016) is not FC Nizhny Novgorod (founded 2015)."""
+    span = PLAYED.get(teamnames.split(team)[0])
+    if not span:
+        return True
+    born, gone = _year(e, "P571"), _year(e, "P576")
+    return not ((born and born > span[0] + 1) or (gone and gone < span[1] - 1))
+
+
 HOME_AT: dict[str, list] = {}     # team -> home-game venues in the live record
 HOME_DIV: dict[str, str] = {}     # team -> a division it hosted games in (history)
 NEAR_KM = 40
@@ -428,16 +459,18 @@ def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None
 def teams_and_countries():
     """{team: ISO code or None} for every club in the history and the live records (men's)."""
     out, pairs = {}, []
+    PLAYED.clear()
     HOME_DIV.clear()
     HOME_AT.clear()
     w = Path("data/work/matches.parquet")
     if w.exists():
-        m = pd.read_parquet(w, columns=["division", "home", "away"])
-        for div, h, a in m.itertuples(index=False):
+        m = pd.read_parquet(w, columns=["division", "home", "away", "kickoff_utc"])
+        for div, h, a, ko in m.itertuples(index=False):
             c = geo.DIVISION_COUNTRY.get(div)
             HOME_DIV.setdefault(h, div)
             for t in (h, a):
                 out.setdefault(t, c)
+                _played(t, ko)
     try:
         from astrofoot import live
         comp: dict[str, str | None] = {}
@@ -447,6 +480,8 @@ def teams_and_countries():
                 comp[div] = geo.DIVISION_COUNTRY.get(div) or competition_country(div)
             c = comp[div]                             # a domestic competition: both sides are from its country
             pairs.append((r["home"], r["away"]))
+            for side in (r["home"], r["away"]):
+                _played(side, r.get("kickoff_utc"))
             if (r.get("venue_lat") is not None and div not in live.MULTI_CLUB
                     and r.get("venue_source") != "city"):  # a city guessed from the name proves nothing
                 HOME_AT.setdefault(r["home"], []).append((r["venue_lat"], r["venue_lon"]))
@@ -589,6 +624,10 @@ def main():
                 if not (at and ll and _km(at, ll) <= NEAR_KM):
                     why.append(f"{q}: no country to confirm with")
                     continue                          # nothing to confirm the match with
+            if not lifetime_ok(t, e):
+                why.append(f"{q}: founded {_year(e, 'P571')} / dissolved {_year(e, 'P576')}, "
+                           f"but the team played {PLAYED.get(teamnames.split(t)[0])}")
+                continue
             if not names_agree(t, e, strict=t in searched):
                 why.append(f"{q}: names differ")
                 print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
