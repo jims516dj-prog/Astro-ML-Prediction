@@ -8,6 +8,7 @@ Matching is strict: the same date of birth and the same player by name (same sur
 exactly one Wikidata tennis player fits. Results go into data/ref/tennis_names.json ({player id: {legal, qid,
 label}}); players not matched keep their tour name. Wikidata is CC0."""
 import json
+import re
 import sys
 import time
 import urllib.parse
@@ -50,6 +51,21 @@ def wikidata_players(first: int, last: int) -> dict[str, list[dict]]:
     return by_dob
 
 
+def surname_words(name: str) -> set[str]:
+    return {w for w in re.split(r"[\s\-]+", an.latin(name).lower()) if len(w) > 1}
+
+
+def full_name(tour_name: str, births) -> str | None:
+    """The birth name, only when it still carries the player's current surname: a player who took a married name
+    ("Tatjana Maria", born Malek; "Alison Riske-Amritraj", born Riske) is known legally by that name now, so her
+    tour name is kept."""
+    mine = surname_words(tour_name.split()[-1])
+    for b in sorted(b for b in births if an.latin(b).strip()):
+        if mine and mine <= surname_words(b):
+            return b
+    return None
+
+
 def main():
     pl = tlive.load_players(raw=True)
     pl = pl[pl.dob.notna()]
@@ -65,9 +81,7 @@ def main():
             ambiguous += len(cands) > 1
             continue
         c = cands[0]
-        births = sorted(b for b in c["birth"] if an.latin(b).strip())
-        legal = next((b for b in births if same_player(r["name"], b) or r["name"].split()[-1].lower() in b.lower()),
-                     births[0] if births else None)
+        legal = full_name(r["name"], c["birth"])
         out[str(r["id"])] = {"qid": c["qid"], "label": c["label"], "legal": legal}
     tnames.FILE.parent.mkdir(parents=True, exist_ok=True)
     tnames.FILE.write_text(json.dumps(out, indent=0, sort_keys=True, ensure_ascii=False))

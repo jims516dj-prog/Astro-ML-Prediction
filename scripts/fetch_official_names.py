@@ -35,13 +35,20 @@ START = time.time()
 
 
 def entities(qids, labels=True):
-    out = {}
-    for i in range(0, len(qids), 40):
+    """Items by id; an item whose fetch failed is left out (the caller keeps what it had)."""
+    out, failed = {}, 0
+    step = 10 if labels else 40                       # big clubs' items in every language are large
+    for i in range(0, len(qids), step):
         props = "claims|labels|aliases" if labels else "claims"
-        d = get("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&props=" + props + "&ids="
-                + "|".join(qids[i:i + 40]))
-        out.update((d or {}).get("entities") or {})
-        time.sleep(0.2)
+        url = ("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&props=" + props + "&ids="
+               + "|".join(qids[i:i + step]))
+        d = get(url) or (time.sleep(20) or get(url, tries=4))
+        if not d or "entities" not in d:
+            failed += len(qids[i:i + step])
+        out.update({q: e for q, e in ((d or {}).get("entities") or {}).items() if "missing" not in e})
+        time.sleep(0.5)
+    if failed:
+        print(f"  {failed} item(s) could not be fetched; their clubs keep their earlier entry")
     return out
 
 
@@ -183,6 +190,8 @@ def main():
             iso[q] = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value")
     found = 0
     for t in todo:
+        if cand.get(t) and not any(q in ents for q in cand[t]):
+            continue                                  # the lookup failed: try again next run, keep the entry
         pick = None
         for q in cand.get(t, []):
             e = ents.get(q) or {}
