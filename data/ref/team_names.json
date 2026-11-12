@@ -187,7 +187,7 @@
 },
 "Al Nasr Cairo": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Al Yarmouk": {
@@ -258,8 +258,8 @@
 },
 "All Boys": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q646088: not a football club; Q21286565: not a football club; Q116051518: not a football club; Q109973523: not a football club; Q136720106: not a football club; namesakes: Q130571838 (2), Q5772997 (2), Q23815941 (1)"
+"v": 9,
+"why": "Q646088: not a football club; Q21286565: not a football club; Q116051518: not a football club; Q109973523: not a football club; Q136720106: not a football club; Q23815941: not a football club; namesakes: Q130571838 (2), Q5772997 (2)"
 },
 "Alloa": {
 "legal": "Alloa Athletic FC",
@@ -503,8 +503,8 @@
 },
 "Athletic": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q8687: in ['ES'], not BR; Q542: not a football club; Q19462: not a football club; Q18750: in ['GB'], not BR; Q19601: not a football club; Q390256: in ['GB'], not BR; Q394452: in ['IE'], not BR; Q625130: in ['GB'], not BR; Q2658370: in ['GB'], not BR"
+"v": 9,
+"why": "Q8687: in ['ES'], not BR; Q542: not a football club; Q19462: in ['GB'], not BR; Q18750: in ['GB'], not BR; Q19601: in ['GB'], not BR; Q390256: in ['GB'], not BR; Q394452: in ['IE'], not BR; Q625130: in ['GB'], not BR; Q2658370: not a football club"
 },
 "Athletico-PR": {
 "legal": "Club Athletico Paranaense",
@@ -520,7 +520,7 @@
 },
 "Atl. Rafaela": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Atl. San Luis": {
@@ -609,7 +609,7 @@
 },
 "Aurora FC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "Q97159453: in ['CA'], not AU; Q777289: in ['GT'], not AU; Q98430030: not a football club; Q112958069: in ['US'], not AU; Q602436: in ['PE'], not AU; Q324596: in ['RO'], not AU; Q1387898: in ['VN'], not AU"
 },
 "Austin FC": {
@@ -686,7 +686,7 @@
 },
 "Baladiyyat AL Mehalla": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Ballymena United": {
@@ -1141,13 +1141,13 @@
 },
 "Buyuksehyr": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "C.D. Platense": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q20037017: not a football club; namesakes: Q151907 (34), Q1208841 (20), Q1772471 (11)"
+"v": 9,
+"why": "namesakes: Q151907 (34), Q1208841 (20), Q1772471 (11)"
 },
 "CD Artistico Navalcarnero": {
 "legal": "CDA Navalcarnero",
@@ -1187,7 +1187,7 @@
 },
 "CS Puertollano": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "CS Turnu Severin": {
@@ -1347,8 +1347,10 @@
 "v": 7
 },
 "Central Cordoba": {
-"tried": "reset",
-"why": "was Instituto Atlético Central Córdoba, a different club"
+"legal": "Central Córdoba de Santiago del Estero",
+"qid": "Q5060684",
+"short": "Central Córdoba de Santiago del Estero",
+"v": 9
 },
 "Cercle Brugge": {
 "legal": "Cercle Brugge Koninklijke Sportvereniging",
@@ -1502,7 +1504,7 @@
 },
 "Chivas USA": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "Q642433: not a football club"
 },
 "Chongqing Liangjiang Athletic": {
@@ -1891,7 +1893,7 @@
 },
 "Delta United FC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Den Haag": {
@@ -1991,9 +1993,10 @@
 "v": 6
 },
 "Don Bosco Bamberg": {
-"tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"legal": "DJK Don Bosco Bamberg",
+"qid": "Q1153961",
+"short": "DJK Don Bosco Bamberg",
+"v": 9
 },
 "Doncaster": {
 "legal": "Doncaster Rovers Football Club",
@@ -2147,7 +2150,7 @@
 },
 "El Seka El Hadid": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "El Sekka El Hadid": {
@@ -2158,7 +2161,7 @@
 },
 "El Terasanah": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Elche": {
@@ -2451,7 +2454,7 @@
 },
 "FK Anzi Makhackala": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "FK Jablonec": {
@@ -2942,7 +2945,7 @@
 },
 "Guangzhou R&F": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "Q7273224: not a football club; Q1192340: names differ; Q30326177: not a football club; Q130521: names differ; Q4151222: names differ; Q131606011: names differ; Q5613720: names differ; Q27973523: names differ; Q123468311: names differ"
 },
 "Guimaraes": {
@@ -2965,8 +2968,8 @@
 },
 "Gunners FC": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q1923335: not a football club; Q859887: in ['BW'], not TZ; Q7566513: in ['AU'], not TZ; Q1530996: in ['NA'], not TZ; Q9617: in ['GB'], not TZ"
+"v": 9,
+"why": "Q1923335: in ['ZW'], not TZ"
 },
 "HB Køge": {
 "legal": "HB Køge",
@@ -3264,7 +3267,7 @@
 },
 "IAA SC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Ibiza": {
@@ -3287,7 +3290,7 @@
 },
 "Ind. Rivadavia": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Independ. Rivadavia": {
@@ -3436,8 +3439,8 @@
 },
 "Jiangsu Suning": {
 "tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"v": 9,
+"why": "Q925648: not a football club; Q24831872: not a football club; Q48901916: not a football club; Q110460510: not a football club"
 },
 "Joinville": {
 "legal": "Joinville Esporte Clube",
@@ -3501,7 +3504,7 @@
 },
 "KS Polonia Nysa": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "KS Wisloka Debica": {
@@ -4094,7 +4097,7 @@
 },
 "M. Saransk": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "Q138771038: names differ; Q9207590: names differ"
 },
 "MGladbach": {
@@ -4105,12 +4108,12 @@
 },
 "MKS Czarni Polaniec": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Maan SC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Macclesfield": {
@@ -4247,7 +4250,7 @@
 },
 "Mbeya Kwanza FC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Mechelen": {
@@ -4258,7 +4261,7 @@
 },
 "Mega Sport": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "Q43295515: not a football club; Q79013384: not a football club; Q129177473: not a football club; Q118875256: not a football club; Q129932218: not a football club; Q47519832: in ['TR'], not EG"
 },
 "Meizhou Hakka": {
@@ -4443,13 +4446,13 @@
 },
 "Mount Pleasant FC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Mouscron": {
 "tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"v": 9,
+"why": "Q37736670: not a football club; Q220145: not a football club; Q3097128: not a football club; Q61728955: not a football club; Q21855233: not a football club; namesakes: Q2195773 (36), Q490586 (35), Q865735 (32)"
 },
 "Mudhar": {
 "legal": "Mudhar Club",
@@ -4705,8 +4708,8 @@
 },
 "OL Lyonnes": {
 "tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"v": 9,
+"why": "Q1276685: not a football club; Q140422190: not a football club; Q134697327: not a football club; Q140278175: not a football club"
 },
 "Odd": {
 "legal": "Odds Ballklubb",
@@ -5280,8 +5283,8 @@
 },
 "Proxy": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q1432581: not a football club; Q25415577: not a football club; Q11189: not a football club; Q1517802: not a football club; Q56404221: not a football club; Q37930915: in ['DK'], not EG; Q12316776: in ['DK'], not EG; Q20033401: not a football club"
+"v": 9,
+"why": "Q37930915: in ['DK'], not EG; Q12316776: in ['DK'], not EG; Q20033401: in ['DK'], not EG"
 },
 "Puebla": {
 "legal": "Puebla FC",
@@ -5369,8 +5372,8 @@
 },
 "RWD Molenbeek": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q20979061: not a football club; Q123750359: not a football club; namesakes: Q1050331 (34), Q2312558 (30)"
+"v": 9,
+"why": "Q2312558: not a football club; Q123750359: not a football club; namesakes: Q1050331 (34), Q20979061 (30)"
 },
 "Racing (Montevideo)": {
 "legal": "Racing Club de Montevideo",
@@ -5446,7 +5449,7 @@
 },
 "Red Bull Bragantino SP": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Red Star": {
@@ -5613,7 +5616,7 @@
 },
 "SC Wieselburg": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "SJK": {
@@ -5719,9 +5722,10 @@
 "v": 6
 },
 "San Martin S.J.": {
-"tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"legal": "Club Atlético San Martín",
+"qid": "Q80921",
+"short": "San Martín de San Juan",
+"v": 9
 },
 "San Martin T.": {
 "legal": "San Martín de Tucumán",
@@ -5845,8 +5849,8 @@
 },
 "Seraing": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q194037: not a football club; Q20622889: not a football club; Q31516025: not a football club; Q2431383: not a football club; Q2225157: not a football club; namesakes: Q925973 (25), Q967104 (17), Q3922821 (3)"
+"v": 9,
+"why": "Q194037: not a football club; Q20622889: not a football club; Q31516025: not a football club; Q2431383: not a football club; Q2225157: not a football club"
 },
 "Servette": {
 "legal": "Servette FC",
@@ -5946,7 +5950,7 @@
 },
 "Shenzhen Xinpengcheng": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Shijiazhuang": {
@@ -6023,7 +6027,7 @@
 },
 "Smail": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "Q37291573: not a football club; Q42256694: not a football club; Q116600749: not a football club; Q102406262: not a football club; Q63453939: not a football club"
 },
 "Sochaux": {
@@ -6268,8 +6272,8 @@
 },
 "Stirling": {
 "tried": "2026-11",
-"v": 8,
-"why": "Q217838: not a football club; Q182923: not a football club; Q68816571: not a football club; Q16883856: not a football club; Q1432101: not a football club; Q7617576: in ['AU'], not GB; Q1982166: not a football club; namesakes: Q282126 (28), Q1387066 (28), Q7617583 (6)"
+"v": 9,
+"why": "Q217838: not a football club; Q182923: not a football club; Q68816571: not a football club; Q16883856: not a football club; Q1432101: not a football club; Q7617576: in ['AU'], not GB; Q1982166: names differ; namesakes: Q282126 (28), Q1387066 (28), Q7617583 (6)"
 },
 "Stockport": {
 "legal": "Stockport County Football Club",
@@ -6381,8 +6385,8 @@
 },
 "T. Moscow": {
 "tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"v": 9,
+"why": "Q29112: names differ; Q29115: names differ; Q17497: names differ; Q477073: names differ; Q4430691: names differ; Q1688897: names differ; namesakes: Q176371 (88), Q324338 (55)"
 },
 "TPS": {
 "legal": "Turun Palloseura",
@@ -6506,8 +6510,8 @@
 },
 "Tirol": {
 "tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"v": 9,
+"why": "Q504179: not a football club; Q42880: not a football club; Q111142196: not a football club; Q153809: not a football club; Q20061507: not a football club; Q2387559: not a football club; Q109876427: in ['BR'], not AT; Q2291116: not a football club; Q261813: not a football club; namesakes: Q686659 (31), Q697473 (26), Q3552905 (3)"
 },
 "Tokushima": {
 "legal": "Tokushima Vortis",
@@ -6565,8 +6569,8 @@
 },
 "Tosno": {
 "tried": "2026-11",
-"v": 8,
-"why": "no Wikidata item found"
+"v": 9,
+"why": "Q15337: not a football club; Q4461423: not a football club; Q9089186: not a football club; Q4461425: not a football club; Q4461426: not a football club"
 },
 "Tottenham": {
 "legal": "Tottenham Hotspur Football Club",
@@ -6600,7 +6604,7 @@
 },
 "Transit Camp FC": {
 "tried": "2026-11",
-"v": 8,
+"v": 9,
 "why": "no Wikidata item found"
 },
 "Trapani": {
@@ -7024,8 +7028,10 @@
 "v": 6
 },
 "Volga N. Novgorod": {
-"tried": "reset",
-"why": "was FC Nizhny Novgorod, a different club"
+"legal": "FC Nizhny Novgorod",
+"qid": "Q20740338",
+"short": "FC Nizhny Novgorod",
+"v": 9
 },
 "Volgar-Astrakhan": {
 "legal": "FC Volgar Astrakhan",
