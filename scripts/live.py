@@ -20,7 +20,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import fixtures2, fixtures_espn, form, geo, live, results2, results_espn, venues  # noqa: E402
+from astrofoot import nations, fixtures2, fixtures_espn, form, geo, live, results2, results_espn, venues  # noqa: E402
 
 
 def recent_names(ledger: Path) -> dict[str, set[str]]:
@@ -64,8 +64,7 @@ YOUTH_SUFFIX = re.compile(r"\s+(U-?\d{2}|Under[- ]?\d{2}|Sub-?\d{2}|II|B)$", re.
 
 def country_city(name: str):
     """(lat, lon, source) of a country's most populous city, when `name` is a country (a national team)."""
-    from astrofoot.tennis.venue import EXTRA_CODES
-    code = geo.COUNTRY_CODE.get(name.strip()) or EXTRA_CODES.get(name.strip())
+    code = nations.code_of(name)
     if not code:
         return None
     try:
@@ -106,9 +105,12 @@ class EuropeanGrounds:
             if not hint or not (hint.get("name") or hint.get("city")):
                 return None
             key = f"{hint.get('name') or ''} | {hint.get('city') or ''}"
+        nation = None if self.hint_only else nations.code_of(team)
         if key in self.cache:
             c = self.cache[key]
-            return (c["lat"], c["lon"], c["source"])
+            if not nation or nations.in_country(c["lat"], c["lon"], nation):
+                return (c["lat"], c["lon"], c["source"])
+            del self.cache[key]                 # a saved ground abroad for a national team: look again
         loc = None
         try:
             st = {} if self.hint_only else geo.stadiums()
@@ -126,6 +128,11 @@ class EuropeanGrounds:
             except Exception:  # noqa: BLE001 - venue tables not downloaded
                 loc = None
         city_ll = geo.city_lookup(hint.get("country"), hint.get("city")) if hint else None
+        if city_ll is None and hint and hint.get("city") and nations.NATIONS.get((hint.get("country") or "").strip()):
+            try:                                # small nations the venue tables do not name ("Grenada", "Curaçao")
+                city_ll = geo._city_lookup(nations.NATIONS[hint["country"].strip()], hint["city"].split(",")[0].strip())
+            except Exception:  # noqa: BLE001
+                city_ll = None
         if loc is None and hint and hint.get("name"):
             name, city = hint["name"], hint.get("city") or ""
             for fn, q, src in ((venues.wikipedia, name, "wikipedia"),                 # the stadium's own page
@@ -149,6 +156,12 @@ class EuropeanGrounds:
                 if hit:
                     loc = (hit[0], hit[1], f"{src}: {hit[2]}")
                     break
+        if loc is not None and nation and not nations.in_country(loc[0], loc[1], nation):
+            # abroad: right only when ESPN's own venue city confirms it (national teams banned from their own
+            # stadiums play "home" games elsewhere); otherwise a namesake stadium found by a map search
+            confirmed = city_ll is not None and venues.km(city_ll, loc[:2]) < 40
+            if not confirmed:
+                loc = None
         if loc is None and not self.hint_only:
             base = YOUTH_SUFFIX.sub("", team).strip()
             if base and base != team:           # a youth side plays at (or near) its senior team's ground

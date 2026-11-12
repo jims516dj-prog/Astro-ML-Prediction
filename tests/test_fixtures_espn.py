@@ -146,3 +146,31 @@ def test_youth_names_never_map_to_senior_names():
     assert fixtures_espn.same_age("Arsenal", "Arsenal") == "Arsenal" and fixtures_espn.same_age("Arsenal", None) is None
     assert fixtures_espn.YOUTH_NAME.search("Spain Sub-20") and fixtures_espn.YOUTH_NAME.search("Italy Under-19")
     assert not fixtures_espn.NOT_MEN.search("uefa.euro_u21_qual") and fixtures_espn.NOT_MEN.search("eng.w.1")
+
+
+def test_national_team_grounds_stay_in_the_country_unless_espn_says_otherwise(tmp_path, monkeypatch):
+    import importlib.util
+    import sys
+    from pathlib import Path
+
+    from astrofoot import nations
+    if nations.country_at(23.1, -82.4) is None:                # cities table not downloaded
+        return
+    spec = importlib.util.spec_from_file_location("live_script", Path(__file__).resolve().parents[1] / "scripts" / "live.py")
+    mod = importlib.util.module_from_spec(spec)
+    sys.argv = ["live.py"]
+    spec.loader.exec_module(mod)
+    g = mod.EuropeanGrounds(tmp_path, [])
+    havana = (23.1, -82.4, "openstreetmap: Estadio La Polar")
+    monkeypatch.setattr(mod.venues, "wikipedia", lambda q: None)
+    monkeypatch.setattr(mod.venues, "nominatim_stadium", lambda q: havana)
+    monkeypatch.setattr(mod.venues, "wikipedia_ground", lambda q: None)
+    monkeypatch.setattr(mod.venues, "nominatim_ground", lambda q: havana)
+    got = g("Grenada", "X:concacaf.nations.league", {"name": "La Polar", "city": "", "country": ""})
+    assert got is not None and nations.in_country(got[0], got[1], "GD") and "largest city" in got[2]
+    # Comoros playing a "home" game in Morocco, confirmed by ESPN's venue city: kept
+    rabat = (34.0, -6.85, "Prince Moulay Abdellah Stadium")
+    monkeypatch.setattr(mod.venues, "wikipedia", lambda q: rabat)
+    got = mod.EuropeanGrounds(tmp_path / "b", [])("Comoros", "X:caf.nations_qual",
+                                                  {"name": "Prince Moulay Abdellah Stadium", "city": "Rabat", "country": "Morocco"})
+    assert got[2].startswith("wikipedia: Prince Moulay")

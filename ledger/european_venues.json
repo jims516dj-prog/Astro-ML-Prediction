@@ -14,11 +14,6 @@
   "lon": 4.31454,
   "source": "city"
  },
- "Andorra": {
-  "lat": 40.97655,
-  "lon": -0.44721,
-  "source": "city"
- },
  "Argentina": {
   "lat": -34.54527778,
   "lon": -58.44972222,
@@ -54,11 +49,6 @@
   "lon": 11.93055556,
   "source": "wikipedia: Nordic Wellness Arena"
  },
- "Barbados": {
-  "lat": 16.2101272,
-  "lon": -61.5025226,
-  "source": "openstreetmap: Stade Roger ZAMI, Rue Roger Zami, Montauban, Belle Plaine, Le Gosier, Pointe-à-Pitre, Guadeloupe, 97190, France"
- },
  "Barnet": {
   "lat": 51.6026,
   "lon": -0.2918,
@@ -78,21 +68,6 @@
   "lat": 38.75087,
   "lon": -9.20282,
   "source": "city"
- },
- "Benin": {
-  "lat": 5.3283047,
-  "lon": -4.0185225,
-  "source": "openstreetmap: Stade Félix Houphouët-Boigny, Boulevard Lagunaire, Le Plateau, Abidjan, Côte d’Ivoire"
- },
- "Bermuda": {
-  "lat": 16.2101272,
-  "lon": -61.5025226,
-  "source": "openstreetmap: Stade Roger ZAMI, Rue Roger Zami, Montauban, Belle Plaine, Le Gosier, Pointe-à-Pitre, Guadeloupe, 97190, France"
- },
- "Bonaire": {
-  "lat": 23.0970914,
-  "lon": -82.4018788,
-  "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
  },
  "Bradford City": {
   "lat": 53.79444444,
@@ -179,11 +154,6 @@
   "lon": -76.58097,
   "source": "city: Cali"
  },
- "Comoros": {
-  "lat": 33.95944444,
-  "lon": -6.88861111,
-  "source": "wikipedia: Prince Moulay Abdellah Stadium"
- },
  "Congo DR": {
   "lat": -4.33041667,
   "lon": 15.31,
@@ -198,11 +168,6 @@
   "lat": 51.398333,
   "lon": -0.085556,
   "source": "stadium"
- },
- "Curaçao": {
-  "lat": 12.1528263,
-  "lon": -68.8882628,
-  "source": "openstreetmap: Sentro Deportivo Korsou, Plasa M Maduro, Schelpwijk, Sapate, Curaçao, Nederland"
  },
  "Czechia": {
   "lat": 50.0997126,
@@ -258,11 +223,6 @@
   "lat": 5.55138889,
   "lon": -0.19194444,
   "source": "wikipedia: Accra Sports Stadium"
- },
- "Grenada": {
-  "lat": 23.0970914,
-  "lon": -82.4018788,
-  "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
  },
  "Guatemala": {
   "lat": 14.9717343,
@@ -363,11 +323,6 @@
   "lat": 49.57722222,
   "lon": 6.11472222,
   "source": "wikipedia: Stade de Luxembourg"
- },
- "Madagascar": {
-  "lat": 33.8911836,
-  "lon": -5.5394126,
-  "source": "openstreetmap: الملعب الشرفي, Avenue Allal Ben Abdellah شارع علال بن عبدالله, Meknès ⴰⵎⴽⵏⴰⵙ مكناس, Pachalik de Meknes, Prefecture de Meknès عمالة مكناس, Fès-Meknès ⴼⴰⵙ-ⵎⴽⵏⴰⵙ فاس-مكناس, 50000, Maroc ⵍⵎⵖⵔⵉⴱ المغرب"
  },
  "Mali": {
   "lat": 12.6043766,
@@ -528,11 +483,6 @@
   "lat": 40.99527778,
   "lon": -5.665,
   "source": "wikipedia: Helmántico Stadium"
- },
- "Saudi Arabia": {
-  "lat": 25.267358,
-  "lon": 51.484251,
-  "source": "wikipedia: Jassim bin Hamad Stadium"
  },
  "Scotland": {
   "lat": 55.82583333,
