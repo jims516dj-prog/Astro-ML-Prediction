@@ -490,6 +490,14 @@ result. A game never gets two forecasts across sources (same competition, kickof
 Worldwide lists such as Flashscore also include women's, youth and many lower or regional leagues without published odds,
 which cannot be forecast this way.
 
+**OddsPapi and KickoffAPI (free keys).** With the GitHub secret `ODDS_PAPI` (oddspapi.io), each cycle adds games none of
+the sources above cover: youth (U19, U21), international and club friendlies, reserve and lower leagues, and women's
+games for the women's section. Prices are Pinnacle's when offered, otherwise the median over bookmakers; the over/under
+2.5 line is used for ranking when present. Simulated and e-sports games are dropped, and a game already forecast from
+another source is skipped. These games appear under the OddsPapi category and tournament name (code `O:` for men,
+`W:o` for women). With `KICKOFF_API` (kickoffapi.com) their results come from KickoffAPI's daily list (full-time scores
+only; games decided after extra time or penalties wait for another source or become void after 3 days).
+
 ## European competitions (Champions League, Europa League, Conference League)
 
 football-data.co.uk has no files for club competitions, so these come only from the secondary sources:

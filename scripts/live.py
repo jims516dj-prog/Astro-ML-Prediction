@@ -20,7 +20,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from astrofoot import nations, fixtures2, fixtures_espn, form, geo, live, results2, results_espn, venues  # noqa: E402
+from astrofoot import fixtures_oddspapi, nations, results_kickoff, fixtures2, fixtures_espn, form, geo, live, results2, results_espn, venues  # noqa: E402
 
 
 def recent_names(ledger: Path) -> dict[str, set[str]]:
@@ -205,6 +205,9 @@ def women_cycle(a, now):
     if waiting:
         found, notes, _ = results_espn.match_results(waiting)
         print(f"women: espn.com {len(found)} of {len(waiting)} pending result(s) found")
+        rest = [r for r in waiting if r["match_key"] not in found]
+        if rest and results_kickoff.token():
+            found.update(results_kickoff.match_results(rest, log=lambda *x: print("women:", *x)))
     print(f"women: settled {live.settle(found, now, wl, source=results_espn.SOURCE)} match(es)")
     local_date = lambda ko: pd.Timestamp(ko).tz_convert(live.TIMEZONE_OF_SOURCE_TIMES).strftime("%Y-%m-%d")  # noqa: E731
     voided = {k for k, v in live.read_results(wl).items() if v.get("void")}
@@ -217,6 +220,12 @@ def women_cycle(a, now):
     except Exception as e:  # noqa: BLE001
         print(f"women: espn.com fixtures unavailable: {type(e).__name__}: {e}", file=sys.stderr)
         fx = []
+    try:          # OddsPapi: women's games ESPN does not list (its own ground look-up: OddsPapi names no venue)
+        fx += fixtures_oddspapi.extra_fixtures(fx, now, a.horizon, live.match_key, local_date, active,
+                                               EuropeanGrounds(wl, active, cache_name="venues_oddspapi.json"),
+                                               women=True, same_game=live.same_game, log=lambda *x: print("women:", *x))
+    except Exception as e:  # noqa: BLE001
+        print(f"women: oddspapi.io fixtures unavailable: {type(e).__name__}: {e}", file=sys.stderr)
     r = live.commit(fx, now, a.horizon, wl)
     print(f"women: committed {r['committed']} prediction(s)")
     for s_ in r["skipped"]:
@@ -265,6 +274,12 @@ def load_fixtures(a, now) -> list[dict]:
                                         venue_of=grounds, european_pool=european_pool(out, preds, a.ledger))
     else:
         print("extra fixtures: set ODDS_API_KEY to add games football-data.co.uk has not listed yet")
+    # OddsPapi last: youth, friendlies, reserves and lower divisions none of the above lists
+    try:
+        out += fixtures_oddspapi.extra_fixtures(out, now, a.horizon, live.match_key, local_date, preds, grounds,
+                                                same_game=live.same_game)
+    except Exception as e:  # noqa: BLE001
+        print(f"oddspapi.io fixtures unavailable: {type(e).__name__}: {e}", file=sys.stderr)
     if not out and errors:
         raise SystemExit("No fixtures could be downloaded (is www.football-data.co.uk allowed by the network policy?)")
     return out
@@ -326,6 +341,9 @@ def load_results(a, now) -> tuple[dict, dict]:
     rest = [r for r in waiting if r["match_key"] not in res]
     if rest and fixtures2.token():
         res.update(fixtures2.scores_results(rest, now, a.ledger, fixtures2.Client(fixtures2.token())))
+    rest = [r for r in waiting if r["match_key"] not in res and r["division"] in live.NO_PRIMARY]
+    if rest and results_kickoff.token():
+        res.update(results_kickoff.match_results(rest))
     return res, latest
 
 
