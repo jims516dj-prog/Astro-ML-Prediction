@@ -496,7 +496,8 @@ def _all_games(include_withdrawn: bool = False) -> list[dict]:
 def _teamday(r: dict) -> dict | None:
     """The day reading of a soccer game (founding dates already looked up; none are looked up while a page loads)."""
     try:
-        return teamday.reading(r["home"], r["away"], r["kickoff_utc"], r.get("venue_lat"), r.get("venue_lon"), resolve=False)
+        return teamday.reading(r["home"], r["away"], r["kickoff_utc"], r.get("venue_lat"), r.get("venue_lon"), resolve=False,
+                               women=str(r.get("division") or "").startswith("W:"))
     except Exception:  # noqa: BLE001
         return None
 
@@ -669,7 +670,7 @@ def _picks_games(include_withdrawn: bool = True) -> list[dict]:
 
 
 @app.get("/women", response_class=HTMLResponse)
-def women_page(request: Request, day: str = "", status: str = "", league: str = ""):
+def women_page(request: Request, day: str = "", status: str = "", league: str = "", dayfav: str = ""):
     """The women's section: its own forecasts and track record (ledger/women), never mixed with the men's."""
     recs = live.records(WOMEN_LEDGER)
     for r in recs:
@@ -685,13 +686,15 @@ def women_page(request: Request, day: str = "", status: str = "", league: str = 
     rows.sort(key=lambda r: (r["kickoff_utc"], r["home"]))
     for r in rows:
         r["gm"] = _gm_live(r)
+        r["td"] = _teamday(r)
+    rows = [r for r in rows if _soc_day_ok(r["td"], dayfav)]
     scored = [r for r in recs if r["pre_kickoff"] and r["status"] != "void"]
     return T.TemplateResponse(request, "women.html", {
         "rows": rows, "day": day, "days": days, "status": status, "league": league,
         "leagues": sorted({r["division"] for r in recs}, key=_league_name),
         "n": len(recs), "n_settled": sum(r["status"] == "settled" for r in recs),
         "score_summary": live.score_picks(scored, "summary"), "score_result": live.score_picks(scored, "result"),
-        "page": "women"})
+        "dayfav": dayfav, "soc_day": SOC_DAY, "page": "women"})
 
 
 @app.get("/women/match/{key}", response_class=HTMLResponse)

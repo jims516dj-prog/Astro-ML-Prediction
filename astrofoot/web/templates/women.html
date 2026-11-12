@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_teamday.html" as tdm %}
 {% from "_goals.html" import badges as gm_badges %}
 {% block title %}Women · Astro Football Lab{% endblock %}
 {% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
@@ -32,7 +33,11 @@ women's results only. The track record below shows how well this holds up.</p>
     {% for v, l in [("pending","Pending"),("settled","Completed"),("void","Postponed / void")] %}<option value="{{ v }}" {{ "selected" if status==v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Competition<select name="league" onchange="this.form.submit()"><option value="">All</option>
     {% for l in leagues %}<option value="{{ l }}" {{ "selected" if league==l }}>{{ league_name(l) }}</option>{% endfor %}</select></label>
+  <label>Day reading<select name="dayfav" onchange="this.form.submit()">
+    {% for v, l in soc_day %}<option value="{{ v }}" {{ "selected" if dayfav == v }}>{{ l }}</option>{% endfor %}</select></label>
 </form>
+<p class="note">Day reading: date-only astrology and numerology of the <em>women's</em> teams' founding dates for the match day
+(never the men's club's date; teams without a known date have none). See a match page for the details.</p>
 
 <div class="scroll"><table class="data small">
 <thead><tr><th>Kickoff (UTC)</th><th>Competition</th><th>Match</th><th class="num">xG home · away</th><th>Favourite</th>
@@ -40,7 +45,7 @@ women's results only. The track record below shows how well this holds up.</p>
 <th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th></tr></thead>
 <tbody>{% for r in rows %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T", " ") }}</td><td>{{ league_name(r.division) }}</td>
-<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}</td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}{{ tdm.line(r.td) }}</td>
 <td class="num mono" style="white-space:nowrap">{{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</td>
 <td>{{ r.favourite }}</td>
 <td class="num">{{ fmt_pct(p.market.fav, 0) }}/{{ fmt_pct(p.market.draw, 0) }}/{{ fmt_pct(p.market.dog, 0) }}</td>

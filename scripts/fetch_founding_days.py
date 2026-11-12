@@ -134,6 +134,57 @@ def from_entity(ent):
     return None, None
 
 
+def is_football(e: dict) -> bool:
+    claims = e.get("claims") or {}
+    kinds = {(((c.get("mainsnak") or {}).get("datavalue") or {}).get("value") or {}).get("id") for c in claims.get("P31", [])}
+    sport = {(((c.get("mainsnak") or {}).get("datavalue") or {}).get("value") or {}).get("id") for c in claims.get("P641", [])}
+    return bool(kinds & FOOTBALL) or "Q2736" in sport
+
+
+def women_teams(cache: dict) -> dict:
+    """Women's teams of the women's section (ESPN lists them by the club's plain name): their own founding dates,
+    under 'W:<team>', never the men's club's."""
+    from astrofoot import live
+    try:
+        recs = live.records(live.LEDGER / "women")
+    except Exception as e:  # noqa: BLE001
+        print("women's ledger unavailable:", e)
+        return {}
+    teams = sorted({t for r in recs for t in (r["home"], r["away"])})
+    todo = [t for t in teams if not (cache.get(f"W:{t}") or {}).get("date")]
+    print(f"women's section: {len(teams)} teams, {len(todo)} without a founding date known to the day")
+    out = {}
+    for t in todo:
+        hit = None
+        for q in (f"{t} women", f"{t} Women", f"{t} femenil", f"{t} femenino", f"{t} feminino", f"{t} frauen",
+                  f"{t} femminile", f"{t} féminine", f"{t} ladies"):
+            d = get("https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&type=item&limit=6"
+                    "&search=" + urllib.parse.quote(q))
+            time.sleep(0.15)
+            ids = [h["id"] for h in (d or {}).get("search", [])]
+            if not ids:
+                continue
+            es = wikidata(ids)
+            for qid in ids:
+                e = es.get(qid) or {}
+                label = ((e.get("labels") or {}).get("en") or {}).get("value") or next(
+                    (h.get("label") for h in d["search"] if h["id"] == qid), "")
+                base = foundings._key(t)
+                if is_football(e) and teamday.WOMEN_WORDS.search(label or "") and base and \
+                        set(base.split()) & set(foundings._key(label).split()):
+                    hit = (qid, label, e)
+                    break
+            if hit:
+                break
+        if not hit:
+            continue
+        date, src = from_entity(hit[2])
+        if date:
+            out[f"W:{t}"] = {"date": date, "name": hit[1], "source": f"{src} ({hit[0]})"}
+    print(f"women's teams: {len(out)} founding dates found")
+    return out
+
+
 def main():
     teams = set()
     w = Path("data/work/matches.parquet")
@@ -147,6 +198,7 @@ def main():
         print("live record unavailable:", e)
     cache = json.loads(teamday.CACHE.read_text()) if teamday.CACHE.exists() else {}
     todo = sorted(t for t in teams if not (cache.get(t) or {}).get("date"))
+    women_found = women_teams(cache)
     print(f"{len(teams)} teams; {len(todo)} without a founding date known to the day")
     cand = {}
     for t in todo:
@@ -206,6 +258,7 @@ def main():
         if n % 100 == 0:
             print(f"  {n}/{len(cand)}: {len(found)} found")
     cache.update(found)
+    cache.update(women_found)
     teamday.CACHE.write_text(json.dumps(cache, indent=0, sort_keys=True))
     by = {}
     for v in found.values():

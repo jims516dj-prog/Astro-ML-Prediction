@@ -10,6 +10,7 @@ Research (scripts/research.py teamday) measures both on past matches against the
 from __future__ import annotations
 
 import json
+import re
 from datetime import date
 from functools import lru_cache
 from pathlib import Path
@@ -41,25 +42,50 @@ def _load() -> dict:
     return _mem
 
 
-def founding(team: str, con=None, resolve: bool = True) -> dict | None:
+WOMEN_WORDS = re.compile(r"women|woman|ladies|femen|femin|frauen|femminil|dames|damer|kvinn|naiset|w\.?f\.?c|"
+                         r"\bwfc\b|damen|kobiet|feminil|femení|vrouwen", re.I)
+WOMEN_VARIANTS = ("{} (women)", "{} Women", "{} W.F.C.", "{} Ladies", "{} Femenil", "{} Femenino", "{} Feminino",
+                  "{} Frauen", "{} Femminile", "{} Féminine", "{} Femení", "{} Vrouwen")
+
+
+def founding(team: str, con=None, resolve: bool = True, women: bool = False) -> dict | None:
     """{'date', 'name'} of a team's founding (known to the day), or None. Name look-ups are slow, so every answer
-    (found or not) is kept in data/ref/team_founding_days.json."""
+    (found or not) is kept in data/ref/team_founding_days.json. Women's teams are looked up as women's teams
+    ('Chelsea (women)', 'Chelsea Women', …, under the key 'W:Chelsea'), never with the men's club's date."""
     cache = _load()
-    if team in cache:
-        return cache[team]
+    key = f"W:{team}" if women else team
+    if key in cache:
+        return cache[key]
     if not resolve:
         return None
     from . import foundings
+    if women:
+        rec = None
+        for v in WOMEN_VARIANTS:
+            for c in foundings.search(v.format(team), con, limit=5):
+                if c["match"] in ("exact", "alias") and WOMEN_WORDS.search(c["team"] or "") and c.get("founded_date") \
+                        and c.get("date_precision") in (None, "", "day"):
+                    rec = {"date": str(c["founded_date"])[:10], "name": c["team"]}
+                    break
+            if rec:
+                break
+        cache[key] = rec
+        _save(cache)
+        return rec
     b = foundings.best(team, con)
     rec = None
     if b and b.get("founded_date") and b.get("date_precision") in (None, "", "day"):
         rec = {"date": str(b["founded_date"])[:10], "name": b.get("team") or team}
     cache[team] = rec
+    _save(cache)
+    return rec
+
+
+def _save(cache: dict):
     try:
         CACHE.write_text(json.dumps(cache, indent=0, sort_keys=True))
     except OSError:
         pass
-    return rec
 
 
 # ----------------------------------------------------------------------------- readings
@@ -104,7 +130,7 @@ def _team_day(dob: str, name: str, day: str, tz: str | None) -> dict:
 
 
 def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, resolve: bool = True,
-            founded: dict | None = None) -> dict:
+            founded: dict | None = None, women: bool = False) -> dict:
     """Both teams' day and scoring readings for a match, and who each reading favours. `founded` ({"home": date,
     "away": date}) uses founding dates given on Analyze instead of looking the teams up."""
     from . import geo
@@ -117,10 +143,10 @@ def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, res
         tz = None
     w = _dt(kickoff_utc)
     day = (w.astimezone(ZoneInfo(tz)) if tz else w).strftime("%Y-%m-%d")
-    out = {"day": day, "tz": tz}
+    out = {"day": day, "tz": tz, "women": women}
     for side, team in (("home", home), ("away", away)):
         given = an.clean_dob((founded or {}).get(side))
-        f = {"date": given, "name": team} if given else founding(team, con, resolve)
+        f = {"date": given, "name": team} if given else founding(team, con, resolve, women)
         r = _team_day(f["date"], f["name"], day, tz) if f else None
         out[side] = {"team": team, "founded": f["date"] if f else None, "chart_name": f["name"] if f else None,
                      **(r or {"astro": {"score": None, "contacts": []}, "attack": {"score": None, "contacts": []},

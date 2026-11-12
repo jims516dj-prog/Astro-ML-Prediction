@@ -400,7 +400,9 @@ Tested on 91,525 past team-matches (391 clubs; `python scripts/teamday_research.
 with the odds, and a model trained on every contact and number did slightly worse than the odds on unseen seasons. The
 reading is shown for interest; forecasts do not use it. On Analyze, a founding chart you enter or pick for a team is
 used for its day reading; otherwise founding dates are looked up by each GitHub cycle and kept in
-`data/ref/team_founding_days.json` (about half the teams have one known to the day).
+`data/ref/team_founding_days.json` (about half the teams have one known to the day). Women's teams (Women section: the
+Women page, its Live record, Top picks, My picks and Dataset) are looked up as women's teams ("Chelsea (women)",
+"Chelsea Women", "Frauen", "Femenil", …, kept under "W:<team>"), never with the men's club's date.
 
 ## Women's football (separate section)
 

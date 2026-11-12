@@ -78,3 +78,15 @@ def test_summary_pick_day_filter():
     assert web._dayfav_ok(win, "summary", "both") and not web._dayfav_ok(dc_away, "summary", "astro")
     assert web._dayfav_ok(score_home, "summary", "astro") and not web._dayfav_ok(score_home, "summary", "num")
     assert not web._dayfav_ok(goals, "summary", "astro") and web._dayfav_ok(goals, "summary", "same")
+
+
+def test_women_teams_never_get_the_mens_founding_date(monkeypatch):
+    monkeypatch.setattr(teamday, "_mem", {"Chelsea": {"date": "1905-03-10", "name": "Chelsea F.C."},
+                                          "W:Chelsea": None, "W:Arsenal": {"date": "1987-01-01", "name": "Arsenal W.F.C."}})
+    td = teamday.reading("Chelsea", "Arsenal", "2026-11-15T13:00:00+00:00", 51.48, -0.19, resolve=False, women=True)
+    assert td["home"]["founded"] is None and td["away"]["founded"] == "1987-01-01" and td["women"]
+    men = teamday.reading("Chelsea", "Arsenal", "2026-11-15T13:00:00+00:00", 51.48, -0.19, resolve=False)
+    assert men["home"]["founded"] == "1905-03-10"
+    from astrofoot.web import app as web
+    r = {"home": "Chelsea", "away": "Arsenal", "kickoff_utc": "2026-11-15T13:00:00+00:00", "division": "W:eng.w.1"}
+    assert web._teamday(r)["women"] and web._teamday({**r, "division": "E0"})["women"] is False
