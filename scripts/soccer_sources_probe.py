@@ -1,52 +1,86 @@
-"""Which soccer API keys are set (names only, never values), and one small test call with each. Prints only."""
+"""Test calls with API_FOOTBALL_KEY, ODDS_PAPI and KICKOFF_API (keys never printed) and their documentation."""
 import json
 import os
+import re
 import urllib.parse
 import urllib.request
+from datetime import date
 
 H = {"User-Agent": "astro-football-research (GitHub Actions)", "Accept": "application/json"}
-CANDIDATES = ["API_FOOTBALL_KEY", "APIFOOTBALL_KEY", "API_SPORTS_KEY", "APISPORTS_KEY", "X_APISPORTS_KEY", "RAPIDAPI_KEY",
-              "ODDS_API_IO_KEY", "ODDSAPIIO_KEY", "ODDS_API_IO", "SPORTMONKS_KEY", "SPORTMONKS_TOKEN", "ODDSPAPI_KEY",
-              "ODDSLINK_KEY", "THESPORTSDB_KEY", "FIVEDOLLAR_KEY", "FOOTBALL_API_KEY", "SPORTSDATA_KEY", "BSD_KEY",
-              "ODDS_API_KEY", "FOOTBALL_DATA_ORG_TOKEN", "LIVETENNISAPI_KEY"]
+TODAY = date.today().isoformat()
 
 
-def get(url, headers=None):
+def get(url, headers=None, n=2500):
     try:
         with urllib.request.urlopen(urllib.request.Request(url, headers={**H, **(headers or {})}), timeout=40) as r:
-            return r.status, r.read()[:1500].decode("utf-8", "replace")
+            return r.status, r.read().decode("utf-8", "replace")[:n * 20]
     except urllib.error.HTTPError as e:
-        return e.code, e.read()[:500].decode("utf-8", "replace")
+        return e.code, e.read()[:800].decode("utf-8", "replace")
     except Exception as e:  # noqa: BLE001
         return None, f"{type(e).__name__}: {e}"
 
 
-present = {n: os.environ.get(n) for n in CANDIDATES if os.environ.get(n)}
-print("set:", sorted(present), "| not set:", sorted(set(CANDIDATES) - set(present)))
-k = next((present[n] for n in ("API_FOOTBALL_KEY", "APIFOOTBALL_KEY", "API_SPORTS_KEY", "APISPORTS_KEY", "X_APISPORTS_KEY") if n in present), None)
+def hide(s, k):
+    return s.replace(k, "***") if k else s
+
+
+for n in ("API_FOOTBALL_KEY", "ODDS_PAPI", "KICKOFF_API"):
+    print(n, "set" if os.environ.get(n) else "NOT SET")
+
+k = os.environ.get("API_FOOTBALL_KEY")
 if k:
-    st, body = get("https://v3.football.api-sports.io/status", {"x-apisports-key": k})
-    print("API-Football status:", st, body[:800])
-    from datetime import date
-    st, body = get(f"https://v3.football.api-sports.io/fixtures?date={date.today().isoformat()}", {"x-apisports-key": k})
+    hd = {"x-apisports-key": k}
+    print("\n== API-Football")
+    st, b = get("https://v3.football.api-sports.io/status", hd); print("status", st, hide(b[:600], k))
+    st, b = get(f"https://v3.football.api-sports.io/fixtures?date={TODAY}", hd)
     try:
-        d = json.loads(body) if st == 200 else {}
+        d = json.loads(b)
+        fx = d.get("response") or []
+        print("fixtures today:", st, "results", d.get("results"), "errors", d.get("errors"))
+        lg = {}
+        for f in fx:
+            lg[f["league"]["name"] + " (" + f["league"]["country"] + ")"] = lg.get(f["league"]["name"] + " (" + f["league"]["country"] + ")", 0) + 1
+        print("leagues today:", len(lg), sorted(lg.items(), key=lambda x: -x[1])[:25])
+        youth = [n for n in lg if re.search(r"U-?\d{2}|youth|friendl", n, re.I)]
+        print("youth / friendlies:", youth[:25])
+        if fx:
+            f = fx[0]
+            print("sample:", json.dumps({"fixture": {k2: f["fixture"].get(k2) for k2 in ("id", "date", "venue", "status")},
+                                         "league": f["league"], "teams": f["teams"]})[:900])
     except ValueError:
-        d = {}
-    print("API-Football fixtures today:", st, "results", d.get("results"), "errors", d.get("errors"), body[:300] if st != 200 else "")
-if "RAPIDAPI_KEY" in present:
-    st, body = get("https://api-football-v1.p.rapidapi.com/v3/status",
-                   {"x-rapidapi-key": present["RAPIDAPI_KEY"], "x-rapidapi-host": "api-football-v1.p.rapidapi.com"})
-    print("RapidAPI API-Football status:", st, body[:600])
-ko = next((present[n] for n in ("ODDS_API_IO_KEY", "ODDSAPIIO_KEY", "ODDS_API_IO") if n in present), None)
-if ko:
-    st, body = get("https://api.odds-api.io/v3/leagues?sport=football&apiKey=" + urllib.parse.quote(ko))
-    print("Odds-API.io leagues:", st, body[:600])
-for n, url, hdr in (("SPORTMONKS_KEY", "https://api.sportmonks.com/v3/core/my/resources", None),
-                    ("SPORTMONKS_TOKEN", "https://api.sportmonks.com/v3/core/my/resources", None)):
-    if n in present:
-        st, body = get(url + "?api_token=" + urllib.parse.quote(present[n]))
-        print("Sportmonks:", st, body[:600])
-if "THESPORTSDB_KEY" in present:
-    st, body = get(f"https://www.thesportsdb.com/api/v1/json/{present['THESPORTSDB_KEY']}/all_leagues.php")
-    print("TheSportsDB:", st, body[:300])
+        print("fixtures:", st, hide(b[:400], k))
+    st, b = get(f"https://v3.football.api-sports.io/odds?date={TODAY}&page=1", hd)
+    try:
+        d = json.loads(b)
+        print("odds today page 1:", st, "results", d.get("results"), "paging", d.get("paging"), "errors", d.get("errors"))
+        if d.get("response"):
+            o = d["response"][0]
+            bk = o.get("bookmakers") or []
+            print("odds sample league", o["league"]["name"], "| bookmakers", len(bk), [b2["name"] for b2 in bk][:6],
+                  "| markets of first:", [m["name"] for m in (bk[0]["bets"] if bk else [])][:8])
+    except ValueError:
+        print("odds:", st, hide(b[:400], k))
+
+k = os.environ.get("ODDS_PAPI")
+print("\n== OddsPapi docs")
+for u in ("https://oddspapi.io/llms.txt", "https://docs.oddspapi.io/llms.txt", "https://oddspapi.io/blog/?p=3128"):
+    st, b = get(u, {"Accept": "text/markdown,text/plain,*/*"})
+    txt = re.sub(r"<[^>]+>", " ", b)
+    txt = re.sub(r"\s+", " ", txt)
+    hits = re.findall(r"[^.]*(?:api\.oddspapi|apiKey|api_key|/v\d/|free|requests|limit)[^.]*\.", txt, re.I)
+    print(" ", u, st, " | ".join(hits[:14])[:2500])
+if k:
+    print("== OddsPapi calls")
+    for path in ("/v4/sports", "/v4/bookmakers", "/v4/tournaments?sportId=10", "/v4/fixtures?sportId=10&from=" + TODAY + "&to=" + TODAY):
+        for base in ("https://api.oddspapi.io",):
+            st, b = get(base + path + ("&" if "?" in path else "?") + "apiKey=" + urllib.parse.quote(k))
+            print(" ", path, st, hide(b[:700], k))
+
+k = os.environ.get("KICKOFF_API")
+print("\n== KickoffAPI docs")
+for u in ("https://sportsapis.dev/apis/kickoffapi", "https://kickoffapi.com/llms.txt", "https://kickoffapi.com", "https://docs.kickoffapi.com"):
+    st, b = get(u, {"Accept": "text/markdown,text/plain,*/*"})
+    txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", b))
+    hits = re.findall(r"[^.]*(?:https?://[a-z0-9.-]*kickoff[a-z0-9./-]*|api[_-]?key|header|free|requests|odds|venue|endpoint)[^.]*\.", txt, re.I)
+    urls = sorted(set(re.findall(r"https?://[a-z0-9.-]*kickoff[a-z0-9./_-]*", b, re.I)))
+    print(" ", u, st, "| urls:", urls[:15], "|", " | ".join(hits[:12])[:2000])

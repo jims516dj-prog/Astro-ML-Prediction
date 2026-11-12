@@ -29,6 +29,8 @@ jobs:
         run: python scripts/soccer_sources_probe.py
         env:
           API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          KICKOFF_API: ${{ secrets.KICKOFF_API }}
+          ODDS_PAPI: ${{ secrets.ODDS_PAPI }}
           APIFOOTBALL_KEY: ${{ secrets.APIFOOTBALL_KEY }}
           API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
           APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
