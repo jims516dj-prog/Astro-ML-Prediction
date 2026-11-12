@@ -4631,10 +4631,8 @@
 "v": 3
 },
 "Nurnberg": {
-"legal": "VfL Nürnberg",
-"qid": "Q2521545",
-"short": "VfL Nürnberg",
-"v": 4
+"tried": "reset",
+"why": "a Wikidata search pick the founding table contradicts"
 },
 "Nykoebing FC": {
 "tried": "2026-11",
@@ -5687,10 +5685,8 @@
 "v": 3
 },
 "Sandnes": {
-"legal": "Sandnes FK",
-"qid": "Q7416427",
-"short": "Sandnes FK",
-"v": 4
+"tried": "reset",
+"why": "a Wikidata search pick the founding table contradicts"
 },
 "Sanfrecce Hiroshima": {
 "legal": "Sanfrecce Hiroshima",
@@ -5976,10 +5972,8 @@
 "v": 4
 },
 "Sociedad": {
-"legal": "Sociedad Deportiva Compostela",
-"qid": "Q929753",
-"short": "Sociedad Deportiva Compostela",
-"v": 4
+"tried": "reset",
+"why": "a Wikidata search pick the founding table contradicts"
 },
 "Sogndal": {
 "legal": "Sogndal Idrettslag Fotball",
@@ -6867,10 +6861,8 @@
 "v": 3
 },
 "Viborg": {
-"legal": "FK Viborg",
-"qid": "Q5426456",
-"short": "FK Viborg",
-"v": 4
+"tried": "reset",
+"why": "a Wikidata search pick the founding table contradicts"
 },
 "Vicenza": {
 "legal": "LR Vicenza",

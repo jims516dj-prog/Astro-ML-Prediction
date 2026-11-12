@@ -128,3 +128,12 @@ def test_namesakes_resolved_by_where_the_club_plays(monkeypatch):
     assert pick("Tambov", "RU") == []                                  # not Spartak Tambov, a small namesake
     e = {"claims": {"P625": [{"mainsnak": {"datavalue": {"value": {"latitude": 51.4, "longitude": 16.2}}}}]}}
     assert fon.item_location(e) == (51.4, 16.2)
+
+
+def test_untrusted_official_names_dropped():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    assert not fon._agrees("Spal", "Ars et Labor Ferrara Calcio")
+    assert fon._agrees("Bristol Rvs", "Bristol Rovers FC")
+    assert fon.names_agree("Nykoebing FC", {"labels": {"en": {"value": "Nykøbing FC"}}})

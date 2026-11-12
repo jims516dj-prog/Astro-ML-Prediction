@@ -31,7 +31,7 @@ from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
 VERSION = 5          # unnamed clubs decided under an older version of the rules are tried again
-NAMED_SINCE = 3      # named clubs are redone only when named under an older version than this
+NAMED_SINCE = 5      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
 TABLE_COUNTRY = {"People's Republic of China": "CN", "United States": "US", "Russia": "RU", "United Kingdom": "GB", "Kingdom of the Netherlands": "NL", "England": "GB", "Scotland": "GB",
@@ -141,6 +141,15 @@ def _words(s: str) -> set[str]:
         "athletic", "deportivo", "real", "the", "and", "spor", "esporte"}
 
 
+def _agrees(a: str, b: str) -> bool:
+    """Two names share a word (prefix, close spelling or contraction allowed), or one is an initialism."""
+    base = teamnames.split(a)[0]
+    if re.fullmatch(r"[A-Z][A-Za-z]{1,4}", base) and sum(ch.isupper() for ch in base) >= 2:
+        return True
+    mine, theirs = _words(base), _words(b)
+    return not mine or any(_abbrev_ok(w, theirs) for w in mine)
+
+
 def names_agree(team: str, e) -> bool:
     """The item's labels or aliases (any language) share a name word with the team, or it is an initialism."""
     base = teamnames.split(team)[0]
@@ -156,8 +165,7 @@ def names_agree(team: str, e) -> bool:
         for v in vs:
             theirs |= _words(v.get("value"))
     theirs |= _words(official(e)[0] or "")
-    return any(a == b or (len(min(a, b, key=len)) >= 3 and (a.startswith(b) or b.startswith(a)))
-               for a in mine for b in theirs)
+    return any(_abbrev_ok(a, theirs) for a in mine)   # "nykoebing" ~ "nykobing", "dynamo" ~ "dinamo"
 
 
 def competition_country(division: str) -> str | None:
@@ -554,6 +562,13 @@ def main():
         q, e = pick
         legal, lang = official(e)
         short = short_name(e, lang)
+        en = tidy(((e.get("labels") or {}).get("en") or {}).get("value") or "")
+        if short and en and is_latin(en) and not _agrees(t, short) and _agrees(t, en):
+            short = en                                # a label from another era or language ("Ars et Labor
+            # Ferrara Calcio" for SPAL): the English label names the club as the team is known
+        if legal and (sum(ch.isupper() for ch in legal) > 0.8 * sum(ch.isalpha() for ch in legal) > 8
+                      or not (_agrees(t, legal) or _agrees(short, legal))):
+            legal = None                              # a vandalised or unrelated official name: not trusted
         if not short:
             cache[t] = {"tried": month, "why": f"{q}: no Latin-script name", "v": VERSION}
             continue
