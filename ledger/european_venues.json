@@ -14,6 +14,11 @@
   "lon": 4.31454,
   "source": "city"
  },
+ "Andorra": {
+  "lat": 40.97655,
+  "lon": -0.44721,
+  "source": "city"
+ },
  "Armenia": {
   "lat": 40.1720153,
   "lon": 44.5255451,
@@ -69,6 +74,11 @@
   "lon": -4.0185225,
   "source": "openstreetmap: Stade Félix Houphouët-Boigny, Boulevard Lagunaire, Le Plateau, Abidjan, Côte d’Ivoire"
  },
+ "Bermuda": {
+  "lat": 16.2101272,
+  "lon": -61.5025226,
+  "source": "openstreetmap: Stade Roger ZAMI, Rue Roger Zami, Montauban, Belle Plaine, Le Gosier, Pointe-à-Pitre, Guadeloupe, 97190, France"
+ },
  "Bonaire": {
   "lat": 23.0970914,
   "lon": -82.4018788,
@@ -83,6 +93,11 @@
   "lat": 51.45523,
   "lon": -2.59665,
   "source": "city: Bristol"
+ },
+ "Burkina Faso": {
+  "lat": 12.36902778,
+  "lon": -1.5535,
+  "source": "wikipedia: 4 August Stadium"
  },
  "Burton Albion": {
   "lat": 52.82194444,
@@ -144,6 +159,11 @@
   "lon": -101.23362222,
   "source": "wikipedia: Estadio Morelos"
  },
+ "Colombia": {
+  "lat": 3.41033,
+  "lon": -76.58097,
+  "source": "city: Cali"
+ },
  "Congo DR": {
   "lat": -4.33041667,
   "lon": 15.31,
@@ -169,6 +189,11 @@
   "lon": 14.4158918,
   "source": "openstreetmap: epet ARENA, 1066/98, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
  },
+ "Egypt": {
+  "lat": 30.0690313,
+  "lon": 31.3122096,
+  "source": "openstreetmap: إستاد القاهرة الدولي, شارع الاستاد, ثان مدينة نصر, القاهرة, 11153, مصر"
+ },
  "England": {
   "lat": 51.5560695,
   "lon": -0.2796034,
@@ -184,6 +209,11 @@
   "lon": -89.18718,
   "source": "city: San Salvador"
  },
+ "Gabon": {
+  "lat": -1.63861111,
+  "lon": 13.57444444,
+  "source": "wikipedia: Franceville Stadium"
+ },
  "Getafe": {
   "lat": 40.325556,
   "lon": -3.714722,
@@ -193,6 +223,11 @@
   "lat": 5.55138889,
   "lon": -0.19194444,
   "source": "wikipedia: Accra Sports Stadium"
+ },
+ "Guatemala": {
+  "lat": 14.9717343,
+  "lon": -91.7785216,
+  "source": "openstreetmap: 'Los Gallos\" Soccer Stadium, 3a Calle B, Ixhual, San José Caben, San Pedro Sacatepéquez, San Marcos, 12001, Guatemala"
  },
  "Guinea": {
   "lat": 9.54586111,
@@ -269,6 +304,11 @@
   "lon": -5.5394126,
   "source": "openstreetmap: الملعب الشرفي, Avenue Allal Ben Abdellah شارع علال بن عبدالله, Meknès ⴰⵎⴽⵏⴰⵙ مكناس, Pachalik de Meknes, Prefecture de Meknès عمالة مكناس, Fès-Meknès ⴼⴰⵙ-ⵎⴽⵏⴰⵙ فاس-مكناس, 50000, Maroc ⵍⵎⵖⵔⵉⴱ المغرب"
  },
+ "Mali": {
+  "lat": 12.6043766,
+  "lon": -7.9217374,
+  "source": "openstreetmap: Stade du 26 Mars, Route de Ségou, Faladie Sema, Yirimandio, Bamako, Mali"
+ },
  "Malta": {
   "lat": 35.895,
   "lon": 14.41527778,
@@ -294,6 +334,21 @@
   "lon": 19.26444444,
   "source": "wikipedia: Podgorica City Stadium"
  },
+ "Montevideo City Torque": {
+  "lat": -34.91666667,
+  "lon": -56.16666667,
+  "source": "wikipedia: Estadio Luis Franzini"
+ },
+ "Morocco": {
+  "lat": 33.5884,
+  "lon": -7.55785,
+  "source": "city: Casablanca"
+ },
+ "Mozambique": {
+  "lat": -25.828,
+  "lon": 32.575,
+  "source": "wikipedia: Zimpeto Stadium"
+ },
  "Mushuc Runa": {
   "lat": -1.30888889,
   "lon": -78.72777778,
@@ -304,10 +359,20 @@
   "lon": 5.83666667,
   "source": "wikipedia: Goffertstadion"
  },
+ "Netherlands": {
+  "lat": 52.37403,
+  "lon": 4.88969,
+  "source": "city: Amsterdam"
+ },
  "New Zealand": {
   "lat": -36.91833333,
   "lon": 174.8125,
   "source": "wikipedia: Mount Smart Stadium"
+ },
+ "Nigeria": {
+  "lat": 5.0063716,
+  "lon": 7.8847312,
+  "source": "openstreetmap: Godswill Akpabio International Stadium, Ring Road 3, Uyo, Akwa Ibom, 520103, Nigeria"
  },
  "Northampton Town": {
   "lat": 52.23527778,
@@ -364,6 +429,16 @@
   "lon": -52.51736,
   "source": "city"
  },
+ "Puerto Rico": {
+  "lat": 18.1925088,
+  "lon": -67.1546605,
+  "source": "openstreetmap: Estadio Isidoro García, Avenida William C. Dunscombe, Residencial Rafael Hernández, Sábalos, Mayagüez, Puerto Rico, 00682, United States"
+ },
+ "Qatar": {
+  "lat": 25.29194,
+  "lon": 51.42444,
+  "source": "city: Ar-Rayyan"
+ },
  "Real Madrid": {
   "lat": 40.45306,
   "lon": -3.68835,
@@ -374,10 +449,20 @@
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
  },
+ "Scotland": {
+  "lat": 55.82583333,
+  "lon": -4.25194444,
+  "source": "wikipedia: Hampden Park"
+ },
  "Senegal": {
   "lat": 14.7467717,
   "lon": -17.451914,
   "source": "openstreetmap: Stade Léopold Sédar Senghor, Avenue Seydina Limamoulaye, Village Grand Médine, Commune de Patte d'Oie, commune d'arrondissement des Parcelles Assainies, Dakar, Région de Dakar, 10168, Sénégal"
+ },
+ "Serbia": {
+  "lat": 44.78333333,
+  "lon": 20.46472222,
+  "source": "wikipedia: Red Star Stadium"
  },
  "Sheffield Wednesday": {
   "lat": 53.411379,
@@ -389,10 +474,25 @@
   "lon": 5.1661364,
   "source": "openstreetmap: Daio Wasabi Stayen Stadium, Tiensesteenweg, Sint-Truiden, Hasselt, Limburg, Vlaanderen, 3800, België / Belgique / Belgien"
  },
+ "Slovakia": {
+  "lat": 48.37333333,
+  "lon": 17.59166667,
+  "source": "wikipedia: Anton Malatinský Stadium"
+ },
+ "Slovenia": {
+  "lat": 46.56222222,
+  "lon": 15.64027778,
+  "source": "wikipedia: Ljudski vrt"
+ },
  "Sociedad": {
   "lat": 43.301378,
   "lon": -1.973617,
   "source": "stadium"
+ },
+ "South Africa": {
+  "lat": -26.2317243,
+  "lon": 27.9227989,
+  "source": "openstreetmap: Orlando Amstel Arena, Klipspruit Valley Road, Johannesburg Ward 39, Johannesburg, City of Johannesburg Metropolitan Municipality, Gauteng, 1804, South Africa"
  },
  "Sportivo Luqueño": {
   "lat": -25.27222222,
@@ -429,6 +529,11 @@
   "lon": 39.72,
   "source": "manual"
  },
+ "Tunisia": {
+  "lat": 34.7329314,
+  "lon": 10.7459945,
+  "source": "openstreetmap: ملعب الطيب المهيري, شارع مجيدة بوليلة, سكرة, معتمدية صفاقس الغربية, معتمدية صفاقس المدينة, ولاية صفاقس, 3003, تونس"
+ },
  "Técnico Universitario": {
   "lat": -1.24472222,
   "lon": -78.62305556,
@@ -443,6 +548,11 @@
   "lat": 20.4358,
   "lon": 106.18,
   "source": "wikipedia: Thiên Trường Stadium"
+ },
+ "Zambia": {
+  "lat": -12.975,
+  "lon": 28.61138889,
+  "source": "wikipedia: Levy Mwanawasa Stadium"
  },
  "Águila": {
   "lat": 13.4826739,

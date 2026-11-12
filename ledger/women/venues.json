@@ -39,6 +39,16 @@
   "lon": 4.6942994,
   "source": "openstreetmap: King Power at Den Dreef, Tervuursevest, Ruelenspark, Heverlee, Leuven, Vlaams-Brabant, Vlaanderen, 3001, België / Belgique / Belgien"
  },
+ "Lakeside Stadium | Melbourne": {
+  "lat": -37.84027778,
+  "lon": 144.965,
+  "source": "wikipedia: Lakeside Stadium"
+ },
+ "Melbourne City Football Academy | Melbourne": {
+  "lat": -37.814,
+  "lon": 144.96332,
+  "source": "city: Melbourne"
+ },
  "Parc des Princes | Paris": {
   "lat": 48.8413634,
   "lon": 2.2530693,
