@@ -90,6 +90,11 @@ def records() -> list[dict]:
     for r in recs:
         r["when"] = when_of(r, sched.get(r["match_id"]))
         r["cat"] = category(r, wta125)
+        if r["match_id"].startswith("lta:"):        # sealed before rounds were shortened
+            from ..tennis.lta import short_round
+            r["round"] = short_round(r.get("round") or "")
+        r["level_name"] = {"wta125": "WTA 125", "challenger": "ATP Challenger", "itf_w": "ITF women", "itf_m": "ITF men",
+                           "team": "team event"}.get(r["cat"], r["tour"].upper())
     return sorted(recs, key=lambda r: r["start_utc"])
 
 

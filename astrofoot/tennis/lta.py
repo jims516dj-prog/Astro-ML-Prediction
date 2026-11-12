@@ -82,6 +82,11 @@ def _venue(tournament: str) -> str:
     return re.sub(r"\s+", " ", t).strip(" -,")
 
 
+def short_round(r: str) -> str:
+    """'W50 Chihuahua 2 - Quarter-finals' → 'Quarter-finals' (the API repeats the tournament in the round)."""
+    return r.rsplit(" - ", 1)[-1].strip() if " - " in (r or "") else (r or "")
+
+
 def _surface(s: str) -> str:
     s = (s or "").lower()
     return "clay" if "clay" in s else "grass" if "grass" in s else "hard"
@@ -112,7 +117,7 @@ def to_match(m: dict) -> dict | None:
         "event": m.get("tournament") or "", "tour": "wta" if (tour == "wta" or gender == "women") else "atp",
         "level": ("challenger" if tour == "challenger" else "itf" if tour.startswith("itf")
                   else ("team" if team_event(m.get("tournament")) else tour)),
-        "date": when, "venue": _venue(m.get("tournament") or ""), "round": m.get("round") or "",
+        "date": when, "venue": _venue(m.get("tournament") or ""), "round": short_round(m.get("round") or ""),
         "best_of": 5 if fmt.endswith("5") else 3, "surface": _surface(m.get("surface")),
         "state": {"upcoming": "pre", "live": "in", "completed": "post"}.get(status, status),
         "status": status, "completed": status == "completed", "time_valid": True,

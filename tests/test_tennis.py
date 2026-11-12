@@ -675,3 +675,8 @@ def test_levels_and_wta125_detection():
     assert tw.category({"tour": "atp", "level": "challenger"}) == "challenger"
     r = {"tour": "wta", "cat": "itf_w"}
     assert tw.level_ok(r, "women") and tw.level_ok(r, "itf_w") and not tw.level_ok(r, "men") and tw.level_ok(r, "")
+
+
+def test_short_round():
+    from astrofoot.tennis.lta import short_round
+    assert short_round("W50 Chihuahua 2 - Quarter-finals") == "Quarter-finals" and short_round("Final") == "Final"
