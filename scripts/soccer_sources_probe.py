@@ -1,86 +1,68 @@
-"""Test calls with API_FOOTBALL_KEY, ODDS_PAPI and KICKOFF_API (keys never printed) and their documentation."""
+"""OddsPapi (free key ODDS_PAPI): rate limits, today's soccer fixtures with odds, one odds payload; KickoffAPI auth and
+one fixtures call; whether API_FOOTBALL_KEY is visible. Keys never printed."""
 import json
 import os
 import re
 import urllib.parse
 import urllib.request
-from datetime import date
+from collections import Counter
+from datetime import date, timedelta
 
 H = {"User-Agent": "astro-football-research (GitHub Actions)", "Accept": "application/json"}
-TODAY = date.today().isoformat()
+TODAY = date.today()
 
 
-def get(url, headers=None, n=2500):
+def get(url, headers=None):
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers={**H, **(headers or {})}), timeout=40) as r:
-            return r.status, r.read().decode("utf-8", "replace")[:n * 20]
+        with urllib.request.urlopen(urllib.request.Request(url, headers={**H, **(headers or {})}), timeout=60) as r:
+            return r.status, r.read().decode("utf-8", "replace"), dict(r.headers)
     except urllib.error.HTTPError as e:
-        return e.code, e.read()[:800].decode("utf-8", "replace")
+        return e.code, e.read()[:800].decode("utf-8", "replace"), dict(e.headers or {})
     except Exception as e:  # noqa: BLE001
-        return None, f"{type(e).__name__}: {e}"
+        return None, f"{type(e).__name__}: {e}", {}
 
 
-def hide(s, k):
-    return s.replace(k, "***") if k else s
-
-
-for n in ("API_FOOTBALL_KEY", "ODDS_PAPI", "KICKOFF_API"):
-    print(n, "set" if os.environ.get(n) else "NOT SET")
-
-k = os.environ.get("API_FOOTBALL_KEY")
-if k:
-    hd = {"x-apisports-key": k}
-    print("\n== API-Football")
-    st, b = get("https://v3.football.api-sports.io/status", hd); print("status", st, hide(b[:600], k))
-    st, b = get(f"https://v3.football.api-sports.io/fixtures?date={TODAY}", hd)
-    try:
-        d = json.loads(b)
-        fx = d.get("response") or []
-        print("fixtures today:", st, "results", d.get("results"), "errors", d.get("errors"))
-        lg = {}
-        for f in fx:
-            lg[f["league"]["name"] + " (" + f["league"]["country"] + ")"] = lg.get(f["league"]["name"] + " (" + f["league"]["country"] + ")", 0) + 1
-        print("leagues today:", len(lg), sorted(lg.items(), key=lambda x: -x[1])[:25])
-        youth = [n for n in lg if re.search(r"U-?\d{2}|youth|friendl", n, re.I)]
-        print("youth / friendlies:", youth[:25])
-        if fx:
-            f = fx[0]
-            print("sample:", json.dumps({"fixture": {k2: f["fixture"].get(k2) for k2 in ("id", "date", "venue", "status")},
-                                         "league": f["league"], "teams": f["teams"]})[:900])
-    except ValueError:
-        print("fixtures:", st, hide(b[:400], k))
-    st, b = get(f"https://v3.football.api-sports.io/odds?date={TODAY}&page=1", hd)
-    try:
-        d = json.loads(b)
-        print("odds today page 1:", st, "results", d.get("results"), "paging", d.get("paging"), "errors", d.get("errors"))
-        if d.get("response"):
-            o = d["response"][0]
-            bk = o.get("bookmakers") or []
-            print("odds sample league", o["league"]["name"], "| bookmakers", len(bk), [b2["name"] for b2 in bk][:6],
-                  "| markets of first:", [m["name"] for m in (bk[0]["bets"] if bk else [])][:8])
-    except ValueError:
-        print("odds:", st, hide(b[:400], k))
-
+print("API_FOOTBALL_KEY", "set" if os.environ.get("API_FOOTBALL_KEY") else "NOT SET")
+st, b, _ = get("https://docs.oddspapi.io/api-reference/rate-limits.md", {"Accept": "text/markdown"})
+print("== OddsPapi rate limits doc", st, re.sub(r"\s+", " ", b)[:2500])
 k = os.environ.get("ODDS_PAPI")
-print("\n== OddsPapi docs")
-for u in ("https://oddspapi.io/llms.txt", "https://docs.oddspapi.io/llms.txt", "https://oddspapi.io/blog/?p=3128"):
-    st, b = get(u, {"Accept": "text/markdown,text/plain,*/*"})
-    txt = re.sub(r"<[^>]+>", " ", b)
-    txt = re.sub(r"\s+", " ", txt)
-    hits = re.findall(r"[^.]*(?:api\.oddspapi|apiKey|api_key|/v\d/|free|requests|limit)[^.]*\.", txt, re.I)
-    print(" ", u, st, " | ".join(hits[:14])[:2500])
 if k:
-    print("== OddsPapi calls")
-    for path in ("/v4/sports", "/v4/bookmakers", "/v4/tournaments?sportId=10", "/v4/fixtures?sportId=10&from=" + TODAY + "&to=" + TODAY):
-        for base in ("https://api.oddspapi.io",):
-            st, b = get(base + path + ("&" if "?" in path else "?") + "apiKey=" + urllib.parse.quote(k))
-            print(" ", path, st, hide(b[:700], k))
-
-k = os.environ.get("KICKOFF_API")
-print("\n== KickoffAPI docs")
-for u in ("https://sportsapis.dev/apis/kickoffapi", "https://kickoffapi.com/llms.txt", "https://kickoffapi.com", "https://docs.kickoffapi.com"):
-    st, b = get(u, {"Accept": "text/markdown,text/plain,*/*"})
-    txt = re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", b))
-    hits = re.findall(r"[^.]*(?:https?://[a-z0-9.-]*kickoff[a-z0-9./-]*|api[_-]?key|header|free|requests|odds|venue|endpoint)[^.]*\.", txt, re.I)
-    urls = sorted(set(re.findall(r"https?://[a-z0-9.-]*kickoff[a-z0-9./_-]*", b, re.I)))
-    print(" ", u, st, "| urls:", urls[:15], "|", " | ".join(hits[:12])[:2000])
+    q = "apiKey=" + urllib.parse.quote(k)
+    st, b, hd = get(f"https://api.oddspapi.io/v4/fixtures?sportId=10&from={TODAY}&to={TODAY + timedelta(days=1)}&{q}")
+    print("fixtures", st, "| rate headers:", {x: y for x, y in hd.items() if "limit" in x.lower() or "remaining" in x.lower() or "quota" in x.lower()})
+    try:
+        fx = json.loads(b)
+    except ValueError:
+        fx = []
+        print(b[:500].replace(k, "***"))
+    print("fixtures today+tomorrow:", len(fx), "| with odds:", sum(1 for f in fx if f.get("hasOdds")),
+          "| statuses:", Counter(f.get("statusName") for f in fx).most_common(5))
+    print("keys:", sorted(fx[0].keys()) if fx else None)
+    by_t = Counter(f.get("tournamentId") for f in fx if f.get("hasOdds"))
+    st2, b2, _ = get(f"https://api.oddspapi.io/v4/tournaments?sportId=10&{q}")
+    try:
+        tn = {t["tournamentId"]: f"{t['categoryName']}: {t['tournamentName']}" for t in json.loads(b2)}
+    except ValueError:
+        tn = {}
+    print("tournaments with odds:", len(by_t), [(tn.get(t, t), n) for t, n in by_t.most_common(60)])
+    young = [tn.get(t, "") for t in by_t if re.search(r"u-?\d{2}|youth|friendl|reserve|women", tn.get(t, ""), re.I)]
+    print("youth / friendlies / women with odds:", young[:40])
+    one = next((f for f in fx if f.get("hasOdds") and f.get("statusName") in ("Not started", "NotStarted", None) or f.get("hasOdds")), None)
+    if one:
+        print("sample fixture:", json.dumps({x: one.get(x) for x in ("fixtureId", "tournamentId", "startTime", "participant1Name",
+                                                                     "participant2Name", "statusName", "venue", "venueName")}))
+        st, b, hd = get(f"https://api.oddspapi.io/v4/odds?fixtureId={one['fixtureId']}&{q}")
+        print("odds", st, "| rate headers:", {x: y for x, y in hd.items() if "limit" in x.lower() or "remaining" in x.lower()})
+        print(b[:3000].replace(k, "***"))
+k2 = os.environ.get("KICKOFF_API")
+if k2:
+    st, b, _ = get("https://docs.kickoffapi.com/openapi-v2.yaml", {"Accept": "*/*"})
+    sec = re.findall(r"securitySchemes:.*?(?=\n\S)", b, re.S)
+    print("== KickoffAPI security:", (sec[0][:600] if sec else b[:400]))
+    paths = re.findall(r"\n  (/api/v2/[^:\s]+):", b)
+    print("paths:", paths[:40])
+    for hdr in ({"x-api-key": k2}, {"Authorization": f"Bearer {k2}"}):
+        st, b, hd = get(f"https://api.kickoffapi.com/api/v2/fixtures?date={TODAY}", hdr)
+        print("fixtures with", list(hdr)[0], st, b[:900].replace(k2, "***"))
+        if st == 200:
+            break
