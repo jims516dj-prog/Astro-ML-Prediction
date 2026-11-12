@@ -608,3 +608,21 @@ def test_result_entered_by_hand_for_an_unsettled_challenger(tmp_path, monkeypatc
     assert "your result" in client.get("/tennis/live").text
     client.post("/tennis/match/lta:9/result", data={"clear": "1"})
     assert tennis_web.records()[0]["status"] == "pending"
+
+
+def test_lta_real_response_shapes():
+    from astrofoot.tennis import lta
+    m = {"id": 218705, "tournament": "Sopo (Colombia)", "tour": "challenger", "gender": "women", "format": "BO3",
+         "round": "Sopo - 1/8-finals", "status": "upcoming", "surface": "clay", "is_doubles": False,
+         "scheduled_time": "2026-11-12T03:45:00Z", "score": {"games": [[0], [0]], "sets": [0, 0]},
+         "players": {"p1": {"id": 814, "name": "Ann A", "birthday": "1993-01-27", "hand": "R"},
+                     "p2": {"id": 815, "name": "Bea B", "birthday": None, "hand": None}}}
+    r = lta.to_match(m)
+    assert r["tour"] == "wta" and r["venue"] == "Sopo, Colombia" and r["winner"] is None and r["state"] == "pre"
+    done = {**m, "status": "completed", "event_status": "Finished", "outcome": "completed", "winner": 1,
+            "score": {"games": [[6, 6], [0, 0]], "sets": [2, 0]}}
+    assert lta.result_of(done)["set_winners"] == "11"
+    wo = {**done, "event_status": "Walk Over", "score": None}
+    assert lta.result_of(wo)["void"] and lta.result_of(wo)["void_reason"] == "walkover"
+    ret = {**done, "outcome": "retired", "score": {"games": [[6, 2], [3, 1]]}}
+    assert lta.result_of(ret)["retired"] and lta.result_of(ret)["set_winners"] == "1"

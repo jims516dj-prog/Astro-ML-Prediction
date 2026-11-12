@@ -58,7 +58,10 @@ class Client:
 
 
 def _venue(tournament: str) -> str:
-    """The city in a tournament name ("Challenger Sao Paulo 2" → "Sao Paulo"), for the venue's timezone."""
+    """The city in a tournament name ("Lima 2" → "Lima", "Sopo (Colombia)" → "Sopo, Colombia"), for the timezone."""
+    m = re.match(r"\s*(.+?)\s*\(([^)]+)\)", tournament or "")
+    if m:
+        return f"{_venue(m.group(1))}, {m.group(2).strip()}"
     t = re.sub(r"(?i)\b(atp|wta|itf|challenger|ch|men|women|mens|womens|singles|doubles|open|cup|\d+)\b", " ", tournament or "")
     return re.sub(r"\s+", " ", t).strip(" -,")
 
@@ -82,6 +85,7 @@ def to_match(m: dict) -> dict | None:
     if not p1.get("name") or not p2.get("name") or not m.get("scheduled_time"):
         return None
     tour = (m.get("tour") or "").lower()
+    gender = (m.get("gender") or "").lower()
     status = (m.get("status") or "").lower()
     when = pd.Timestamp(m["scheduled_time"])
     when = when.tz_localize("UTC") if when.tzinfo is None else when.tz_convert("UTC")
@@ -89,7 +93,7 @@ def to_match(m: dict) -> dict | None:
     fmt = str(m.get("format") or "BO3").upper()
     return {
         "id": f"{PREFIX}{m.get('id')}", "event_id": f"{PREFIX}{m.get('tournament_id') or ''}",
-        "event": m.get("tournament") or "", "tour": "wta" if tour == "wta" else "atp",
+        "event": m.get("tournament") or "", "tour": "wta" if (tour == "wta" or gender == "women") else "atp",
         "level": "challenger" if tour == "challenger" else ("team" if team_event(m.get("tournament")) else tour),
         "date": when, "venue": _venue(m.get("tournament") or ""), "round": m.get("round") or "",
         "best_of": 5 if fmt.endswith("5") else 3, "surface": _surface(m.get("surface")),
@@ -111,7 +115,11 @@ def result_of(m: dict) -> dict | None:
     """Final result of a finished match (None if not finished): set winners from the games, the winner, and
     retirements / walkovers (a winner without enough sets)."""
     status = (m.get("status") or "").lower()
-    if status == "cancelled":
+    how = f"{m.get('outcome') or ''} {m.get('event_status') or ''}".lower()
+    if "walk" in how or "w/o" in how:
+        return {"winner": m.get("winner"), "set_winners": "", "score": "", "retired": False, "walkover": True, "void": True,
+                "void_reason": "walkover"}
+    if status == "cancelled" or "cancel" in how:
         return {"winner": None, "set_winners": "", "score": "", "retired": False, "walkover": True, "void": True,
                 "void_reason": "cancelled"}
     if status != "completed":
@@ -130,7 +138,7 @@ def result_of(m: dict) -> dict | None:
         return {"winner": winner, "set_winners": "", "score": "", "retired": False, "walkover": True, "void": True,
                 "void_reason": "walkover" if winner else "no result"}
     return {"winner": int(winner), "set_winners": sw, "score": " ".join(f"{a}-{b}" for a, b in sets),
-            "retired": short or bool(m.get("withdrew")), "walkover": False, "void": False}
+            "retired": short or bool(m.get("withdrew")) or "retir" in how, "walkover": False, "void": False}
 
 
 def upcoming(client: Client, log=print) -> pd.DataFrame:
