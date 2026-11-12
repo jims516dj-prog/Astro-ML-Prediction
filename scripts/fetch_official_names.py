@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 6          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 7          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 6      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -518,9 +518,11 @@ def main():
             teams[t] = teams.get(t) or country     # the table's country confirms the item below
     rest = [t for t in todo if t not in cand]
     searched: set[str] = set()                        # candidates from the search: several may pass the checks
-    print(f"searching Wikidata for {len(rest)} clubs the founding table does not match")
+    print(f"searching Wikidata for {len(rest)} clubs the founding table does not match "
+          f"({time.time() - START:.0f}s in)")
+    search_start = time.time()
     for t in rest:
-        if time.time() - START > BUDGET_S / 2:
+        if time.time() - search_start > BUDGET_S / 3:
             print("  search budget reached; the rest wait for the next run")
             break
         d = get("https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&type=item&limit=5"

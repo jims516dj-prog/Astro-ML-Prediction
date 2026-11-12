@@ -47,7 +47,7 @@ jobs:
       - run: python scripts/fetch_data.py --live    # stadiums and cities: where clubs play, to tell namesakes apart
         continue-on-error: true
       - name: Official club names (Wikidata)
-        run: python scripts/fetch_official_names.py
+        run: python -u scripts/fetch_official_names.py
         continue-on-error: true
       - name: Publish (merged with main, so a name already found is never lost)
         if: always()

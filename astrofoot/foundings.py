@@ -44,7 +44,20 @@ def table() -> pd.DataFrame:
     t = pd.read_csv(TABLE, dtype=str, keep_default_na=False)
     t["names"] = [[n for n in [team, *aliases.split("|")] if n] for team, aliases in zip(t.team, t.aliases)]
     t["keys"] = [{_key(n) for n in names} - {""} for names in t.names]
+    t["tkey"] = [_key(team) for team in t.team]
     return t
+
+
+_POOLS: dict = {}
+
+
+def _pool(t: pd.DataFrame) -> tuple[dict, list]:
+    """{name key: row index} over every name and alias, and its keys: built once per table, not per search."""
+    hit = _POOLS.get(id(t))
+    if hit is None or hit[0] is not t:
+        pool = {key: i for i, keys in zip(t.index, t["keys"]) for key in keys}
+        hit = _POOLS[id(t)] = (t, pool, list(pool))
+    return hit[1], hit[2]
 
 
 def _from_table(r) -> dict:
@@ -79,14 +92,16 @@ def search(q: str, con=None, limit: int = 8) -> list[dict]:
                             "source": "manual", "match": "exact"})
     t = table()
     if len(t):
-        exact = t[[_key(team) in variants for team in t.team]]
-        alias = t[[bool(keys & set(variants)) and _key(team) not in variants for keys, team in zip(t["keys"], t.team)]]
+        vs = set(variants)
+        tkeys = t["tkey"] if "tkey" in t else [_key(team) for team in t.team]
+        exact = t[[k in vs for k in tkeys]]
+        alias = t[[bool(keys & vs) and k not in vs for keys, k in zip(t["keys"], tkeys)]]
         for df, how in ((exact, "exact"), (alias, "alias")):
             out += [{**_from_table(r), "match": how} for r in df.itertuples()]
         if len(out) < limit:
             # close spellings: "Man United" -> "Manchester United", "Inter" -> "Inter Milan", ...
-            pool = {key: i for i, keys in zip(t.index, t["keys"]) for key in keys}
-            close = [m for v in variants for m in difflib.get_close_matches(v, list(pool), n=limit, cutoff=0.75)]
+            pool, pool_keys = _pool(t)
+            close = [m for v in variants for m in difflib.get_close_matches(v, pool_keys, n=limit, cutoff=0.75)]
             close += [key for v in variants for key in pool if key.startswith(v + " ") or (" " + v) in key][:limit * 2]
             seen = {(o["team"], o["kind"]) for o in out}
             for key in close:
