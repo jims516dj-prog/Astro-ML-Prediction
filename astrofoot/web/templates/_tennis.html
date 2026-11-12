@@ -66,19 +66,23 @@ personal day {{ nv[side].numbers.personal_day }}, universal day {{ nv[side].numb
 
 {% macro five_panel(five, a, b) %}
 <h2>Last 5 matches and head-to-head</h2>
-<p class="note">From the ESPN history (completed singles, ATP and WTA, before this match), newest first.</p>
+<p class="note">From the ESPN history (completed singles, ATP and WTA, before this match) plus matches you added with a result,
+newest first.</p>
 <div class="cols2">
 {% for side, nm in [("a", a), ("b", b)] %}{% set rows = five[side] %}
 <div><h3>{{ nm }} <span class="small">{% if rows %}{{ rows|selectattr("won")|list|length }}–{{ rows|rejectattr("won")|list|length }}{% endif %}</span></h3>
 <div class="scroll"><table class="data small"><thead><tr><th>Date</th><th>Opponent</th><th></th><th>Score</th><th>Tournament</th></tr></thead>
 <tbody>{% for r in rows %}<tr><td class="mono">{{ r.date }}</td><td>{{ r.opponent }}</td>
 <td><span class="badge {{ 'ok' if r.won else 'warn' }}">{{ "W" if r.won else "L" }}</span></td>
-<td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td><td class="small">{{ r.event }} · {{ r.round }} · {{ r.surface }}</td></tr>
+<td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td><td class="small">{{ r.event }} · {{ r.round }} · {{ r.surface }}{% if r.manual %} <span class="badge">added by you</span>{% endif %}</td></tr>
 {% else %}<tr><td colspan="5">No matches in the history.</td></tr>{% endfor %}</tbody></table></div></div>
 {% endfor %}</div>
 <h3>Head-to-head: last {{ five.h2h|length or 5 }} meetings{% if five.h2h %} <span class="small">({{ a }} {{ five.h2h|selectattr("won")|list|length }}–{{ five.h2h|rejectattr("won")|list|length }} {{ b }})</span>{% endif %}</h3>
 <div class="scroll"><table class="data small"><thead><tr><th>Date</th><th>Winner</th><th>Score ({{ a }} first)</th><th>Tournament</th></tr></thead>
 <tbody>{% for r in five.h2h %}<tr><td class="mono">{{ r.date }}</td><td>{{ a if r.won else b }}</td><td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td>
-<td class="small">{{ r.event }} · {{ r.round }} · {{ r.surface }}</td></tr>
-{% else %}<tr><td colspan="4">They have not met in the history (since 2010).</td></tr>{% endfor %}</tbody></table></div>
+<td class="small">{{ r.event }} · {{ r.round }} · {{ r.surface }}{% if r.manual %} <span class="badge">added by you</span>{% endif %}</td></tr>
+{% else %}<tr><td colspan="4">No meetings in ESPN's ATP/WTA history (since 2010).</td></tr>{% endfor %}</tbody></table></div>
+<p class="note">ESPN covers ATP and WTA tour events only, so meetings at the Hopman Cup, United Cup, Billie Jean King / Davis
+Cup, Challengers or ITF events are missing. To include one, add it on <a href="/tennis/analyze">Analyze</a> with its date and
+enter its score on its match page: it then counts in these tables (not in the model's training).</p>
 {% endmacro %}

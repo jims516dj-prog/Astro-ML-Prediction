@@ -198,6 +198,9 @@ def recent(pid: str, before, n: int = 5, opp: str | None = None) -> list[dict]:
     """A player's last n completed matches before a moment (or the last n meetings with `opp`), newest first,
     from the ESPN history: date, tournament, round, surface, opponent, won/lost and the score from their side."""
     m = state()["matches"]
+    extra = _manual_played()
+    if len(extra):
+        m = pd.concat([m, extra], ignore_index=True) if len(m) else extra
     if not len(m) or not pid:
         return []
     when = pd.Timestamp(before)
@@ -211,8 +214,24 @@ def recent(pid: str, before, n: int = 5, opp: str | None = None) -> list[dict]:
         first = r["p1_id"] == pid
         out.append({"date": r["date"].strftime("%Y-%m-%d"), "event": r["event"], "round": r["round"], "surface": r["surface"],
                     "opponent": r["p2"] if first else r["p1"], "won": (r["winner"] == 1) == first,
-                    "score": _view_score(r["score"], not first), "retired": bool(r.get("retired"))})
+                    "score": _view_score(str(r["score"]).replace(" ret.", ""), not first),
+                    "retired": bool(r.get("retired")), "manual": bool(r.get("manual"))})
     return out
+
+
+def _manual_played() -> pd.DataFrame:
+    """Matches you added on Analyze that have a result: they count in the last five and head-to-head tables
+    (ESPN has no Challengers, ITF, Hopman Cup, United Cup, …), never in the model's training."""
+    from .app import con
+    try:
+        rows = [(rec, res) for rec, res in db.tennis_manual(con()) if res and not res.get("void") and res.get("set_winners")]
+    except Exception:  # noqa: BLE001
+        return pd.DataFrame()
+    return pd.DataFrame([{"id": rec["match_id"], "date": pd.Timestamp(rec["start_utc"]), "event": rec.get("event") or "",
+                          "round": rec.get("round") or "", "surface": rec.get("surface") or "", "p1_id": str(rec["p1_id"]),
+                          "p2_id": str(rec["p2_id"]), "p1": rec["p1"], "p2": rec["p2"], "winner": res["winner"],
+                          "score": res["score"], "set_winners": res["set_winners"], "completed": True, "walkover": False,
+                          "retired": bool(res.get("retired")), "manual": True} for rec, res in rows])
 
 
 def last_five(p1_id: str, p2_id: str, before) -> dict:

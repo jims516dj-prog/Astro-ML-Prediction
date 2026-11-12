@@ -330,10 +330,15 @@ without). They are stored in your local database, never in the sealed ledger, wh
 last 5 meetings (date, opponent, W/L, score, tournament), from the ESPN history before the match. They are also model
 features (last-5 win share, sets won in the last 5, last-5 meetings, who won the last meeting).
 
+**One id per player.** ESPN lists some players under two ids (41 cases, many re-keyed in 2021-22); ids with exactly
+the same name and the same (or a missing) date of birth are merged, so ratings, form and head-to-head see the whole
+record. Real namesakes with different dates of birth stay apart.
+
 **Matches you add.** ESPN covers the ATP and WTA tours (including WTA 125s) but not Challengers, ITF, Davis Cup or
 exhibitions, and no other free source offers them for automated use. On Analyze, **Add this match to my tennis matches**
 saves any match: it appears on Forecasts, Live record, Top picks and My picks with a "manual" badge; enter the score on its
-match page once played (or mark it void / remove it). Not sealed, never in the official track record; if ESPN later
+match page once played (or mark it void / remove it). Played matches you add also count in the last five and
+head-to-head tables (e.g. a Hopman Cup meeting ESPN does not list). Not sealed, never in the official track record; if ESPN later
 lists the same match, the sealed forecast takes over.
 
 **TBD.** ESPN lists draw slots before a player is known (a qualifier still to come) as "TBD". Those matches are not

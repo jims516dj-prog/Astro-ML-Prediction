@@ -67,6 +67,8 @@ def load_matches(ledger: Path = LEDGER) -> pd.DataFrame:
         return pd.DataFrame()
     df = pd.concat(parts, ignore_index=True).drop_duplicates("id", keep="last")
     df["date"] = pd.to_datetime(df["date"], utc=True)
+    from . import ids
+    df = ids.apply(df, ids.aliases(df, load_players(ledger)))      # one id per player
     df["best_of"] = [espn.best_of(t, e, r) for t, e, r in zip(df.tour, df.event, df["round"])]
     return df.sort_values(["date", "id"]).reset_index(drop=True)
 

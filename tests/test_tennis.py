@@ -473,3 +473,16 @@ def test_espn_date_only_placeholders_and_moved_starts():
     assert tlive.join(rec, res)["pre_kickoff"]
     assert not tlive.join(rec, {**res, "start_final": "2030-01-02T10:00:00+00:00"})["pre_kickoff"]
     assert tlive.join(rec, {**res, "start_final": "2030-01-02T15:00:00+00:00"})["pre_kickoff"]      # moved later: fine
+
+
+def test_duplicate_player_ids_are_merged_but_namesakes_kept_apart():
+    from astrofoot.tennis import ids
+    m = pd.DataFrame([{"p1_id": "1", "p1": "Ann A", "p2_id": "9", "p2": "Zed"},
+                      {"p1_id": "2", "p1": "Ann A", "p2_id": "9", "p2": "Zed"},
+                      {"p1_id": "1", "p1": "Ann A", "p2_id": "8", "p2": "Kim K"},
+                      {"p1_id": "5", "p1": "Kim K", "p2_id": "9", "p2": "Zed"}])
+    pl = pd.DataFrame([{"id": "1", "dob": "2000-01-01"}, {"id": "2", "dob": None},
+                       {"id": "8", "dob": "1990-05-05"}, {"id": "5", "dob": "2001-05-05"}])
+    al = ids.aliases(m, pl)
+    assert al == {"2": "1"}                                  # Kim K (8) and Kim K (5) are different people
+    assert list(ids.apply(m, al).p1_id) == ["1", "1", "1", "5"]
