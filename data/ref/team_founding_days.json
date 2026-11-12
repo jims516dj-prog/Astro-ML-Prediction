@@ -475,9 +475,9 @@
 "tried": "2026-11"
 },
 "Aurora FC": {
-"date": null,
+"date": "1935-05-27",
 "name": "Club Aurora",
-"tried": "2026-11"
+"source": "wikidata (Q127925)"
 },
 "Austin FC": {
 "date": "2018-10-12",
@@ -612,9 +612,9 @@
 "name": "Bayer 04 Leverkusen"
 },
 "Bayern Hof": {
-"date": null,
+"date": "1910-06-01",
 "name": "FC Bayern Hof",
-"tried": "2026-11"
+"source": "wikipedia:de (Q2179055)"
 },
 "Bayern Munich": {
 "date": "1900-02-27",
@@ -2407,7 +2407,6 @@
 },
 "Grenoble Foot": {
 "date": null,
-"name": "Grenoble Foot 38",
 "tried": "2026-11"
 },
 "Gresford Athletic": {
@@ -2814,9 +2813,9 @@
 "tried": "2026-11"
 },
 "Ireland": {
-"date": null,
+"date": "1937-12-29",
 "name": "Ireland",
-"tried": "2026-11"
+"source": "wikidata (Q27)"
 },
 "Isidro Metap\u00e1n": {
 "date": null,
@@ -4175,6 +4174,7 @@
 },
 "Patacona CF": {
 "date": null,
+"name": "Patacona Club de Futbol",
 "tried": "2026-11"
 },
 "Patronato": {
@@ -4248,9 +4248,9 @@
 "tried": "2026-11"
 },
 "Plaza Colonia": {
-"date": null,
+"date": "1917-04-22",
 "name": "Plaza Colonia",
-"tried": "2026-11"
+"source": "wikipedia:en (Q1103101)"
 },
 "Plymouth": {
 "date": null,
@@ -4539,9 +4539,9 @@
 "name": "Stade Rennais F.C."
 },
 "Republic of Ireland U21": {
-"date": null,
+"date": "1937-12-29",
 "name": "Ireland",
-"tried": "2026-11"
+"source": "wikidata (Q27)"
 },
 "Ried": {
 "date": "1912-05-05",
@@ -4621,9 +4621,9 @@
 "name": "Ruch Chorz\u00f3w"
 },
 "Russia": {
-"date": null,
+"date": "1991-12-25",
 "name": "Russia",
-"tried": "2026-11"
+"source": "wikidata (Q159)"
 },
 "Rwanda": {
 "date": null,
@@ -4653,7 +4653,6 @@
 },
 "SK Sigma Olomouc B": {
 "date": null,
-"name": "SK Sigma Olomouc B",
 "tried": "2026-11"
 },
 "SK Sturm Graz": {
@@ -5361,9 +5360,9 @@
 "tried": "2026-11"
 },
 "Thisted FC": {
-"date": null,
+"date": "1989-01-01",
 "name": "Thisted FC",
-"tried": "2026-11"
+"source": "wikipedia:de (Q867882)"
 },
 "Thun": {
 "date": "1898-05-01",
@@ -6125,9 +6124,9 @@
 "name": "Zimbabwe"
 },
 "Znicz Pruszk\u00f3w": {
-"date": null,
+"date": "1923-12-19",
 "name": "Znicz Pruszk\u00f3w",
-"tried": "2026-11"
+"source": "wikipedia:de (Q217977)"
 },
 "Zurich": {
 "date": "1896-08-01",
