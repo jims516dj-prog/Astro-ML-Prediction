@@ -1409,10 +1409,20 @@
 "legal": null,
 "qid": "Q121864795"
 },
+"1243": {
+"label": "Jean-René Lisnard",
+"legal": null,
+"qid": "Q629521"
+},
 "12453": {
 "label": "Dylan Dietrich",
 "legal": null,
 "qid": "Q119265585"
+},
+"1253": {
+"label": "Júlio Silva",
+"legal": null,
+"qid": "Q2157499"
 },
 "1254": {
 "label": "Çağla Büyükakçay",
@@ -2393,6 +2403,11 @@
 "label": "Taylor Dent",
 "legal": null,
 "qid": "Q53407"
+},
+"1438": {
+"label": "Katalin Marosi",
+"legal": null,
+"qid": "Q264466"
 },
 "1441": {
 "label": "Zuzana Kučová",
@@ -4249,6 +4264,11 @@
 "legal": null,
 "qid": "Q116180842"
 },
+"183": {
+"label": "Ivan Ljubičić",
+"legal": null,
+"qid": "Q261095"
+},
 "1831": {
 "label": "Danka Kovinić",
 "legal": null,
@@ -4873,6 +4893,11 @@
 "label": "Mădălina Gojnea",
 "legal": null,
 "qid": "Q2640602"
+},
+"195": {
+"label": "Catalina Castaño",
+"legal": null,
+"qid": "Q859027"
 },
 "1950": {
 "label": "Malek Jaziri",
@@ -5934,6 +5959,11 @@
 "legal": "Inés Ferrer Suárez",
 "qid": "Q2790045"
 },
+"233": {
+"label": "Ivo Karlović",
+"legal": null,
+"qid": "Q295483"
+},
 "2330": {
 "label": "Chiara Scholl",
 "legal": null,
@@ -6378,6 +6408,11 @@
 "label": "Romain Bogaerts",
 "legal": null,
 "qid": "Q18593688"
+},
+"247": {
+"label": "Björn Phau",
+"legal": null,
+"qid": "Q77150"
 },
 "2470": {
 "label": "Collin Altamirano",
@@ -7149,6 +7184,11 @@
 "legal": null,
 "qid": "Q18197498"
 },
+"281": {
+"label": "Peter Luczak",
+"legal": null,
+"qid": "Q358712"
+},
 "2810": {
 "label": "Liu Chang",
 "legal": null,
@@ -7768,6 +7808,11 @@
 "label": "Alexey Vatutin",
 "legal": null,
 "qid": "Q21623230"
+},
+"305": {
+"label": "Jan Hernych",
+"legal": null,
+"qid": "Q358656"
 },
 "3052": {
 "label": "Lorenzo Sonego",
@@ -9004,6 +9049,11 @@
 "legal": null,
 "qid": "Q59260557"
 },
+"355": {
+"label": "Nicolás Massú",
+"legal": "Nicolas Alejandro Massu",
+"qid": "Q295858"
+},
 "3551": {
 "label": "Mats Rosenkranz",
 "legal": null,
@@ -9029,6 +9079,11 @@
 "legal": null,
 "qid": "Q106398314"
 },
+"356": {
+"label": "Juan Ignacio Chela",
+"legal": null,
+"qid": "Q299377"
+},
 "3562": {
 "label": "Alexis Galarneau",
 "legal": null,
@@ -9048,6 +9103,11 @@
 "label": "Jelle Sels",
 "legal": null,
 "qid": "Q106206134"
+},
+"357": {
+"label": "Robert Kendrick",
+"legal": null,
+"qid": "Q54525"
 },
 "3570": {
 "label": "Leonie Küng",
@@ -9198,6 +9258,11 @@
 "label": "Javier Barranco Cosano",
 "legal": null,
 "qid": "Q106153467"
+},
+"364": {
+"label": "James Blake",
+"legal": "James Riley Blake",
+"qid": "Q53333"
 },
 "3649": {
 "label": "Ajeet Rai",
@@ -11264,6 +11329,11 @@
 "legal": null,
 "qid": "Q112035385"
 },
+"612": {
+"label": "Tatiana Poutchek",
+"legal": null,
+"qid": "Q259372"
+},
 "6127": {
 "label": "Mathilde Lollia",
 "legal": null,
@@ -11389,6 +11459,11 @@
 "legal": null,
 "qid": "Q126454806"
 },
+"637": {
+"label": "Julie Ditty",
+"legal": null,
+"qid": "Q775265"
+},
 "638": {
 "label": "Pauline Parmentier",
 "legal": null,
@@ -11503,6 +11578,11 @@
 "label": "Anna Tatishvili",
 "legal": null,
 "qid": "Q236789"
+},
+"659": {
+"label": "Gréta Arn",
+"legal": null,
+"qid": "Q77284"
 },
 "660": {
 "label": "Estrella Cabeza Candela",
@@ -11668,6 +11748,11 @@
 "label": "Pia Lovrič",
 "legal": null,
 "qid": "Q84560680"
+},
+"708": {
+"label": "Yuri Schukin",
+"legal": null,
+"qid": "Q1355800"
 },
 "709": {
 "label": "Farrukh Dustov",
