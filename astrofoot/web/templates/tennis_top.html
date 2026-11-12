@@ -34,6 +34,8 @@ bookmaker odds where The Odds API prices the match.</p>
     {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if num == v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Odds<select name="odds" onchange="this.form.submit()"><option value="">any</option>
     <option value="1" {{ "selected" if odds }}>priced by the bookmakers only</option></select></label>
+  <label>Level<select name="level" onchange="this.form.submit()">
+    {% for v, l in levels %}<option value="{{ v }}" {{ "selected" if level == v }}>{{ l }}</option>{% endfor %}</select></label>
 </form>
 
 <div class="scroll"><table class="data small">
@@ -42,7 +44,7 @@ bookmaker odds where The Odds API prices the match.</p>
 <tbody>{% for r in rows %}{% set k = r.pick %}{% set dv = r.dayv %}
 <tr><td class="num">{{ loop.index }}</td><td class="small" style="white-space:nowrap">{{ r.when.label }}{% if r.when.moved %}<br><span class="badge" title="ESPN moved it from {{ r.start_utc[11:16] }} GMT when forecast">moved</span>{% endif %}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
-<td><a href="/tennis/match/{{ r.match_id }}">{{ r.p1 }} v {{ r.p2 }}</a>{% if r.level == "challenger" %} <span class="badge" title="from livetennisapi.com (free tier)">Challenger</span>{% elif r.level == "itf" %} <span class="badge" title="ITF World Tennis Tour, from livetennisapi.com (free tier): results only as far as the free quota reaches">ITF</span>{% elif r.level == "team" %} <span class="badge" title="team event, from livetennisapi.com">team event</span>{% endif %}{% if r.result_by_you %} <span class="badge" title="result entered by you">your result</span>{% endif %}{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
+<td><a href="/tennis/match/{{ r.match_id }}">{{ r.p1 }} v {{ r.p2 }}</a>{% set cn = {"wta125": "WTA 125", "challenger": "Challenger", "itf_w": "ITF", "itf_m": "ITF", "team": "team event"}.get(r.cat) %}{% if cn %} <span class="badge" title="{{ 'from livetennisapi.com (free tier)' if r.match_id.startswith('lta:') else 'from ESPN' }}">{{ cn }}</span>{% endif %}{% if r.result_by_you %} <span class="badge" title="result entered by you">your result</span>{% endif %}{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
 <td><strong>{{ k.player }}</strong>{% if market == "dog_set" or market == "one_set" %} to win a set{% elif market == "first" %} first set{% endif %}</td>
 <td class="num"><strong>{{ fmt_pct(k.p) }}</strong></td>
 <td>{% if k.astro %}<span class="badge ok">favours</span>{% elif k.astro_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>

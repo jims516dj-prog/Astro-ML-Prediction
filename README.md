@@ -374,7 +374,7 @@ workflow (needs the Update now token).
 
 **Live record** (`/tennis/live`): every sealed tennis forecast, newest first, with its seal check; the track record
 (sets, first set, match, underdog winning a set); filters for dates, status, tour, surface, player, tournament, market,
-right/wrong, minimum probability, the day's astrology and numerology (including "both favour the same player"), and priced matches; the statistics model, the
+right/wrong, minimum probability, level (ATP/WTA tour, WTA 125, Challenger, ITF women / men, team events, all women's or men's), the day's astrology and numerology (including "both favour the same player"), and priced matches; the statistics model, the
 expected figure and the odds compared on settled matches; calibration of set picks; and the same Update now / Get latest
 results buttons as soccer (one GitHub run covers both).
 

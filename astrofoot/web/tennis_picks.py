@@ -12,7 +12,7 @@ from .. import db
 from .. import mypicks as fmp
 from ..tennis import live as tlive
 from ..tennis import mypicks as tmp
-from .tennis_web import DAY_FAVOURS, day_favours_ok, day_of, records
+from .tennis_web import DAY_FAVOURS, LEVELS, day_favours_ok, day_of, level_ok, records
 
 router = APIRouter()
 SECTION = "tennis"
@@ -79,7 +79,7 @@ FILTERS = [("", "any"), ("astro", "astrology favours the most likely pick"), ("n
 
 @router.get("/tennis/mypicks", response_class=HTMLResponse)
 def tennis_mypicks(request: Request, day: str = "", slip: int = 0, added: int = -1, changed: int = -1, removed: int = -1,
-                   dup: int = 0, tour: str = "", fav: str = "", odds: str = "", favours: str = ""):
+                   dup: int = 0, tour: str = "", fav: str = "", odds: str = "", favours: str = "", level: str = ""):
     c = _con()
     games = _games()
     now_iso = datetime.now(timezone.utc).isoformat(timespec="seconds")
@@ -107,7 +107,7 @@ def tennis_mypicks(request: Request, day: str = "", slip: int = 0, added: int = 
         f = tmp.favours(opts[0]["code"], g["dayv"])
         if (tour and g["tour"] != tour) or (odds and not g.get("odds")) or (fav == "astro" and not f["astro"]) \
                 or (fav == "num" and not f["num"]) or (fav == "both" and f["count"] < 2) \
-                or not day_favours_ok(g["dayv"], favours):
+                or not day_favours_ok(g["dayv"], favours) or not level_ok(g, level):
             hidden += 1
             continue
         pick = in_slip.get(g["match_id"])
@@ -117,18 +117,19 @@ def tennis_mypicks(request: Request, day: str = "", slip: int = 0, added: int = 
                               if g["dayv"]["astro"]["favours"] and g["dayv"]["astro"]["favours"] == g["dayv"]["num"]["favours"] else None),
                      "elsewhere": [n for n in in_any.get(g["match_id"], []) if n != active["name"]]})
     all_view = _view(db.my_picks(c, section=SECTION), games, now_iso)
-    keep = "".join(f"&{k}={v}" for k, v in (("tour", tour), ("fav", fav), ("odds", odds), ("favours", favours)) if v)
+    keep = "".join(f"&{k}={v}" for k, v in (("tour", tour), ("fav", fav), ("odds", odds), ("favours", favours),
+                                           ("level", level)) if v)
     return _T().TemplateResponse(request, "tennis_mypicks.html", {
         "day": day, "days": days, "rows": rows, "hidden": hidden, "slips": day_slips, "active": active,
         "day_picks": slip_picks, "slip_sum": _summary(slip_picks), "added": added, "changed": changed, "removed": removed,
         "dup": dup, "score_day": fmp.score(day_view), "score_all": fmp.score(all_view), "n_all": len(all_view),
         "n_day": len(day_view), "tour": tour, "fav": fav, "odds": odds, "filters": FILTERS, "keep": keep,
-        "favours": favours, "favour_choices": DAY_FAVOURS,
+        "favours": favours, "favour_choices": DAY_FAVOURS, "level": level, "levels": LEVELS,
         "page": "tennis_mypicks"})
 
 
 def _keep(form) -> str:
-    return "".join(f"&{k}={form.get(k)}" for k in ("tour", "fav", "odds", "favours") if form.get(k))
+    return "".join(f"&{k}={form.get(k)}" for k in ("tour", "fav", "odds", "favours", "level") if form.get(k))
 
 
 @router.post("/tennis/mypicks/slip/new")

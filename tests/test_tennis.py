@@ -659,3 +659,19 @@ def test_itf_matches_are_compact_and_settled_after_challengers(tmp_path):
                    for i in (1, 2, 3, 9)], left=2)
     got = lta.settle(pend, api, datetime(2030, 1, 5, tzinfo=timezone.utc), log=lambda *a: None)
     assert set(got) == {"lta:9", "lta:3"}                    # the Challenger, then the newest ITF match
+
+
+def test_levels_and_wta125_detection():
+    from astrofoot.web import tennis_web as tw
+    espn = {"match_id": "1", "tour": "wta", "event": "DIRECTV Open", "p1": "Ann A", "p2": "Bea B",
+            "start_utc": "2030-01-02T15:00:00+00:00"}
+    api = {"match_id": "lta:5", "tour": "wta", "level": "challenger", "event": "Sopo (Colombia)", "p1": "Bea B",
+           "p2": "Ann A", "start_utc": "2030-01-02T15:00:00+00:00"}
+    w125 = tw._wta125_events([espn, api])
+    assert w125 == {"DIRECTV Open"} and tw.category(espn, w125) == "wta125"
+    assert tw.category({"tour": "wta", "event": "Austin 125"}) == "wta125"
+    assert tw.category({"tour": "wta", "event": "WTA Finals"}) == "tour"
+    assert tw.category({"tour": "wta", "level": "itf"}) == "itf_w" and tw.category({"tour": "atp", "level": "itf"}) == "itf_m"
+    assert tw.category({"tour": "atp", "level": "challenger"}) == "challenger"
+    r = {"tour": "wta", "cat": "itf_w"}
+    assert tw.level_ok(r, "women") and tw.level_ok(r, "itf_w") and not tw.level_ok(r, "men") and tw.level_ok(r, "")

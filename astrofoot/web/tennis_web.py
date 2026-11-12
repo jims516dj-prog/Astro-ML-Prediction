@@ -86,9 +86,51 @@ def records() -> list[dict]:
         j.update(verified=None, manual=True)
         recs.append(j)
     sched = state().get("schedule") or {}
+    wta125 = _wta125_events(tlive.predictions())
     for r in recs:
         r["when"] = when_of(r, sched.get(r["match_id"]))
+        r["cat"] = category(r, wta125)
     return sorted(recs, key=lambda r: r["start_utc"])
+
+
+LEVELS = [("", "all levels"), ("women", "all women's"), ("men", "all men's"), ("tour", "ATP / WTA tour"),
+          ("wta125", "WTA 125"), ("challenger", "ATP Challenger"), ("itf_w", "ITF women"), ("itf_m", "ITF men"),
+          ("team", "team events")]
+CAT_NAMES = {"tour": "Tour", "wta125": "WTA 125", "challenger": "Challenger", "itf_w": "ITF", "itf_m": "ITF",
+             "team": "team event"}
+
+
+def _wta125_events(preds: list[dict]) -> set[str]:
+    """ESPN tournaments the Live Tennis API lists as women's Challengers, i.e. WTA 125 events (ESPN's names do not
+    always say so, e.g. Bogotá's 'DIRECTV Open'): the events of ESPN forecasts an API forecast duplicates."""
+    women_ch = [r for r in preds if r["match_id"].startswith("lta:") and r.get("level") == "challenger" and r["tour"] == "wta"]
+    out = set()
+    for e in (r for r in preds if not r["match_id"].startswith("lta:") and r["tour"] == "wta"):
+        if any(tlive.same_match(e["p1"], e["p2"], e["start_utc"], x["p1"], x["p2"], x["start_utc"]) for x in women_ch):
+            out.add(e["event"])
+    return out
+
+
+def category(r: dict, wta125: set[str] = frozenset()) -> str:
+    """tour, wta125, challenger, itf_w, itf_m or team."""
+    lvl = r.get("level") or "tour"
+    if lvl == "itf":
+        return "itf_w" if r["tour"] == "wta" else "itf_m"
+    if lvl == "team":
+        return "team"
+    if r["tour"] == "wta" and (lvl == "challenger" or "125" in (r.get("event") or "") or r.get("event") in wta125):
+        return "wta125"
+    return "challenger" if lvl == "challenger" else "tour"
+
+
+def level_ok(r: dict, want: str) -> bool:
+    if not want:
+        return True
+    if want == "women":
+        return r["tour"] == "wta"
+    if want == "men":
+        return r["tour"] != "wta"
+    return r.get("cat") == want
 
 
 def when_of(r: dict, latest=None) -> dict:
@@ -266,7 +308,7 @@ def day_favours_ok(dv: dict, want: str) -> bool:
 
 
 @router.get("/tennis", response_class=HTMLResponse)
-def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "", favours: str = ""):
+def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "", favours: str = "", level: str = ""):
     from .app import _day_label  # noqa: F401
     recs = records()
     tr_all = tlive.track_record(recs)
@@ -280,10 +322,11 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
         r["dayv"] = day_of(r)
     favours = favours if favours in dict(DAY_FAVOURS) else ""
     shown_all = len(rows)
-    rows = [r for r in rows if day_favours_ok(r["dayv"], favours)]
+    rows = [r for r in rows if day_favours_ok(r["dayv"], favours) and level_ok(r, level)]
     rep = model.load_report()
     return _T().TemplateResponse(request, "tennis_home.html", {
-        "favours": favours, "favour_choices": DAY_FAVOURS, "hidden": shown_all - len(rows),
+        "favours": favours, "favour_choices": DAY_FAVOURS, "hidden": shown_all - len(rows), "level": level,
+        "levels": LEVELS,
         "rows": rows, "day": day, "days": days, "tour": tour, "status": status, "tours": TOUR, "tr": tr_all,
         "tr_day": tlive.track_record(rows), "n": len(recs), "rep": rep, "has_model": model.BUNDLE.exists(),
         "has_data": (DATA / "matches.parquet").exists(), "page": "tennis_home"})
@@ -673,7 +716,7 @@ def pick_of(r: dict, market: str) -> dict:
 
 @router.get("/tennis/top", response_class=HTMLResponse)
 def tennis_top(request: Request, market: str = "set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
-               num: str = "", odds: str = ""):
+               num: str = "", odds: str = "", level: str = ""):
     market = market if market in dict(TOP_MARKETS) else "set"
     recs = [r for r in records() if r["status"] != "void"]
     for r in recs:
@@ -686,7 +729,7 @@ def tennis_top(request: Request, market: str = "set", day: str = "", tour: str =
 
     def keep(r):
         k = r["pick"]
-        return ((not tour or r["tour"] == tour) and k["p"] >= mp
+        return ((not tour or r["tour"] == tour) and level_ok(r, level) and k["p"] >= mp
                 and (not astro or (astro == "yes") == k["astro"]) and (not num or (num == "yes") == k["num"])
                 and (not odds or bool(r.get("odds"))))
 
@@ -711,10 +754,10 @@ def tennis_top(request: Request, market: str = "set", day: str = "", tour: str =
     rep = model.load_report()
     return _T().TemplateResponse(request, "tennis_top.html", {
         "rows": rows, "market": market, "markets": TOP_MARKETS, "day": day, "days": days, "tour": tour, "tours": TOUR,
-        "min_p": min_p, "astro": astro, "num": num, "odds": odds, "agree": AGREE,
+        "min_p": min_p, "astro": astro, "num": num, "odds": odds, "agree": AGREE, "level": level, "levels": LEVELS,
         "score_all": tally(pool), "score_day": tally(rows), "by_view": by_view, "verdicts": rep.get("verdicts"),
         "qs": urllib.parse.urlencode({k: v for k, v in {"day": day, "tour": tour, "min_p": min_p, "astro": astro, "num": num,
-                                                         "odds": odds}.items() if v}),
+                                                         "odds": odds, "level": level}.items() if v}),
         "page": "tennis_top"})
 
 
@@ -773,7 +816,7 @@ def calibration(rows: list[dict]) -> list[dict]:
 def tennis_live(request: Request, date_from: str = "", date_to: str = "", status: str = "", tour: str = "",
                 surface: str = "", player: str = "", event: str = "", market: str = "set", hit: str = "", astro: str = "",
                 num: str = "", odds: str = "", min_p: str = "", page_no: int = 1, msg: str = "", syncing: int = 0,
-                favours: str = ""):
+                favours: str = "", level: str = ""):
     from .app import SYNC
     market = market if market in dict(LIVE_MARKETS) else "set"
     recs = records()
@@ -797,7 +840,7 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
         r["pick"] = pick_of(r, market)
         k = r["pick"]
         if k["p"] < mp or (astro and (astro == "yes") != k["astro"]) or (num and (num == "yes") != k["num"]) \
-                or not day_favours_ok(r["dayv"], favours):
+                or not day_favours_ok(r["dayv"], favours) or not level_ok(r, level):
             continue
         if hit:
             if k["hit"] is None:
@@ -816,9 +859,9 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "tour": tour, "surface": surface, "player": player,
          "event": event, "market": market, "hit": hit, "astro": astro, "num": num, "odds": odds, "min_p": min_p,
-         "favours": favours}
+         "favours": favours, "level": level}
     return _T().TemplateResponse(request, "tennis_live.html", {
-        "favour_choices": DAY_FAVOURS,
+        "favour_choices": DAY_FAVOURS, "levels": LEVELS,
         "rows": rows[(page_no - 1) * per: page_no * per], "n": len(rows), "page_no": page_no, "pages": pages, "q": q,
         "qs": urllib.parse.urlencode({k: v for k, v in q.items() if v}), "integrity": integrity,
         "tr": tlive.track_record(recs), "subset": subset, "compare": compare_sources(rows), "calib": calibration(rows),
