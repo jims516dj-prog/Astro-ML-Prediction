@@ -20,7 +20,11 @@ class Fake:
 
     def get(self, path, **kw):
         self.calls += 1
-        return self.fixtures if path == "/fixtures" else self.odds[kw["fixtureId"]]
+        if path == "/fixtures":
+            return self.fixtures
+        tids = kw["tournamentIds"].split(",")
+        return [{"fixtureId": f["fixtureId"], **self.odds[f["fixtureId"]]} for f in self.fixtures
+                if str(f["tournamentId"]) in tids]
 
 
 def fx(fid, h, a, t="2026-11-12T18:00:00.000Z", cat="International Youth", tour="U21 Friendly Games", status="Pre-Game",
@@ -39,6 +43,9 @@ def test_prices_prefer_pinnacle_else_median():
 
 def test_extra_fixtures_filters_and_dedupes(tmp_path, monkeypatch):
     monkeypatch.setattr(op, "FILE", tmp_path / "t.json")
+    monkeypatch.setattr(op, "USAGE", tmp_path / "u.json")
+    monkeypatch.setattr(op, "_FX", {})
+    monkeypatch.setattr(op.time, "sleep", lambda s: None)
     fixtures = [fx("f1", "Denmark U21", "Netherlands U21"),
                 fx("f2", "SRL Arsenal", "SRL Chelsea", cat="Simulated Reality League", tour="Premier League SRL"),
                 fx("f3", "Spain Women", "Italy Women", tour="Women Friendlies", tid=88),
@@ -84,3 +91,23 @@ def test_ground_falls_back_to_first_team_then_country_city():
     assert "Berlin" in op.ground({"categoryName": "Germany Amateur"}, "X", "O:1", None)[2]
     assert "Belfast" in op.ground({"categoryName": "Northern Ireland"}, "X", "O:1", None)[2]
     assert op.ground({"categoryName": "International Clubs"}, "X", "O:1", None) is None
+
+
+def test_oddspapi_quota_spread_and_429(tmp_path, monkeypatch):
+    monkeypatch.setattr(op, "USAGE", tmp_path / "u.json")
+    monkeypatch.setattr(op, "_FX", {})
+    u = op.usage("2026-11-12")
+    assert op.allowance(u, "2026-11-12") == 240 // 19
+    u["used"], u["day_used"] = 100, 5
+    assert op.allowance(u, "2026-11-12") == 140 // 19 - 5
+
+    class Busy:
+        calls = 0
+
+        def get(self, path, **kw):
+            self.calls += 1
+            raise RuntimeError("HTTP Error 429: Too Many Requests")
+    logs = []
+    assert op.extra_fixtures([], NOW, 2, live.match_key, lambda k: k[:10], [], None, client=Busy(), log=logs.append) == []
+    assert op.usage("2026-11-13")["blocked"] and op.allowance(op.usage("2026-11-13"), "2026-11-13") == 0
+    assert op.usage("2026-12-01").get("blocked") is None          # a new month starts afresh

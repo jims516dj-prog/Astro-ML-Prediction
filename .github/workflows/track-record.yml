@@ -32,6 +32,7 @@ jobs:
           FOOTBALL_DATA_ORG_TOKEN: ${{ secrets.FOOTBALL_DATA_ORG_TOKEN }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDS_PAPI: ${{ secrets.ODDS_PAPI }}
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           KICKOFF_API: ${{ secrets.KICKOFF_API }}
       - if: ${{ !inputs.diagnose }}
         run: python scripts/live.py cycle
@@ -39,6 +40,7 @@ jobs:
           FOOTBALL_DATA_ORG_TOKEN: ${{ secrets.FOOTBALL_DATA_ORG_TOKEN }}
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDS_PAPI: ${{ secrets.ODDS_PAPI }}
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           KICKOFF_API: ${{ secrets.KICKOFF_API }}
       - name: Tennis cycle (forecast upcoming matches, settle finished ones)
         if: ${{ !inputs.diagnose }}
@@ -47,6 +49,7 @@ jobs:
         env:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           ODDS_PAPI: ${{ secrets.ODDS_PAPI }}
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
           KICKOFF_API: ${{ secrets.KICKOFF_API }}
           LIVETENNISAPI_KEY: ${{ secrets.LIVETENNISAPI_KEY }}
       - name: Founding dates of new teams (soccer day readings)

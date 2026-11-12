@@ -490,15 +490,24 @@ result. A game never gets two forecasts across sources (same competition, kickof
 Worldwide lists such as Flashscore also include women's, youth and many lower or regional leagues without published odds,
 which cannot be forecast this way.
 
-**OddsPapi and KickoffAPI (free keys).** With the GitHub secret `ODDS_PAPI` (oddspapi.io), each cycle adds games none of
-the sources above cover: youth (U19, U21), international and club friendlies, reserve and lower leagues, and women's
-games for the women's section. Prices are Pinnacle's when offered, otherwise the median over bookmakers; the over/under
-2.5 line is used for ranking when present. Simulated and e-sports games are dropped, and a game already forecast from
-another source is skipped. OddsPapi names no stadium: the home side's ground comes from our tables, else its first
-team's ground (for reserve, B and women's sides), else the main city of the country the game is filed under (enough for
-the venue's local day and time zone). These games appear under the OddsPapi category and tournament name (code `O:` for men,
-`W:o` for women). With `KICKOFF_API` (kickoffapi.com) their results come from KickoffAPI's daily list (full-time scores
-only; games decided after extra time or penalties wait for another source or become void after 3 days).
+**API-Football, OddsPapi and KickoffAPI (free keys).** These add games none of the sources above cover: youth (U17 to
+U23), international and club friendlies, reserve and lower leagues, smaller countries, and women's games for the women's
+section. A game already forecast from another source is never added twice, and simulated or e-sports games are dropped.
+
+- **API-Football** (GitHub secret `API_FOOTBALL_KEY`, 100 requests a day) comes first. Its free plan answers by date:
+  each cycle reads today's and tomorrow's games, with the stadium and its city, and their pre-match odds (Pinnacle when
+  offered, otherwise the median over bookmakers; over/under 2.5 for ranking). Each of the day's three cycles spends its
+  share of the 100 requests. These games use the code `A:` (`W:a` for women) and API-Football's country and league
+  name. Their results are the 90-minute score, so games decided after extra time or penalties settle as well.
+- **OddsPapi** (`ODDS_PAPI`) fills what is still missing. Its free plan has about 250 requests a month, so the cycle
+  spreads them evenly over the month's remaining days and buys odds for whole tournaments at once (codes `O:` and
+  `W:o`). After a "too many requests" answer it waits for the next month.
+- **KickoffAPI** (`KICKOFF_API`) settles what neither results source has found (full-time scores only).
+
+OddsPapi names no stadium, and API-Football sometimes doesn't either. In that case the home side's ground comes from
+our tables, else its first team's ground (for reserve, B and women's sides), else, for a national side, its country's
+main city, else the main city of the country the game is filed under. That is enough for the venue's local day and time
+zone.
 
 ## European competitions (Champions League, Europa League, Conference League)
 

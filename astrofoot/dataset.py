@@ -55,7 +55,7 @@ class _Secondary(frozenset):
     """The competitions without football-data.co.uk files: the fixed ones plus every discovered "X:" code."""
 
     def __contains__(self, div) -> bool:
-        return (isinstance(div, str) and div.startswith((DISCOVERED, WOMEN, "O:"))) or frozenset.__contains__(self, div)
+        return (isinstance(div, str) and div.startswith((DISCOVERED, WOMEN, "O:", "A:"))) or frozenset.__contains__(self, div)
 
 
 NO_PRIMARY = _Secondary(EUROPEAN | CUPS | EXTRA_SECONDARY)
@@ -65,6 +65,11 @@ def league_name(code: str) -> str:
     """Display name of a division: our names, then the names of competitions discovered on ESPN."""
     if code in LEAGUE_NAMES:
         return LEAGUE_NAMES[code]
+    if isinstance(code, str) and code.startswith(("A:", "W:a")):
+        from .fixtures_apifootball import league_name as _af
+        got = _af(code)
+        if got:
+            return got
     if isinstance(code, str) and code.startswith(("O:", "W:o")):
         from .fixtures_oddspapi import league_name as _op
         got = _op(code)
