@@ -539,6 +539,11 @@ def _soc_day_ok(td: dict | None, want: str) -> bool:
 
 def _pick_side(p: dict, market: str) -> str | None:
     """The team a pick backs: 'home' / 'away' (None for draws and markets about both teams)."""
+    if market == "summary":         # the summary's pick is one of the markets
+        sub = p.get("sum_market")
+        if sub == "dc":
+            return {"1X": "home", "X2": "away"}.get(p.get("dc_pick"))
+        return _pick_side(p, sub) if sub in ("result", "score") else None
     if market == "score":
         return p.get("ts_pick")
     if market == "result" and p.get("pick") in ("fav", "dog"):
@@ -550,10 +555,12 @@ def _dayfav_ok(p: dict, market: str, want: str) -> bool:
     """Day-reading filter on Top picks: does astrology / numerology favour the pick (the team it backs)?"""
     if not want:
         return True
+    if want in ("same", "score"):     # about the game, whatever the pick
+        return _soc_day_ok(p.get("td"), want)
     td, side = p.get("td"), _pick_side(p, market)
     if not td or not side:
         return False
-    if market == "score":
+    if market == "score" or (market == "summary" and p.get("sum_market") == "score"):
         a, n = td[side]["score_astro"] == 1, td[side]["score_num"] == 1
     else:
         mine = 1 if side == "home" else 2

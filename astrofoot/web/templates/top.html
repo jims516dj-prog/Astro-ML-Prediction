@@ -174,11 +174,14 @@ hundreds of picks would be news; over a handful of matches it is noise.</p>
     {% for t in xg_steps %}<option value="{{ t }}" {{ "selected" if xg and xg|float == t }}>{{ "%.1f"|format(t) }} or more</option>{% endfor %}</select></label>
   <label>For<select name="xg_for" onchange="this.form.submit()">
     {% for k, label in xg_for_names.items() %}<option value="{{ k }}" {{ "selected" if xg_for == k }}>{{ label }}</option>{% endfor %}</select></label>
-  {% if market in ("result", "score") %}<label>Day reading<select name="dayfav" onchange="this.form.submit()">
-    {% for v, l in [("", "any"), ("astro", "astrology favours the pick" ~ (" to score" if market == "score" else "")), ("num", "numerology favours the pick" ~ (" to score" if market == "score" else "")), ("both", "both favour it")] %}<option value="{{ v }}" {{ "selected" if dayfav == v }}>{{ l }}</option>{% endfor %}</select></label>{% endif %}
+  {% if market in ("result", "score", "summary") %}<label>Day reading<select name="dayfav" onchange="this.form.submit()">
+    {% set to_score = " to score" if market == "score" else "" %}
+    {% for v, l in [("", "any"), ("astro", "astrology favours the pick" ~ to_score), ("num", "numerology favours the pick" ~ to_score), ("both", "both favour the pick" ~ to_score), ("same", "astrology and numerology favour the same team"), ("score", "a team favoured to score by both")] %}<option value="{{ v }}" {{ "selected" if dayfav == v }}>{{ l }}</option>{% endfor %}</select></label>{% endif %}
 </form>
-{% if market in ("result", "score") %}<p class="note">Day reading: date-only astrology and numerology of the clubs' founding dates
-for the match day (see a match page). On past matches it showed no edge over the odds{% if market == "score" %} for scoring{% endif %}; the filter is for research.</p>{% endif %}
+{% if market in ("result", "score", "summary") %}<p class="note">Day reading: date-only astrology and numerology of the clubs' founding dates
+for the match day (see a match page). {% if market == "summary" %}"Favours the pick" applies to picks that back a team (a win, a double
+chance with that team, or that team to score: scoring reading); other picks are left out by those options. {% endif %}On past matches it
+showed no edge over the odds{% if market == "score" %} for scoring{% endif %}; the filter is for research.</p>{% endif %}
 
 <div class="scroll"><table class="data">
 {% if summary %}

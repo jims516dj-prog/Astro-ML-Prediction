@@ -65,3 +65,16 @@ def test_soccer_day_filter():
     assert web._soc_day_ok(td(2, 0), "astro") and web._soc_day_ok(td(0, 1), "num") and not web._soc_day_ok(td(0, 0), "num")
     assert web._soc_day_ok(td(0, 0, 1, 1), "score") and not web._soc_day_ok(td(0, 0, 1, 0), "score")
     assert web._soc_day_ok(None, "") and not web._soc_day_ok(None, "same")
+
+
+def test_summary_pick_day_filter():
+    from astrofoot.web import app as web
+    td = {"favours": {"astro": 1, "num": 1}, "home": {"score_astro": 1, "score_num": 0},
+          "away": {"score_astro": 0, "score_num": 0}}
+    win = {"td": td, "sum_market": "result", "pick": "fav", "fav_is_home": True}
+    dc_away = {"td": td, "sum_market": "dc", "dc_pick": "X2"}
+    score_home = {"td": td, "sum_market": "score", "ts_pick": "home"}
+    goals = {"td": td, "sum_market": "goals"}
+    assert web._dayfav_ok(win, "summary", "both") and not web._dayfav_ok(dc_away, "summary", "astro")
+    assert web._dayfav_ok(score_home, "summary", "astro") and not web._dayfav_ok(score_home, "summary", "num")
+    assert not web._dayfav_ok(goals, "summary", "astro") and web._dayfav_ok(goals, "summary", "same")
