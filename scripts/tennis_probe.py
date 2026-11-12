@@ -1,5 +1,5 @@
-"""Diagnostics for the Live Tennis API key (free tier): checks the key, the quota, and the shape of an upcoming
-Challenger match. Uses 2-3 of the 100 daily requests. Prints only."""
+"""Diagnostics for the Live Tennis API key: one full upcoming Challenger singles match and one finished one.
+Uses 2-3 of the 100 daily requests. Prints only."""
 import json
 import os
 import urllib.request
@@ -19,16 +19,24 @@ def get(path):
         return None
 
 
-if not KEY:
-    print("LIVETENNISAPI_KEY is not set (add it as a GitHub secret)")
-else:
-    print("usage:", json.dumps(get("/usage"))[:400])
-    d = get("/matches?status=upcoming&tour=challenger&limit=3")
-    if d:
-        print("meta:", d.get("meta"))
-        for m in (d.get("data") or [])[:2]:
-            print(json.dumps(m)[:1500])
-    d = get("/matches?status=upcoming&tour=atp&limit=200")
-    if d:
-        names = sorted({m.get("tournament") for m in d.get("data") or []})
-        print("ATP tournaments listed:", names[:40])
+d = get("/matches?status=upcoming&tour=challenger&limit=200")
+data = (d or {}).get("data") or []
+singles = [m for m in data if not m.get("is_doubles")]
+print("upcoming challenger:", len(data), "singles:", len(singles), "meta:", (d or {}).get("meta"))
+print("tournaments:", sorted({m.get("tournament") for m in singles}))
+print("top-level tour values:", sorted({str(m.get("tour")) for m in data}), "gender:", sorted({str(m.get("gender")) for m in data}))
+if singles:
+    m = singles[0]
+    print("KEYS:", sorted(m.keys()))
+    print(json.dumps({k: v for k, v in m.items() if k != "players"})[:1500])
+    print("P1:", json.dumps(m["players"]["p1"])[:800])
+# a finished match: look up an older id near the first upcoming one
+if singles:
+    for back in (400, 800, 1500):
+        x = get(f"/matches/{int(singles[0]['id']) - back}")
+        if x:
+            x = x.get("data", x)
+            print("LOOKUP", back, json.dumps({k: x.get(k) for k in ("id", "status", "event_status", "outcome", "winner", "score",
+                                                                     "tournament", "tour", "is_doubles", "format")})[:900])
+            if (x.get("status") or "") == "completed" and not x.get("is_doubles"):
+                break
