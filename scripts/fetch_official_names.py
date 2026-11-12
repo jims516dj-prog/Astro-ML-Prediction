@@ -17,6 +17,7 @@ import json
 import re
 import sys
 import time
+import unicodedata
 import urllib.parse
 from pathlib import Path
 
@@ -29,13 +30,14 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
+VERSION = 2          # entries made by an older version of the rules are redone (their item is kept)
 START = time.time()
 
 
 def entities(qids, labels=True):
     out = {}
     for i in range(0, len(qids), 40):
-        props = "claims|labels" if labels else "claims"
+        props = "claims|labels|aliases" if labels else "claims"
         d = get("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&props=" + props + "&ids="
                 + "|".join(qids[i:i + 40]))
         out.update((d or {}).get("entities") or {})
@@ -48,13 +50,21 @@ def claim_ids(e, prop):
             for c in (e.get("claims") or {}).get(prop, [])]
 
 
+def is_latin(s: str) -> bool:
+    """True when every letter is in the Latin script (name numerology reads Latin letters only)."""
+    letters = [ch for ch in s or "" if ch.isalpha()]
+    return bool(letters) and all("LATIN" in unicodedata.name(ch, "") for ch in letters)
+
+
 def official(e):
-    """(text, language) of the current official name, or (None, None)."""
+    """(text, language) of the current official name in the Latin script, or (None, None)."""
     best = None
     for c in (e.get("claims") or {}).get("P1448", []):
         v = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value") or {}
         if not v.get("text") or "P582" in (c.get("qualifiers") or {}):
             continue                                  # a former name (it has an end date)
+        if not is_latin(v["text"]):
+            continue                                  # Greek, Cyrillic, Chinese...: the Latin form is used
         rank = {"preferred": 0, "normal": 1}.get(c.get("rank"), 2)
         if best is None or rank < best[0]:
             best = (rank, v["text"], v.get("language"))
@@ -67,12 +77,40 @@ def tidy(label: str) -> str:
 
 
 def short_name(e, legal_lang):
+    """The native short name when it is written in the Latin script, else the English label."""
     labels = e.get("labels") or {}
-    en = (labels.get("en") or {}).get("value")
-    native = (labels.get(legal_lang) or {}).get("value") if legal_lang else None
+    pick = lambda lang: (v if is_latin(v := (labels.get(lang) or {}).get("value") or "") else None)  # noqa: E731
+    en = pick("en") or pick("en-gb") or pick("mul")
+    native = pick(legal_lang) if legal_lang else None
     if native and (not en or len(native) <= len(en) + 4):
         return tidy(native)
     return tidy(en or native or "")
+
+
+def _words(s: str) -> set[str]:
+    s = unicodedata.normalize("NFKD", (s or "").lower()).encode("ascii", "ignore").decode()
+    return {w for w in re.findall(r"[a-z]{3,}", s)} - {
+        "club", "football", "futbol", "futebol", "fussball", "clube", "sport", "sporting", "calcio", "united", "city",
+        "athletic", "deportivo", "real", "the", "and", "spor", "esporte"}
+
+
+def names_agree(team: str, e) -> bool:
+    """The item's labels or aliases (any language) share a name word with the team, or it is an initialism."""
+    base = teamnames.split(team)[0]
+    if re.fullmatch(r"[A-Z][A-Za-z]{1,4}", base) and sum(ch.isupper() for ch in base) >= 2:
+        return True                                   # "KuPS", "SJK", "CSA": an initialism
+    mine = _words(base)
+    if not mine:
+        return True
+    theirs = set()
+    for v in (e.get("labels") or {}).values():
+        theirs |= _words(v.get("value"))
+    for vs in (e.get("aliases") or {}).values():
+        for v in vs:
+            theirs |= _words(v.get("value"))
+    theirs |= _words(official(e)[0] or "")
+    return any(a == b or (len(min(a, b, key=len)) >= 3 and (a.startswith(b) or b.startswith(a)))
+               for a in mine for b in theirs)
 
 
 def teams_and_countries():
@@ -95,17 +133,29 @@ def teams_and_countries():
             out.setdefault(r["away"], None)
     except Exception as e:  # noqa: BLE001
         print("live record unavailable:", e)
-    return {t: c for t, c in out.items() if isinstance(t, str) and not teamnames.nation(t)}
+    clubs = {}
+    for t, c in out.items():
+        if not isinstance(t, str) or teamnames.nation(t):
+            continue
+        base = teamnames.split(t)[0]                  # "Celta B" is named through "Celta" (+ " B" on screen)
+        clubs[base] = clubs.get(base) or c
+    return clubs
 
 
 def main():
     cache = json.loads(teamnames.FILE.read_text()) if teamnames.FILE.exists() else {}
     month = time.strftime("%Y-%m")
     teams = teams_and_countries()
-    todo = sorted(t for t in teams if not (cache.get(t) or {}).get("short") and (cache.get(t) or {}).get("tried") != month)
-    print(f"{len(teams)} clubs; {len(todo)} without an official name yet")
-    cand = {}
+    for k in [k for k in cache if teamnames.split(k)[1] and not k.startswith("W:")]:
+        del cache[k]                                  # reserve / youth sides go through their club
+    cand = {t: [cache[t]["qid"]] for t in teams if (cache.get(t) or {}).get("qid")
+            and cache[t].get("v") != VERSION}         # redo with the current rules, same item
+    todo = sorted(t for t in teams if t in cand or (not (cache.get(t) or {}).get("short")
+                                                     and (cache.get(t) or {}).get("tried") != month))
+    print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone under the current rules)")
     for t in todo:
+        if t in cand:
+            continue
         base = teamnames.split(t)[0]
         c = [x for x in foundings.search(base, limit=4) if x["match"] in ("exact", "alias")]
         if c and str(c[0].get("source", "")).startswith("wikidata:"):
@@ -144,6 +194,9 @@ def main():
                 continue                              # a namesake in another country
             if not want and not have:
                 continue                              # nothing to confirm the match with
+            if not names_agree(t, e):
+                print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
+                continue
             pick = (q, e)
             break
         if not pick:
@@ -155,7 +208,7 @@ def main():
         if not short:
             cache[t] = {"tried": month}
             continue
-        cache[t] = {"short": short, "legal": legal or short, "qid": q}
+        cache[t] = {"short": short, "legal": legal or short, "qid": q, "v": VERSION}
         found += 1
     teamnames.FILE.parent.mkdir(parents=True, exist_ok=True)
     teamnames.FILE.write_text(json.dumps(cache, indent=0, sort_keys=True, ensure_ascii=False))

@@ -48,3 +48,20 @@ def test_fetch_tidy_and_official_pick():
     assert legal == "Fußball-Club Bayern München e. V." and fo.short_name(e, lang) == "FC Bayern München"
     e2 = {"labels": {"en": {"value": "FC Barcelona"}, "ca": {"value": "Futbol Club Barcelona"}}}
     assert fo.short_name(e2, "ca") == "FC Barcelona"
+
+
+def test_official_names_rules():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    e = {"labels": {"en": {"value": "Aris Thessaloniki F.C."}, "el": {"value": "Άρης"}},
+         "claims": {"P1448": [{"rank": "normal", "mainsnak": {"datavalue": {"value": {
+             "text": "Αθλητικός Σύλλογος Θεσσαλονίκης ο Άρης", "language": "el"}}}}]}}
+    assert fon.official(e) == (None, None)                    # numerology needs the Latin script
+    assert fon.short_name(e, "el") == "Aris Thessaloniki FC"
+    assert fon.names_agree("Aris", e)
+    sharjah = {"labels": {"en": {"value": "Sharjah FC"}, "ar": {"value": "نادي الشارقة"}}, "aliases": {}}
+    assert not fon.names_agree("Al Nasr", sharjah)
+    assert fon.names_agree("KuPS", {"labels": {"en": {"value": "Kuopion Palloseura"}}})
+    bilbao = {"labels": {"en": {"value": "Athletic Club"}, "de": {"value": "Athletic Bilbao"}}}
+    assert fon.names_agree("Ath Bilbao", bilbao)
