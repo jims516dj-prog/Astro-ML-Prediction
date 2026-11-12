@@ -103,7 +103,9 @@ def test_discovered_competitions_are_secondary_and_named(monkeypatch, tmp_path):
     out = fixtures_espn.extra_fixtures([], NOW, 4, live.match_key, local_date, [], lambda d: set(), set(),
                                        lambda t, **kw: (-16.5, -68.1, "wikipedia: " + kw["hint"]["name"]),
                                        fetch=fetch, log=lambda *a: None)
-    assert [(f["division"], f["home"], f["league"]) for f in out] == [("X:bol.1", "Bolívar", "Bolivian Liga Profesional")]
+    # youth sides are included under their own names (never the senior team's)
+    assert sorted((f["division"], f["home"], f["away"]) for f in out) == [("X:bol.1", "Bolívar", "The Strongest"),
+                                                                         ("X:bol.1", "Bolívar U20", "Always Ready U20")]
 
 
 def test_efl_trophy_skips_academy_sides():
@@ -135,3 +137,12 @@ def test_womens_competitions_never_discovered_or_forecast(tmp_path, monkeypatch)
         assert fixtures_espn.NOT_MEN.search(slug) or fixtures_espn.NOT_MEN.search(name)
     for slug, name in (("wal.1", "Welsh Premier League"), ("uefa.champions", "UEFA Champions League")):
         assert not (fixtures_espn.NOT_MEN.search(slug) or fixtures_espn.NOT_MEN.search(name))
+
+
+
+def test_youth_names_never_map_to_senior_names():
+    assert fixtures_espn.same_age("Liverpool U21", "Liverpool") is None
+    assert fixtures_espn.same_age("England U21", "England U21") == "England U21"
+    assert fixtures_espn.same_age("Arsenal", "Arsenal") == "Arsenal" and fixtures_espn.same_age("Arsenal", None) is None
+    assert fixtures_espn.YOUTH_NAME.search("Spain Sub-20") and fixtures_espn.YOUTH_NAME.search("Italy Under-19")
+    assert not fixtures_espn.NOT_MEN.search("uefa.euro_u21_qual") and fixtures_espn.NOT_MEN.search("eng.w.1")

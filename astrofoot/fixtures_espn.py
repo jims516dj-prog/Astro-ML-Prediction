@@ -59,8 +59,12 @@ WOMEN_SEEDS = {"uefa.wchampions": "UEFA Women's Champions League", "eng.w.1": "E
 YOUTH_ONLY = re.compile(r"\bU-?\d{2}\b|\bunder[- ]?\d{2}\b", re.I)
 # A competition that is not men's senior football, by ESPN code or name (case-insensitive): women's ("w" codes such as
 # uefa.wchampions, eng.w.1; Women's, Frauen, Féminine, Femenil, Damallsvenskan, Liga F, NWSL), youth, college, Olympic
-NOT_MEN = re.compile(r"(^|\.)(w|u\d+)(\.|$)|^[a-z]+\.w[a-z]|women|wom[ae]n|wsl|frauen|f[eé]min|femenil|damallsvenskan|"
-                     r"\bliga f\b|ladies|girls|youth|junior|olympic|ncaa|college|nwsl|\bu-?\d{2}\b", re.I)
+NOT_MEN = re.compile(r"(^|\.)w(\.|$)|^[a-z]+\.w[a-z]|women|wom[ae]n|wsl|frauen|f[eé]min|femenil|damallsvenskan|"
+                     r"\bliga f\b|ladies|girls|olympic|ncaa|college|nwsl", re.I)
+# Youth sides (U17-U23, "Under-21", "Sub-20") are included, under their own names ("England U21"), never matched to
+# the senior team's name or history
+YOUTH_NAME = re.compile(r"\bU-?(1[5-9]|2[0-3])\b|\bunder[- ]?(1[5-9]|2[0-3])\b|\bsub-?(1[5-9]|2[0-3])\b", re.I)
+MEN_SKIP = re.compile(r"women|femenin|féminin|frauen|ladies|\(w\)", re.I)
 SOURCE = "espn.com"
 DAYS_AHEAD = 2                 # today and tomorrow (the cycle runs three times a day)
 
@@ -227,6 +231,13 @@ def parse_event(ev: dict) -> dict | None:
                       "country": (v.get("address") or {}).get("country")}}
 
 
+def same_age(raw: str, mapped: str | None) -> str | None:
+    """A youth side is only ever matched to a youth name (and a senior side to a senior name)."""
+    if mapped is None:
+        return None
+    return mapped if bool(YOUTH_NAME.search(raw)) == bool(YOUTH_NAME.search(mapped)) else None
+
+
 def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, match_key, local_date,
                    ledger_preds: list[dict], known_of, multi_pool: set[str], venue_of, fetch=fetch,
                    log=print, senior_clubs: set[str] | None = None, competitions=None,
@@ -237,7 +248,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
     have = {f["match_key"] for f in primary} | {r["match_key"] for r in ledger_preds}
     out, skipped, per, bad = [], [], {}, []
     comps = competitions if competitions is not None else sorted(LEAGUE_SLUG.items()) + discovered_slugs()
-    youth = YOUTH_ONLY if women else YOUTH
+    youth = YOUTH_ONLY if women else MEN_SKIP      # men: youth sides are included (under their own names)
     for div, slug in comps:
         known = None
         for k in range(DAYS_AHEAD):
@@ -256,7 +267,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
                     continue
                 if youth.search(g["home"]) or youth.search(g["away"]):
                     continue
-                if slug in ACADEMY_CUPS:
+                if slug in ACADEMY_CUPS and not (YOUTH_NAME.search(g["home"]) or YOUTH_NAME.search(g["away"])):
                     # only lower-league clubs enter these, plus top clubs' academy (U21) sides that ESPN may list
                     # under the senior name: a top-two-division club here is its academy side
                     senior = senior_clubs if senior_clubs is not None else known_of("E0") | known_of("E1")
@@ -264,14 +275,16 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
                         skipped.append(f"{g['home']} v {g['away']} ({div}): an academy side (top-two-division club)")
                         continue
                 if div in MULTI_CLUB:
-                    h = european_name(g["home"], multi_pool) or g["home"]
-                    a = european_name(g["away"], multi_pool) or g["away"]
+                    h = same_age(g["home"], european_name(g["home"], multi_pool)) or g["home"]
+                    a = same_age(g["away"], european_name(g["away"], multi_pool)) or g["away"]
                 elif div in NO_PRIMARY:
                     names = {n for r in ledger_preds if r["division"] == div for n in (r["home"], r["away"])}
-                    h, a = canonical_name(g["home"], names) or g["home"], canonical_name(g["away"], names) or g["away"]
+                    h = same_age(g["home"], canonical_name(g["home"], names)) or g["home"]
+                    a = same_age(g["away"], canonical_name(g["away"], names)) or g["away"]
                 else:
                     known = known if known is not None else known_of(div)
-                    h, a = canonical_name(g["home"], known), canonical_name(g["away"], known)
+                    h = same_age(g["home"], canonical_name(g["home"], known))
+                    a = same_age(g["away"], canonical_name(g["away"], known))
                     if not h or not a or h == a:
                         skipped.append(f"{g['home']} v {g['away']} ({div}): team name not recognised")
                         continue

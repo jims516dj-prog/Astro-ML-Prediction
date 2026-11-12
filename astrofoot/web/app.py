@@ -36,7 +36,31 @@ T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.
                      league_name=lambda code: _league_name(code),
                      goal_markets=lambda a: goalmarkets.from_analysis(a),
                      mypicks_market=lambda code: mypicks.MARKET_NAMES.get(code.split(":")[0], code),
-                     day_label=lambda d: _day_label(d))
+                     day_label=lambda d: _day_label(d),
+                     is_youth=lambda name: bool(_YOUTH_NAME.search(name or "")),
+                     day_on=lambda: _DAY_ON.get())
+
+
+import contextvars  # noqa: E402
+
+from ..fixtures_espn import YOUTH_NAME as _YOUTH_NAME  # noqa: E402
+
+_DAY_ON: contextvars.ContextVar = contextvars.ContextVar("day_on", default=True)
+
+
+@app.middleware("http")
+async def _day_reading_cookie(request: Request, call_next):
+    """The soccer day reading can be switched off for all games (a cookie on this computer)."""
+    _DAY_ON.set(request.cookies.get("dayreading") != "off")
+    return await call_next(request)
+
+
+@app.get("/settings/dayreading")
+def day_reading_toggle(on: int = 1, back: str = "/"):
+    back = back if back.startswith("/") and not back.startswith("//") else "/"
+    resp = RedirectResponse(back, status_code=303)
+    resp.set_cookie("dayreading", "on" if on else "off", max_age=10 * 365 * 24 * 3600, samesite="lax")
+    return resp
 
 
 def _day_label(d: str) -> str:

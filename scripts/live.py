@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -56,6 +57,26 @@ def european_pool(fixtures: list[dict], preds: list[dict], ledger: Path | None =
     for d, ns in (recent_names(ledger) if ledger else {}).items():
         names |= ns
     return names
+
+
+YOUTH_SUFFIX = re.compile(r"\s+(U-?\d{2}|Under[- ]?\d{2}|Sub-?\d{2}|II|B)$", re.I)
+
+
+def country_city(name: str):
+    """(lat, lon, source) of a country's most populous city, when `name` is a country (a national team)."""
+    from astrofoot.tennis.venue import EXTRA_CODES
+    code = geo.COUNTRY_CODE.get(name.strip()) or EXTRA_CODES.get(name.strip())
+    if not code:
+        return None
+    try:
+        c = geo.cities()
+    except Exception:  # noqa: BLE001
+        return None
+    rows = c[c.country_code == code].sort_values("population", ascending=False)
+    if not len(rows):
+        return None
+    r = rows.iloc[0]
+    return float(r.latitude), float(r.longitude), f"national team: {r['name']} (largest city)"
 
 
 class EuropeanGrounds:
@@ -128,6 +149,16 @@ class EuropeanGrounds:
                 if hit:
                     loc = (hit[0], hit[1], f"{src}: {hit[2]}")
                     break
+        if loc is None and not self.hint_only:
+            base = YOUTH_SUFFIX.sub("", team).strip()
+            if base and base != team:           # a youth side plays at (or near) its senior team's ground
+                got = self(base, division, hint)
+                if got:
+                    loc = (got[0], got[1], f"senior team's ground: {got[2]}")
+            if loc is None:                     # a national team: the country's largest city
+                ll = country_city(base or team)
+                if ll:
+                    loc = ll
         if loc is None:
             return None             # not cached: tried again next cycle
         self.cache[key] = {"lat": loc[0], "lon": loc[1], "source": loc[2]}

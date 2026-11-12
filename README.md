@@ -404,6 +404,15 @@ used for its day reading; otherwise founding dates are looked up by each GitHub 
 Women page, its Live record, Top picks, My picks and Dataset) are looked up as women's teams ("Chelsea (women)",
 "Chelsea Women", "Frauen", "Femenil", …, kept under "W:<team>"), never with the men's club's date.
 
+**Day reading on/off.** The "Day reading: on/off" button in the soccer header shows or hides the day reading (cards,
+"Day:" notes and filters) on every soccer page; the choice is remembered on this computer.
+
+**Youth games and national teams.** U17–U23 competitions and sides (e.g. UEFA U21 qualifiers, "Liverpool U21") are
+included when ESPN prices them, always under their own names ("England U21"), never matched to the senior team or its
+history ("youth" badge). A youth side with no ground of its own plays at its senior team's ground; a national team
+whose stadium is not found is placed in the country's largest city. Club friendlies are not priced on ESPN, so they
+cannot be forecast; international friendlies are, when ESPN has odds.
+
 ## Women's football (separate section)
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger

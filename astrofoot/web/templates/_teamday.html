@@ -1,5 +1,5 @@
 {# Soccer: date-only astrology and numerology of the clubs' founding dates for the match day #}
-{% macro panel(td, res) %}
+{% macro panel(td, res) %}{% if day_on() %}
 <section class="card">
   <h2>Day reading: astrology and numerology</h2>
   <p class="note">Dates only, as for tennis: each club's founding date (its "birth") against the sky on <strong>{{ td.day }}</strong>,
@@ -39,10 +39,10 @@
   Teams the day's astrology favoured won {{ fmt_pct(res.day.day_astro["1"].rate) }} (odds {{ fmt_pct(res.day.day_astro["1"].expected) }}).
   A model trained on every contact and number did {{ "worse" if res.ml.both.delta > 0 else "no better" }} than the odds alone on
   unseen seasons ({{ "%+.4f"|format(res.ml.both.delta) }} log loss). So this reading is shown for interest; the forecasts do not use it.</p>{% endif %}
-</section>
+</section>{% endif %}
 {% endmacro %}
 
-{% macro line(td) %}{% if td and (td.home.founded or td.away.founded) %}{% set fa, fn = td.favours.astro, td.favours.num %}
+{% macro line(td) %}{% if day_on() and td and (td.home.founded or td.away.founded) %}{% set fa, fn = td.favours.astro, td.favours.num %}
 <br><span class="small" title="date-only astrology and numerology of the founding dates for the match day">Day:
 {% if fa %}astro → {{ (td.home.team if fa == 1 else td.away.team) }}{% else %}astro level{% endif %} ·
 {% if fn %}num → {{ (td.home.team if fn == 1 else td.away.team) }}{% else %}num level{% endif %}

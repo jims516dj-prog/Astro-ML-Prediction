@@ -85,6 +85,16 @@ where they improved unseen matches) and bookmaker odds where available.</p>
       ({{ d.astro.a.score if d.astro.a.score is not none else "—" }} vs {{ d.astro.b.score if d.astro.b.score is not none else "—" }})</p>
     <p class="kv"><b>Numerology for the day:</b> {% if d.num.favours %}favours {{ p.home if d.num.favours == 1 else p.away }}{% else %}level{% endif %}
       ({{ d.num.a.score if d.num.a.score is not none else "—" }} vs {{ d.num.b.score if d.num.b.score is not none else "—" }})</p>
+    <p class="kv"><b>Day:</b> {{ d.day }}{% if d.tz %} at the venue ({{ d.tz }}){% endif %} · dates of birth {{ d.dob.a or "unknown" }} / {{ d.dob.b or "unknown" }}</p>
+  </div></div>
+  <table class="mini" style="margin-top:6px"><thead><tr><th>Day reading</th><th>{{ p.home }}</th><th>{{ p.away }}</th></tr></thead><tbody>
+    <tr><td>Astrology score</td><td class="num">{{ d.astro.a.score if d.astro.a.score is not none else "—" }}</td><td class="num">{{ d.astro.b.score if d.astro.b.score is not none else "—" }}</td></tr>
+    <tr><td>Contacts (transit → natal)</td>{% for s_ in ("a", "b") %}<td>{% for c in d.astro[s_].contacts[:5] %}{{ c.text }} ({{ c.orb }}°) {{ "%+.2f"|format(c.points) }}{{ "; " if not loop.last }}{% else %}none within 3°{% endfor %}</td>{% endfor %}</tr>
+    <tr><td>Numerology score</td><td class="num">{{ d.num.a.score if d.num.a.score is not none else "—" }}</td><td class="num">{{ d.num.b.score if d.num.b.score is not none else "—" }}</td></tr>
+    <tr><td>Numbers</td>{% for s_ in ("a", "b") %}{% set n_ = d.num[s_].numbers %}<td>{% if n_ %}life path {{ n_.life_path }}, personal year {{ n_.personal_year }}, personal day {{ n_.personal_day }}, universal day {{ n_.universal_day }}{% if n_.expression %}, name {{ n_.expression }}{% endif %}{% else %}—{% endif %}</td>{% endfor %}</tr>
+    <tr><td>Numerology reasons</td>{% for s_ in ("a", "b") %}<td>{% for x in d.num[s_].parts %}{{ x.text }} {{ "%+.1f"|format(x.points) }}{{ "; " if not loop.last }}{% else %}—{% endfor %}</td>{% endfor %}</tr>
+  </tbody></table>
+  <div class="grid2"><div></div><div>
     <p class="kv">Picked {{ p.picked_at[:16].replace("T", " ") }} · sealed forecast <span class="mono">{{ (g.sha256 or "")[:12] }}</span> · model {{ g.model_version }}</p>
   </div></div>{% endif %}
 </div>

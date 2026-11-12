@@ -44,7 +44,9 @@
     <a href="/mypicks" class="{{ 'on' if page=='mypicks' }}">My picks</a>
     <a href="/women" class="{{ 'on' if page=='women' }}">Women</a>
     <a href="/ml" class="{{ 'on' if page=='ml' }}">ML dashboard</a>
-  </nav>{% endif %}
+  </nav>
+  <a class="btn ghost small" style="margin-left:auto" title="show or hide the astrology / numerology day reading on every soccer game"
+     href="/settings/dayreading?on={{ 0 if day_on() else 1 }}&back={{ (request.url.path ~ ('?' ~ request.url.query if request.url.query else ''))|urlencode }}">Day reading: {{ "on" if day_on() else "off" }}</a>{% endif %}
 </header>
 <main>{% block body %}{% endblock %}</main>
 <footer>{% if sport == "tennis" %}Data: ESPN public tennis scoreboard (matches, set scores, seeds) and athlete pages
