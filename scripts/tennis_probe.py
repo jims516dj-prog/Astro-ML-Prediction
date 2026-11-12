@@ -1,5 +1,5 @@
-"""Diagnostics for the Live Tennis API key: one full upcoming Challenger singles match and one finished one.
-Uses 2-3 of the 100 daily requests. Prints only."""
+"""Diagnostics: ITF volume on the Live Tennis API, and whether tournament / fixture look-ups carry results
+(so one request could settle a whole event). Uses about 6 of the 100 daily requests. Prints only."""
 import json
 import os
 import urllib.request
@@ -19,24 +19,18 @@ def get(path):
         return None
 
 
-d = get("/matches?status=upcoming&tour=challenger&limit=200")
+d = get("/matches?status=upcoming&tour=itf&limit=200")
 data = (d or {}).get("data") or []
 singles = [m for m in data if not m.get("is_doubles")]
-print("upcoming challenger:", len(data), "singles:", len(singles), "meta:", (d or {}).get("meta"))
-print("tournaments:", sorted({m.get("tournament") for m in singles}))
-print("top-level tour values:", sorted({str(m.get("tour")) for m in data}), "gender:", sorted({str(m.get("gender")) for m in data}))
-if singles:
-    m = singles[0]
-    print("KEYS:", sorted(m.keys()))
-    print(json.dumps({k: v for k, v in m.items() if k != "players"})[:1500])
-    print("P1:", json.dumps(m["players"]["p1"])[:800])
-# a finished match: look up an older id near the first upcoming one
-if singles:
-    for back in (400, 800, 1500):
-        x = get(f"/matches/{int(singles[0]['id']) - back}")
-        if x:
-            x = x.get("data", x)
-            print("LOOKUP", back, json.dumps({k: x.get(k) for k in ("id", "status", "event_status", "outcome", "winner", "score",
-                                                                     "tournament", "tour", "is_doubles", "format")})[:900])
-            if (x.get("status") or "") == "completed" and not x.get("is_doubles"):
-                break
+print("ITF upcoming page:", len(data), "singles:", len(singles), "meta:", (d or {}).get("meta"))
+print("ITF tournaments:", sorted({m.get("tournament") for m in singles})[:40])
+print("birthdays known:", sum(1 for m in singles for s in ("p1", "p2") if (m["players"].get(s) or {}).get("birthday")), "of", 2 * len(singles))
+tid = singles[0]["tournament_id"] if singles else None
+t = get(f"/tournaments/{tid}") if tid else None
+print("TOURNAMENT keys:", sorted((t or {}).get("data", t or {}).keys()) if t else None)
+print("TOURNAMENT:", json.dumps(t)[:1500] if t else None)
+f = get("/fixtures?tour=itf&limit=5")
+print("FIXTURES:", json.dumps(f)[:1500] if f else None)
+ts = get("/tournaments?tour=challenger&limit=3")
+print("TOURNAMENTS list:", json.dumps(ts)[:800] if ts else None)
+print("usage:", json.dumps((get("/usage") or {}).get("today")))
