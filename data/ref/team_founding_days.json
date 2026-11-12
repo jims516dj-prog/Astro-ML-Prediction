@@ -638,6 +638,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Bilje": null,
 "Birmingham": {
 "date": null,
 "name": "Birmingham City F.C.",
@@ -1417,6 +1418,10 @@
 "date": "1960-08-16",
 "name": "Cyprus"
 },
+"Czech Republic": {
+"date": "1993-01-01",
+"name": "Czech Republic"
+},
 "Czechia": {
 "date": null,
 "tried": "2026-11"
@@ -1455,6 +1460,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Dayrout": null,
 "Defensa y Justicia": {
 "date": "1935-03-20",
 "name": "Defensa y Justicia"
@@ -1559,6 +1565,7 @@
 "name": "Dover Athletic F.C.",
 "tried": "2026-11"
 },
+"Dravinja": null,
 "Dresden": {
 "date": null,
 "tried": "2026-11"
@@ -1651,6 +1658,7 @@
 "tried": "2026-11"
 },
 "El Entag El Harby": null,
+"El Seka El Hadid": null,
 "El Sekka El Hadid": null,
 "El Terasanah": null,
 "Elche": {
@@ -1745,6 +1753,7 @@
 "date": "1974-09-12",
 "name": "Ethiopia"
 },
+"Ethiopia U23": null,
 "Eupen": {
 "date": null,
 "tried": "2026-11"
@@ -1889,6 +1898,7 @@
 "name": "FC Rostov",
 "tried": "2026-11"
 },
+"FYR Macedonia": null,
 "Fakel Voronezh": {
 "date": null,
 "name": "FC Fakel Voronezh",
@@ -2537,6 +2547,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Independ. Rivadavia": null,
 "Independiente": {
 "date": "1905-01-01",
 "name": "Club Atl\u00e9tico Independiente"
@@ -2649,6 +2660,7 @@
 "date": "1921-08-21",
 "name": "FK Jerv"
 },
+"Jesenice": null,
 "Jiangsu Suning": {
 "date": null,
 "tried": "2026-11"
@@ -2825,6 +2837,10 @@
 "Kristiansund": {
 "date": "2003-09-02",
 "name": "Kristiansund BK"
+},
+"Krka": {
+"date": "1922-02-19",
+"name": "NK Krka"
 },
 "Krylya Sovetov": {
 "date": null,
@@ -3279,6 +3295,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Mega Sport": null,
 "Meizhou Hakka": {
 "date": null,
 "name": "Meizhou Hakka F.C.",
@@ -3411,6 +3428,7 @@
 "date": "1956-03-02",
 "name": "Morocco"
 },
+"Morocco U23": null,
 "Morton": {
 "date": null,
 "name": "Greenock Morton F.C.",
@@ -4054,10 +4072,12 @@
 "date": "1906-04-30",
 "name": "SC Preu\u00dfen M\u00fcnster"
 },
+"Primorje": null,
 "Progreso": {
 "date": "1917-04-30",
 "name": "C.A. Progreso"
 },
+"Proxy": null,
 "Puebla": {
 "date": "1944-05-07",
 "name": "Puebla F.C."
@@ -4665,6 +4685,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Sok\u00f3\u0142 Kleczew": null,
 "Solihull": {
 "date": "2007-07-10",
 "name": "Solihull Moors F.C."
@@ -5100,6 +5121,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Triglav": null,
 "Trinidad and Tobago": {
 "date": "1889-01-01",
 "name": "Trinidad and Tobago"
@@ -5723,6 +5745,7 @@
 "date": "1980-04-18",
 "name": "Zimbabwe"
 },
+"Znicz Pruszk\u00f3w": null,
 "Zurich": {
 "date": "1896-08-01",
 "name": "FC Z\u00fcrich"
