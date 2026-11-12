@@ -19,6 +19,11 @@
   "lon": -0.44721,
   "source": "city"
  },
+ "Argentina": {
+  "lat": -34.54527778,
+  "lon": -58.44972222,
+  "source": "wikipedia: Estadio Monumental (Buenos Aires)"
+ },
  "Armenia": {
   "lat": 40.1720153,
   "lon": 44.5255451,
@@ -93,6 +98,11 @@
   "lat": 51.45523,
   "lon": -2.59665,
   "source": "city: Bristol"
+ },
+ "Bulgaria": {
+  "lat": 42.14,
+  "lon": 24.76444444,
+  "source": "wikipedia: Stadion Hristo Botev (Plovdiv)"
  },
  "Burkina Faso": {
   "lat": 12.36902778,
@@ -284,6 +294,11 @@
   "lon": 7.002206,
   "source": "stadium"
  },
+ "Liechtenstein": {
+  "lat": 47.14027778,
+  "lon": 9.51027778,
+  "source": "wikipedia: Rheinpark Stadion"
+ },
  "Lithuania": {
   "lat": 54.70833333,
   "lon": 25.25777778,
@@ -298,6 +313,11 @@
   "lat": -23.31028,
   "lon": -51.16278,
   "source": "city"
+ },
+ "Luxembourg": {
+  "lat": 49.57722222,
+  "lon": 6.11472222,
+  "source": "wikipedia: Stade de Luxembourg"
  },
  "Madagascar": {
   "lat": 33.8911836,
@@ -323,6 +343,11 @@
   "lat": 45.46427,
   "lon": 9.18951,
   "source": "city"
+ },
+ "Moldova": {
+  "lat": 46.9810112,
+  "lon": 28.8672035,
+  "source": "openstreetmap: Stadionul Zimbru, 45, Bulevardul Dacia, Botanica de Sus, Chișinău, sectorul Botanica, Municipiul Chișinău, MD-2060, Moldova"
  },
  "Monaco": {
   "lat": 43.727606,

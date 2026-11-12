@@ -26,3 +26,5 @@
 {"match_id": "186762", "retired": false, "score": "7-5 7-6", "set_winners": "11", "settled_at": "2026-11-11T23:33:00+00:00", "source": "espn.com", "start_final": "2026-11-11T17:35:00+00:00", "void": false, "void_reason": null, "winner": 1}
 {"match_id": "187385", "retired": false, "score": "3-6 6-2 6-2", "set_winners": "211", "settled_at": "2026-11-11T23:33:00+00:00", "source": "espn.com", "start_final": "2026-11-11T20:10:00+00:00", "void": false, "void_reason": null, "winner": 1}
 {"match_id": "187378", "retired": false, "score": "4-6 0-6", "set_winners": "22", "settled_at": "2026-11-12T03:46:13+00:00", "source": "espn.com", "start_final": "2026-11-11T22:35:00+00:00", "void": false, "void_reason": null, "winner": 2}
+{"match_id": "lta:219491", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-12T03:59:50+00:00", "source": "", "void": true, "void_reason": "the same match is forecast from ESPN", "winner": null}
+{"match_id": "lta:219492", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-12T03:59:50+00:00", "source": "", "void": true, "void_reason": "the same match is forecast from ESPN", "winner": null}
