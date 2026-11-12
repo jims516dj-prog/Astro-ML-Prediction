@@ -26,7 +26,7 @@ CITY_ALIAS = {"washington dc": "washington", "st petersburg": "saint petersburg"
               "new york": "new york city", "cincinnatti": "cincinnati", "cincinatti": "cincinnati",
               "costa do sauipe": "salvador", "los cobos": "cabo san lucas", "los cabos": "cabo san lucas",
               "tenerife": "santa cruz de tenerife", "nuevo vallarta": "puerto vallarta", "hersonissos": "irakleion",
-              "chersonissos": "irakleion", "heraklion": "irakleion", "s'hertogenbosch": "s hertogenbosch", "'s-hertogenbosch": "s hertogenbosch"}
+              "chersonissos": "irakleion", "sharm elsheikh": "sharm el sheikh", "maanshan": "ma anshan", "sharm el-sheikh": "sharm el sheikh", "heraklion": "irakleion", "s'hertogenbosch": "s hertogenbosch", "'s-hertogenbosch": "s hertogenbosch"}
 US_STATES = {"connecticut": "America/New_York", "north carolina": "America/New_York", "ohio": "America/New_York",
              "new york": "America/New_York", "florida": "America/New_York", "california": "America/Los_Angeles",
              "texas": "America/Chicago", "illinois": "America/Chicago", "massachusetts": "America/New_York",
@@ -35,6 +35,15 @@ US_STATES = {"connecticut": "America/New_York", "north carolina": "America/New_Y
              "south carolina": "America/New_York", "colorado": "America/Denver", "nevada": "America/Los_Angeles"}
 
 
+US_ABBR = {"OH": "America/New_York", "FL": "America/New_York", "GA": "America/New_York", "NC": "America/New_York",
+           "SC": "America/New_York", "NY": "America/New_York", "NJ": "America/New_York", "PA": "America/New_York",
+           "VA": "America/New_York", "MD": "America/New_York", "MA": "America/New_York", "CT": "America/New_York",
+           "MI": "America/Detroit", "KY": "America/New_York", "TN": "America/Chicago", "AL": "America/Chicago",
+           "TX": "America/Chicago", "IL": "America/Chicago", "MO": "America/Chicago", "LA": "America/Chicago",
+           "OK": "America/Chicago", "MN": "America/Chicago", "WI": "America/Chicago", "KS": "America/Chicago",
+           "CO": "America/Denver", "UT": "America/Denver", "NM": "America/Denver", "AZ": "America/Phoenix",
+           "CA": "America/Los_Angeles", "NV": "America/Los_Angeles", "OR": "America/Los_Angeles",
+           "WA": "America/Los_Angeles", "HI": "Pacific/Honolulu", "IN": "America/Indiana/Indianapolis"}
 # countries with more than one clock where tennis is almost always played in one of them
 COUNTRY_DEFAULT = {"ES": "Europe/Madrid", "PT": "Europe/Lisbon"}
 
@@ -55,6 +64,8 @@ def venue_tz(venue: str) -> str | None:
         c = geo.cities()
     except Exception:  # noqa: BLE001 - cities table not downloaded
         return None
+    if len(parts) > 1 and parts[-1].upper() in US_ABBR:          # "Columbus, OH"
+        return US_ABBR[parts[-1].upper()]
     code = _code(parts[-1])
     if code is None:                 # no country given ("Kuala Lumpur"): the most populous city of that name anywhere
         k = geo.norm(CITY_ALIAS.get(parts[-1].lower(), parts[-1]))

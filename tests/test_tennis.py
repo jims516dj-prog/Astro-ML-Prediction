@@ -636,3 +636,26 @@ def test_sources_with_different_name_orders_are_the_same_match():
                             "Irene Burillo", "Laura Samson", "2026-11-12T18:00Z")
     assert not tlive.same_match("Irene Burillo", "Laura Samson", "2026-11-12T15:00Z",
                                 "Irene Burillo", "Laura Samson", "2026-11-15T15:00Z")       # days apart: another match
+
+
+def test_itf_matches_are_compact_and_settled_after_challengers(tmp_path):
+    from astrofoot.tennis import live as tlive
+    from astrofoot.tennis import lta
+    m = lta.to_match({**_lta_match(5, "Ann A", "Bea B", "2030-01-02T10:00:00Z", tour="itf", tournament="W15 Paris (France)"),
+                      "gender": "women"})
+    assert m["level"] == "itf" and m["tour"] == "wta" and m["venue"] == "Paris, France"
+    rec = {"features": {"elo_diff": 10.0, "d_astro_conj_Su_Su": 0.5, "a_form": 0.6}, "day": {
+        "day": "2030-01-02", "tz": "Europe/Paris", "astro": {"a": {"score": 1.0, "contacts": [{"text": "x"}]},
+                                                               "b": {"score": 0.0, "contacts": []}, "favours": 1},
+        "num": {"a": {"score": 1.0, "parts": [{"text": "y"}], "numbers": {"life_path": 3}},
+                "b": {"score": 0.0, "parts": [], "numbers": {}}, "favours": 1}}}
+    c = tlive.compact(rec)
+    assert set(c["features"]) == {"elo_diff", "a_form"} and c["day"]["compact"] and c["day"]["astro"]["favours"] == 1
+    assert c["day"]["astro"]["a"]["contacts"] == [] and c["day"]["num"]["a"]["numbers"] == {"life_path": 3}
+    # settling: Challengers first (oldest first), then ITF newest first, within the budget
+    pend = ([{"match_id": f"lta:{i}", "start_utc": f"2030-01-0{i}T10:00:00+00:00", "level": "itf"} for i in (1, 2, 3)]
+            + [{"match_id": "lta:9", "start_utc": "2030-01-01T09:00:00+00:00", "level": "challenger"}])
+    api = FakeLTA([_lta_match(i, "A", "B", "2030-01-01T10:00:00Z", "completed", games=[[6, 6], [1, 1]], winner=1)
+                   for i in (1, 2, 3, 9)], left=2)
+    got = lta.settle(pend, api, datetime(2030, 1, 5, tzinfo=timezone.utc), log=lambda *a: None)
+    assert set(got) == {"lta:9", "lta:3"}                    # the Challenger, then the newest ITF match

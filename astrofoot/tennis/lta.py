@@ -1,4 +1,4 @@
-"""Challenger and team-event matches (Hopman Cup, United Cup, Davis / Billie Jean King Cup, Laver Cup) from the
+"""Challenger, ITF and team-event matches (Hopman Cup, United Cup, Davis / Billie Jean King Cup, Laver Cup) from the
 Live Tennis API (livetennisapi.com), FREE tier: 100 requests a day, upcoming and live listings, and single-match
 lookups (which also work after a match is finished). ESPN, the main source, has none of these.
 
@@ -36,6 +36,20 @@ class Client:
         self.day = now.strftime("%Y-%m-%d")
         if self.state.get("day") != self.day:
             self.state = {"day": self.day, "used": 0}
+        self.sync()
+
+    def sync(self):
+        """Today's real usage from the API (quota-exempt), so requests made elsewhere count too."""
+        try:
+            req = urllib.request.Request(f"{self.base}/usage", headers={"Authorization": f"Bearer {self.key}",
+                                                                         "Accept": "application/json",
+                                                                         "User-Agent": "astro-football-research"})
+            with urllib.request.urlopen(req, timeout=30) as r:
+                today = (json.loads(r.read()) or {}).get("today") or {}
+            if today.get("remaining_day") is not None:
+                self.state["used"] = max(int(self.state.get("used", 0)), DAILY - int(today["remaining_day"]))
+        except Exception:  # noqa: BLE001 - keep our own count
+            pass
 
     @property
     def left(self) -> int:
@@ -59,10 +73,12 @@ class Client:
 
 def _venue(tournament: str) -> str:
     """The city in a tournament name ("Lima 2" → "Lima", "Sopo (Colombia)" → "Sopo, Colombia"), for the timezone."""
+    tournament = re.sub(r"(?i)china,?\s*p\.?\s*r\.?", "China", tournament or "")
     m = re.match(r"\s*(.+?)\s*\(([^)]+)\)", tournament or "")
     if m:
         return f"{_venue(m.group(1))}, {m.group(2).strip()}"
-    t = re.sub(r"(?i)\b(atp|wta|itf|challenger|ch|men|women|mens|womens|singles|doubles|open|cup|\d+)\b", " ", tournament or "")
+    t = re.sub(r"(?i)\b(atp|wta|itf|challenger|ch|men|women|mens|womens|singles|doubles|open|cup|[mw]\d+|\d+)\b", " ",
+               tournament or "")
     return re.sub(r"\s+", " ", t).strip(" -,")
 
 
@@ -94,7 +110,8 @@ def to_match(m: dict) -> dict | None:
     return {
         "id": f"{PREFIX}{m.get('id')}", "event_id": f"{PREFIX}{m.get('tournament_id') or ''}",
         "event": m.get("tournament") or "", "tour": "wta" if (tour == "wta" or gender == "women") else "atp",
-        "level": "challenger" if tour == "challenger" else ("team" if team_event(m.get("tournament")) else tour),
+        "level": ("challenger" if tour == "challenger" else "itf" if tour.startswith("itf")
+                  else ("team" if team_event(m.get("tournament")) else tour)),
         "date": when, "venue": _venue(m.get("tournament") or ""), "round": m.get("round") or "",
         "best_of": 5 if fmt.endswith("5") else 3, "surface": _surface(m.get("surface")),
         "state": {"upcoming": "pre", "live": "in", "completed": "post"}.get(status, status),
@@ -142,10 +159,10 @@ def result_of(m: dict) -> dict | None:
 
 
 def upcoming(client: Client, log=print) -> pd.DataFrame:
-    """Upcoming Challenger singles, plus team events (Hopman Cup, United Cup, …) listed under the ATP / WTA tours."""
+    """Upcoming Challenger and ITF singles, plus team events (Hopman Cup, United Cup, …) listed under ATP / WTA."""
     rows = []
-    for tour, keep in (("challenger", lambda m: True), ("atp", lambda m: team_event(m.get("tournament"))),
-                       ("wta", lambda m: team_event(m.get("tournament")))):
+    for tour, keep in (("challenger", lambda m: True), ("itf", lambda m: True),
+                       ("atp", lambda m: team_event(m.get("tournament"))), ("wta", lambda m: team_event(m.get("tournament")))):
         offset = 0
         for _ in range(2):              # at most two pages of 200
             try:
@@ -169,10 +186,14 @@ def lookup(client: Client, match_id: str) -> dict | None:
 
 
 def settle(pending: list[dict], client: Client, now: datetime, log=print) -> dict[str, dict]:
-    """Results of sealed Challenger / team-event forecasts, oldest first, as many as today's budget allows."""
+    """Results of sealed forecasts from this API, as many as today's budget allows: Challengers and team events first
+    (oldest first: they all fit), then ITF newest first (there are far more ITF matches than free requests)."""
     out = {}
-    due = sorted((r for r in pending if r["match_id"].startswith(PREFIX)
-                  and now - datetime.fromisoformat(r["start_utc"]) > timedelta(hours=2)), key=lambda r: r["start_utc"])
+    ready = [r for r in pending if r["match_id"].startswith(PREFIX)
+             and now - datetime.fromisoformat(r["start_utc"]) > timedelta(hours=2)]
+    first = sorted((r for r in ready if r.get("level") != "itf"), key=lambda r: r["start_utc"])
+    itf = sorted((r for r in ready if r.get("level") == "itf"), key=lambda r: r["start_utc"], reverse=True)
+    due = first + itf
     for r in due:
         if client.left <= 0:
             log(f"  {SOURCE}: daily budget used; {len(due) - len(out)} result(s) wait for tomorrow (or enter them by hand)")

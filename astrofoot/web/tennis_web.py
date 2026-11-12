@@ -186,7 +186,7 @@ def explain(f: dict, m: dict) -> dict:
 def day_of(rec: dict) -> dict:
     """The date-only astrology / numerology comparison: sealed with the forecast, or worked out now (it depends
     only on the two dates of birth and the match date) for forecasts sealed before it existed."""
-    if rec.get("day") and "tz" in rec["day"]:      # sealed with the venue's day: as sealed
+    if rec.get("day") and "tz" in rec["day"] and not rec["day"].get("compact"):      # sealed with the venue's day
         return rec["day"]
     # sealed before the day was taken at the venue (or without a reading): worked out now from the dates and venue
     m = {"p1_id": rec["p1_id"], "p2_id": rec["p2_id"], "p1": rec["p1"], "p2": rec["p2"], "date": rec["start_utc"],

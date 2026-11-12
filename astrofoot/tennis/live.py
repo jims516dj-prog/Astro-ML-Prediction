@@ -18,10 +18,21 @@ HORIZON_H = 36          # forecast matches starting within this many hours
 VOID_DAYS = 4           # no result this long after the start: void
 
 
+_READ_CACHE: dict = {}
+
+
 def _read(path: Path) -> list[dict]:
+    """A JSONL ledger file, cached until it changes (it is read on every page)."""
     if not path.exists():
         return []
-    return [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+    st = path.stat()
+    key = (st.st_mtime_ns, st.st_size)
+    hit = _READ_CACHE.get(path)
+    if hit and hit[0] == key:
+        return [dict(r) for r in hit[1]]
+    rows = [json.loads(x) for x in path.read_text().splitlines() if x.strip()]
+    _READ_CACHE[path] = (key, rows)
+    return [dict(r) for r in rows]
 
 
 def _append(path: Path, recs: list[dict]):
@@ -258,6 +269,8 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                "model_version": fc["p"]["version"], "p": fc["p"], "features": fc["features"], "day": fc["day"],
                "odds": fc["odds"],
                "committed_at": now.isoformat(timespec="seconds")}
+        if m.get("level") == "itf":
+            rec = compact(rec)
         new.append(football_live.seal(json.loads(json.dumps(rec, default=_plain))))
     _append(ledger / "predictions.jsonl", new)
     # settle
@@ -295,6 +308,10 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                             "source": "espn.com", "settled_at": now.isoformat(timespec="seconds"),
                             # ESPN's final scheduled start (the order of play moves); None if it never set a time
                             "start_final": None if venue.date_only(m["date"]) else pd.Timestamp(m["date"]).isoformat()})
+        elif r.get("level") == "itf" and now - start > timedelta(days=3):
+            settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
+                            "void": True, "void_reason": "result not fetched: the free daily quota went on newer matches",
+                            "source": "", "settled_at": now.isoformat(timespec="seconds")})
         elif now - start > timedelta(days=VOID_DAYS + (3 if r["match_id"].startswith(lta.PREFIX) else 0)):
             settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
                             "void": True, "void_reason": "no result", "source": "", "settled_at": now.isoformat(timespec="seconds")})
@@ -327,6 +344,23 @@ TBD_REASON = "a player was still TBD (not yet known) when forecast"
 
 def _tbd(r: dict) -> bool:
     return features.placeholder(r.get("p1_id"), r.get("p1")) or features.placeholder(r.get("p2_id"), r.get("p2"))
+
+
+STAT_KEYS = set(features.STAT_FEATURES) | {"d_astro_rule", "d_num_rule", "a_astro_rule", "b_astro_rule", "a_num_rule",
+                                           "b_num_rule"}
+
+
+def compact(rec: dict) -> dict:
+    """A smaller sealed record for the many ITF matches: the statistics the pages show, and the day reading's scores
+    (its contacts depend only on the dates and are worked out again when shown)."""
+    d = rec.get("day") or {}
+    small_day = {**d, "compact": True,
+                 "astro": {s: {"score": (d.get("astro", {}).get(s) or {}).get("score"), "contacts": []} for s in ("a", "b")}
+                 | {"favours": d.get("astro", {}).get("favours", 0)},
+                 "num": {s: {"score": (d.get("num", {}).get(s) or {}).get("score"), "parts": [],
+                             "numbers": (d.get("num", {}).get(s) or {}).get("numbers") or {}} for s in ("a", "b")}
+                 | {"favours": d.get("num", {}).get("favours", 0)}} if d else d
+    return {**rec, "features": {k: v for k, v in rec["features"].items() if k in STAT_KEYS}, "day": small_day}
 
 
 def _seed(v):

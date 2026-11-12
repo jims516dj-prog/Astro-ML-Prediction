@@ -334,6 +334,12 @@ features (last-5 win share, sets won in the last 5, last-5 meetings, who won the
 the same name and the same (or a missing) date of birth are merged, so ratings, form and head-to-head see the whole
 record. Real namesakes with different dates of birth stay apart.
 
+**ITF matches** come from the same API: ITF World Tennis Tour singles (M15/M25, W15–W100) are listed, forecast and sealed
+automatically ("ITF" badge), with smaller sealed records (the day's astrology contacts are worked out again when shown).
+There are about 200 ITF singles a day against 100 free requests, so results are fetched Challengers first, then the most
+recent ITF matches; an ITF result not fetched within 3 days is void ("result not fetched"), unless you type it on the match
+page. The request count follows the API's own usage figure.
+
 **Challengers and team events (Live Tennis API, free tier).** ESPN has no Challengers, Hopman Cup, United Cup, Davis /
 Billie Jean King Cup or Laver Cup. With a free key from livetennisapi.com saved as the GitHub secret `LIVETENNISAPI_KEY`,
 each cycle lists upcoming Challenger singles and those team events, forecasts and seals them like the rest ("Challenger" /

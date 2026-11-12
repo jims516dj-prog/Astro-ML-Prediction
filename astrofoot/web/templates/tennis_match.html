@@ -15,8 +15,10 @@ first set {{ "✓" if r.first_hit else "✗" }}; match {{ "✓" if r.match_hit e
 {{ probs(p, r.p1, r.p2) }}
 {% if r.match_id.startswith("lta:") and (r.status == "pending" or r.result_by_you) and r.when and r.start_utc < now_iso %}
 <h2>Result</h2>
-<p class="small">This match comes from livetennisapi.com's free tier ({{ "Challenger" if r.level == "challenger" else "team event" }}). Its result is
-looked up automatically within the free daily quota of 100 requests; if it is not in yet you can type it here (stored on your
+<p class="small">This match comes from livetennisapi.com's free tier ({{ {"challenger": "Challenger", "itf": "ITF", "team": "team event"}.get(r.level, r.level) }}). Its result is
+looked up automatically within the free daily quota of 100 requests{% if r.level == "itf" %} (Challengers first, then the most
+recent ITF matches: there are far more ITF matches than free requests, and an ITF result not fetched within 3 days is void){% endif %};
+if it is not in yet you can type it here (stored on your
 computer, replaced by the official result when it arrives).</p>
 {% if r.result_by_you %}<p class="small">Your result: {{ r.result.score }}, {{ r.p1 if r.result.winner == 1 else r.p2 }} won.</p>{% endif %}
 <form method="post" action="/tennis/match/{{ r.match_id }}/result" class="filters">
