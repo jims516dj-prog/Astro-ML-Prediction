@@ -97,6 +97,8 @@ football-data.co.uk later confirms or corrects them.</p>
     {% for t in xg_steps %}<option value="{{ t }}" {{ "selected" if q.xg and q.xg|float == t }}>{{ "%.1f"|format(t) }} or more</option>{% endfor %}</select></label>
   <label>For<select name="xg_for">
     {% for k, label in xg_for_names.items() %}<option value="{{ k }}" {{ "selected" if (q.xg_for or "either") == k }}>{{ label }}</option>{% endfor %}</select></label>
+  <label>Day reading<select name="dayfav">
+    {% for v, l in soc_day %}<option value="{{ v }}" {{ "selected" if q.dayfav == v }}>{{ l }}</option>{% endfor %}</select></label>
   <div class="row"><button class="btn ghost">Filter</button><a href="/live{{ '?section=women' if section == 'women' }}" class="small">Clear</a></div>
 </form>
 {% if subset.n %}<p class="note"><strong>These filtered matches so far:</strong> the overall outlook's call was right in

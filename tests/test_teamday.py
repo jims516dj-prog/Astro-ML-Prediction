@@ -55,3 +55,13 @@ def test_day_reading_on_games_analysed_by_hand(tmp_path, monkeypatch):
     rec["founding_json"] = '{"founding_b": {"founded_date": "1882-09-05"}}'
     td = web._manual_teamday(rec)
     assert td["away"]["founded"] == "1882-09-05" and td["home"]["founded"] == "1886-12-01"
+
+
+def test_soccer_day_filter():
+    from astrofoot.web import app as web
+    td = lambda a, n, sa=0, sn=0: {"favours": {"astro": a, "num": n},  # noqa: E731
+                                   "home": {"score_astro": sa, "score_num": sn}, "away": {"score_astro": 0, "score_num": 0}}
+    assert web._soc_day_ok(td(1, 1), "same") and not web._soc_day_ok(td(1, 2), "same") and not web._soc_day_ok(td(0, 0), "same")
+    assert web._soc_day_ok(td(2, 0), "astro") and web._soc_day_ok(td(0, 1), "num") and not web._soc_day_ok(td(0, 0), "num")
+    assert web._soc_day_ok(td(0, 0, 1, 1), "score") and not web._soc_day_ok(td(0, 0, 1, 0), "score")
+    assert web._soc_day_ok(None, "") and not web._soc_day_ok(None, "same")

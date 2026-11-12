@@ -42,7 +42,7 @@
 </section>
 {% endmacro %}
 
-{% macro line(td) %}{% if td %}{% set fa, fn = td.favours.astro, td.favours.num %}
+{% macro line(td) %}{% if td and (td.home.founded or td.away.founded) %}{% set fa, fn = td.favours.astro, td.favours.num %}
 <br><span class="small" title="date-only astrology and numerology of the founding dates for the match day">Day:
 {% if fa %}astro → {{ (td.home.team if fa == 1 else td.away.team) }}{% else %}astro level{% endif %} ·
 {% if fn %}num → {{ (td.home.team if fn == 1 else td.away.team) }}{% else %}num level{% endif %}

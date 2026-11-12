@@ -294,7 +294,8 @@ def delete_match(mid: str):
 @app.get("/dataset", response_class=HTMLResponse)
 def dataset_page(request: Request, league: str = "", season: str = "", team: str = "", page: int = 1,
                  status: str = "", origin: str = "", gpage: int = 1, g_from: str = "", g_to: str = "",
-                 g_agree: str = "", c_from: str = "", c_to: str = "", c_agree: str = "", section: str = "men"):
+                 g_agree: str = "", c_from: str = "", c_to: str = "", c_agree: str = "", section: str = "men",
+                 g_day: str = ""):
     section = section if section in SECTIONS else "men"
     women = section == "women"
     if women:
@@ -304,12 +305,17 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     games = [r for r in _filter_live(_section_games(section, include_withdrawn=status == "void"), date_from=g_from, date_to=g_to,
                                      status=status, origin=origin, league=league, team=team)
              if g_ok(r["classical_agree"])]
+    if g_day:
+        for r in games:
+            r["td"] = _teamday(r)
+        games = [r for r in games if _soc_day_ok(r["td"], g_day)]
     per = 50
     gpages = max(1, math.ceil(len(games) / per))
     gpage = min(max(gpage, 1), gpages)
     shown = games[(gpage - 1) * per: gpage * per]
     for r in shown:
         r["gm"] = _gm_live(r)
+        r.setdefault("td", _teamday(r))
     # 2) the research corpus (men's football only: there is no women's historical corpus)
     m = imported().iloc[0:0] if women else imported()
     q = m
@@ -333,12 +339,16 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
     agree_n = _corpus_agree(rows) if len(rows) else []
     for r, n in zip(hist, agree_n):
         r["gm"] = _gm_hist(r)
+        try:
+            r["td"] = teamday.reading(r["home"], r["away"], r["kickoff_utc"], r.get("lat"), r.get("lon"), resolve=False)
+        except Exception:  # noqa: BLE001
+            r["td"] = None
         r["agree"] = int(n)
     leagues = sorted(set(m.division.unique()) | {r["division"] for r in games} if len(m) else
                      {r["division"] for r in games}, key=lambda c: LEAGUE_NAMES.get(c, c))
     seasons = sorted(m.season.unique(), reverse=True) if len(m) else []
     counts = {o: sum(1 for r in games if r["origin"] == o) for o in ("live", "manual")}
-    keep_g = {"origin": origin, "status": status, "g_from": g_from, "g_to": g_to, "g_agree": g_agree}
+    keep_g = {"origin": origin, "status": status, "g_from": g_from, "g_to": g_to, "g_agree": g_agree, "g_day": g_day}
     keep_c = {"season": season, "c_from": c_from, "c_to": c_to, "c_agree": c_agree}
     shared = {"league": league, "team": team, "section": "women" if women else ""}
     qs = lambda d: "&".join(f"{k}={urllib.parse.quote(str(v))}" for k, v in d.items() if v)      # noqa: E731
@@ -347,7 +357,8 @@ def dataset_page(request: Request, league: str = "", season: str = "", team: str
         "rows": hist, "n": len(q), "page_no": page, "pages": pages,
         "league": league, "season": season, "team": team, "leagues": leagues, "seasons": seasons,
         "status": status, "origin": origin, "g_from": g_from, "g_to": g_to, "g_agree": g_agree,
-        "c_from": c_from, "c_to": c_to, "c_agree": c_agree, "agree_choices": AGREE_CHOICES,
+        "c_from": c_from, "c_to": c_to, "c_agree": c_agree, "agree_choices": AGREE_CHOICES, "g_day": g_day,
+        "soc_day": SOC_DAY,
         "keep_g": keep_g, "keep_c": keep_c, "g_qs": qs({**shared, **keep_g, **keep_c, "page": page}),
         "c_qs": qs({**shared, **keep_g, **keep_c, "gpage": gpage}), "section": section, "sections": SECTIONS,
         "page": "dataset"})
@@ -504,6 +515,28 @@ def _manual_teamday(r: dict, c=None) -> dict | None:
         return None
 
 
+SOC_DAY = [("", "any"), ("same", "astrology and numerology favour the same team"), ("astro", "astrology favours a team"),
+           ("num", "numerology favours a team"), ("score", "a team favoured to score by both")]
+
+
+def _soc_day_ok(td: dict | None, want: str) -> bool:
+    """Day-reading filter for soccer games (Live record, Dataset, My picks)."""
+    if not want:
+        return True
+    if not td:
+        return False
+    a, n = td["favours"]["astro"], td["favours"]["num"]
+    if want == "same":
+        return a > 0 and a == n
+    if want == "astro":
+        return a > 0
+    if want == "num":
+        return n > 0
+    if want == "score":
+        return any(td[s]["score_astro"] == 1 and td[s]["score_num"] == 1 for s in ("home", "away"))
+    return True
+
+
 def _pick_side(p: dict, market: str) -> str | None:
     """The team a pick backs: 'home' / 'away' (None for draws and markets about both teams)."""
     if market == "score":
@@ -562,7 +595,8 @@ def _filter_live(recs, date_from="", date_to="", status="", league="", team="", 
 @app.get("/live", response_class=HTMLResponse)
 def live_page(request: Request, date_from: str = "", date_to: str = "", status: str = "", league: str = "",
               team: str = "", engine: str = "", hit: str = "", agree: str = "", page_no: int = 1, msg: str = "",
-              syncing: int = 0, origin: str = "", xg: str = "", xg_for: str = "either", section: str = "men"):
+              syncing: int = 0, origin: str = "", xg: str = "", xg_for: str = "either", section: str = "men",
+              dayfav: str = ""):
     section = section if section in SECTIONS else "men"
     women = section == "women"
     recs = _section_games(section, include_withdrawn=status == "void")   # withdrawn: only under "void"
@@ -578,13 +612,17 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
         xg, xg_min = "", 0.0
     rows = [r for r in _filter_live(recs, date_from, date_to, status, league, team, engine, hit, agree, origin)
             if _xg_pass(r, xg_min, xg_for)]
+    if dayfav:
+        for r in rows:
+            r["td"] = _teamday(r)
+        rows = [r for r in rows if _soc_day_ok(r["td"], dayfav)]
     subset = live.score_picks([r for r in rows if r["pre_kickoff"]])
     per = 50
     pages = max(1, math.ceil(len(rows) / per))
     page_no = min(max(page_no, 1), pages)
     q = {"date_from": date_from, "date_to": date_to, "status": status, "league": league, "team": team,
          "engine": engine, "hit": hit, "agree": agree, "origin": origin, "xg": xg,
-         "xg_for": xg_for if xg else "", "section": "women" if women else ""}
+         "xg_for": xg_for if xg else "", "section": "women" if women else "", "dayfav": dayfav}
     shown = rows[(page_no - 1) * per: page_no * per]
     for r in shown:
         r["gm"] = _gm_live(r)
@@ -593,7 +631,8 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
         "rows": shown, "n": len(rows), "page_no": page_no, "pages": pages,
         "q": q, "qs": "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in q.items() if v), "subset": subset, "syncing": bool(syncing) or SYNC["running"], "has_token": sync.token() is not None,
         "leagues": sorted({r["division"] for r in recs}, key=lambda c: LEAGUE_NAMES.get(c, c)), "rep": rep, "msg": msg, "xg_for_names": XG_FOR,
-        "xg_steps": [t for t in form.XG_STEPS if t > 0], "section": section, "sections": SECTIONS, "page": "live"})
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "section": section, "sections": SECTIONS, "soc_day": SOC_DAY,
+        "page": "live"})
 
 
 WOMEN_LEDGER = live.LEDGER / "women"
@@ -1084,9 +1123,9 @@ def _xg_pass(g: dict, xg_min: float, xg_for: str) -> bool:
     return val is not None and val >= xg_min
 
 
-def _xg_keep(xg: str, xg_for: str, eng: str = "", section: str = "") -> str:
+def _xg_keep(xg: str, xg_for: str, eng: str = "", section: str = "", dayfav: str = "") -> str:
     """Query-string tail that keeps the games-list filters (and the My picks section) across slip and day changes."""
-    return ("&section=women" if section == "women" else "") + ((f"&xg={urllib.parse.quote(xg)}" if xg else "") + (f"&xg_for={xg_for}" if xg and xg_for else "")
+    return ("&section=women" if section == "women" else "") + (f"&dayfav={dayfav}" if dayfav in dict(SOC_DAY) and dayfav else "") + ((f"&xg={urllib.parse.quote(xg)}" if xg else "") + (f"&xg_for={xg_for}" if xg and xg_for else "")
             + (f"&eng={urllib.parse.quote(eng)}" if eng in dict(ENG_CHOICES) and eng else ""))
 
 
@@ -1105,7 +1144,7 @@ def _eng_pass(counts: dict, eng: str) -> bool:
 @app.get("/mypicks", response_class=HTMLResponse)
 def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -1, changed: int = -1,
                   removed: int = -1, dup: int = 0, xg: str = "", xg_for: str = "either", eng: str = "",
-                  section: str = "men"):
+                  section: str = "men", dayfav: str = ""):
     c = con()
     section = section if section in SECTIONS else "men"
     eng = eng if eng in dict(ENG_CHOICES) else ""
@@ -1144,6 +1183,10 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
         if not _eng_pass(counts, eng):
             hidden += 1
             continue
+        td = _teamday(g)
+        if not _soc_day_ok(td, dayfav):
+            hidden += 1
+            continue
         if xg_min > 0:
             val = {"either": max(lh, la), "home": lh, "away": la, "backed": backed_xg}[xg_for]
             if val is None or val < xg_min:
@@ -1151,7 +1194,7 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
                 continue
         opts = mypicks.options(g)
         pick = in_slip.get(g["match_key"])
-        rows.append({"g": g, "opts": opts, "pick": pick, "chosen": pick["selection"] if pick else opts[0]["code"],
+        rows.append({"g": g, "opts": opts, "pick": pick, "chosen": pick["selection"] if pick else opts[0]["code"], "td": td,
                      "started": g["kickoff_utc"] <= now_iso, "xg_home": lh, "xg_away": la,
                      "backed": None if side is None else (g["home"] if side == "home" else g["away"]), "n_back": n_back,
                      "eng_home": counts["home"], "eng_away": counts["away"],
@@ -1165,8 +1208,9 @@ def my_picks_page(request: Request, day: str = "", slip: int = 0, added: int = -
         "added": added, "changed": changed, "removed": removed, "dup": dup,
         "score_day": mypicks.score(day_view), "score_all": mypicks.score(all_view),
         "n_all": len(all_view), "n_day": len(day_view), "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR,
-        "xg_steps": [t for t in form.XG_STEPS if t > 0], "hidden": hidden, "keep": _xg_keep(xg, xg_for, eng, section),
-        "eng": eng, "eng_choices": ENG_CHOICES, "section": section, "sections": SECTIONS,
+        "xg_steps": [t for t in form.XG_STEPS if t > 0], "hidden": hidden, "keep": _xg_keep(xg, xg_for, eng, section, dayfav),
+        "eng": eng, "eng_choices": ENG_CHOICES, "section": section, "sections": SECTIONS, "dayfav": dayfav,
+        "soc_day": SOC_DAY,
         "n_women": len(db.my_picks(c, section="women")),
         "page": "mypicks"})
 
@@ -1195,7 +1239,8 @@ async def my_slip_new(request: Request):
     day = str(form.get("day", ""))
     section = str(form.get("section", "men"))
     sid = db.create_slip(con(), day, str(form.get("name", "")), section=section)
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), section)
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), section,
+                    str(form.get("dayfav", "")))
     return RedirectResponse(f"/mypicks?day={day}&slip={sid}{keep}", status_code=303)
 
 
@@ -1205,7 +1250,8 @@ async def my_slip_rename(request: Request):
     c = con()
     x = _slip_or_404(c, form.get("slip"))
     db.rename_slip(c, x["id"], str(form.get("name", "")))
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"])
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"],
+                    str(form.get("dayfav", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}{keep}", status_code=303)
 
 
@@ -1215,7 +1261,8 @@ async def my_slip_delete(request: Request):
     c = con()
     x = _slip_or_404(c, form.get("slip"))
     db.delete_slip(c, x["id"])
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"])
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"],
+                    str(form.get("dayfav", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}{keep}", status_code=303)
 
 
@@ -1238,7 +1285,8 @@ async def my_picks_add(request: Request):
                 n += 1
             else:
                 dup += 1
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"])
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"],
+                    str(form.get("dayfav", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&added={n}&dup={dup}{keep}#mine", status_code=303)
 
 
@@ -1265,7 +1313,8 @@ async def my_picks_edit(request: Request):
         if new:
             db.update_pick(c, pid, new["selection"], new["label"], new["p"], now_iso)
             changed += 1
-    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"])
+    keep = _xg_keep(str(form.get("xg", "")), str(form.get("xg_for", "")), str(form.get("eng", "")), x["section"],
+                    str(form.get("dayfav", "")))
     return RedirectResponse(f"/mypicks?day={x['day']}&slip={x['id']}&changed={changed}&removed={removed}{keep}#mine",
                             status_code=303)
 
