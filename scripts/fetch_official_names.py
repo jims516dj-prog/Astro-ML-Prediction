@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 10          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 11          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 10      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -166,6 +166,7 @@ def names_agree(team: str, e, strict: bool = False) -> bool:
             theirs |= _words(v.get("value"))
     theirs |= _words(official(e)[0] or "")
     plain = re.sub(r"\b(?:A\.?F\.?C|F\.?C|C\.?F|C\.?D|S\.?C|A\.?C|U\.?D|S\.?D|F\.?K|S\.?K|N\.?K)\b\.?", " ", base)
+    plain = re.sub(r"\b[A-Z]&[A-Z]\b", " ", plain)  # "R&F" is a name, not two initials
     initials = {ch.lower() for ch in re.findall(r"(?<![A-Za-z])([A-Z])(?:\.|\b)(?![A-Za-z])", plain)}
     if initials and not all(any(w.startswith(i) for w in theirs) for i in initials):
         return False                                  # "T. Moscow" is Torpedo, not Spartak
@@ -395,6 +396,14 @@ def namesakes(mine: set[str], want: str | None) -> list[dict]:
 
 
 def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None]:
+    got = _table_candidates(team, want)
+    words = teamnames.split(team)[0].split()
+    if not got[0] and want == "BR" and len(words) > 1 and words[-1].lower() in BR_STATES:
+        got = _table_candidates(" ".join(words[:-1]), want)   # "Red Bull Bragantino SP" -> the club itself
+    return got
+
+
+def _table_candidates(team: str, want: str | None) -> tuple[list[str], str | None]:
     """(Wikidata item, the club's country) from the founding table, or ([], None).
 
     The candidates are the table's clubs in the team's country (when known) whose names carry the team's words
@@ -410,7 +419,10 @@ def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None
     if not mine:
         return [], None
     pool = []
-    for x in foundings.search(base, limit=12) + namesakes(mine, want):
+    found = foundings.search(base, limit=12)
+    if expand(base) != base:
+        found += foundings.search(expand(base), limit=12)   # "Ind. Rivadavia" -> "Independiente Rivadavia"
+    for x in found + namesakes(mine, want):
         if not str(x.get("source", "")).startswith("wikidata:") or x.get("kind") != "club":
             continue
         if RESERVE_ITEM.search(x.get("team") or ""):
@@ -439,6 +451,9 @@ def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None
             pool = [x for x in pool if x["match"] != "close" or (d := dist(x)) is None or d <= FAR_KM]
         if not pool:
             return [], None
+    exact = [x for x in pool if mine and mine <= set().union(*(_tokens(n) for n in _row_names(x["source"])))]
+    if exact and not initialism:
+        pool = exact                                  # "Stirling" is Stirling Albion, not East Stirlingshire
     pool.sort(key=lambda x: -int(x.get("sitelinks") or 0))
     top, links = pool[0], int(pool[0].get("sitelinks") or 0)
     second = int(pool[1].get("sitelinks") or 0) if len(pool) > 1 else 0
@@ -531,19 +546,34 @@ def merge(theirs_file: str) -> None:
     print(f"merged: {sum(1 for v in out.values() if v.get('short'))} clubs named")
 
 
+ABBREV = {"ind": "Independiente", "atl": "Atlético", "dep": "Deportivo", "univ": "Universidad", "din": "Dinamo",
+          "utd": "United", "rvs": "Rovers", "jrs": "Juniors", "sp": "Sporting", "ath": "Athletic", "gim": "Gimnasia",
+          "est": "Estudiantes", "spt": "Sporting", "wed": "Wednesday", "weds": "Wednesday"}
+BR_STATES = {"ac", "al", "ap", "am", "ba", "ce", "df", "es", "go", "ma", "mt", "ms", "mg", "pa", "pb", "pr", "pe",
+             "pi", "rj", "rn", "rs", "ro", "rr", "sc", "sp", "se", "to"}
+
+
+def expand(base: str) -> str:
+    """Source abbreviations written out for searching: "Ind. Rivadavia" -> "Independiente Rivadavia"."""
+    return " ".join(ABBREV.get(w.lower().rstrip("."), w) if w.endswith(".") or w.lower() in ("utd", "rvs", "jrs")
+                    else w for w in base.split())
+
+
 def club_search(base: str) -> list[str]:
     """Wikidata full-text search limited to association football clubs (P31 = Q476028), on the team's name words
     (initials like "T." left out): finds "Royal Excel Mouscron" for "Mouscron", "WSG Tirol" for "Tirol"."""
-    words = [w for w in re.findall(r"[^\W\d_]{2,}|\d+", base.replace(".", ". ")) if len(w) > 1]
+    words = [w for w in re.findall(r"[^\W\d_]{2,}|\d+", expand(base).replace(".", ". ")) if len(w) > 1]
     if not words:
         return []
     q = " ".join(words) + " haswbstatement:" + "|".join(f"P31={c}" for c in sorted(FOOTBALL - {"Q6979593"}))
-    url = ("https://www.wikidata.org/w/api.php?action=query&list=search&format=json&srnamespace=0&srlimit=8"
+    url = ("https://www.wikidata.org/w/api.php?action=query&list=search&format=json&srnamespace=0&srlimit=20"
            "&srsearch=" + urllib.parse.quote(q))
     d = get(url)
-    if d is None:                                     # rate limited: wait and try once more
-        time.sleep(15)
-        d = get(url, tries=4)
+    for wait in (15, 45):                             # rate limited: wait and try again
+        if d is not None:
+            break
+        time.sleep(wait)
+        d = get(url, tries=3)
     if d is None:
         print(f"  club search failed for {base!r}")
     hits = [h["title"] for h in ((d or {}).get("query") or {}).get("search", []) if h.get("title", "").startswith("Q")]
@@ -591,8 +621,11 @@ def main():
                 or (_words(base) and all(_abbrev_ok(w, _words(h.get("label") or "") | _words(" ".join(
                     (h.get("aliases") or []) + [h.get("match", {}).get("text") or ""]))) for w in _words(base)))]
         hits += club_search(base)                     # full-text, football clubs only ("Mouscron" -> the club)
+        words = base.split()
+        if teams.get(t) == "BR" and len(words) > 1 and words[-1].lower() in BR_STATES:
+            hits += club_search(" ".join(words[:-1]))  # "Red Bull Bragantino SP": the state is not in the name
         hits = list(dict.fromkeys(hits))
-        time.sleep(0.15)
+        time.sleep(1.0)                               # the API's fair use: searches were being turned away
         if hits:
             cand[t] = hits
             searched.add(t)
