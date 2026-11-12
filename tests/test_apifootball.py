@@ -3,6 +3,8 @@ from datetime import datetime, timezone
 from astrofoot import fixtures_apifootball as af
 from astrofoot import live
 
+af.GAP = 0
+
 NOW = datetime(2026, 11, 12, 10, 0, tzinfo=timezone.utc)
 
 
@@ -92,3 +94,9 @@ def test_results_use_90_minute_score():
                 "kickoff_utc": "2026-11-11T18:00:00+00:00"}]
     got = af.match_results(pending, c=c, log=lambda *a: None, now=NOW)
     assert got["k1"]["goals_home"] == 1 and got["k1"]["goals_away"] == 1
+
+
+def test_world_friendly_uses_venue_city_anywhere():
+    f = game(9, "VfL Bochum", "Verl", venue={"name": "Vonovia Ruhrstadion", "city": "Bochum"})
+    lat, lon, src = af.ground(f, "VfL Bochum", "A:667", lambda *a, **k: None)
+    assert round(lat) == 51 and "Bochum" in src

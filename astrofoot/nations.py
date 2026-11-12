@@ -114,3 +114,17 @@ def largest_city(code: str, city: str | None = None):
         return None
     r = rows.iloc[0]
     return float(r.latitude), float(r.longitude), str(r["name"])
+
+
+def city_anywhere(city: str):
+    """(lat, lon, name) of the most populous city of that name in any country (for venues filed under "World")."""
+    try:
+        c = geo.cities()
+    except Exception:  # noqa: BLE001
+        return None
+    rows = c[c["key"] == geo.norm(city)]
+    rows = rows[~rows["name"].str.contains(REGION, na=False)].sort_values("population", ascending=False)
+    if not len(rows):
+        return None
+    r = rows.iloc[0]
+    return float(r.latitude), float(r.longitude), str(r["name"])

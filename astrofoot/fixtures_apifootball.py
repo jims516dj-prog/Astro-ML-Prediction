@@ -15,6 +15,7 @@ import json
 import os
 import re
 import statistics
+import time
 import urllib.parse
 import urllib.request
 from datetime import datetime, timedelta, timezone
@@ -29,6 +30,7 @@ MEN, WOMEN = "A:", "W:a"
 DAY_LIMIT = 100
 RESERVE = 12                 # requests left for results and the other cycles of the day
 CYCLES_PER_DAY = 3
+GAP = 6.5                    # seconds between requests: the free plan allows 10 a minute
 MAX_ODDS_PAGES = 3           # per day of games (the free plan allows pages 1-3)
 WOMEN_SHARE = 0.35           # of a cycle's requests, for the women's pass
 FILE = Path(__file__).resolve().parents[1] / "ledger" / "apifootball_leagues.json"
@@ -52,8 +54,13 @@ class Client:
         self.key, self.base, self.calls = key, base, 0
         self.used_today: int | None = None
         self.cache: dict[str, dict] = {}
+        self.last = -GAP
 
     def _get(self, path: str) -> dict:
+        wait = self.last + GAP - time.monotonic()
+        if wait > 0:
+            time.sleep(wait)
+        self.last = time.monotonic()
         req = urllib.request.Request(f"{self.base}/{path}", headers={"x-apisports-key": self.key,
                                                                     "Accept": "application/json",
                                                                     "User-Agent": "astro-football-research"})
@@ -151,9 +158,9 @@ def ground(f: dict, team: str, div: str, venue_of):
         if got:
             return got[0], got[1], f"national team: {got[2]} (main city)"
     code = country_code(lg.get("country"))
-    if hint and hint.get("city") and code:
+    if hint and hint.get("city"):
         city = re.split(r"[,(]", hint["city"])[0].strip()
-        got = nations.largest_city(code, city)
+        got = nations.largest_city(code, city) if code else nations.city_anywhere(city)
         if got:
             return got[0], got[1], f"{v.get('name') or 'stadium'}, {got[2]} ({SOURCE})"
     got = nations.largest_city(code, nations.HOME_NATION.get(country)) if code else None
@@ -253,14 +260,11 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             continue
         if same_game and any(same_game(h, a, ko.isoformat(), o["home"], o["away"], o["kickoff_utc"]) for o in others):
             continue
-        loc = ground(f, h, div, venue_of)
-        if not loc:
-            skipped.append(f"{h} v {a} ({tn[lid]}): home ground not found")
-            continue
-        cands.append((f, key, div, ko, h, a, loc, lid))
+        cands.append((f, key, div, ko, h, a, lid))
+        have.add(key)
     # odds for the games the day's pages did not price: one request each, soonest first, within this cycle's share
     cands.sort(key=lambda x: x[3])
-    for f, key, div, ko, h, a, loc, lid in cands:
+    for f, key, div, ko, h, a, lid in cands:
         fid = (f.get("fixture") or {}).get("id")
         if fid not in odds and c.calls - start < share:
             try:
@@ -273,6 +277,10 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             no_odds += 1
             continue
         if any(same_game and same_game(h, a, ko.isoformat(), o["home"], o["away"], o["kickoff_utc"]) for o in out):
+            continue
+        loc = ground(f, h, div, venue_of)            # only for priced games: each look-up may search the web
+        if not loc:
+            skipped.append(f"{h} v {a} ({tn[lid]}): home ground not found")
             continue
         o3, book, p_over = got
         fxd = {"match_key": key, "division": div, "league": tn[lid], "home": h, "away": a, "kickoff_utc": ko.isoformat(),
