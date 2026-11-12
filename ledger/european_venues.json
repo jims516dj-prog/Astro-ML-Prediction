@@ -34,6 +34,11 @@
   "lon": 9.66721,
   "source": "manual"
  },
+ "Atletico Balboa": {
+  "lat": 13.33305556,
+  "lon": -87.84611111,
+  "source": "wikipedia: Marcelino Imbers Stadium"
+ },
  "Atlético Junior": {
   "lat": 10.96854,
   "lon": -74.78132,
@@ -204,6 +209,21 @@
   "lon": 14.4158918,
   "source": "openstreetmap: epet ARENA, 1066/98, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
  },
+ "Denmark U21": {
+  "lat": 55.7137241,
+  "lon": 9.5561578,
+  "source": "openstreetmap: Vejle Stadion, Roms Hule, Lille Grundet, Vejle, Vejle Kommune, Region Syddanmark, 7100, Danmark"
+ },
+ "Deportivo Pasto": {
+  "lat": 1.21467,
+  "lon": -77.27865,
+  "source": "city"
+ },
+ "Ecuador": {
+  "lat": -0.1775141,
+  "lon": -78.4766126,
+  "source": "openstreetmap: Estadio Olímpico Atahualpa, Manuel María Sánchez, El Batan, Iñaquito, Quito, Pichincha, 170504, Ecuador"
+ },
  "Egypt": {
   "lat": 30.0690313,
   "lon": 31.3122096,
@@ -239,6 +259,11 @@
   "lon": -0.19194444,
   "source": "wikipedia: Accra Sports Stadium"
  },
+ "Grenada": {
+  "lat": 23.0970914,
+  "lon": -82.4018788,
+  "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
+ },
  "Guatemala": {
   "lat": 14.9717343,
   "lon": -91.7785216,
@@ -249,10 +274,25 @@
   "lon": -13.67291667,
   "source": "wikipedia: 28 September Stadium"
  },
+ "Hannover 96": {
+  "lat": 52.37658889,
+  "lon": 9.7729,
+  "source": "wikipedia: Eilenriedestadion"
+ },
  "Hapoel Be'er Sheva": {
   "lat": 31.27315,
   "lon": 34.77936111,
   "source": "wikipedia: Turner Stadium"
+ },
+ "Iceland": {
+  "lat": 64.13548,
+  "lon": -21.89541,
+  "source": "national team: Reykjavík (largest city)"
+ },
+ "Iceland U21": {
+  "lat": 64.13548,
+  "lon": -21.89541,
+  "source": "senior team's ground: national team: Reykjavík (largest city)"
  },
  "Internacional de Bogotá": {
   "lat": 4.6234294,
@@ -434,6 +474,11 @@
   "lon": 2.2530693,
   "source": "openstreetmap: Parc des Princes, 24, Rue du Commandant Guilbaud, Quartier d'Auteuil, Paris 16e Arrondissement, Paris, Île-de-France, France métropolitaine, 75016, France"
  },
+ "Peru": {
+  "lat": -12.0685041,
+  "lon": -77.0229272,
+  "source": "openstreetmap: Estadio Alejandro Villanueva, 395, Avenida Isabel La Católica, Barrio Mendoza, La Victoria, Lima, Lima Metropolitana, Lima, 15018, Perú"
+ },
  "Piratas": {
   "lat": 19.16416667,
   "lon": -96.125,
@@ -479,6 +524,16 @@
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
  },
+ "Salamanca UDS": {
+  "lat": 40.99527778,
+  "lon": -5.665,
+  "source": "wikipedia: Helmántico Stadium"
+ },
+ "Saudi Arabia": {
+  "lat": 25.267358,
+  "lon": 51.484251,
+  "source": "wikipedia: Jassim bin Hamad Stadium"
+ },
  "Scotland": {
   "lat": 55.82583333,
   "lon": -4.25194444,
@@ -498,6 +553,11 @@
   "lat": 53.411379,
   "lon": -1.5006311,
   "source": "openstreetmap: Hillsborough Stadium, Catch Bar Lane, Middlewood, Hillsborough, Sheffield, South Yorkshire, England, S6 1SW, United Kingdom"
+ },
+ "Singapore": {
+  "lat": 1.3044,
+  "lon": 103.8743,
+  "source": "wikipedia: National Stadium, Singapore"
  },
  "Sint Truiden": {
   "lat": 50.8134975,

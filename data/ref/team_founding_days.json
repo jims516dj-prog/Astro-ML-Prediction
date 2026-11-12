@@ -206,6 +206,7 @@
 "date": "1916-08-15",
 "name": "Atlas F.C."
 },
+"Atletico Balboa": null,
 "Atletico GO": null,
 "Atletico-MG": {
 "date": "1908-03-25",
@@ -368,6 +369,7 @@
 },
 "Bodrumspor": null,
 "Bohemians": null,
+"Bolivia": null,
 "Bologna": {
 "date": "1909-10-03",
 "name": "Bologna F.C. 1909"
@@ -536,6 +538,10 @@
 "name": "RC Celta de Vigo"
 },
 "Celta B": null,
+"Celta Vigo": {
+"date": "1923-08-23",
+"name": "RC Celta de Vigo"
+},
 "Celtic": {
 "date": "1887-11-06",
 "name": "Celtic F.C."
@@ -678,6 +684,7 @@
 "Corum": null,
 "Corvinul": null,
 "Cosenza": null,
+"Costa Rica": null,
 "Cottbus": null,
 "Cove Rangers": null,
 "Coventry": {
@@ -760,7 +767,12 @@
 "date": "1966-05-26",
 "name": "Denizlispor"
 },
+"Denmark U21": null,
 "Dep. Riestra": null,
+"Deportivo Pasto": {
+"date": "1949-10-12",
+"name": "Deportivo Pasto"
+},
 "Derby": {
 "date": "1884-02-05",
 "name": "Derby County F.C."
@@ -815,6 +827,10 @@
 "East Kilbride": null,
 "Eastleigh": null,
 "Ebbsfleet": null,
+"Ecuador": {
+"date": "1809-08-10",
+"name": "Ecuador"
+},
 "Edinburgh City": null,
 "Egypt": {
 "date": "1922-02-28",
@@ -1141,10 +1157,12 @@
 "date": "1821-04-06",
 "name": "Greece"
 },
+"Greece U21": null,
 "Gremio": {
 "date": "1903-09-15",
 "name": "Gr\u00eamio FBPA"
 },
+"Grenada": null,
 "Grenoble": null,
 "Greuther Furth": {
 "date": "1903-09-23",
@@ -1218,6 +1236,10 @@
 "name": "Zhejiang Professional F.C."
 },
 "Hannover": null,
+"Hannover 96": {
+"date": "1896-04-12",
+"name": "Hannover 96"
+},
 "Hansa Rostock": {
 "date": "1965-12-28",
 "name": "F.C. Hansa Rostock"
@@ -1311,7 +1333,9 @@
 "date": "1918-12-01",
 "name": "Iceland"
 },
+"Iceland U21": null,
 "Ilves": null,
+"Inca Aruba": null,
 "Ind. Rivadavia": null,
 "Independiente": {
 "date": "1905-01-01",
@@ -1837,6 +1861,10 @@
 "date": "1954-12-29",
 "name": "Netherlands"
 },
+"Netherlands U21": {
+"date": "1954-12-29",
+"name": "Netherlands"
+},
 "Neustadt": null,
 "New England Revolution": null,
 "New York City": {
@@ -2007,6 +2035,7 @@
 "date": "1964-05-31",
 "name": "Panserraikos F.C."
 },
+"Paraguay": null,
 "Parana": null,
 "Pari NN": null,
 "Paris FC": null,
@@ -2026,6 +2055,10 @@
 "Patronato": null,
 "Pau FC": null,
 "Pendikspor": null,
+"Peru": {
+"date": "1821-07-28",
+"name": "Peru"
+},
 "Perugia": null,
 "Pescara": null,
 "Peterboro": null,
@@ -2228,6 +2261,10 @@
 "name": "Centre d'Esports Sabadell Futbol Club"
 },
 "Sagan Tosu": null,
+"Salamanca UDS": {
+"date": "2013-08-12",
+"name": "Salamanca CF UDS"
+},
 "Salernitana": {
 "date": "1919-06-19",
 "name": "U.S. Salernitana 1919"
@@ -2276,6 +2313,7 @@
 "name": "Sarpsborg 08 FF"
 },
 "Sassuolo": null,
+"Saudi Arabia": null,
 "Schaffhausen": null,
 "Schalke 04": {
 "date": "1904-05-04",
@@ -2344,6 +2382,7 @@
 "name": "Sierra Leone"
 },
 "Silkeborg": null,
+"Singapore": null,
 "Sint Truiden": null,
 "Sion": {
 "date": "1909-07-01",
@@ -2375,6 +2414,10 @@
 "South Africa": {
 "date": "1910-05-31",
 "name": "South Africa"
+},
+"South Korea": {
+"date": "1948-08-15",
+"name": "South Korea"
 },
 "Southampton": {
 "date": "1885-11-21",
@@ -2439,6 +2482,10 @@
 "name": "FC St. Gallen"
 },
 "St. Gilloise": null,
+"St. Kitts and Nevis": {
+"date": "1967-02-27",
+"name": "Saint Kitts and Nevis"
+},
 "St. Louis City": {
 "date": "2019-08-20",
 "name": "St. Louis City SC"
@@ -2505,6 +2552,7 @@
 },
 "T. Moscow": null,
 "TPS": null,
+"TSV Havelse": null,
 "Talleres Cordoba": null,
 "Tambov": null,
 "Tamworth": null,

@@ -6,6 +6,7 @@
   "bra.1": "Brazilian Serie A",
   "bra.2": "Brazilian Serie B",
   "caf.nations_qual": "Africa Cup of Nations Qualifying",
+  "club.friendly": "Club Friendly",
   "col.1": "Colombian Primera A",
   "col.copa": "Copa Colombia",
   "concacaf.nations.league": "Concacaf Nations League",
@@ -19,15 +20,17 @@
   "esp.copa_del_rey": "Spanish Copa del Rey",
   "fifa.friendly": "International Friendly",
   "mex.1": "Mexican Liga BBVA MX",
-  "mex.2": "Mexican Liga de Expansi\u00f3n MX",
+  "mex.2": "Mexican Liga de Expansión MX",
   "ned.2": "Dutch Keuken Kampioen Divisie",
   "nor.1": "Norwegian Eliteserien",
-  "par.1": "Paraguayan Primera Divisi\u00f3n",
+  "par.1": "Paraguayan Primera División",
+  "per.1": "Peruvian Liga 1",
   "sco.2": "Scottish Championship",
   "slv.1": "Salvadoran Primera Division",
   "uefa.euro_u21_qual": "UEFA European Under-21 Championship Qualifying",
   "uefa.nations": "UEFA Nations League",
   "uru.1": "Liga AUF Uruguaya",
   "usa.usl.1": "USL Championship"
- }
+ },
+ "generated_at": "2026-11-12T09:41:03+00:00"
 }
