@@ -25,6 +25,8 @@ jobs:
           cache: pip
       - run: pip install -r requirements.txt
       - run: python scripts/fetch_data.py --live     # cities table: venue timezones for the match day's chart
+      - if: ${{ inputs.cmd == 'soccer-probe' }}
+        run: python scripts/soccer_sources_probe.py
       - if: ${{ inputs.cmd == 'probe' }}
         run: python scripts/tennis_probe.py
         env:
@@ -32,20 +34,20 @@ jobs:
           ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
           LIVETENNISAPI_KEY: ${{ secrets.LIVETENNISAPI_KEY }}
       - name: Build history (ESPN) and players
-        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'train' }}
+        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'soccer-probe' && inputs.cmd != 'train' }}
         run: python scripts/tennis.py build
       - name: Publish data
-        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'train' }}
+        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'soccer-probe' && inputs.cmd != 'train' }}
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"
           git add data/tennis/matches.parquet data/tennis/players.parquet
           git diff --cached --quiet || { git commit -m "tennis: history $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
       - name: Train (fine-tune + walk-forward)
-        if: ${{ inputs.cmd != 'probe' }}
+        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'soccer-probe' }}
         run: python scripts/tennis.py train
       - name: Publish model
-        if: ${{ inputs.cmd != 'probe' }}
+        if: ${{ inputs.cmd != 'probe' && inputs.cmd != 'soccer-probe' }}
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"
