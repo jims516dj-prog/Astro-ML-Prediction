@@ -1,0 +1,4949 @@
+{
+"1. FC Union Berlin": {
+"legal": "1. Fußballclub Union Berlin e. V.",
+"qid": "Q141971",
+"short": "1. FC Union Berlin"
+},
+"1. Wiener Neustadter SC": {
+"legal": "1. Wiener Neustädter SC",
+"qid": "Q163694",
+"short": "1. Wiener Neustädter SC"
+},
+"2 de Mayo": {
+"tried": "2026-11"
+},
+"A. Klagenfurt": {
+"tried": "2026-11"
+},
+"A. Lustenau": {
+"tried": "2026-11"
+},
+"AC Oulu": {
+"legal": "AC Oulu",
+"qid": "Q289516",
+"short": "AC Oulu"
+},
+"AEK": {
+"tried": "2026-11"
+},
+"AFC Eskilstuna": {
+"legal": "Athletic FC Eskilstuna",
+"qid": "Q893308",
+"short": "AFC Eskilstuna"
+},
+"AFC Wimbledon": {
+"tried": "2026-11"
+},
+"AGF Aarhus": {
+"legal": "Aarhus Gymnastikforening",
+"qid": "Q301431",
+"short": "AGF"
+},
+"AIK": {
+"legal": "AIK",
+"qid": "Q2363882",
+"short": "AIK"
+},
+"AVS": {
+"tried": "2026-11"
+},
+"AZ Alkmaar": {
+"tried": "2026-11"
+},
+"Aalborg": {
+"tried": "2026-11"
+},
+"Aalesund": {
+"legal": "Aalesunds Fotballklubb",
+"qid": "Q214992",
+"short": "Aalesunds FK"
+},
+"Aarau": {
+"tried": "2026-11"
+},
+"Aarhus": {
+"tried": "2026-11"
+},
+"Aberdeen": {
+"tried": "2026-11"
+},
+"Academica Clinceni": {
+"tried": "2026-11"
+},
+"Academico Viseu": {
+"legal": "Académico de Viseu Futebol Clube",
+"qid": "Q2410944",
+"short": "Académico de Viseu FC"
+},
+"Accrington": {
+"tried": "2026-11"
+},
+"Accrington Stanley": {
+"tried": "2026-11"
+},
+"Ad. Demirspor": {
+"tried": "2026-11"
+},
+"Admira": {
+"tried": "2026-11"
+},
+"Airdrie Utd": {
+"legal": "Airdrieonians FC",
+"qid": "Q408554",
+"short": "Airdrieonians FC"
+},
+"Ajaccio": {
+"legal": "Athletic Club Ajaccio",
+"qid": "Q270051",
+"short": "AC Ajaccio"
+},
+"Ajax": {
+"legal": "Amsterdamsche Football Club Ajax",
+"qid": "Q81888",
+"short": "AFC Ajax"
+},
+"Akhmat Grozny": {
+"legal": "FC Akhmat Grozny",
+"qid": "Q240444",
+"short": "FC Akhmat Grozny"
+},
+"Akron Togliatti": {
+"tried": "2026-11"
+},
+"Al Aqaba": {
+"legal": "Al-Aqaba SC",
+"qid": "Q12247583",
+"short": "Al-Aqaba SC"
+},
+"Al Nasr": {
+"legal": "Alshariqa",
+"qid": "Q812723",
+"short": "Alshariqa"
+},
+"Al Nasr Cairo": {
+"tried": "2026-11"
+},
+"Al Yarmouk": {
+"tried": "2026-11"
+},
+"Alanyaspor": {
+"legal": "Alanyaspor",
+"qid": "Q1636019",
+"short": "Alanyaspor"
+},
+"Alaves": {
+"legal": "Deportivo Alavés",
+"qid": "Q223620",
+"short": "Deportivo Alavés"
+},
+"Albacete": {
+"legal": "CD Albacete",
+"qid": "Q2310972",
+"short": "CD Albacete"
+},
+"Albion Rvs": {
+"tried": "2026-11"
+},
+"Albirex Niigata": {
+"legal": "Albirex Niigata",
+"qid": "Q383358",
+"short": "Albirex Niigata"
+},
+"Alcorcon": {
+"legal": "Agrupación Deportiva Alcorcón, S. A. D.",
+"qid": "Q10383",
+"short": "AD Alcorcón"
+},
+"Aldershot": {
+"tried": "2026-11"
+},
+"Aldosivi": {
+"legal": "Club Atlético Aldosivi",
+"qid": "Q971490",
+"short": "Club Atlético Aldosivi"
+},
+"Alessandria": {
+"legal": "US Alessandria Calcio 1912",
+"qid": "Q16348",
+"short": "US Alessandria Calcio 1912"
+},
+"Alianza FC": {
+"legal": "Alianza FC",
+"qid": "Q2227845",
+"short": "Alianza FC"
+},
+"All Boys": {
+"tried": "2026-11"
+},
+"Alloa": {
+"legal": "Alloa Athletic FC",
+"qid": "Q1377801",
+"short": "Alloa Athletic FC"
+},
+"Almere City": {
+"tried": "2026-11"
+},
+"Almeria": {
+"legal": "Unión Deportiva Almería",
+"qid": "Q10407",
+"short": "Unión Deportiva Almería"
+},
+"Altach": {
+"tried": "2026-11"
+},
+"Altay": {
+"legal": "Altay Spor Kulübü",
+"qid": "Q434929",
+"short": "Altay SK"
+},
+"Altrincham": {
+"tried": "2026-11"
+},
+"Alverca": {
+"legal": "FC Alverca",
+"qid": "Q1386850",
+"short": "FC Alverca"
+},
+"Amedspor": {
+"tried": "2026-11"
+},
+"America MG": {
+"legal": "América Futebol Clube",
+"qid": "Q338285",
+"short": "América Futebol Clube"
+},
+"Amiens": {
+"legal": "Amiens Sporting Club",
+"qid": "Q866884",
+"short": "Amiens SC"
+},
+"Amkar": {
+"legal": "Амкар",
+"qid": "Q274642",
+"short": "Амкар"
+},
+"Amorebieta": {
+"tried": "2026-11"
+},
+"América de Cali": {
+"legal": "América de Cali",
+"qid": "Q391987",
+"short": "América de Cali"
+},
+"Anaitasuna": {
+"legal": "CD Anaitasuna",
+"qid": "Q8347047",
+"short": "CD Anaitasuna"
+},
+"Anderlecht": {
+"tried": "2026-11"
+},
+"Angers": {
+"legal": "Angers Sporting Club de l'Ouest",
+"qid": "Q845137",
+"short": "Angers SCO"
+},
+"Ankaragucu": {
+"tried": "2026-11"
+},
+"Annan Athletic": {
+"tried": "2026-11"
+},
+"Annecy": {
+"legal": "Football Club d'Annecy",
+"qid": "Q1140695",
+"short": "FC Annecy"
+},
+"Antalyaspor": {
+"legal": "Antalyaspor",
+"qid": "Q43710",
+"short": "Antalyaspor"
+},
+"Antwerp": {
+"legal": "Royal Antwerp Football Club",
+"qid": "Q732002",
+"short": "Royal Antwerp FC"
+},
+"Apollon": {
+"tried": "2026-11"
+},
+"Arbroath": {
+"tried": "2026-11"
+},
+"Arezzo": {
+"legal": "SS Arezzo",
+"qid": "Q297430",
+"short": "SS Arezzo"
+},
+"Argentinos Jrs": {
+"tried": "2026-11"
+},
+"Argentinos Juniors Res.": {
+"legal": "Asociación Atlética Argentinos Juniors",
+"qid": "Q220621",
+"short": "Argentinos Juniors"
+},
+"Aris": {
+"legal": "Αθλητικός Σύλλογος Θεσσαλονίκης ο Άρης Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q219926",
+"short": "Aris Thessaloniki FC"
+},
+"Arka Gdynia": {
+"legal": "Arka Gdynia",
+"qid": "Q666969",
+"short": "Arka Gdynia"
+},
+"Arouca": {
+"legal": "FC Arouca",
+"qid": "Q1386869",
+"short": "FC Arouca"
+},
+"Arsenal": {
+"legal": "Arsenal Football Club",
+"qid": "Q9617",
+"short": "Arsenal FC"
+},
+"Arsenal Sarandi": {
+"tried": "2026-11"
+},
+"Arsenal Tula": {
+"legal": "FC Arsenal Tula",
+"qid": "Q2817362",
+"short": "FC Arsenal Tula"
+},
+"Ascoli": {
+"legal": "Ascoli Calcio 1898 FC",
+"qid": "Q6630",
+"short": "Ascoli Calcio 1898 FC"
+},
+"Asteras Tripolis": {
+"legal": "Α.Γ.Σ. Αστέρας Τρίπολης Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q757320",
+"short": "Asteras Tripoli FC"
+},
+"Aston Villa": {
+"tried": "2026-11"
+},
+"Astra": {
+"tried": "2026-11"
+},
+"Atalanta": {
+"tried": "2026-11"
+},
+"Ath Bilbao": {
+"legal": "Athletic Club",
+"qid": "Q8687",
+"short": "Athletic Club"
+},
+"Ath Madrid": {
+"legal": "Atlético Madrid",
+"qid": "Q8701",
+"short": "Atlético Madrid"
+},
+"Athens Kallithea": {
+"legal": "Γυμναστικός Σύλλογος Καλλιθέας Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q1547133",
+"short": "Athens Kallithea FC"
+},
+"Athletic": {
+"legal": "Athletic Club",
+"qid": "Q8687",
+"short": "Athletic Club"
+},
+"Athletico-PR": {
+"tried": "2026-11"
+},
+"Athlone": {
+"tried": "2026-11"
+},
+"Atl. Rafaela": {
+"tried": "2026-11"
+},
+"Atl. San Luis": {
+"tried": "2026-11"
+},
+"Atl. Tucuman": {
+"tried": "2026-11"
+},
+"Atlanta Utd": {
+"legal": "Atlanta United FC",
+"qid": "Q16836317",
+"short": "Atlanta United FC"
+},
+"Atlante": {
+"legal": "Atlante FC",
+"qid": "Q849949",
+"short": "Atlante FC"
+},
+"Atlas": {
+"legal": "Atlas FC",
+"qid": "Q1023532",
+"short": "Atlas FC"
+},
+"Atletico Balboa": {
+"legal": "CD Atlético Balboa",
+"qid": "Q2979858",
+"short": "CD Atlético Balboa"
+},
+"Atletico GO": {
+"tried": "2026-11"
+},
+"Atletico-MG": {
+"legal": "Clube Atlético Mineiro",
+"qid": "Q270995",
+"short": "Clube Atlético Mineiro"
+},
+"Atlético Junior": {
+"legal": "Junior de Barranquilla",
+"qid": "Q332524",
+"short": "Junior de Barranquilla"
+},
+"Atlético Nacional": {
+"legal": "Atlético Nacional",
+"qid": "Q332605",
+"short": "Atlético Nacional"
+},
+"Atromitos": {
+"legal": "Α.Π.Σ. Ατρόμητος Αθηνών 1923 Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q757754",
+"short": "Atromitos FC"
+},
+"Atvidabergs": {
+"legal": "Åtvidabergs FF",
+"qid": "Q271349",
+"short": "Åtvidabergs FF"
+},
+"Augsburg": {
+"legal": "FC Augsburg",
+"qid": "Q15755",
+"short": "FC Augsburg"
+},
+"Aurora": {
+"legal": "Club Aurora",
+"qid": "Q127925",
+"short": "Club Aurora"
+},
+"Aurora FC": {
+"legal": "Club Aurora",
+"qid": "Q127925",
+"short": "Club Aurora"
+},
+"Austin FC": {
+"tried": "2026-11"
+},
+"Austria Vienna": {
+"legal": "Fußballklub Austria Wien",
+"qid": "Q131209",
+"short": "FK Austria Wien"
+},
+"Auxerre": {
+"tried": "2026-11"
+},
+"Avai": {
+"legal": "Avaí Futebol Clube",
+"qid": "Q374069",
+"short": "Avaí Futebol Clube"
+},
+"Avellino": {
+"legal": "US Avellino 1912",
+"qid": "Q298217",
+"short": "US Avellino 1912"
+},
+"Aves": {
+"legal": "Clube Desportivo das Aves",
+"qid": "Q1023163",
+"short": "Clube Desportivo das Aves"
+},
+"Avispa Fukuoka": {
+"legal": "Avispa Fukuoka",
+"qid": "Q791164",
+"short": "Avispa Fukuoka"
+},
+"Ayr": {
+"legal": "Ayr United FC",
+"qid": "Q793241",
+"short": "Ayr United FC"
+},
+"BK Häcken": {
+"tried": "2026-11"
+},
+"BW Linz": {
+"legal": "FC Blau-Weiß Linz",
+"qid": "Q696525",
+"short": "FC Blau-Weiß Linz"
+},
+"Bahia": {
+"tried": "2026-11"
+},
+"Bahla": {
+"legal": "Bahla Club",
+"qid": "Q2674996",
+"short": "Bahla Club"
+},
+"Baladiyyat AL Mehalla": {
+"tried": "2026-11"
+},
+"Ballymena United": {
+"legal": "Ballymena United FC",
+"qid": "Q805429",
+"short": "Ballymena United FC"
+},
+"Baltika": {
+"tried": "2026-11"
+},
+"Banfield": {
+"tried": "2026-11"
+},
+"Bangor FC": {
+"legal": "Clwb Pêl-droed Dinas Bangor",
+"qid": "Q264129",
+"short": "CPD Dinas Bangor"
+},
+"Barcelona": {
+"legal": "Futbol Club Barcelona",
+"qid": "Q7156",
+"short": "FC Barcelona"
+},
+"Bari": {
+"legal": "SSC Bari",
+"qid": "Q6641",
+"short": "SSC Bari"
+},
+"Barnet": {
+"legal": "Barnet Football Club",
+"qid": "Q9408",
+"short": "Barnet FC"
+},
+"Barnsley": {
+"tried": "2026-11"
+},
+"Barracas Central": {
+"tried": "2026-11"
+},
+"Barracas Central Res.": {
+"tried": "2026-11"
+},
+"Barrow": {
+"tried": "2026-11"
+},
+"Basel": {
+"tried": "2026-11"
+},
+"Bastia": {
+"tried": "2026-11"
+},
+"Bayer Leverkusen": {
+"legal": "Bayer 04 Leverkusen",
+"qid": "Q104761",
+"short": "Bayer 04 Leverkusen"
+},
+"Bayern Hof": {
+"legal": "FC Bayern Hof",
+"qid": "Q2179055",
+"short": "FC Bayern Hof"
+},
+"Bayern Munich": {
+"legal": "FC Bayern Munich",
+"qid": "Q15789",
+"short": "FC Bayern Munich"
+},
+"Beerschot VA": {
+"legal": "K Beerschot VA",
+"qid": "Q2268833",
+"short": "K Beerschot VA"
+},
+"Beijing Guoan": {
+"legal": "北京国安足球俱乐部",
+"qid": "Q814738",
+"short": "北京国安足球俱乐部"
+},
+"Beijing Renhe": {
+"tried": "2026-11"
+},
+"Belenenses": {
+"legal": "CF Os Belenenses",
+"qid": "Q216510",
+"short": "CF Os Belenenses"
+},
+"Belgrano": {
+"legal": "Belgrano Athletic Club",
+"qid": "Q2400665",
+"short": "Belgrano Athletic Club"
+},
+"Benevento": {
+"tried": "2026-11"
+},
+"Benfica": {
+"legal": "SL Benfica",
+"qid": "Q131499",
+"short": "SL Benfica"
+},
+"Berkhamsted FC": {
+"tried": "2026-11"
+},
+"Besiktas": {
+"legal": "Beşiktaş JK",
+"qid": "Q172567",
+"short": "Beşiktaş JK"
+},
+"Besiktas JK": {
+"legal": "Beşiktaş JK",
+"qid": "Q172567",
+"short": "Beşiktaş JK"
+},
+"Betis": {
+"legal": "Real Betis Balompié",
+"qid": "Q8723",
+"short": "Real Betis Balompié"
+},
+"Beveren": {
+"tried": "2026-11"
+},
+"Bielefeld": {
+"tried": "2026-11"
+},
+"Bilje": {
+"tried": "2026-11"
+},
+"Birmingham": {
+"tried": "2026-11"
+},
+"Bistrita": {
+"legal": "FC Bistrița",
+"qid": "Q24895825",
+"short": "FC Bistrița"
+},
+"Blackburn": {
+"tried": "2026-11"
+},
+"Blackpool": {
+"tried": "2026-11"
+},
+"Boavista": {
+"legal": "Boavista FC",
+"qid": "Q219703",
+"short": "Boavista FC"
+},
+"Boca Juniors": {
+"legal": "Club Atlético Boca Juniors",
+"qid": "Q170703",
+"short": "Boca Juniors"
+},
+"Bochum": {
+"legal": "VfL Bochum",
+"qid": "Q105861",
+"short": "VfL Bochum"
+},
+"Bodo/Glimt": {
+"tried": "2026-11"
+},
+"Bodrumspor": {
+"tried": "2026-11"
+},
+"Bohemians": {
+"tried": "2026-11"
+},
+"Bologna": {
+"tried": "2026-11"
+},
+"Bolton": {
+"tried": "2026-11"
+},
+"Bonnyrigg Rose": {
+"tried": "2026-11"
+},
+"Bordeaux": {
+"legal": "Football Club des Girondins de Bordeaux",
+"qid": "Q172476",
+"short": "Girondins de Bordeaux"
+},
+"Boreham Wood": {
+"legal": "Boreham Wood FC",
+"qid": "Q4094837",
+"short": "Boreham Wood FC"
+},
+"Borussia Monchengladbach": {
+"legal": "Borussia Mönchengladbach",
+"qid": "Q101959",
+"short": "Borussia Mönchengladbach"
+},
+"Boston Utd": {
+"legal": "Boston United Football Club",
+"qid": "Q894605",
+"short": "Boston United FC"
+},
+"Botafogo RJ": {
+"tried": "2026-11"
+},
+"Boulogne": {
+"legal": "Union sportive Boulogne Côte d'Opale",
+"qid": "Q309400",
+"short": "US Boulogne CO"
+},
+"Bournemouth": {
+"tried": "2026-11"
+},
+"Boyacá Chicó FC": {
+"legal": "Boyacá Chicó FC",
+"qid": "Q332863",
+"short": "Boyacá Chicó FC"
+},
+"Brackley Town": {
+"tried": "2026-11"
+},
+"Bradford": {
+"tried": "2026-11"
+},
+"Bradford City": {
+"tried": "2026-11"
+},
+"Bragantino": {
+"tried": "2026-11"
+},
+"Brage": {
+"tried": "2026-11"
+},
+"Braintree Town": {
+"tried": "2026-11"
+},
+"Brann": {
+"tried": "2026-11"
+},
+"Braunschweig": {
+"tried": "2026-11"
+},
+"Bray": {
+"tried": "2026-11"
+},
+"Brechin": {
+"legal": "Brechin City FC",
+"qid": "Q904186",
+"short": "Brechin City FC"
+},
+"Brentford": {
+"tried": "2026-11"
+},
+"Brescia": {
+"legal": "Brescia Calcio",
+"qid": "Q6651",
+"short": "Brescia Calcio"
+},
+"Brest": {
+"tried": "2026-11"
+},
+"Brighton": {
+"tried": "2026-11"
+},
+"Brighton and Hove Albion": {
+"tried": "2026-11"
+},
+"Bristol City": {
+"tried": "2026-11"
+},
+"Bristol Rovers": {
+"tried": "2026-11"
+},
+"Bristol Rvs": {
+"tried": "2026-11"
+},
+"Bromley": {
+"legal": "Bromley FC",
+"qid": "Q1584552",
+"short": "Bromley FC"
+},
+"Brommapojkarna": {
+"legal": "IF Brommapojkarna",
+"qid": "Q754339",
+"short": "IF Brommapojkarna"
+},
+"Brondby": {
+"tried": "2026-11"
+},
+"Burgos": {
+"legal": "Burgos CF",
+"qid": "Q852079",
+"short": "Burgos CF"
+},
+"Burnley": {
+"tried": "2026-11"
+},
+"Burton": {
+"tried": "2026-11"
+},
+"Burton Albion": {
+"tried": "2026-11"
+},
+"Buyuksehyr": {
+"tried": "2026-11"
+},
+"C.D. Platense": {
+"legal": "Club Atlético Platense",
+"qid": "Q151907",
+"short": "Club Atlético Platense"
+},
+"CD Artistico Navalcarnero": {
+"tried": "2026-11"
+},
+"CD Municipal Limeño": {
+"legal": "CD Municipal Limeño",
+"qid": "Q2979883",
+"short": "CD Municipal Limeño"
+},
+"CD Pamplona": {
+"legal": "Club Deportivo Pamplona",
+"qid": "Q956779",
+"short": "Club Deportivo Pamplona"
+},
+"CD Tarancon": {
+"legal": "CD Tarancón",
+"qid": "Q96374191",
+"short": "CD Tarancón"
+},
+"CF Montreal": {
+"tried": "2026-11"
+},
+"CFR Cluj": {
+"tried": "2026-11"
+},
+"CS Puertollano": {
+"tried": "2026-11"
+},
+"CS Turnu Severin": {
+"legal": "CS Turnu Severin",
+"qid": "Q1024481",
+"short": "CS Turnu Severin"
+},
+"CSA": {
+"legal": "Centro Sportivo Alagoano",
+"qid": "Q928885",
+"short": "Centro Sportivo Alagoano"
+},
+"CSKA Moscow": {
+"tried": "2026-11"
+},
+"Cabinteely": {
+"tried": "2026-11"
+},
+"Cadiz": {
+"legal": "Cádiz Club de Fútbol",
+"qid": "Q460448",
+"short": "Cádiz Club de Fútbol"
+},
+"Caen": {
+"tried": "2026-11"
+},
+"Cagliari": {
+"tried": "2026-11"
+},
+"Calarasi": {
+"tried": "2026-11"
+},
+"Calvo Sotelo": {
+"tried": "2026-11"
+},
+"Cambridge": {
+"tried": "2026-11"
+},
+"Cambuur": {
+"legal": "SC Cambuur-Leeuwarden",
+"qid": "Q875120",
+"short": "SC Cambuur"
+},
+"Campobasso FC": {
+"legal": "Campobasso FC",
+"qid": "Q3394275",
+"short": "Campobasso FC"
+},
+"Cangzhou": {
+"tried": "2026-11"
+},
+"Cardiff": {
+"tried": "2026-11"
+},
+"Carlisle": {
+"tried": "2026-11"
+},
+"Carrarese": {
+"tried": "2026-11"
+},
+"Carrick Rangers": {
+"legal": "Carrick Rangers FC",
+"qid": "Q2541808",
+"short": "Carrick Rangers FC"
+},
+"Cartagena": {
+"tried": "2026-11"
+},
+"Casa Pia": {
+"legal": "Casa Pia AC",
+"qid": "Q1046440",
+"short": "Casa Pia AC"
+},
+"Castellon": {
+"legal": "Club Deportivo Castellón S.A.D.",
+"qid": "Q743557",
+"short": "CD Castellón"
+},
+"Catanzaro": {
+"tried": "2026-11"
+},
+"Ceahlaul": {
+"legal": "FC Ceahlăul II Piatra Neamț",
+"qid": "Q26220108",
+"short": "FC Ceahlăul II Piatra Neamț"
+},
+"Ceara": {
+"legal": "Ceará Sporting Club",
+"qid": "Q1052219",
+"short": "Ceará Sporting Club"
+},
+"Celta": {
+"legal": "RC Celta de Vigo",
+"qid": "Q8749",
+"short": "RC Celta de Vigo"
+},
+"Celta B": {
+"legal": "RC Celta de Vigo",
+"qid": "Q8749",
+"short": "RC Celta de Vigo"
+},
+"Celta Vigo": {
+"legal": "RC Celta de Vigo",
+"qid": "Q8749",
+"short": "RC Celta de Vigo"
+},
+"Celtic": {
+"tried": "2026-11"
+},
+"Central Cordoba": {
+"legal": "Central Córdoba de Rosario",
+"qid": "Q2634936",
+"short": "Central Córdoba de Rosario"
+},
+"Cercle Brugge": {
+"legal": "Cercle Brugge Koninklijke Sportvereniging",
+"qid": "Q364698",
+"short": "Cercle Brugge"
+},
+"Cerezo Osaka": {
+"legal": "Cerezo Osaka",
+"qid": "Q855809",
+"short": "Cerezo Osaka"
+},
+"Cerro Largo": {
+"legal": "Cerro Largo FC",
+"qid": "Q1055895",
+"short": "Cerro Largo FC"
+},
+"Cesena": {
+"legal": "AC Cesena",
+"qid": "Q6664",
+"short": "AC Cesena"
+},
+"Ceuta": {
+"tried": "2026-11"
+},
+"Chacarita Juniors": {
+"legal": "Club Atlético Chacarita Juniors",
+"qid": "Q853053",
+"short": "Chacarita Juniors"
+},
+"Chambery SF": {
+"tried": "2026-11"
+},
+"Chambly": {
+"legal": "Football Club de Chambly Oise",
+"qid": "Q3076567",
+"short": "FC Chambly"
+},
+"Changchun Yatai": {
+"legal": "Changchun Yatai FC",
+"qid": "Q472752",
+"short": "Changchun Yatai FC"
+},
+"Chapecoense-SC": {
+"tried": "2026-11"
+},
+"Charleroi": {
+"tried": "2026-11"
+},
+"Charlotte": {
+"legal": "Charlotte Football Club",
+"qid": "Q78944434",
+"short": "Charlotte FC"
+},
+"Charlton": {
+"tried": "2026-11"
+},
+"Chateauroux": {
+"legal": "La Berrichonne de Châteauroux",
+"qid": "Q845067",
+"short": "LB Châteauroux"
+},
+"Chaves": {
+"tried": "2026-11"
+},
+"Chelsea": {
+"legal": "Chelsea Football Club",
+"qid": "Q9616",
+"short": "Chelsea FC"
+},
+"Cheltenham": {
+"tried": "2026-11"
+},
+"Cheltenham Town": {
+"tried": "2026-11"
+},
+"Chengdu Rongcheng": {
+"tried": "2026-11"
+},
+"Chesterfield": {
+"tried": "2026-11"
+},
+"Chiapas": {
+"legal": "Chiapas FC",
+"qid": "Q1426348",
+"short": "Chiapas FC"
+},
+"Chiba": {
+"tried": "2026-11"
+},
+"Chicago Fire": {
+"legal": "Chicago Fire Football Club",
+"qid": "Q308683",
+"short": "Chicago Fire FC"
+},
+"Chievo": {
+"tried": "2026-11"
+},
+"Chindia Targoviste": {
+"tried": "2026-11"
+},
+"Chivas USA": {
+"tried": "2026-11"
+},
+"Chongqing Liangjiang Athletic": {
+"legal": "Chongqing Liangjiang Athletic FC",
+"qid": "Q1076147",
+"short": "Chongqing Liangjiang Athletic FC"
+},
+"Chongqing Tonglianglong": {
+"legal": "Chongqing Tongliang Long FC",
+"qid": "Q123253436",
+"short": "Chongqing Tongliang Long FC"
+},
+"Chorley": {
+"tried": "2026-11"
+},
+"Cittadella": {
+"legal": "Associazione Sportiva Cittadella",
+"qid": "Q6673",
+"short": "Associazione Sportiva Cittadella"
+},
+"Clermont": {
+"tried": "2026-11"
+},
+"Cliftonville FC": {
+"legal": "Cliftonville Football & Athletic Club",
+"qid": "Q779835",
+"short": "Cliftonville FC"
+},
+"Club America": {
+"legal": "Club América",
+"qid": "Q459090",
+"short": "Club América"
+},
+"Club Atletico Rentistas": {
+"tried": "2026-11"
+},
+"Club Atlético La Paz": {
+"legal": "Club Atlético La Paz",
+"qid": "Q112051099",
+"short": "Club Atlético La Paz"
+},
+"Club Atlético Morelia": {
+"legal": "Atlético Morelia",
+"qid": "Q2426819",
+"short": "Atlético Morelia"
+},
+"Club Brugge": {
+"tried": "2026-11"
+},
+"Club Leon": {
+"tried": "2026-11"
+},
+"Club Olimpo": {
+"tried": "2026-11"
+},
+"Club Tijuana": {
+"tried": "2026-11"
+},
+"Clyde": {
+"legal": "Clyde FC",
+"qid": "Q1059415",
+"short": "Clyde FC"
+},
+"Cobh Ramblers": {
+"legal": "Cobh Ramblers FC",
+"qid": "Q1104682",
+"short": "Cobh Ramblers FC"
+},
+"Colchester": {
+"tried": "2026-11"
+},
+"Coleraine FC": {
+"legal": "Coleraine FC",
+"qid": "Q1108181",
+"short": "Coleraine FC"
+},
+"Colon Santa FE": {
+"tried": "2026-11"
+},
+"Colon Santa Fe": {
+"tried": "2026-11"
+},
+"Colorado Rapids": {
+"tried": "2026-11"
+},
+"Columbus Crew": {
+"legal": "Columbus Crew",
+"qid": "Q457163",
+"short": "Columbus Crew"
+},
+"Como": {
+"legal": "Como 1907",
+"qid": "Q1120838",
+"short": "Como 1907"
+},
+"Concarneau": {
+"legal": "Union sportive concarnoise",
+"qid": "Q3550532",
+"short": "US Concarneau"
+},
+"Concordia": {
+"tried": "2026-11"
+},
+"Cordoba": {
+"legal": "Córdoba CF",
+"qid": "Q10499",
+"short": "Córdoba CF"
+},
+"Corinthians": {
+"legal": "SC Corinthians Paulista",
+"qid": "Q35933",
+"short": "SC Corinthians Paulista"
+},
+"Coritiba": {
+"legal": "Coritiba FC",
+"qid": "Q478317",
+"short": "Coritiba FC"
+},
+"Cork City": {
+"legal": "Cork City FC",
+"qid": "Q932284",
+"short": "Cork City FC"
+},
+"Corona Brasov": {
+"legal": "FC Brașov Steagul Renaște",
+"qid": "Q107862982",
+"short": "FC Brașov Steagul Renaște"
+},
+"Corum": {
+"tried": "2026-11"
+},
+"Corvinul": {
+"tried": "2026-11"
+},
+"Cosenza": {
+"tried": "2026-11"
+},
+"Cottbus": {
+"tried": "2026-11"
+},
+"Cove Rangers": {
+"tried": "2026-11"
+},
+"Coventry": {
+"tried": "2026-11"
+},
+"Cowdenbeath": {
+"tried": "2026-11"
+},
+"Cracovia": {
+"legal": "Klub Sportowy Cracovia Spółka Akcyjna",
+"qid": "Q24074158",
+"short": "Cracovia"
+},
+"Crawley Town": {
+"tried": "2026-11"
+},
+"Cremonese": {
+"legal": "US Cremonese",
+"qid": "Q759482",
+"short": "US Cremonese"
+},
+"Crewe": {
+"tried": "2026-11"
+},
+"Crewe Alexandra": {
+"tried": "2026-11"
+},
+"Criciuma": {
+"tried": "2026-11"
+},
+"Crotone": {
+"legal": "FC Crotone",
+"qid": "Q6690",
+"short": "FC Crotone"
+},
+"Crucero del Norte": {
+"tried": "2026-11"
+},
+"Crusaders FC": {
+"legal": "Crusaders Football Club",
+"qid": "Q840567",
+"short": "Crusaders FC"
+},
+"Cruz Azul": {
+"legal": "Club de Futbol Cruz Azul S.A. de C.V.",
+"qid": "Q845859",
+"short": "Cruz Azul"
+},
+"Cruzeiro": {
+"legal": "Cruzeiro Esporte Clube",
+"qid": "Q10261905",
+"short": "Cruzeiro Esporte Clube"
+},
+"Crystal Palace": {
+"tried": "2026-11"
+},
+"Csikszereda M. Ciuc": {
+"tried": "2026-11"
+},
+"Cuiaba": {
+"legal": "Cuiabá Esporte Clube",
+"qid": "Q2945011",
+"short": "Cuiabá Esporte Clube"
+},
+"Cultural Leonesa": {
+"tried": "2026-11"
+},
+"Cúcuta Deportivo": {
+"tried": "2026-11"
+},
+"DC United": {
+"legal": "DC United",
+"qid": "Q238593",
+"short": "DC United"
+},
+"Daco-Getica Bucuresti": {
+"legal": "CS Daco-Getica București",
+"qid": "Q2977075",
+"short": "Daco-Getica"
+},
+"Dag and Red": {
+"tried": "2026-11"
+},
+"Dalian Pro": {
+"tried": "2026-11"
+},
+"Dalian Yifang F.C.": {
+"legal": "大连人足球俱乐部",
+"qid": "Q1157920",
+"short": "大连人职业足球俱乐部"
+},
+"Dalkurd": {
+"legal": "Dalkurd Fotbollsförening",
+"qid": "Q120705",
+"short": "Dalkurd FF"
+},
+"Darmstadt": {
+"tried": "2026-11"
+},
+"Dayrout": {
+"legal": "Dayrout SC",
+"qid": "Q25455151",
+"short": "Dayrout SC"
+},
+"Defensa y Justicia": {
+"legal": "Club Social y Deportivo Defensa y Justicia",
+"qid": "Q1024338",
+"short": "Defensa y Justicia"
+},
+"Degerfors": {
+"legal": "Degerfors IF",
+"qid": "Q1140767",
+"short": "Degerfors IF"
+},
+"Delfín": {
+"tried": "2026-11"
+},
+"Delta United FC": {
+"tried": "2026-11"
+},
+"Den Haag": {
+"tried": "2026-11"
+},
+"Denbigh Town": {
+"tried": "2026-11"
+},
+"Dender": {
+"tried": "2026-11"
+},
+"Denizlispor": {
+"tried": "2026-11"
+},
+"Dep. Riestra": {
+"tried": "2026-11"
+},
+"Deportivo Mixco": {
+"legal": "Deportivo Mixco",
+"qid": "Q16838270",
+"short": "Deportivo Mixco"
+},
+"Deportivo Pasto": {
+"legal": "Deportivo Pasto",
+"qid": "Q332858",
+"short": "Deportivo Pasto"
+},
+"Derby": {
+"tried": "2026-11"
+},
+"Derry City": {
+"legal": "Derry City Football Club",
+"qid": "Q459622",
+"short": "Derry City FC"
+},
+"Dhofar": {
+"legal": "Dhofar Club",
+"qid": "Q3025731",
+"short": "Dhofar Club"
+},
+"Dijon": {
+"tried": "2026-11"
+},
+"Dijon FCO": {
+"tried": "2026-11"
+},
+"Din. Bucuresti": {
+"tried": "2026-11"
+},
+"Dinamo Bucuresti": {
+"tried": "2026-11"
+},
+"Dinamo Zagreb": {
+"tried": "2026-11"
+},
+"Djurgarden": {
+"tried": "2026-11"
+},
+"Don Bosco Bamberg": {
+"tried": "2026-11"
+},
+"Doncaster": {
+"tried": "2026-11"
+},
+"Dorados de Sinaloa": {
+"legal": "Dorados de Sinaloa",
+"qid": "Q1243720",
+"short": "Dorados de Sinaloa"
+},
+"Dorking": {
+"tried": "2026-11"
+},
+"Dortmund": {
+"legal": "Borussia Dortmund",
+"qid": "Q41420",
+"short": "Borussia Dortmund"
+},
+"Dover Athletic": {
+"legal": "Dover Athletic FC",
+"qid": "Q2658370",
+"short": "Dover Athletic FC"
+},
+"Dravinja": {
+"tried": "2026-11"
+},
+"Dresden": {
+"tried": "2026-11"
+},
+"Drogheda": {
+"legal": "Drogheda United FC",
+"qid": "Q761498",
+"short": "Drogheda United FC"
+},
+"Dumbarton": {
+"legal": "Dumbarton FC",
+"qid": "Q1059399",
+"short": "Dumbarton FC"
+},
+"Dundalk": {
+"legal": "Dundalk FC",
+"qid": "Q338557",
+"short": "Dundalk FC"
+},
+"Dundee": {
+"legal": "Dundee FC",
+"qid": "Q335483",
+"short": "Dundee FC"
+},
+"Dundee United": {
+"tried": "2026-11"
+},
+"Dunfermline": {
+"legal": "Dunfermline Athletic FC",
+"qid": "Q390256",
+"short": "Dunfermline Athletic FC"
+},
+"Dunkerque": {
+"tried": "2026-11"
+},
+"Dynamo Makhachkala": {
+"legal": "FC Dynamo Makhachkala",
+"qid": "Q2494171",
+"short": "FC Dynamo Makhachkala"
+},
+"Dynamo Moscow": {
+"tried": "2026-11"
+},
+"East Fife": {
+"legal": "East Fife FC",
+"qid": "Q1059430",
+"short": "East Fife FC"
+},
+"East Kilbride": {
+"tried": "2026-11"
+},
+"Eastleigh": {
+"legal": "Eastleigh FC",
+"qid": "Q2303493",
+"short": "Eastleigh FC"
+},
+"Ebbsfleet": {
+"tried": "2026-11"
+},
+"Edinburgh City": {
+"legal": "Edinburgh City FC",
+"qid": "Q2283783",
+"short": "Edinburgh City FC"
+},
+"Eibar": {
+"legal": "SD Eibar",
+"qid": "Q770740",
+"short": "SD Eibar"
+},
+"Ein Frankfurt": {
+"tried": "2026-11"
+},
+"Ekenas": {
+"tried": "2026-11"
+},
+"El Entag El Harby": {
+"legal": "El-Entag El-Harby",
+"qid": "Q2610181",
+"short": "El-Entag El-Harby"
+},
+"El Seka El Hadid": {
+"tried": "2026-11"
+},
+"El Sekka El Hadid": {
+"tried": "2026-11"
+},
+"El Terasanah": {
+"tried": "2026-11"
+},
+"Elche": {
+"legal": "Elche Club de Fútbol",
+"qid": "Q10512",
+"short": "Elche CF"
+},
+"Elche CF": {
+"legal": "Elche Club de Fútbol",
+"qid": "Q10512",
+"short": "Elche CF"
+},
+"Eldense": {
+"tried": "2026-11"
+},
+"Elfsborg": {
+"tried": "2026-11"
+},
+"Elgin": {
+"tried": "2026-11"
+},
+"Elversberg": {
+"legal": "Sportvereinigung 07 Elversberg e.V.",
+"qid": "Q692691",
+"short": "SV Elversberg"
+},
+"Empoli": {
+"legal": "Empoli Football Club",
+"qid": "Q6703",
+"short": "Empoli FC"
+},
+"Erzgebirge Aue": {
+"legal": "Fußballclub Erzgebirge Aue",
+"qid": "Q141882",
+"short": "FC Erzgebirge Aue"
+},
+"Erzurum BB": {
+"tried": "2026-11"
+},
+"Erzurumspor": {
+"legal": "Erzurumspor",
+"qid": "Q1366316",
+"short": "Erzurumspor"
+},
+"Esbjerg": {
+"tried": "2026-11"
+},
+"Espanol": {
+"tried": "2026-11"
+},
+"Estoril": {
+"tried": "2026-11"
+},
+"Estrela": {
+"legal": "CF Estrela da Amadora",
+"qid": "Q838134",
+"short": "CF Estrela da Amadora"
+},
+"Estudiantes L.P.": {
+"tried": "2026-11"
+},
+"Estudiantes Rio Cuarto": {
+"tried": "2026-11"
+},
+"Eupen": {
+"tried": "2026-11"
+},
+"Everton": {
+"tried": "2026-11"
+},
+"Excelsior": {
+"tried": "2026-11"
+},
+"Exeter": {
+"tried": "2026-11"
+},
+"Extremadura UD": {
+"legal": "Extremadura UD",
+"qid": "Q994224",
+"short": "Extremadura UD"
+},
+"Eyupspor": {
+"legal": "Eyüpspor",
+"qid": "Q118919",
+"short": "Eyüpspor"
+},
+"FC Ararat-Armenia": {
+"legal": "FC Ararat-Armenia",
+"qid": "Q39056364",
+"short": "FC Ararat-Armenia"
+},
+"FC Arges": {
+"legal": "FC Argeș",
+"qid": "Q841245",
+"short": "FC Argeș"
+},
+"FC Botosani": {
+"legal": "FC Botoșani",
+"qid": "Q1262822",
+"short": "FC Botoșani"
+},
+"FC Brasov": {
+"tried": "2026-11"
+},
+"FC Cincinnati": {
+"tried": "2026-11"
+},
+"FC Copenhagen": {
+"tried": "2026-11"
+},
+"FC Dallas": {
+"tried": "2026-11"
+},
+"FC Edinburgh": {
+"tried": "2026-11"
+},
+"FC Emmen": {
+"legal": "Football Club Emmen",
+"qid": "Q1061627",
+"short": "FC Emmen"
+},
+"FC Hermannstadt": {
+"legal": "FC Hermannstadt",
+"qid": "Q24884611",
+"short": "FC Hermannstadt"
+},
+"FC Iberia 1999": {
+"legal": "FC Iberia 1999",
+"qid": "Q16374651",
+"short": "FC Iberia 1999"
+},
+"FC Kairat": {
+"legal": "Қайрат",
+"qid": "Q420594",
+"short": "Қайрат ФК"
+},
+"FC Koln": {
+"legal": "1. Fußball-Club Köln 01/07 e. V.",
+"qid": "Q104770",
+"short": "1. FC Köln"
+},
+"FC Lugano": {
+"tried": "2026-11"
+},
+"FC Masar": {
+"legal": "FC Masar",
+"qid": "Q139576249",
+"short": "FC Masar"
+},
+"FC Midtjylland": {
+"tried": "2026-11"
+},
+"FC Nordsjaelland": {
+"legal": "FC Nordsjaelland Reserves",
+"qid": "Q115860768",
+"short": "FC Nordsjaelland Reserves"
+},
+"FC Rapid Bucuresti": {
+"legal": "FC Rapid București",
+"qid": "Q245162",
+"short": "FC Rapid București"
+},
+"FC Roskilde": {
+"legal": "FC Roskilde",
+"qid": "Q737633",
+"short": "FC Roskilde"
+},
+"FC Thun": {
+"legal": "FC Thun",
+"qid": "Q464775",
+"short": "FC Thun"
+},
+"FC Tokyo": {
+"legal": "FC Tokyo",
+"qid": "Q856619",
+"short": "FC Tokyo"
+},
+"FC Viktoria Plzen B": {
+"tried": "2026-11"
+},
+"FC Voluntari": {
+"tried": "2026-11"
+},
+"FC Zbrojovka Brno B": {
+"legal": "FC Zbrojovka Brno",
+"qid": "Q724832",
+"short": "FC Zbrojovka Brno"
+},
+"FCSB": {
+"tried": "2026-11"
+},
+"FK Anzi Makhackala": {
+"tried": "2026-11"
+},
+"FK Jablonec": {
+"legal": "FK Jablonec",
+"qid": "Q425599",
+"short": "FK Jablonec"
+},
+"FK Kauno Žalgiris": {
+"legal": "Жальгірыс (Каўнас)",
+"qid": "Q12654411",
+"short": "Каўна Жальгірыс"
+},
+"FK Loko Prague": {
+"tried": "2026-11"
+},
+"FK Rostov": {
+"tried": "2026-11"
+},
+"Fakel Voronezh": {
+"legal": "FC Fakel Voronezh",
+"qid": "Q1388889",
+"short": "FC Fakel Voronezh"
+},
+"Falkenbergs": {
+"legal": "Falkenbergs FF",
+"qid": "Q1394197",
+"short": "Falkenbergs FF"
+},
+"Falkirk": {
+"legal": "Falkirk FC",
+"qid": "Q219241",
+"short": "Falkirk FC"
+},
+"Famalicao": {
+"legal": "FC Famalicão",
+"qid": "Q1387105",
+"short": "FC Famalicão"
+},
+"Farense": {
+"legal": "SC Farense",
+"qid": "Q744353",
+"short": "SC Farense"
+},
+"Farul Constanta": {
+"legal": "SSC Farul Constanța",
+"qid": "Q368104",
+"short": "SSC Farul Constanța"
+},
+"Fenerbahce": {
+"legal": "Fenerbahçe Istanbul",
+"qid": "Q6601875",
+"short": "Fenerbahçe Istanbul"
+},
+"FeralpiSalo": {
+"legal": "Feralpisalò",
+"qid": "Q31821",
+"short": "Feralpisalò"
+},
+"Ferencváros TC": {
+"tried": "2026-11"
+},
+"Ferrol": {
+"tried": "2026-11"
+},
+"Feyenoord": {
+"legal": "Feyenoord Rotterdam",
+"qid": "Q134241",
+"short": "Feyenoord"
+},
+"Figueirense": {
+"legal": "Figueirense Futebol Clube",
+"qid": "Q218334",
+"short": "Figueirense Futebol Clube"
+},
+"Finn Harps": {
+"legal": "Finn Harps FC",
+"qid": "Q1352136",
+"short": "Finn Harps FC"
+},
+"Fiorentina": {
+"tried": "2026-11"
+},
+"Flamengo RJ": {
+"tried": "2026-11"
+},
+"Fleetwood Town": {
+"tried": "2026-11"
+},
+"Fluminense": {
+"legal": "Fluminense FC",
+"qid": "Q80987",
+"short": "Fluminense FC"
+},
+"For Sittard": {
+"tried": "2026-11"
+},
+"Forest Green": {
+"tried": "2026-11"
+},
+"Forfar": {
+"tried": "2026-11"
+},
+"Fortaleza": {
+"tried": "2026-11"
+},
+"Fortuna Dusseldorf": {
+"legal": "Fortuna Düsseldorf",
+"qid": "Q151747",
+"short": "Fortuna Düsseldorf"
+},
+"Fredrikstad": {
+"legal": "Fredrikstad Fotballklubb",
+"qid": "Q216131",
+"short": "Fredrikstad FK"
+},
+"Freiburg": {
+"legal": "SC Freiburg",
+"qid": "Q106394",
+"short": "SC Freiburg"
+},
+"Frosinone": {
+"legal": "Frosinone Calcio",
+"qid": "Q845043",
+"short": "Frosinone Calcio"
+},
+"Fuenlabrada": {
+"legal": "CF Fuenlabrada",
+"qid": "Q108708",
+"short": "CF Fuenlabrada"
+},
+"Fuerte San Francisco": {
+"legal": "Fuerte San Francisco",
+"qid": "Q2979866",
+"short": "Fuerte San Francisco"
+},
+"Fujieda MYFC": {
+"legal": "Fujieda MYFC",
+"qid": "Q1342155",
+"short": "Fujieda MYFC"
+},
+"Fulham": {
+"tried": "2026-11"
+},
+"Fylde": {
+"tried": "2026-11"
+},
+"GAIS": {
+"legal": "GAIS",
+"qid": "Q391789",
+"short": "GAIS"
+},
+"GKS Belchatow": {
+"tried": "2026-11"
+},
+"GKS Katowice": {
+"legal": "GKS GieKSa Katowice Spółka Akcyjna",
+"qid": "Q925935",
+"short": "GKS Katowice"
+},
+"Galatasaray": {
+"tried": "2026-11"
+},
+"Galway": {
+"legal": "Galway FC",
+"qid": "Q16783238",
+"short": "Galway FC"
+},
+"Gamba Osaka": {
+"legal": "Gamba Osaka",
+"qid": "Q738423",
+"short": "Gamba Osaka"
+},
+"Gateshead": {
+"tried": "2026-11"
+},
+"Gaz Metan Medias": {
+"tried": "2026-11"
+},
+"Gaziantep": {
+"legal": "Gaziantep FK",
+"qid": "Q824850",
+"short": "Gaziantep FK"
+},
+"Gefle": {
+"tried": "2026-11"
+},
+"Genclerbirligi": {
+"tried": "2026-11"
+},
+"Genk": {
+"tried": "2026-11"
+},
+"Genoa": {
+"tried": "2026-11"
+},
+"Gent": {
+"tried": "2026-11"
+},
+"Getafe": {
+"legal": "Getafe CF",
+"qid": "Q8806",
+"short": "Getafe CF"
+},
+"Giannina": {
+"tried": "2026-11"
+},
+"Gil Vicente": {
+"legal": "Gil Vicente FC",
+"qid": "Q926438",
+"short": "Gil Vicente FC"
+},
+"Gillingham": {
+"tried": "2026-11"
+},
+"Gimnasia L.P.": {
+"tried": "2026-11"
+},
+"Gimnasia Mendoza": {
+"tried": "2026-11"
+},
+"Giresunspor": {
+"legal": "Giresunspor",
+"qid": "Q1543501",
+"short": "Giresunspor"
+},
+"Girona": {
+"legal": "Girona Futbol Club S.A.D.",
+"qid": "Q11945",
+"short": "Girona FC"
+},
+"Glentoran FC": {
+"legal": "Glentoran Football Club",
+"qid": "Q249533",
+"short": "Glentoran FC"
+},
+"Gloria Buzau": {
+"legal": "FC Gloria Buzău",
+"qid": "Q944169",
+"short": "FC Gloria Buzău"
+},
+"Gnistan": {
+"tried": "2026-11"
+},
+"Go Ahead Eagles": {
+"legal": "Go Ahead Eagles",
+"qid": "Q749589",
+"short": "Go Ahead Eagles"
+},
+"Godoy Cruz": {
+"legal": "Club Deportivo Godoy Cruz Antonio Tomba",
+"qid": "Q80882",
+"short": "Godoy Cruz Antonio Tomba"
+},
+"Goias": {
+"legal": "Goiás Esporte Clube",
+"qid": "Q816779",
+"short": "Goiás Esporte Clube"
+},
+"Gornik Z.": {
+"tried": "2026-11"
+},
+"Gornik Zabrze": {
+"legal": "Górnik Zabrze Spółka Akcyjna",
+"qid": "Q134255",
+"short": "Górnik Zabrze"
+},
+"Goteborg": {
+"legal": "Göteborg FC",
+"qid": "Q111539250",
+"short": "Göteborg FC"
+},
+"Goztep": {
+"legal": "Göztepe SK",
+"qid": "Q1423118",
+"short": "Göztepe SK"
+},
+"Granada": {
+"legal": "Granada CF",
+"qid": "Q8812",
+"short": "Granada CF"
+},
+"Grasshoppers": {
+"tried": "2026-11"
+},
+"Grazer AK": {
+"legal": "Grazer Athletiksport Klub",
+"qid": "Q659780",
+"short": "Grazer AK"
+},
+"Gremio": {
+"legal": "Grêmio Foot-Ball Porto Alegrense",
+"qid": "Q221695",
+"short": "Grêmio FBPA"
+},
+"Grenoble": {
+"tried": "2026-11"
+},
+"Grenoble Foot": {
+"legal": "Grenoble Foot 38 II",
+"qid": "Q109501806",
+"short": "Grenoble Foot 38 II"
+},
+"Gresford Athletic": {
+"tried": "2026-11"
+},
+"Greuther Furth": {
+"legal": "SpVgg Greuther Fürth",
+"qid": "Q153539",
+"short": "SpVgg Greuther Fürth"
+},
+"Grimsby": {
+"tried": "2026-11"
+},
+"Grodig": {
+"legal": "Sportverein Grödig",
+"qid": "Q696514",
+"short": "SV Grödig"
+},
+"Groningen": {
+"legal": "Football Club Groningen",
+"qid": "Q24711",
+"short": "FC Groningen"
+},
+"Guadalajara Chivas": {
+"tried": "2026-11"
+},
+"Guangzhou City": {
+"legal": "Guangzhou City FC",
+"qid": "Q1192340",
+"short": "Guangzhou City FC"
+},
+"Guangzhou Evergrande": {
+"legal": "广州足球俱乐部",
+"qid": "Q130521",
+"short": "广州足球俱乐部"
+},
+"Guangzhou FC": {
+"legal": "广州足球俱乐部",
+"qid": "Q130521",
+"short": "广州足球俱乐部"
+},
+"Guangzhou R&F": {
+"tried": "2026-11"
+},
+"Guimaraes": {
+"tried": "2026-11"
+},
+"Guingamp": {
+"legal": "En avant Guingamp",
+"qid": "Q459148",
+"short": "En avant Guingamp"
+},
+"Guizhou Zhicheng": {
+"tried": "2026-11"
+},
+"Gunners FC": {
+"tried": "2026-11"
+},
+"HB Køge": {
+"tried": "2026-11"
+},
+"HIFK": {
+"tried": "2026-11"
+},
+"HJK": {
+"tried": "2026-11"
+},
+"Hacken": {
+"tried": "2026-11"
+},
+"Hajduk Split": {
+"tried": "2026-11"
+},
+"Haka": {
+"legal": "Valkeakosken Haka",
+"qid": "Q275138",
+"short": "FC Haka"
+},
+"Halifax": {
+"tried": "2026-11"
+},
+"Halmstad": {
+"tried": "2026-11"
+},
+"Ham-Kam": {
+"tried": "2026-11"
+},
+"HamKam": {
+"legal": "Hamarkameratene",
+"qid": "Q1130961",
+"short": "Hamarkameratene"
+},
+"Hamburg": {
+"tried": "2026-11"
+},
+"Hamilton": {
+"tried": "2026-11"
+},
+"Hammarby": {
+"legal": "Hammarby Fotboll",
+"qid": "Q460724",
+"short": "Hammarby Fotboll"
+},
+"Hangzhou Greentown": {
+"legal": "浙江职业足球俱乐部",
+"qid": "Q79380",
+"short": "浙江职业足球俱乐部"
+},
+"Hannover": {
+"legal": "Hannoverscher Sportverein von 1896 e. V.",
+"qid": "Q33748",
+"short": "Hannover 96"
+},
+"Hannover 96": {
+"legal": "Hannoverscher Sportverein von 1896 e. V.",
+"qid": "Q33748",
+"short": "Hannover 96"
+},
+"Hansa Rostock": {
+"legal": "FC Hansa Rostock",
+"qid": "Q142005",
+"short": "FC Hansa Rostock"
+},
+"Hapoel Be'er Sheva": {
+"legal": "Hapoel Be'er Sheva FC",
+"qid": "Q986529",
+"short": "Hapoel Be'er Sheva FC"
+},
+"Harrogate": {
+"legal": "Harrogate Town Association Football Club",
+"qid": "Q2219286",
+"short": "Harrogate Town AFC"
+},
+"Hartberg": {
+"legal": "TSV Hartberg",
+"qid": "Q699746",
+"short": "TSV Hartberg"
+},
+"Hartlepool": {
+"tried": "2026-11"
+},
+"Hatayspor": {
+"legal": "Hatayspor",
+"qid": "Q1110567",
+"short": "Hatayspor"
+},
+"Haugesund": {
+"legal": "FK Haugesund",
+"qid": "Q750097",
+"short": "FK Haugesund"
+},
+"Hay AL Amir Hassan": {
+"legal": "Hay Al-Amir Hassan Club",
+"qid": "Q136211173",
+"short": "Hay Al-Amir Hassan Club"
+},
+"Hearts": {
+"tried": "2026-11"
+},
+"Hebei": {
+"legal": "Hebei FC",
+"qid": "Q402038",
+"short": "Hebei FC"
+},
+"Heerenveen": {
+"tried": "2026-11"
+},
+"Heidenheim": {
+"legal": "1. FC Heidenheim 1846",
+"qid": "Q162251",
+"short": "1. FC Heidenheim 1846"
+},
+"Helsingborg": {
+"tried": "2026-11"
+},
+"Helsingor": {
+"tried": "2026-11"
+},
+"Henan Songshan Longmen": {
+"tried": "2026-11"
+},
+"Heracles": {
+"tried": "2026-11"
+},
+"Hertha": {
+"legal": "Hertha BSC",
+"qid": "Q102720",
+"short": "Hertha BSC"
+},
+"Hetten FC": {
+"tried": "2026-11"
+},
+"Hibernian": {
+"tried": "2026-11"
+},
+"Hobro": {
+"legal": "Hobro IK",
+"qid": "Q841152",
+"short": "Hobro IK"
+},
+"Hoffenheim": {
+"legal": "TSG 1899 Hoffenheim",
+"qid": "Q22707",
+"short": "TSG 1899 Hoffenheim"
+},
+"Hokkaido Consadole Sapporo": {
+"tried": "2026-11"
+},
+"Holstein Kiel": {
+"legal": "Holstein Kiel",
+"qid": "Q157828",
+"short": "Holstein Kiel"
+},
+"Honefoss": {
+"legal": "Hønefoss BK",
+"qid": "Q304060",
+"short": "Hønefoss BK"
+},
+"Honka": {
+"legal": "FC Honka",
+"qid": "Q385042",
+"short": "FC Honka"
+},
+"Hornchurch": {
+"legal": "Hornchurch FC",
+"qid": "Q4500008",
+"short": "Hornchurch FC"
+},
+"Horsens": {
+"legal": "AC Horsens",
+"qid": "Q289286",
+"short": "AC Horsens"
+},
+"Houston Dynamo": {
+"legal": "Houston Dynamo FC",
+"qid": "Q328313",
+"short": "Houston Dynamo FC"
+},
+"Huddersfield": {
+"tried": "2026-11"
+},
+"Huesca": {
+"legal": "Sociedad Deportiva Huesca",
+"qid": "Q11971",
+"short": "Sociedad Deportiva Huesca"
+},
+"Hull": {
+"tried": "2026-11"
+},
+"Huracan": {
+"tried": "2026-11"
+},
+"Hvidovre IF": {
+"legal": "Hvidovre IF",
+"qid": "Q843097",
+"short": "Hvidovre IF"
+},
+"IAA SC": {
+"tried": "2026-11"
+},
+"Ibiza": {
+"legal": "UD Ibiza",
+"qid": "Q30587901",
+"short": "UD Ibiza"
+},
+"Ilves": {
+"legal": "FC Ilves",
+"qid": "Q2608062",
+"short": "FC Ilves"
+},
+"Inca Aruba": {
+"tried": "2026-11"
+},
+"Ind. Rivadavia": {
+"tried": "2026-11"
+},
+"Independ. Rivadavia": {
+"tried": "2026-11"
+},
+"Independiente": {
+"tried": "2026-11"
+},
+"Independiente Santa Fe": {
+"legal": "Independiente Santa Fe",
+"qid": "Q1424072",
+"short": "Independiente Santa Fe"
+},
+"Ingolstadt": {
+"tried": "2026-11"
+},
+"Instituto": {
+"tried": "2026-11"
+},
+"Inter": {
+"tried": "2026-11"
+},
+"Inter Club d'Escaldes": {
+"tried": "2026-11"
+},
+"Inter Miami": {
+"legal": "Club Internacional de Fútbol Miami",
+"qid": "Q16844931",
+"short": "Inter de Miami"
+},
+"Inter Turku": {
+"legal": "Football Club International Turku",
+"qid": "Q222877",
+"short": "FC Inter Turku"
+},
+"Internacional": {
+"legal": "SC Internacional",
+"qid": "Q80845",
+"short": "SC Internacional"
+},
+"Internacional de Bogotá": {
+"legal": "Internacional de Bogotá",
+"qid": "Q137324985",
+"short": "Internacional de Bogotá"
+},
+"Internazionale": {
+"tried": "2026-11"
+},
+"Inverness C": {
+"tried": "2026-11"
+},
+"Ionikos": {
+"legal": "Αθλητικός Όμιλος Ιωνικός Νίκαιας",
+"qid": "Q987939",
+"short": "Ionikos Nikaia FC"
+},
+"Ipswich": {
+"legal": "Ipswich Town Football Club",
+"qid": "Q9653",
+"short": "Ipswich Town FC"
+},
+"Iraklis": {
+"tried": "2026-11"
+},
+"Isidro Metapán": {
+"legal": "AD Isidro Metapán",
+"qid": "Q290865",
+"short": "AD Isidro Metapán"
+},
+"Istanbulspor": {
+"legal": "İstanbulspor A.Ş.",
+"qid": "Q344328",
+"short": "İstanbulspor A.Ş."
+},
+"Iwata": {
+"tried": "2026-11"
+},
+"JJK Jyvaskyla": {
+"legal": "JJK Jyväskylä",
+"qid": "Q736332",
+"short": "JJK Jyväskylä"
+},
+"Jagiellonia": {
+"tried": "2026-11"
+},
+"Jaro": {
+"tried": "2026-11"
+},
+"Jerv": {
+"tried": "2026-11"
+},
+"Jesenice": {
+"tried": "2026-11"
+},
+"Jiangsu Suning": {
+"tried": "2026-11"
+},
+"Joinville": {
+"tried": "2026-11"
+},
+"Jonkopings": {
+"legal": "Jönköpings BK",
+"qid": "Q102403748",
+"short": "Jönköpings BK"
+},
+"Juarez": {
+"tried": "2026-11"
+},
+"Juve Stabia": {
+"legal": "SS Juve Stabia",
+"qid": "Q6748",
+"short": "SS Juve Stabia"
+},
+"Juventude": {
+"tried": "2026-11"
+},
+"Juventus": {
+"legal": "Juventus FC",
+"qid": "Q1422",
+"short": "Juventus FC"
+},
+"KF Egnatia": {
+"legal": "KF Egnatia",
+"qid": "Q1302027",
+"short": "KF Egnatia"
+},
+"KFUM Oslo": {
+"legal": "KFUM-Kameratene Oslo",
+"qid": "Q3432730",
+"short": "KFUM-Kameratene Oslo"
+},
+"KPV Kokkola": {
+"tried": "2026-11"
+},
+"KS Gornik Polkowice": {
+"tried": "2026-11"
+},
+"KS Polonia Nysa": {
+"tried": "2026-11"
+},
+"KS Wisloka Debica": {
+"tried": "2026-11"
+},
+"KTP": {
+"tried": "2026-11"
+},
+"KV Mechelen": {
+"legal": "Yellow Red Koninklijke Voetbalclub Mechelen",
+"qid": "Q113000",
+"short": "KV Mechelen"
+},
+"Kaiserslautern": {
+"legal": "1. FC Kaiserslautern",
+"qid": "Q8466",
+"short": "1. FC Kaiserslautern"
+},
+"Kalamata": {
+"legal": "Π.Σ. η Καλαμάτα 2019 Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q2744247",
+"short": "Π.Σ. Καλαμάτα"
+},
+"Kalmar": {
+"tried": "2026-11"
+},
+"Karagumruk": {
+"tried": "2026-11"
+},
+"Karlsruhe": {
+"tried": "2026-11"
+},
+"Kashima Antlers": {
+"legal": "Kashima Antlers",
+"qid": "Q16932",
+"short": "Kashima Antlers"
+},
+"Kashiwa Reysol": {
+"legal": "Kashiwa Reysol",
+"qid": "Q844931",
+"short": "Kashiwa Reysol"
+},
+"Kasimpasa": {
+"tried": "2026-11"
+},
+"Kawasaki Frontale": {
+"legal": "Kawasaki Frontale",
+"qid": "Q874016",
+"short": "Kawasaki Frontale"
+},
+"Kayserispor": {
+"tried": "2026-11"
+},
+"Kelty Hearts": {
+"tried": "2026-11"
+},
+"Khimki": {
+"legal": "FC Khimki",
+"qid": "Q727147",
+"short": "FC Khimki"
+},
+"Kidderminster": {
+"tried": "2026-11"
+},
+"Kifisia": {
+"tried": "2026-11"
+},
+"Kigezi Homeboyz FC": {
+"legal": "Kigezi HomeBoyz FC",
+"qid": "Q140659038",
+"short": "Kigezi HomeBoyz FC"
+},
+"Kilmarnock": {
+"tried": "2026-11"
+},
+"Kimberley de Mar Del Plata": {
+"legal": "Kimberley de Mar del Plata",
+"qid": "Q2979816",
+"short": "Kimberley de Mar del Plata"
+},
+"King's Lynn": {
+"legal": "King's Lynn FC",
+"qid": "Q2494190",
+"short": "King's Lynn FC"
+},
+"Kocaelispor": {
+"tried": "2026-11"
+},
+"Kofu": {
+"tried": "2026-11"
+},
+"Kongsvinger": {
+"legal": "Kongsvinger IL",
+"qid": "Q1118263",
+"short": "Kongsvinger IL"
+},
+"Konyaspor": {
+"tried": "2026-11"
+},
+"Korona Kielce": {
+"legal": "Korona Spółka Akcyjna",
+"qid": "Q730219",
+"short": "Korona Kielce"
+},
+"Kortrijk": {
+"tried": "2026-11"
+},
+"Krasnodar": {
+"legal": "FC Krasnodar",
+"qid": "Q220854",
+"short": "FC Krasnodar"
+},
+"Kristiansund": {
+"tried": "2026-11"
+},
+"Krka": {
+"legal": "NK Krka",
+"qid": "Q6954532",
+"short": "NK Krka"
+},
+"Krylya Sovetov": {
+"legal": "FC Krylya Sovetov Moscow",
+"qid": "Q4242863",
+"short": "FC Krylya Sovetov Moscow"
+},
+"KuPS": {
+"legal": "Kuopion Palloseura",
+"qid": "Q382324",
+"short": "Kuopion Palloseura"
+},
+"KuPS Kuopio": {
+"tried": "2026-11"
+},
+"Kuban": {
+"tried": "2026-11"
+},
+"Kumamoto": {
+"tried": "2026-11"
+},
+"Kyoto": {
+"tried": "2026-11"
+},
+"LASK": {
+"legal": "Linzer Athletik-Sport-Klub",
+"qid": "Q392310",
+"short": "LASK"
+},
+"LKS Lodz": {
+"tried": "2026-11"
+},
+"La Coruna": {
+"tried": "2026-11"
+},
+"Lahti": {
+"legal": "FC Lahti",
+"qid": "Q476880",
+"short": "FC Lahti"
+},
+"Lamia": {
+"tried": "2026-11"
+},
+"Lanus": {
+"legal": "Club Atlético Lanús",
+"qid": "Q324589",
+"short": "Club Atlético Lanús"
+},
+"Larisa": {
+"tried": "2026-11"
+},
+"Las Palmas": {
+"legal": "UD Las Palmas",
+"qid": "Q11979",
+"short": "UD Las Palmas"
+},
+"Latina Calcio": {
+"tried": "2026-11"
+},
+"Lausanne": {
+"tried": "2026-11"
+},
+"Lausanne Ouchy": {
+"tried": "2026-11"
+},
+"Laval": {
+"tried": "2026-11"
+},
+"Lazio": {
+"legal": "SS Lazio",
+"qid": "Q2609",
+"short": "SS Lazio"
+},
+"Le Havre": {
+"legal": "Le Havre Athletic Club",
+"qid": "Q328658",
+"short": "Le Havre AC"
+},
+"Le Mans": {
+"tried": "2026-11"
+},
+"Lecce": {
+"legal": "US Lecce",
+"qid": "Q13391",
+"short": "US Lecce"
+},
+"Lecco": {
+"legal": "Calcio Lecco 1912",
+"qid": "Q944876",
+"short": "Calcio Lecco 1912"
+},
+"Lech Poznan": {
+"tried": "2026-11"
+},
+"Lech Poznań": {
+"tried": "2026-11"
+},
+"Lechia Gdansk": {
+"legal": "Lechia Gdańsk",
+"qid": "Q105062640",
+"short": "Lechia Gdańsk"
+},
+"Leczna": {
+"tried": "2026-11"
+},
+"Leeds": {
+"legal": "Leeds United Football Club",
+"qid": "Q1128631",
+"short": "Leeds United FC"
+},
+"Leganes": {
+"legal": "CD Leganés",
+"qid": "Q856119",
+"short": "CD Leganés"
+},
+"Legia": {
+"tried": "2026-11"
+},
+"Legnica": {
+"tried": "2026-11"
+},
+"Leicester": {
+"tried": "2026-11"
+},
+"Leicester City": {
+"tried": "2026-11"
+},
+"Lens": {
+"tried": "2026-11"
+},
+"Leones Negros": {
+"legal": "Leones Negros B",
+"qid": "Q27961877",
+"short": "Leones Negros B"
+},
+"Levadeiakos": {
+"legal": "Α.Π.Ο. Λεβαδειακός Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q824450",
+"short": "Α.Π.Ο. Λεβαδειακός"
+},
+"Levante": {
+"legal": "Levante UD",
+"qid": "Q8823",
+"short": "Levante UD"
+},
+"Leverkusen": {
+"legal": "Bayer 04 Leverkusen",
+"qid": "Q104761",
+"short": "Bayer 04 Leverkusen"
+},
+"Leyton Orient": {
+"tried": "2026-11"
+},
+"Liaoning": {
+"legal": "Liaoning FC",
+"qid": "Q430307",
+"short": "Liaoning FC"
+},
+"Liaoning Tieren": {
+"legal": "Liaoning Tieren FC",
+"qid": "Q22662512",
+"short": "Liaoning Tieren FC"
+},
+"Lille": {
+"tried": "2026-11"
+},
+"Lillestrom": {
+"tried": "2026-11"
+},
+"Limavady United FC": {
+"tried": "2026-11"
+},
+"Limerick": {
+"legal": "Limerick FC",
+"qid": "Q1552212",
+"short": "Limerick FC"
+},
+"Lincoln": {
+"tried": "2026-11"
+},
+"Linfield FC": {
+"legal": "Linfield Football Club",
+"qid": "Q244472",
+"short": "Linfield FC"
+},
+"Liverpool": {
+"legal": "The Liverpool Football Club and Athletic Grounds Limited",
+"qid": "Q1130849",
+"short": "Liverpool FC"
+},
+"Livingston": {
+"legal": "Livingston FC",
+"qid": "Q867921",
+"short": "Livingston FC"
+},
+"Livorno": {
+"legal": "Unione Sportiva Livorno 1915",
+"qid": "Q6767",
+"short": "US Livorno 1915"
+},
+"Ljungskile": {
+"legal": "Ljungskile SK",
+"qid": "Q259029",
+"short": "Ljungskile SK"
+},
+"Llaneros FC": {
+"legal": "Llaneros",
+"qid": "Q6661327",
+"short": "Llaneros"
+},
+"Lobos BUAP": {
+"legal": "Lobos de la BUAP",
+"qid": "Q1570132",
+"short": "Lobos de la BUAP"
+},
+"Logrones": {
+"legal": "CD Logroñés",
+"qid": "Q657865",
+"short": "CD Logroñés"
+},
+"Lokomotiv Moscow": {
+"legal": "FC Lokomotiv Moscow",
+"qid": "Q29115",
+"short": "FC Lokomotiv Moscow"
+},
+"Lommel SK": {
+"legal": "Lommel SK",
+"qid": "Q1668203",
+"short": "Lommel SK"
+},
+"Londrina": {
+"legal": "Londrina EC",
+"qid": "Q1633430",
+"short": "Londrina EC"
+},
+"Longford": {
+"tried": "2026-11"
+},
+"Lorient": {
+"tried": "2026-11"
+},
+"Los Angeles FC": {
+"tried": "2026-11"
+},
+"Los Angeles Galaxy": {
+"tried": "2026-11"
+},
+"Lugano": {
+"tried": "2026-11"
+},
+"Lugo": {
+"legal": "Club Deportivo Lugo",
+"qid": "Q11984",
+"short": "Club Deportivo Lugo"
+},
+"Luton": {
+"tried": "2026-11"
+},
+"Luzern": {
+"legal": "FC Luzern",
+"qid": "Q223262",
+"short": "FC Luzern"
+},
+"Lyngby": {
+"tried": "2026-11"
+},
+"Lyon": {
+"legal": "Olympique lyonnais",
+"qid": "Q704",
+"short": "Olympique lyonnais"
+},
+"M'gladbach": {
+"tried": "2026-11"
+},
+"M. Saransk": {
+"tried": "2026-11"
+},
+"MGladbach": {
+"tried": "2026-11"
+},
+"MKS Czarni Polaniec": {
+"tried": "2026-11"
+},
+"Maan SC": {
+"tried": "2026-11"
+},
+"Macclesfield": {
+"legal": "Macclesfield Football Club",
+"qid": "Q106945813",
+"short": "Macclesfield FC"
+},
+"Machida": {
+"tried": "2026-11"
+},
+"Magdeburg": {
+"legal": "1. Fußballclub Magdeburg e. V.",
+"qid": "Q155730",
+"short": "1. FC Magdeburg"
+},
+"Maidenhead": {
+"legal": "Maidenhead United FC",
+"qid": "Q1131109",
+"short": "Maidenhead United FC"
+},
+"Maidstone": {
+"tried": "2026-11"
+},
+"Mainz": {
+"legal": "1. Fußball- und Sportverein Mainz 05 e. V.",
+"qid": "Q105254",
+"short": "1. FSV Mainz 05"
+},
+"Malaga": {
+"legal": "Málaga Club de Fútbol",
+"qid": "Q8857",
+"short": "Málaga CF"
+},
+"Mallorca": {
+"legal": "Real Club Deportivo Mallorca, S. A. D.",
+"qid": "Q8835",
+"short": "RCD Mallorca"
+},
+"Malmo FF": {
+"tried": "2026-11"
+},
+"Man City": {
+"tried": "2026-11"
+},
+"Man United": {
+"tried": "2026-11"
+},
+"Manchester City": {
+"tried": "2026-11"
+},
+"Mansfield": {
+"tried": "2026-11"
+},
+"Mansfield Town": {
+"tried": "2026-11"
+},
+"Manta F.C.": {
+"legal": "Manta Fútbol Club",
+"qid": "Q2501106",
+"short": "Manta Fútbol Club"
+},
+"Mantova": {
+"legal": "Mantova 1911",
+"qid": "Q430993",
+"short": "Mantova 1911"
+},
+"Mariehamn": {
+"tried": "2026-11"
+},
+"Maritimo": {
+"legal": "CS Marítimo",
+"qid": "Q216503",
+"short": "CS Marítimo"
+},
+"Marseille": {
+"legal": "Olympique de Marseille",
+"qid": "Q132885",
+"short": "Olympique de Marseille"
+},
+"Martigues": {
+"legal": "Football Club de Martigues",
+"qid": "Q1132418",
+"short": "FC Martigues"
+},
+"Mattersburg": {
+"legal": "Sportvereinigung Mattersburg",
+"qid": "Q263320",
+"short": "SV Mattersburg"
+},
+"Mazatlan FC": {
+"legal": "Mazatlán Fútbol Club",
+"qid": "Q96045907",
+"short": "Mazatlán Fútbol Club"
+},
+"Mbeya Kwanza FC": {
+"tried": "2026-11"
+},
+"Mechelen": {
+"tried": "2026-11"
+},
+"Mega Sport": {
+"tried": "2026-11"
+},
+"Meizhou Hakka": {
+"legal": "Meizhou Hakka FC",
+"qid": "Q15907812",
+"short": "Meizhou Hakka FC"
+},
+"Mervue": {
+"tried": "2026-11"
+},
+"Metz": {
+"legal": "Football Club de Metz",
+"qid": "Q221525",
+"short": "FC Metz"
+},
+"Middlesbrough": {
+"tried": "2026-11"
+},
+"Midtjylland": {
+"tried": "2026-11"
+},
+"Milan": {
+"legal": "Associazione Calcio Milan",
+"qid": "Q1543",
+"short": "AC Milan"
+},
+"Millwall": {
+"tried": "2026-11"
+},
+"Milton Keynes Dons": {
+"legal": "Milton Keynes Dons Football Club",
+"qid": "Q248188",
+"short": "Milton Keynes Dons FC"
+},
+"Minnesota United": {
+"tried": "2026-11"
+},
+"Mioveni": {
+"tried": "2026-11"
+},
+"Mirandes": {
+"legal": "CD Mirandés",
+"qid": "Q11997",
+"short": "CD Mirandés"
+},
+"Mirassol": {
+"legal": "Mirassol Futebol Clube",
+"qid": "Q2622870",
+"short": "Mirassol Futebol Clube"
+},
+"Mito": {
+"tried": "2026-11"
+},
+"Mjallby": {
+"legal": "Mjällby AIF",
+"qid": "Q749138",
+"short": "Mjällby AIF"
+},
+"Mjondalen": {
+"tried": "2026-11"
+},
+"Modena": {
+"legal": "Modena FC",
+"qid": "Q8408",
+"short": "Modena FC"
+},
+"Molde": {
+"tried": "2026-11"
+},
+"Monaghan": {
+"tried": "2026-11"
+},
+"Monarcas": {
+"tried": "2026-11"
+},
+"Montedio Yamagata": {
+"legal": "Montedio Yamagata",
+"qid": "Q1045524",
+"short": "Montedio Yamagata"
+},
+"Monterrey": {
+"legal": "Club de Fútbol Monterrey",
+"qid": "Q768253",
+"short": "Club de Fútbol Monterrey"
+},
+"Montevideo City Torque": {
+"tried": "2026-11"
+},
+"Montpellier": {
+"tried": "2026-11"
+},
+"Montrose": {
+"legal": "Montrose FC",
+"qid": "Q473136",
+"short": "Montrose FC"
+},
+"Monza": {
+"legal": "Associazione Calcio Monza",
+"qid": "Q289482",
+"short": "AC Monza"
+},
+"Morecambe": {
+"tried": "2026-11"
+},
+"Moreirense": {
+"legal": "Moreirense FC",
+"qid": "Q1346314",
+"short": "Moreirense FC"
+},
+"Morton": {
+"legal": "Greenock Morton FC",
+"qid": "Q867876",
+"short": "Greenock Morton FC"
+},
+"Motherwell": {
+"legal": "Motherwell FC",
+"qid": "Q216523",
+"short": "Motherwell FC"
+},
+"Motor Lublin": {
+"legal": "Motor Lublin Spółka Akcyjna",
+"qid": "Q727918",
+"short": "Motor Lublin"
+},
+"Mount Pleasant FC": {
+"tried": "2026-11"
+},
+"Mouscron": {
+"tried": "2026-11"
+},
+"Mudhar": {
+"tried": "2026-11"
+},
+"Mushuc Runa": {
+"tried": "2026-11"
+},
+"MyPa": {
+"legal": "Myllykosken Pallo -47",
+"qid": "Q318698",
+"short": "MYPA"
+},
+"NAC Breda": {
+"legal": "Nooit Opgeven Altijd Doorzetten Aangenaam Door Vermaak En Nuttig Door Ontspanning Combinatie Breda",
+"qid": "Q332642",
+"short": "NAC Breda"
+},
+"NEC Nijmegen": {
+"legal": "Nijmegen Eendracht Combinatie",
+"qid": "Q318348",
+"short": "NEC"
+},
+"NK Celje": {
+"legal": "NK Celje",
+"qid": "Q31533",
+"short": "NK Celje"
+},
+"Nacional": {
+"tried": "2026-11"
+},
+"Nagoya Grampus": {
+"legal": "Нагоя Грампус",
+"qid": "Q249662",
+"short": "Нагоя Грампус"
+},
+"Nancy": {
+"tried": "2026-11"
+},
+"Nantes": {
+"tried": "2026-11"
+},
+"Nantong Zhiyun": {
+"tried": "2026-11"
+},
+"Napoli": {
+"legal": "Società Sportiva Calcio Napoli",
+"qid": "Q2641",
+"short": "SSC Napoli"
+},
+"Nashville SC": {
+"legal": "Nashville Soccer Club",
+"qid": "Q47518754",
+"short": "Nashville SC"
+},
+"Nautico": {
+"legal": "Clube Náutico Capibaribe",
+"qid": "Q73971",
+"short": "Clube Náutico Capibaribe"
+},
+"Navodari": {
+"tried": "2026-11"
+},
+"Necaxa": {
+"legal": "Club Necaxa",
+"qid": "Q1280895",
+"short": "Club Necaxa"
+},
+"Neustadt": {
+"tried": "2026-11"
+},
+"New England Revolution": {
+"legal": "New England Revolution",
+"qid": "Q309095",
+"short": "New England Revolution"
+},
+"New York City": {
+"legal": "New York City FC",
+"qid": "Q13361030",
+"short": "New York City FC"
+},
+"New York Red Bulls": {
+"tried": "2026-11"
+},
+"Newcastle": {
+"tried": "2026-11"
+},
+"Newells Old Boys": {
+"legal": "Club Atlético Newell's Old Boys",
+"qid": "Q221882",
+"short": "Newell's Old Boys"
+},
+"Newport County": {
+"tried": "2026-11"
+},
+"Nice": {
+"tried": "2026-11"
+},
+"Nijmegen": {
+"tried": "2026-11"
+},
+"Nimes": {
+"legal": "Nîmes Olympique",
+"qid": "Q730809",
+"short": "Nîmes Olympique"
+},
+"Niort": {
+"tried": "2026-11"
+},
+"Nordsjaelland": {
+"tried": "2026-11"
+},
+"Norrkoping": {
+"tried": "2026-11"
+},
+"Northampton": {
+"tried": "2026-11"
+},
+"Northampton Town": {
+"tried": "2026-11"
+},
+"Norwich": {
+"tried": "2026-11"
+},
+"Nott'm Forest": {
+"tried": "2026-11"
+},
+"Nottm Forest": {
+"tried": "2026-11"
+},
+"Notts County": {
+"tried": "2026-11"
+},
+"Nueva Chicago": {
+"legal": "Club Atlético Nueva Chicago",
+"qid": "Q744555",
+"short": "Club Atlético Nueva Chicago"
+},
+"Numancia": {
+"legal": "Club Deportivo Numancia de Soria",
+"qid": "Q12158",
+"short": "Club Deportivo Numancia de Soria"
+},
+"Nurnberg": {
+"legal": "VfL Nürnberg",
+"qid": "Q2521545",
+"short": "VfL Nürnberg"
+},
+"Nykoebing FC": {
+"tried": "2026-11"
+},
+"Náutico": {
+"legal": "Clube Náutico Capibaribe",
+"qid": "Q73971",
+"short": "Clube Náutico Capibaribe"
+},
+"OFI Crete": {
+"legal": "Όμιλος Φιλάθλων Ηρακλείου Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q931704",
+"short": "OFI Crete FC"
+},
+"OH Leuven": {
+"legal": "Oud-Heverlee Leuven",
+"qid": "Q916199",
+"short": "Oud-Heverlee Leuven"
+},
+"OL Lyonnes": {
+"tried": "2026-11"
+},
+"Odd": {
+"tried": "2026-11"
+},
+"Odense": {
+"tried": "2026-11"
+},
+"Oita Trinita": {
+"legal": "Oita Trinita",
+"qid": "Q385074",
+"short": "Oita Trinita"
+},
+"Okayama": {
+"tried": "2026-11"
+},
+"Oldham": {
+"tried": "2026-11"
+},
+"Oldham Athletic": {
+"tried": "2026-11"
+},
+"Olimpo Bahia Blanca": {
+"tried": "2026-11"
+},
+"Olympiakos": {
+"tried": "2026-11"
+},
+"Oman Club": {
+"tried": "2026-11"
+},
+"Omiya Ardija": {
+"legal": "RB Omiya Ardija",
+"qid": "Q385496",
+"short": "RB Omiya Ardija"
+},
+"Omonoia FC": {
+"tried": "2026-11"
+},
+"Once Caldas": {
+"legal": "Once Caldas",
+"qid": "Q47533",
+"short": "Once Caldas"
+},
+"Oostende": {
+"tried": "2026-11"
+},
+"Operário PR": {
+"tried": "2026-11"
+},
+"Orebro": {
+"legal": "Örebro Sportklubb Fotbollsklubb",
+"qid": "Q260559",
+"short": "Örebro SK"
+},
+"Orenburg": {
+"tried": "2026-11"
+},
+"Orlando City": {
+"legal": "Orlando City SC",
+"qid": "Q15214308",
+"short": "Orlando City SC"
+},
+"Orleans": {
+"legal": "Union sportive Orléans Loiret football",
+"qid": "Q369349",
+"short": "US Orléans"
+},
+"Orléans": {
+"legal": "Union sportive Orléans Loiret football",
+"qid": "Q369349",
+"short": "US Orléans"
+},
+"Osasuna": {
+"legal": "Club Atlético Osasuna",
+"qid": "Q10286",
+"short": "Club Atlético Osasuna"
+},
+"Osnabruck": {
+"legal": "VfL Osnabrück",
+"qid": "Q160530",
+"short": "VfL Osnabrück"
+},
+"Oster": {
+"legal": "Östers Idrottsförening",
+"qid": "Q306787",
+"short": "Östers IF"
+},
+"Osters": {
+"legal": "Östers Idrottsförening",
+"qid": "Q306787",
+"short": "Östers IF"
+},
+"Ostersunds": {
+"legal": "Östersunds FK",
+"qid": "Q306797",
+"short": "Östersunds FK"
+},
+"Otelul": {
+"legal": "SC Oțelul Galați",
+"qid": "Q220863",
+"short": "SC Oțelul Galați"
+},
+"Oud-Heverlee Leuven": {
+"legal": "Oud-Heverlee Leuven",
+"qid": "Q916199",
+"short": "Oud-Heverlee Leuven"
+},
+"Oviedo": {
+"tried": "2026-11"
+},
+"Oxford": {
+"legal": "Oxford FC",
+"qid": "Q16847001",
+"short": "Oxford FC"
+},
+"Oxford City": {
+"tried": "2026-11"
+},
+"Oxford United": {
+"tried": "2026-11"
+},
+"Oxford Utd": {
+"tried": "2026-11"
+},
+"PAOK": {
+"tried": "2026-11"
+},
+"PFC CSKA Sofia": {
+"legal": "PFC CSKA Sofia",
+"qid": "Q136433",
+"short": "PFC CSKA Sofia"
+},
+"PK-35 Vantaa": {
+"legal": "PK-35 Vantaa",
+"qid": "Q11886212",
+"short": "PK-35 Vantaa"
+},
+"PS Kemi": {
+"tried": "2026-11"
+},
+"PSV Eindhoven": {
+"legal": "PSV Eindhoven",
+"qid": "Q11938",
+"short": "PSV Eindhoven"
+},
+"Pachuca": {
+"legal": "CF Pachuca",
+"qid": "Q736937",
+"short": "CF Pachuca"
+},
+"Pacos Ferreira": {
+"legal": "FC Paços de Ferreira",
+"qid": "Q371136",
+"short": "FC Paços de Ferreira"
+},
+"Paderborn": {
+"legal": "SC Paderborn 07",
+"qid": "Q160532",
+"short": "SC Paderborn 07"
+},
+"Padova": {
+"tried": "2026-11"
+},
+"Pafos FC": {
+"tried": "2026-11"
+},
+"Palermo": {
+"legal": "Palermo Football Club",
+"qid": "Q2674",
+"short": "Palermo FC"
+},
+"Palmeiras": {
+"legal": "Sociedade Esportiva Palmeiras",
+"qid": "Q80964",
+"short": "Sociedade Esportiva Palmeiras"
+},
+"Panathinaikos": {
+"legal": "Παναθηναϊκός Αθλητικός Όμιλος Ποδοσφαιρική Ανώνυμος Εταιρεία",
+"qid": "Q4122219",
+"short": "Panathinaikos FC"
+},
+"Pandurii": {
+"tried": "2026-11"
+},
+"Panetolikos": {
+"legal": "Παναιτωλικός Γ.Φ.Σ. Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q1460053",
+"short": "Panetolikos FC"
+},
+"Panionios": {
+"legal": "Πανιώνιος Ιστορικός Γυμναστικός Σύλλογος Σμύρνης Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q460494",
+"short": "Panionios FC"
+},
+"Panserraikos": {
+"legal": "Μουσικογυμναστικός Σύλλογος Πανσερραϊκός 1946 Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q1417287",
+"short": "Panserraikos FC"
+},
+"Parana": {
+"tried": "2026-11"
+},
+"Pari NN": {
+"tried": "2026-11"
+},
+"Paris FC": {
+"tried": "2026-11"
+},
+"Paris SG": {
+"tried": "2026-11"
+},
+"Paris Saint-Germain": {
+"tried": "2026-11"
+},
+"Parma": {
+"legal": "Parma Calcio 1913",
+"qid": "Q2693",
+"short": "Parma Calcio 1913"
+},
+"Partick": {
+"tried": "2026-11"
+},
+"Patacona CF": {
+"tried": "2026-11"
+},
+"Patronato": {
+"tried": "2026-11"
+},
+"Pau FC": {
+"tried": "2026-11"
+},
+"Pendikspor": {
+"legal": "Pendikspor",
+"qid": "Q1347349",
+"short": "Pendikspor"
+},
+"Perugia": {
+"tried": "2026-11"
+},
+"Pescara": {
+"legal": "Delfino Pescara 1936",
+"qid": "Q2710",
+"short": "Delfino Pescara 1936"
+},
+"Peterboro": {
+"tried": "2026-11"
+},
+"Peterhead": {
+"legal": "Peterhead FC",
+"qid": "Q952582",
+"short": "Peterhead FC"
+},
+"Petrolul": {
+"legal": "FC Petrolul Ploiești",
+"qid": "Q1322550",
+"short": "FC Petrolul Ploiești"
+},
+"Pharco FC": {
+"legal": "Pharco FC",
+"qid": "Q30116017",
+"short": "Pharco FC"
+},
+"Philadelphia Union": {
+"legal": "Philadelphia Union",
+"qid": "Q689874",
+"short": "Philadelphia Union"
+},
+"Piast Gliwice": {
+"legal": "Gliwicki Klub Sportowy \"Piast\" Spółka Akcyjna",
+"qid": "Q668112",
+"short": "Piast Gliwice"
+},
+"Piratas": {
+"legal": "Piratas de Veracruz FC",
+"qid": "Q139551704",
+"short": "Piratas de Veracruz FC"
+},
+"Pisa": {
+"legal": "Pisa Sporting Club",
+"qid": "Q289613",
+"short": "Pisa SC"
+},
+"Platense": {
+"legal": "Club Atlético Platense",
+"qid": "Q151907",
+"short": "Club Atlético Platense"
+},
+"Plaza Colonia": {
+"legal": "Plaza Colonia",
+"qid": "Q1103101",
+"short": "Plaza Colonia"
+},
+"Plymouth": {
+"tried": "2026-11"
+},
+"Plymouth Argyle": {
+"tried": "2026-11"
+},
+"Plymouth Parkway FC": {
+"tried": "2026-11"
+},
+"Podbeskidzie": {
+"legal": "TS Podbeskidzie Spółka Akcyjna",
+"qid": "Q836279",
+"short": "Podbeskidzie Bielsko-Biała"
+},
+"Pogon Szczecin": {
+"legal": "Pogoń Szczecin Spółka Akcyjna",
+"qid": "Q836991",
+"short": "Pogoń Szczecin"
+},
+"Poli Iasi": {
+"tried": "2026-11"
+},
+"Poli Timisoara": {
+"legal": "FC Politehnica Timișoara",
+"qid": "Q723542",
+"short": "FC Politehnica Timișoara"
+},
+"Polonia Warszawa": {
+"legal": "Polonia Warsaw",
+"qid": "Q262569",
+"short": "Polonia Warsaw"
+},
+"Ponferradina": {
+"legal": "Sociedad Deportiva Ponferradina",
+"qid": "Q12168",
+"short": "Sociedad Deportiva Ponferradina"
+},
+"Ponte Preta": {
+"legal": "Associação Atlética Ponte Preta",
+"qid": "Q219120",
+"short": "Associação Atlética Ponte Preta"
+},
+"Pordenone": {
+"legal": "Pordenone FC",
+"qid": "Q257078",
+"short": "Pordenone FC"
+},
+"Port Vale": {
+"tried": "2026-11"
+},
+"Portadown FC": {
+"legal": "Portadown Football Club",
+"qid": "Q168660",
+"short": "Portadown FC"
+},
+"Portimonense": {
+"tried": "2026-11"
+},
+"Portland Timbers": {
+"legal": "Portland Timbers",
+"qid": "Q1031200",
+"short": "Portland Timbers"
+},
+"Portmore United": {
+"legal": "Portmore United FC",
+"qid": "Q1340514",
+"short": "Portmore United FC"
+},
+"Porto": {
+"legal": "FC Porto",
+"qid": "Q128446",
+"short": "FC Porto"
+},
+"Portsmouth": {
+"tried": "2026-11"
+},
+"Portuguesa": {
+"tried": "2026-11"
+},
+"Preston": {
+"tried": "2026-11"
+},
+"Preussen Munster": {
+"legal": "SC Preußen Münster",
+"qid": "Q316865",
+"short": "SC Preußen Münster"
+},
+"Preußen Münster": {
+"legal": "SC Preußen Münster",
+"qid": "Q316865",
+"short": "SC Preußen Münster"
+},
+"Primorje": {
+"tried": "2026-11"
+},
+"Progreso": {
+"legal": "CA Progreso",
+"qid": "Q420106",
+"short": "CA Progreso"
+},
+"Proxy": {
+"tried": "2026-11"
+},
+"Puebla": {
+"tried": "2026-11"
+},
+"Puszcza": {
+"legal": "Niepołomicki Sport Spółka Akcyjna",
+"qid": "Q4384885",
+"short": "Puszcza Niepołomice"
+},
+"QPR": {
+"tried": "2026-11"
+},
+"Qingdao FC": {
+"legal": "Qingdao FC",
+"qid": "Q3866968",
+"short": "Qingdao FC"
+},
+"Qingdao Hainiu": {
+"legal": "Qingdao Hainiu FC",
+"qid": "Q1192574",
+"short": "Qingdao Hainiu FC"
+},
+"Qingdao West Coast": {
+"tried": "2026-11"
+},
+"Queen of Sth": {
+"tried": "2026-11"
+},
+"Queens Park": {
+"legal": "FC Queens Park",
+"qid": "Q30115880",
+"short": "FC Queens Park"
+},
+"Queretaro": {
+"tried": "2026-11"
+},
+"Quevilly Rouen": {
+"legal": "Union sportive Quevilly Rouen Métropole",
+"qid": "Q1465560",
+"short": "US Quevilly"
+},
+"Quilmes": {
+"legal": "Quilmes Atlético Club",
+"qid": "Q775966",
+"short": "Quilmes Atlético Club"
+},
+"R. Volgograd": {
+"tried": "2026-11"
+},
+"RAAL La Louviere": {
+"tried": "2026-11"
+},
+"RB Leipzig": {
+"legal": "RB Leipzig",
+"qid": "Q702455",
+"short": "RB Leipzig"
+},
+"RWD Molenbeek": {
+"tried": "2026-11"
+},
+"Racing (Montevideo)": {
+"tried": "2026-11"
+},
+"Racing Club": {
+"tried": "2026-11"
+},
+"Radomiak Radom": {
+"tried": "2026-11"
+},
+"Raith Rvs": {
+"tried": "2026-11"
+},
+"Rakow": {
+"tried": "2026-11"
+},
+"Randers FC": {
+"legal": "Randers FC",
+"qid": "Q729560",
+"short": "Randers FC"
+},
+"Rangers": {
+"tried": "2026-11"
+},
+"Ranheim": {
+"legal": "Ranheim IL",
+"qid": "Q7292943",
+"short": "Ranheim IL"
+},
+"Reading": {
+"tried": "2026-11"
+},
+"Real Madrid": {
+"legal": "Real Madrid Club de Fútbol",
+"qid": "Q8682",
+"short": "Real Madrid Club de Fútbol"
+},
+"Real Salt Lake": {
+"legal": "Real Salt Lake",
+"qid": "Q391353",
+"short": "Real Salt Lake"
+},
+"Real Sociedad": {
+"legal": "Real Sociedad de Fútbol Sociedad Anónima Deportiva",
+"qid": "Q10315",
+"short": "Real Sociedad"
+},
+"Red Bull Bragantino SP": {
+"tried": "2026-11"
+},
+"Red Star": {
+"tried": "2026-11"
+},
+"Red Star Belgrade": {
+"tried": "2026-11"
+},
+"Regensburg": {
+"legal": "SC Regensburg",
+"qid": "Q2205519",
+"short": "SC Regensburg"
+},
+"Reggiana": {
+"legal": "AC Reggiana 1919",
+"qid": "Q289707",
+"short": "AC Reggiana 1919"
+},
+"Reggina": {
+"legal": "AS Reggina 1914",
+"qid": "Q8476",
+"short": "AS Reggina 1914"
+},
+"Reims": {
+"legal": "RC Reims",
+"qid": "Q3416273",
+"short": "RC Reims"
+},
+"Remo": {
+"tried": "2026-11"
+},
+"Rennes": {
+"tried": "2026-11"
+},
+"Ried": {
+"legal": "Sportvereinigung Ried von 1912",
+"qid": "Q457460",
+"short": "SV Ried"
+},
+"Riga FC": {
+"tried": "2026-11"
+},
+"Rio Ave": {
+"tried": "2026-11"
+},
+"River Plate": {
+"legal": "Club Atlético River Plate",
+"qid": "Q15799",
+"short": "Club Atlético River Plate"
+},
+"Rizespor": {
+"legal": "Çaykur Rizespor",
+"qid": "Q272712",
+"short": "Çaykur Rizespor"
+},
+"Rochdale": {
+"tried": "2026-11"
+},
+"Rodez": {
+"legal": "Rodez Aveyron Football",
+"qid": "Q292231",
+"short": "Rodez AF"
+},
+"Rodina Moscow": {
+"legal": "Футбольный клуб Родина",
+"qid": "Q66210522",
+"short": "FC Rodina Moscow"
+},
+"Roma": {
+"legal": "Associazione Sportiva Roma",
+"qid": "Q2739",
+"short": "AS Roma"
+},
+"Rosario Central": {
+"legal": "Club Atlético Rosario Central",
+"qid": "Q318307",
+"short": "Club Atlético Rosario Central"
+},
+"Rosenborg": {
+"tried": "2026-11"
+},
+"Ross County": {
+"tried": "2026-11"
+},
+"Rotherham": {
+"tried": "2026-11"
+},
+"Rovaniemi": {
+"tried": "2026-11"
+},
+"Rubin Kazan": {
+"legal": "Rubin Kazan",
+"qid": "Q170040",
+"short": "Rubin Kazan"
+},
+"Rubio Ñú": {
+"tried": "2026-11"
+},
+"Ruch": {
+"tried": "2026-11"
+},
+"Ruch Chorzow": {
+"legal": "Ruch Chorzów Spółka Akcyjna",
+"qid": "Q301726",
+"short": "Ruch Chorzów"
+},
+"SC Corinthians SP": {
+"tried": "2026-11"
+},
+"SC Wieselburg": {
+"tried": "2026-11"
+},
+"SJK": {
+"legal": "Seinäjoen Jalkapallokerho",
+"qid": "Q2185704",
+"short": "Seinäjoen Jalkapallokerho"
+},
+"SK Brann": {
+"tried": "2026-11"
+},
+"SK Rapid": {
+"tried": "2026-11"
+},
+"SK Sigma Olomouc B": {
+"legal": "SK Sigma Olomouc",
+"qid": "Q385518",
+"short": "SK Sigma Olomouc"
+},
+"SK Sturm Graz": {
+"legal": "Sportklub Puntigamer Sturm Graz",
+"qid": "Q124007617",
+"short": "SK Sturm Graz"
+},
+"SKA Khabarovsk": {
+"legal": "FC SKA-Energiya Khabarovsk",
+"qid": "Q927084",
+"short": "FC SKA-Energiya Khabarovsk"
+},
+"Sabadell": {
+"legal": "Centre d'Esports Sabadell Futbol Club",
+"qid": "Q12260",
+"short": "Centre d'Esports Sabadell Futbol Club"
+},
+"Sagan Tosu": {
+"legal": "Sagan Tosu",
+"qid": "Q1051238",
+"short": "Sagan Tosu"
+},
+"Salamanca UDS": {
+"legal": "Salamanca CF UDS",
+"qid": "Q2917880",
+"short": "Salamanca CF UDS"
+},
+"Salernitana": {
+"legal": "US Salernitana 1919",
+"qid": "Q847587",
+"short": "US Salernitana 1919"
+},
+"Salford": {
+"tried": "2026-11"
+},
+"Salzburg": {
+"legal": "FC Red Bull Salzburg",
+"qid": "Q994811",
+"short": "FC Red Bull Salzburg"
+},
+"Sampdoria": {
+"tried": "2026-11"
+},
+"Samsunspor": {
+"legal": "Samsunspor Futbol Kulübü Anonim Şirketi",
+"qid": "Q430107",
+"short": "Samsunspor"
+},
+"San Diego FC": {
+"legal": "San Diego FC",
+"qid": "Q118945347",
+"short": "San Diego FC"
+},
+"San Jose Earthquakes": {
+"tried": "2026-11"
+},
+"San Lorenzo": {
+"legal": "Club Atlético San Lorenzo de Almagro",
+"qid": "Q218282",
+"short": "San Lorenzo de Almagro"
+},
+"San Martin S.J.": {
+"tried": "2026-11"
+},
+"San Martin T.": {
+"tried": "2026-11"
+},
+"Sandecja Nowy S.": {
+"tried": "2026-11"
+},
+"Sandefjord": {
+"tried": "2026-11"
+},
+"Sandhausen": {
+"tried": "2026-11"
+},
+"Sandnes": {
+"legal": "Sandnes FK",
+"qid": "Q7416427",
+"short": "Sandnes FK"
+},
+"Sanfrecce Hiroshima": {
+"tried": "2026-11"
+},
+"Santa Clara": {
+"legal": "CD Santa Clara",
+"qid": "Q740637",
+"short": "CD Santa Clara"
+},
+"Santa Cruz": {
+"tried": "2026-11"
+},
+"Santander": {
+"tried": "2026-11"
+},
+"Santos": {
+"legal": "Santos FC",
+"qid": "Q80955",
+"short": "Santos FC"
+},
+"Santos Laguna": {
+"legal": "Santos Laguna",
+"qid": "Q745246",
+"short": "Santos Laguna"
+},
+"Sao Paulo": {
+"legal": "São Paulo FC",
+"qid": "Q38568",
+"short": "São Paulo FC"
+},
+"Sarmiento Junin": {
+"tried": "2026-11"
+},
+"Sarpsborg 08": {
+"legal": "Sarpsborg 08 FF",
+"qid": "Q1151909",
+"short": "Sarpsborg 08 FF"
+},
+"Sassuolo": {
+"legal": "US Sassuolo Calcio",
+"qid": "Q8603",
+"short": "US Sassuolo Calcio"
+},
+"Schaffhausen": {
+"legal": "FC Schaffhausen",
+"qid": "Q172247",
+"short": "FC Schaffhausen"
+},
+"Schalke 04": {
+"legal": "Fußballclub Gelsenkirchen-Schalke 04 e. V.",
+"qid": "Q32494",
+"short": "FC Schalke 04"
+},
+"Scunthorpe": {
+"tried": "2026-11"
+},
+"Seattle Sounders": {
+"tried": "2026-11"
+},
+"Sepsi Sf. Gheorghe": {
+"tried": "2026-11"
+},
+"Seraing": {
+"tried": "2026-11"
+},
+"Servette": {
+"legal": "Servette FC",
+"qid": "Q219235",
+"short": "Servette FC"
+},
+"Setubal": {
+"tried": "2026-11"
+},
+"Sevilla": {
+"legal": "Sevilla FC",
+"qid": "Q10329",
+"short": "Sevilla FC"
+},
+"Shamrock Rovers": {
+"tried": "2026-11"
+},
+"Shandong Luneng": {
+"tried": "2026-11"
+},
+"Shandong Taishan": {
+"legal": "山东泰山足球俱乐部",
+"qid": "Q1046367",
+"short": "山东泰山足球俱乐部"
+},
+"Shanghai Port": {
+"tried": "2026-11"
+},
+"Shanghai SIPG": {
+"tried": "2026-11"
+},
+"Shanghai Shenhua": {
+"legal": "上海申花足球俱乐部",
+"qid": "Q725367",
+"short": "上海申花足球俱乐部"
+},
+"Shanghai Shenxin": {
+"legal": "Shanghai Shenxin FC",
+"qid": "Q248911",
+"short": "Shanghai Shenxin FC"
+},
+"Sheffield United": {
+"tried": "2026-11"
+},
+"Sheffield Utd": {
+"tried": "2026-11"
+},
+"Sheffield Wednesday": {
+"tried": "2026-11"
+},
+"Sheffield Weds": {
+"tried": "2026-11"
+},
+"Shelbourne": {
+"legal": "Shelbourne FC",
+"qid": "Q394474",
+"short": "Shelbourne FC"
+},
+"Shenzhen": {
+"legal": "Shenzhen FC",
+"qid": "Q1139956",
+"short": "Shenzhen FC"
+},
+"Shenzhen Xinpengcheng": {
+"tried": "2026-11"
+},
+"Shijiazhuang": {
+"tried": "2026-11"
+},
+"Shimizu S-Pulse": {
+"legal": "Shimizu S-Pulse",
+"qid": "Q823384",
+"short": "Shimizu S-Pulse"
+},
+"Shonan Bellmare": {
+"legal": "Shonan Bellmare",
+"qid": "Q692856",
+"short": "Shonan Bellmare"
+},
+"Shrewsbury": {
+"tried": "2026-11"
+},
+"Silkeborg": {
+"legal": "Silkeborg IF",
+"qid": "Q723489",
+"short": "Silkeborg IF"
+},
+"Sint Truiden": {
+"legal": "Koninklijke Sint-Truidense Voetbalvereniging",
+"qid": "Q138248",
+"short": "Sint-Truidense VV"
+},
+"Sion": {
+"legal": "FC Sion",
+"qid": "Q321061",
+"short": "FC Sion"
+},
+"Sirius": {
+"tried": "2026-11"
+},
+"Sivasspor": {
+"legal": "Sivasspor",
+"qid": "Q372599",
+"short": "Sivasspor"
+},
+"Skive IK": {
+"legal": "Skive IK",
+"qid": "Q1036992",
+"short": "Skive IK"
+},
+"Slask Wroclaw": {
+"legal": "Wrocławski Klub Sportowy Śląsk Wrocław Spółka Akcyjna",
+"qid": "Q328655",
+"short": "Śląsk Wrocław"
+},
+"Sligo Rovers": {
+"legal": "Sligo Rovers FC",
+"qid": "Q244874",
+"short": "Sligo Rovers FC"
+},
+"Smail": {
+"tried": "2026-11"
+},
+"Sochaux": {
+"tried": "2026-11"
+},
+"Sochi": {
+"tried": "2026-11"
+},
+"Sociedad": {
+"tried": "2026-11"
+},
+"Sociedad B": {
+"tried": "2026-11"
+},
+"Sogndal": {
+"tried": "2026-11"
+},
+"Sokół Kleczew": {
+"legal": "Sokół Kleczew",
+"qid": "Q28672861",
+"short": "Sokół Kleczew"
+},
+"Solihull": {
+"legal": "Solihull Moors FC",
+"qid": "Q2975959",
+"short": "Solihull Moors FC"
+},
+"Sonderjyske": {
+"tried": "2026-11"
+},
+"Southampton": {
+"tried": "2026-11"
+},
+"Southend": {
+"tried": "2026-11"
+},
+"Sp Braga": {
+"legal": "SC Braga",
+"qid": "Q75684",
+"short": "SC Braga"
+},
+"Sp Gijon": {
+"legal": "Real Sporting de Gijón S.A.D.",
+"qid": "Q12278",
+"short": "Sporting de Gijón"
+},
+"Sp Lisbon": {
+"legal": "Sporting CP",
+"qid": "Q75729",
+"short": "Sporting CP"
+},
+"Spal": {
+"tried": "2026-11"
+},
+"Sparta Prague": {
+"tried": "2026-11"
+},
+"Sparta Rotterdam": {
+"tried": "2026-11"
+},
+"Spartak Moscow": {
+"legal": "Spartak Moscow",
+"qid": "Q29112",
+"short": "Spartak Moscow"
+},
+"Spartak Nalchik": {
+"legal": "PFC Spartak Nalchik",
+"qid": "Q693951",
+"short": "PFC Spartak Nalchik"
+},
+"Spartans": {
+"tried": "2026-11"
+},
+"Spezia": {
+"legal": "Spezia Calcio",
+"qid": "Q8615",
+"short": "Spezia Calcio"
+},
+"Sport Recife": {
+"legal": "Sport Club do Recife",
+"qid": "Q219098",
+"short": "Sport Club do Recife"
+},
+"Sporting Kansas City": {
+"legal": "Sporting Kansas City",
+"qid": "Q329812",
+"short": "Sporting Kansas City"
+},
+"Sportivo Luqueño": {
+"tried": "2026-11"
+},
+"Sportivo San Lorenzo": {
+"legal": "Club Sportivo San Lorenzo",
+"qid": "Q2980003",
+"short": "Club Sportivo San Lorenzo"
+},
+"St Etienne": {
+"tried": "2026-11"
+},
+"St Johnstone": {
+"legal": "St Johnstone FC",
+"qid": "Q268776",
+"short": "St Johnstone FC"
+},
+"St Mirren": {
+"legal": "St. Mirren FC",
+"qid": "Q319136",
+"short": "St. Mirren FC"
+},
+"St Pauli": {
+"tried": "2026-11"
+},
+"St Truiden": {
+"tried": "2026-11"
+},
+"St. Gallen": {
+"legal": "FC St. Gallen",
+"qid": "Q659212",
+"short": "FC St. Gallen"
+},
+"St. Gilloise": {
+"tried": "2026-11"
+},
+"St. Louis City": {
+"legal": "St. Louis City SC",
+"qid": "Q66642491",
+"short": "St. Louis City SC"
+},
+"St. Patricks": {
+"tried": "2026-11"
+},
+"St. Polten": {
+"tried": "2026-11"
+},
+"Stabaek": {
+"tried": "2026-11"
+},
+"Stal Mielec": {
+"legal": "FKS Stal Mielec Spółka Akcyjna",
+"qid": "Q1388790",
+"short": "Stal Mielec"
+},
+"Standard": {
+"tried": "2026-11"
+},
+"Standard Liege": {
+"tried": "2026-11"
+},
+"Start": {
+"tried": "2026-11"
+},
+"Stenhousemuir": {
+"legal": "Stenhousemuir FC",
+"qid": "Q1140392",
+"short": "Stenhousemuir FC"
+},
+"Stevenage": {
+"legal": "Stevenage Football Club",
+"qid": "Q9426",
+"short": "Stevenage FC"
+},
+"Stirling": {
+"tried": "2026-11"
+},
+"Stockport": {
+"tried": "2026-11"
+},
+"Stockport County": {
+"tried": "2026-11"
+},
+"Stoke": {
+"tried": "2026-11"
+},
+"Stranraer": {
+"legal": "Stranraer FC",
+"qid": "Q1090661",
+"short": "Stranraer FC"
+},
+"Strasbourg": {
+"legal": "Racing Club de Strasbourg Alsace",
+"qid": "Q126334",
+"short": "RC Strasbourg Alsace"
+},
+"Stromsgodset": {
+"tried": "2026-11"
+},
+"Sturm Graz": {
+"legal": "Sportklub Puntigamer Sturm Graz",
+"qid": "Q124007617",
+"short": "SK Sturm Graz"
+},
+"Stuttgart": {
+"legal": "VfB Stuttgart",
+"qid": "Q4512",
+"short": "VfB Stuttgart"
+},
+"Sudtirol": {
+"legal": "FC Südtirol",
+"qid": "Q1387710",
+"short": "FC Südtirol"
+},
+"Sunderland": {
+"tried": "2026-11"
+},
+"Sundsvall": {
+"tried": "2026-11"
+},
+"Sur": {
+"legal": "Sur SC",
+"qid": "Q3138889",
+"short": "Sur SC"
+},
+"Sutton": {
+"legal": "Sutton United Football Club",
+"qid": "Q2454929",
+"short": "Sutton United FC"
+},
+"Swansea": {
+"tried": "2026-11"
+},
+"Swindon": {
+"tried": "2026-11"
+},
+"Swindon Town": {
+"tried": "2026-11"
+},
+"Syrianska": {
+"legal": "Syrianska FC",
+"qid": "Q683351",
+"short": "Syrianska FC"
+},
+"São Bernardo": {
+"tried": "2026-11"
+},
+"T. Moscow": {
+"tried": "2026-11"
+},
+"TPS": {
+"legal": "Turun Palloseura",
+"qid": "Q223813",
+"short": "TPS Turku"
+},
+"TSV 1860 Munich II": {
+"tried": "2026-11"
+},
+"TSV Havelse": {
+"tried": "2026-11"
+},
+"TSV Schwabmunchen": {
+"legal": "TSV Schwabmünchen",
+"qid": "Q1542115",
+"short": "TSV Schwabmünchen"
+},
+"Talleres Cordoba": {
+"tried": "2026-11"
+},
+"Tambov": {
+"tried": "2026-11"
+},
+"Tamworth": {
+"tried": "2026-11"
+},
+"Targu Mures": {
+"legal": "Asociația Sportivă Ardealul Târgu Mureș",
+"qid": "Q240563",
+"short": "ASA Târgu Mureș"
+},
+"Tegevajaro Miyazaki": {
+"legal": "Tegevajaro Miyazaki",
+"qid": "Q11232186",
+"short": "Tegevajaro Miyazaki"
+},
+"Telstar": {
+"legal": "Telstar 1963 NV",
+"qid": "Q1071713",
+"short": "Telstar"
+},
+"Temperley": {
+"tried": "2026-11"
+},
+"Tenerife": {
+"legal": "CD Tenerife",
+"qid": "Q216661",
+"short": "CD Tenerife"
+},
+"Termalica B-B.": {
+"tried": "2026-11"
+},
+"Ternana": {
+"legal": "Ternana Calcio",
+"qid": "Q8623",
+"short": "Ternana Calcio"
+},
+"Thisted FC": {
+"legal": "Thisted FC",
+"qid": "Q867882",
+"short": "Thisted FC"
+},
+"Thun": {
+"legal": "FC Thun",
+"qid": "Q464775",
+"short": "FC Thun"
+},
+"Tianjin Jinmen Tiger": {
+"tried": "2026-11"
+},
+"Tianjin Quanjian": {
+"tried": "2026-11"
+},
+"Tianjin Tianhai": {
+"tried": "2026-11"
+},
+"Tigre": {
+"tried": "2026-11"
+},
+"Tirol": {
+"tried": "2026-11"
+},
+"Tokushima": {
+"legal": "FC Tokushima",
+"qid": "Q28693134",
+"short": "FC Tokushima"
+},
+"Toluca": {
+"legal": "Toluca FC",
+"qid": "Q670186",
+"short": "Toluca FC"
+},
+"Tomsk": {
+"tried": "2026-11"
+},
+"Tondela": {
+"legal": "CD Tondela",
+"qid": "Q1023227",
+"short": "CD Tondela"
+},
+"Torino": {
+"legal": "Torino FC",
+"qid": "Q2768",
+"short": "Torino FC"
+},
+"Toronto FC": {
+"tried": "2026-11"
+},
+"Torpedo Moscow": {
+"legal": "FC Torpedo Moscow",
+"qid": "Q324338",
+"short": "FC Torpedo Moscow"
+},
+"Torquay": {
+"legal": "Torquay United Football Club",
+"qid": "Q47965",
+"short": "Torquay United FC"
+},
+"Torreense": {
+"legal": "SCU Torreense",
+"qid": "Q136715682",
+"short": "SCU Torreense"
+},
+"Tosno": {
+"tried": "2026-11"
+},
+"Tottenham": {
+"tried": "2026-11"
+},
+"Toulouse": {
+"tried": "2026-11"
+},
+"Trabzonspor": {
+"tried": "2026-11"
+},
+"Tranmere": {
+"tried": "2026-11"
+},
+"Tranmere Rovers": {
+"tried": "2026-11"
+},
+"Transit Camp FC": {
+"tried": "2026-11"
+},
+"Trapani": {
+"tried": "2026-11"
+},
+"Treaty United": {
+"legal": "Treaty United",
+"qid": "Q84942630",
+"short": "Treaty United"
+},
+"Trelleborgs": {
+"tried": "2026-11"
+},
+"Triglav": {
+"tried": "2026-11"
+},
+"Tromso": {
+"tried": "2026-11"
+},
+"Troyes": {
+"tried": "2026-11"
+},
+"Truro": {
+"legal": "Truro City Football Club",
+"qid": "Q4392059",
+"short": "Truro City FC"
+},
+"Twente": {
+"tried": "2026-11"
+},
+"Técnico Universitario": {
+"legal": "Técnico Universitario",
+"qid": "Q332866",
+"short": "Técnico Universitario"
+},
+"U Craiova": {
+"legal": "Universitatea Craiova",
+"qid": "Q16838020",
+"short": "Universitatea Craiova"
+},
+"U Craiova 1948": {
+"tried": "2026-11"
+},
+"U. Cluj": {
+"tried": "2026-11"
+},
+"U.A.N.L.- Tigres": {
+"tried": "2026-11"
+},
+"U.N.A.M.- Pumas": {
+"legal": "Pumas UNAM",
+"qid": "Q1143000",
+"short": "Pumas UNAM"
+},
+"UC Dublin": {
+"tried": "2026-11"
+},
+"UTA Arad": {
+"legal": "FC UTA Arad",
+"qid": "Q680770",
+"short": "FC UTA Arad"
+},
+"Udinese": {
+"legal": "Udinese Calcio",
+"qid": "Q2798",
+"short": "Udinese Calcio"
+},
+"Ufa": {
+"tried": "2026-11"
+},
+"Ull/Kisa": {
+"tried": "2026-11"
+},
+"Ulm": {
+"legal": "SSV Ulm 1846",
+"qid": "Q701290",
+"short": "SSV Ulm 1846"
+},
+"Umraniyespor": {
+"tried": "2026-11"
+},
+"Union Berlin": {
+"legal": "1. Fußballclub Union Berlin e. V.",
+"qid": "Q141971",
+"short": "1. FC Union Berlin"
+},
+"Union de Santa Fe": {
+"legal": "Club Atlético Unión",
+"qid": "Q80899",
+"short": "Club Atlético Unión"
+},
+"Unirea Slobozia": {
+"tried": "2026-11"
+},
+"Univ. Craiova": {
+"tried": "2026-11"
+},
+"Universitario de Vinto": {
+"legal": "FC Universitario de Vinto",
+"qid": "Q110123008",
+"short": "FC Universitario de Vinto"
+},
+"Universitatea Craiova": {
+"legal": "Universitatea Craiova",
+"qid": "Q16838020",
+"short": "Universitatea Craiova"
+},
+"Ural": {
+"tried": "2026-11"
+},
+"Urawa Reds": {
+"legal": "Urawa Red Diamonds",
+"qid": "Q218883",
+"short": "Urawa Red Diamonds"
+},
+"Utrecht": {
+"legal": "Football Club Utrecht",
+"qid": "Q24680",
+"short": "FC Utrecht"
+},
+"V-Varen Nagasaki": {
+"legal": "V-Varen Nagasaki",
+"qid": "Q3029309",
+"short": "V-Varen Nagasaki"
+},
+"VPS": {
+"tried": "2026-11"
+},
+"VVV Venlo": {
+"legal": "Venlose Voetbal Vereniging Venlo",
+"qid": "Q24689",
+"short": "VVV-Venlo"
+},
+"Vaduz": {
+"tried": "2026-11"
+},
+"Valencia": {
+"legal": "Valencia CF",
+"qid": "Q10333",
+"short": "Valencia CF"
+},
+"Valenciennes": {
+"tried": "2026-11"
+},
+"Valerenga": {
+"tried": "2026-11"
+},
+"Valladolid": {
+"legal": "Real Valladolid",
+"qid": "Q10319",
+"short": "Real Valladolid"
+},
+"Vallecano": {
+"legal": "Rayo Vallecano",
+"qid": "Q10300",
+"short": "Rayo Vallecano"
+},
+"Vancouver Whitecaps": {
+"tried": "2026-11"
+},
+"Varberg": {
+"tried": "2026-11"
+},
+"Varnamo": {
+"tried": "2026-11"
+},
+"Vasco": {
+"tried": "2026-11"
+},
+"Vaslui": {
+"legal": "FC Vaslui",
+"qid": "Q453925",
+"short": "FC Vaslui"
+},
+"Vasteras SK": {
+"legal": "Västerås SK Fotboll",
+"qid": "Q1680249",
+"short": "Västerås SK Fotboll"
+},
+"Vegalta Sendai": {
+"legal": "Vegalta Sendai",
+"qid": "Q1044651",
+"short": "Vegalta Sendai"
+},
+"Vejle": {
+"legal": "Vejle Boldklub",
+"qid": "Q737936",
+"short": "Vejle Boldklub"
+},
+"Velez Sarsfield": {
+"legal": "Velez",
+"qid": "Q215163",
+"short": "Club Atlético Vélez Sarsfield"
+},
+"Vendsyssel": {
+"tried": "2026-11"
+},
+"Venezia": {
+"tried": "2026-11"
+},
+"Ventforet Kofu": {
+"legal": "Ventforet Kofu",
+"qid": "Q1061696",
+"short": "Ventforet Kofu"
+},
+"Veracruz": {
+"tried": "2026-11"
+},
+"Verdy": {
+"tried": "2026-11"
+},
+"Verona": {
+"legal": "Hellas Verona FC",
+"qid": "Q8639",
+"short": "Hellas Verona FC"
+},
+"Vestsjaelland": {
+"tried": "2026-11"
+},
+"VfL Wolfsburg": {
+"legal": "VfL Wolfsburg",
+"qid": "Q101859",
+"short": "VfL Wolfsburg"
+},
+"Viborg": {
+"tried": "2026-11"
+},
+"Vicenza": {
+"tried": "2026-11"
+},
+"Viitorul Constanta": {
+"tried": "2026-11"
+},
+"Viking": {
+"tried": "2026-11"
+},
+"Viktoria Plzeň": {
+"tried": "2026-11"
+},
+"Villarreal": {
+"legal": "Villarreal CF",
+"qid": "Q12297",
+"short": "Villarreal CF"
+},
+"Villarreal B": {
+"legal": "Villarreal CF",
+"qid": "Q12297",
+"short": "Villarreal CF"
+},
+"Vipers SC": {
+"legal": "Vipers SC",
+"qid": "Q2928157",
+"short": "Vipers SC"
+},
+"Virtus Entella": {
+"legal": "Virtus Entella",
+"qid": "Q2276413",
+"short": "Virtus Entella"
+},
+"Vissel Kobe": {
+"legal": "Vissel Kobe",
+"qid": "Q844271",
+"short": "Vissel Kobe"
+},
+"Vitesse": {
+"legal": "Stichting Betaald Voetbal Vitesse Fc",
+"qid": "Q219233",
+"short": "SBV Vitesse"
+},
+"Vitoria": {
+"tried": "2026-11"
+},
+"Vizela": {
+"legal": "FC Vizela",
+"qid": "Q1387855",
+"short": "FC Vizela"
+},
+"Vladikavkaz": {
+"tried": "2026-11"
+},
+"Volendam": {
+"legal": "Football Club Volendam",
+"qid": "Q738060",
+"short": "FC Volendam"
+},
+"Volga N. Novgorod": {
+"tried": "2026-11"
+},
+"Volgar-Astrakhan": {
+"legal": "FC Volgar Astrakhan",
+"qid": "Q2299795",
+"short": "FC Volgar Astrakhan"
+},
+"Volos NFC": {
+"legal": "Νέος Ποδοσφαιρικός Σύλλογος «Βόλος» Ποδοσφαιρική Ανώνυμη Εταιρεία",
+"qid": "Q43375974",
+"short": "Ν.Π.Σ. Βόλος"
+},
+"Waalwijk": {
+"tried": "2026-11"
+},
+"Waasland-Beveren": {
+"tried": "2026-11"
+},
+"Wacker Innsbruck": {
+"legal": "Fußballclub Wacker Innsbruck",
+"qid": "Q261813",
+"short": "FC Wacker Innsbruck"
+},
+"Walsall": {
+"tried": "2026-11"
+},
+"Waregem": {
+"legal": "Badmintonclub Waregem",
+"qid": "Q68078564",
+"short": "Badmintonclub Waregem"
+},
+"Warta Poznan": {
+"legal": "Warta Poznań Spółka Akcyjna",
+"qid": "Q1198772",
+"short": "Warta Poznań"
+},
+"Waterford": {
+"tried": "2026-11"
+},
+"Watford": {
+"legal": "Watford Football Club",
+"qid": "Q2714",
+"short": "Watford FC"
+},
+"Wealdstone": {
+"legal": "Wealdstone FC",
+"qid": "Q9437",
+"short": "Wealdstone FC"
+},
+"Wehen": {
+"tried": "2026-11"
+},
+"Werder Bremen": {
+"tried": "2026-11"
+},
+"West Brom": {
+"tried": "2026-11"
+},
+"West Ham": {
+"tried": "2026-11"
+},
+"Westerlo": {
+"legal": "Koninklijke Voetbal ClubWesterlo",
+"qid": "Q849544",
+"short": "KVC Westerlo"
+},
+"Wexford": {
+"tried": "2026-11"
+},
+"Weymouth": {
+"tried": "2026-11"
+},
+"Widzew Lodz": {
+"legal": "Widzew Łódź Spółka Akcyjna",
+"qid": "Q244981",
+"short": "Widzew Łódź"
+},
+"Wieczysta Krakow": {
+"legal": "Wieczysta Kraków Spółka Akcyjna",
+"qid": "Q86677609",
+"short": "Wieczysta Kraków"
+},
+"Wigan": {
+"tried": "2026-11"
+},
+"Wigan Athletic": {
+"tried": "2026-11"
+},
+"Willem II": {
+"tried": "2026-11"
+},
+"Winterthur": {
+"tried": "2026-11"
+},
+"Wisla": {
+"tried": "2026-11"
+},
+"Wisla Plock": {
+"legal": "Wisła Płock Spółka Akcyjna",
+"qid": "Q1475269",
+"short": "Wisła Płock"
+},
+"Woking": {
+"tried": "2026-11"
+},
+"Wolfsberger AC": {
+"legal": "Riegler & Zechmeister PelletsWolfsberger Athletik Club",
+"qid": "Q694484",
+"short": "Wolfsberger AC"
+},
+"Wolfsburg": {
+"legal": "VfL Wolfsburg",
+"qid": "Q101859",
+"short": "VfL Wolfsburg"
+},
+"Wolves": {
+"tried": "2026-11"
+},
+"Worthing": {
+"legal": "Worthing FC",
+"qid": "Q2676506",
+"short": "Worthing FC"
+},
+"Wrexham": {
+"tried": "2026-11"
+},
+"Wuhan FC": {
+"tried": "2026-11"
+},
+"Wuhan Three Towns": {
+"tried": "2026-11"
+},
+"Wurzburger Kickers": {
+"tried": "2026-11"
+},
+"Wycombe": {
+"tried": "2026-11"
+},
+"Xamax": {
+"legal": "Neuchâtel Xamax FCS",
+"qid": "Q335195",
+"short": "Neuchâtel Xamax FCS"
+},
+"Xanthi": {
+"legal": "Αθλητικός Όμιλος Ξάνθη",
+"qid": "Q750437",
+"short": "Α.Ο. Ξάνθη"
+},
+"Yamaga": {
+"tried": "2026-11"
+},
+"Yanbian": {
+"tried": "2026-11"
+},
+"Yeni Malatyaspor": {
+"legal": "Yeni Malatyaspor",
+"qid": "Q303121",
+"short": "Yeni Malatyaspor"
+},
+"Yenisey": {
+"tried": "2026-11"
+},
+"Yeovil": {
+"tried": "2026-11"
+},
+"Yokohama F. Marinos": {
+"legal": "Yokohama F. Marinos",
+"qid": "Q854932",
+"short": "Yokohama F. Marinos"
+},
+"Yokohama FC": {
+"legal": "Yokohama FC",
+"qid": "Q1062259",
+"short": "Yokohama FC"
+},
+"York": {
+"tried": "2026-11"
+},
+"York City": {
+"tried": "2026-11"
+},
+"Young Boys": {
+"tried": "2026-11"
+},
+"Yverdon": {
+"legal": "Yverdon-Sport FC",
+"qid": "Q669130",
+"short": "Yverdon-Sport FC"
+},
+"Zaglebie": {
+"tried": "2026-11"
+},
+"Zaglebie Sosnowiec": {
+"tried": "2026-11"
+},
+"Zaragoza": {
+"legal": "Zaragoza CD",
+"qid": "Q8066577",
+"short": "Zaragoza CD"
+},
+"Zawisza": {
+"tried": "2026-11"
+},
+"Zenit": {
+"legal": "Зенит",
+"qid": "Q29108",
+"short": "Зенит"
+},
+"Zhejiang Greentown": {
+"tried": "2026-11"
+},
+"Zhejiang Professional": {
+"legal": "浙江职业足球俱乐部",
+"qid": "Q79380",
+"short": "浙江职业足球俱乐部"
+},
+"Zhejiang Yiteng": {
+"tried": "2026-11"
+},
+"Znicz Pruszków": {
+"legal": "Znicz Pruszków",
+"qid": "Q217977",
+"short": "Znicz Pruszków"
+},
+"Zurich": {
+"tried": "2026-11"
+},
+"Zwolle": {
+"legal": "Prins Hendrik Ende Desespereert Nimmer Combinatie Zwolle",
+"qid": "Q269151",
+"short": "PEC Zwolle"
+},
+"Águila": {
+"legal": "CD Águila",
+"qid": "Q932563",
+"short": "CD Águila"
+}
+}
