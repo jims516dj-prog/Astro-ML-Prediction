@@ -9,7 +9,8 @@ permissions:
   contents: write
 concurrency: founding-days
 jobs:
-  fetch:
+  # three lookups side by side, each with its own time limit, each publishing its own file
+  founding-days:
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -21,9 +22,45 @@ jobs:
       - run: pip install -r requirements.txt
       - run: python scripts/fetch_founding_days.py
         continue-on-error: true
+      - name: Publish (whatever was found, even if the run stopped early)
+        if: always()
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          for f in data/ref/team_founding_days.json; do [ -f "$f" ] && git add "$f"; done
+          git diff --cached --quiet || { git commit -m "founding dates: Wikidata / Wikipedia $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
+
+  club-names:
+    runs-on: ubuntu-latest
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
       - name: Official club names (Wikidata)
         run: python scripts/fetch_official_names.py
         continue-on-error: true
+      - name: Publish (whatever was found, even if the run stopped early)
+        if: always()
+        run: |
+          git config user.name "track-record-bot"
+          git config user.email "track-record-bot@users.noreply.github.com"
+          for f in data/ref/team_names.json; do [ -f "$f" ] && git add "$f"; done
+          git diff --cached --quiet || { git commit -m "official club names: Wikidata $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
+
+  tennis-names:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -r requirements.txt
       - name: Tennis players' legal names (Wikidata)
         run: python scripts/fetch_tennis_names.py
         continue-on-error: true
@@ -32,5 +69,5 @@ jobs:
         run: |
           git config user.name "track-record-bot"
           git config user.email "track-record-bot@users.noreply.github.com"
-          for f in data/ref/team_founding_days.json data/ref/team_names.json data/ref/tennis_names.json; do [ -f "$f" ] && git add "$f"; done
-          git diff --cached --quiet || { git commit -m "founding dates: Wikidata / Wikipedia $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
+          for f in data/ref/tennis_names.json; do [ -f "$f" ] && git add "$f"; done
+          git diff --cached --quiet || { git commit -m "tennis legal names: Wikidata $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
