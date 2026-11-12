@@ -626,3 +626,13 @@ def test_lta_real_response_shapes():
     assert lta.result_of(wo)["void"] and lta.result_of(wo)["void_reason"] == "walkover"
     ret = {**done, "outcome": "retired", "score": {"games": [[6, 2], [3, 1]]}}
     assert lta.result_of(ret)["retired"] and lta.result_of(ret)["set_winners"] == "1"
+
+
+def test_sources_with_different_name_orders_are_the_same_match():
+    from astrofoot.tennis import live as tlive
+    assert tlive.same_match("Marina Ribera Bassols", "Bianca Andreescu", "2026-11-12T16:30Z",
+                            "Bianca Andreescu", "Marina Bassols Ribera", "2026-11-12T16:30Z")
+    assert tlive.same_match("Irene Burillo Escorihuela", "Laura Samson", "2026-11-12T15:00Z",
+                            "Irene Burillo", "Laura Samson", "2026-11-12T18:00Z")
+    assert not tlive.same_match("Irene Burillo", "Laura Samson", "2026-11-12T15:00Z",
+                                "Irene Burillo", "Laura Samson", "2026-11-15T15:00Z")       # days apart: another match

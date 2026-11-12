@@ -25,7 +25,8 @@ CITY_ALIAS = {"washington dc": "washington", "st petersburg": "saint petersburg"
               "quebec city": "quebec", "mallorca": "palma", "bali": "denpasar", "flushing meadows": "new york city",
               "new york": "new york city", "cincinnatti": "cincinnati", "cincinatti": "cincinnati",
               "costa do sauipe": "salvador", "los cobos": "cabo san lucas", "los cabos": "cabo san lucas",
-              "tenerife": "santa cruz de tenerife", "nuevo vallarta": "puerto vallarta", "s'hertogenbosch": "s hertogenbosch", "'s-hertogenbosch": "s hertogenbosch"}
+              "tenerife": "santa cruz de tenerife", "nuevo vallarta": "puerto vallarta", "hersonissos": "irakleion",
+              "chersonissos": "irakleion", "heraklion": "irakleion", "s'hertogenbosch": "s hertogenbosch", "'s-hertogenbosch": "s hertogenbosch"}
 US_STATES = {"connecticut": "America/New_York", "north carolina": "America/New_York", "ohio": "America/New_York",
              "new york": "America/New_York", "florida": "America/New_York", "california": "America/Los_Angeles",
              "texas": "America/Chicago", "illinois": "America/Chicago", "massachusetts": "America/New_York",
@@ -56,7 +57,10 @@ def venue_tz(venue: str) -> str | None:
         return None
     code = _code(parts[-1])
     if code is None:                 # no country given ("Kuala Lumpur"): the most populous city of that name anywhere
-        hit = c[c.key == geo.norm(CITY_ALIAS.get(parts[-1].lower(), parts[-1]))].sort_values("population", ascending=False)
+        k = geo.norm(CITY_ALIAS.get(parts[-1].lower(), parts[-1]))
+        hit = c[c.key == k].sort_values("population", ascending=False)
+        if not len(hit):           # "Matsuyama" → "Matsuyama-shi"
+            hit = c[c.key.str.startswith(k + " ")].sort_values("population", ascending=False)
         return str(hit.iloc[0].timezone) if len(hit) and isinstance(hit.iloc[0].timezone, str) else None
     rows = c[c.country_code == code]
     for name in parts[:-1]:

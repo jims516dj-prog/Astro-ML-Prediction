@@ -45,12 +45,21 @@ def _lta_to_espn_ids(df: pd.DataFrame, matches: pd.DataFrame, ledger: Path) -> p
         for i, n in zip(pd.concat([matches.p1_id, matches.p2_id]), pd.concat([matches.p1, matches.p2])):
             if not str(i).startswith("-"):
                 names.setdefault(_norm_name(n), set()).add(str(i))
+    from .odds import same_player
+    by_first: dict[str, list[tuple[str, set]]] = {}
+    for n, i in names.items():
+        if n:
+            by_first.setdefault(n.split()[0], []).append((n, i))
     df = df.copy()
     dobs = {}
     for side in ("p1", "p2"):
         new_ids = []
         for i, n, dob, hand in zip(df[f"{side}_id"], df[side], df["_dob"], df["_hand"]):
             ids = names.get(_norm_name(n), set())
+            if not ids:        # word order and second surnames differ between sources ("Marina Ribera Bassols")
+                cands = {x for nm, s in by_first.get(_norm_name(n).split()[0] if n else "", []) if same_player(n, nm)
+                         for x in s}
+                ids = cands
             new = next(iter(ids)) if len(ids) == 1 else i
             new_ids.append(new)
             if dob.get(i):
@@ -73,11 +82,15 @@ def _espn_has(r: dict, up: pd.DataFrame) -> bool:
     """The same match already listed by ESPN (same two players within 36 hours)."""
     if up.empty:
         return False
-    a, b, t = _norm_name(r["p1"]), _norm_name(r["p2"]), pd.Timestamp(r["date"])
-    for x in up.to_dict("records"):
-        if {_norm_name(x["p1"]), _norm_name(x["p2"])} == {a, b} and abs((pd.Timestamp(x["date"]) - t).total_seconds()) < 36 * 3600:
-            return True
-    return False
+    return any(same_match(r["p1"], r["p2"], r["date"], x["p1"], x["p2"], x["date"]) for x in up.to_dict("records"))
+
+
+def same_match(a1, a2, t1, b1, b2, t2, hours: float = 36) -> bool:
+    """The same two players (names written either way round, as the sources differ) within `hours`."""
+    from .odds import same_player
+    if abs((pd.Timestamp(t1) - pd.Timestamp(t2)).total_seconds()) >= hours * 3600:
+        return False
+    return (same_player(a1, b1) and same_player(a2, b2)) or (same_player(a1, b2) and same_player(a2, b1))
 
 
 def effective_start(venue_name: str, when) -> pd.Timestamp:
@@ -257,8 +270,13 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                             "settled_at": now.isoformat(timespec="seconds")})
         client.save()
         res = {**res, **{x["match_id"]: x for x in settled}}
+    espn_preds = [x for x in predictions(ledger) if not x["match_id"].startswith(lta.PREFIX)]
     for r in predictions(ledger):
         if r["match_id"] in res:
+            continue
+        if r["match_id"].startswith(lta.PREFIX) and _dup_of_espn(r, espn_preds):
+            settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
+                            "void": True, "void_reason": DUP_REASON, "source": "", "settled_at": now.isoformat(timespec="seconds")})
             continue
         if _tbd(r):     # sealed before the fix that skips not-yet-known players
             settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
@@ -295,6 +313,13 @@ def _start_for_scoring(r: dict, res: dict | None) -> str:
         start = venue.day_start_utc(r.get("venue") or "", venue.local_day(r.get("venue") or "", start)[0]).isoformat()
     final = (res or {}).get("start_final")
     return min(start, pd.Timestamp(final).isoformat()) if final else start
+
+
+DUP_REASON = "the same match is forecast from ESPN"
+
+
+def _dup_of_espn(r: dict, espn_preds: list[dict]) -> bool:
+    return any(same_match(r["p1"], r["p2"], r["start_utc"], x["p1"], x["p2"], x["start_utc"]) for x in espn_preds)
 
 
 TBD_REASON = "a player was still TBD (not yet known) when forecast"
@@ -394,7 +419,12 @@ def records(ledger: Path = LEDGER, user_odds: dict | None = None) -> list[dict]:
     res = results(ledger)
     out = []
     bundle = model.load() if user_odds else None
-    for r in predictions(ledger):
+    preds = predictions(ledger)
+    espn_preds = [x for x in preds if not x["match_id"].startswith(lta.PREFIX)]
+    for r in preds:
+        if r["match_id"] not in res and r["match_id"].startswith(lta.PREFIX) and _dup_of_espn(r, espn_preds):
+            res = {**res, r["match_id"]: {"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "",
+                                          "retired": False, "void": True, "void_reason": DUP_REASON}}
         o = (user_odds or {}).get(r["match_id"])
         if o and not r.get("odds"):
             j = join(with_odds(r, o, bundle), res.get(r["match_id"]))
