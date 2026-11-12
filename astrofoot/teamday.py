@@ -55,7 +55,8 @@ def founding(team: str, con=None, resolve: bool = True, women: bool = False) -> 
     cache = _load()
     key = f"W:{team}" if women else team
     if key in cache:
-        return cache[key]
+        rec = cache[key]
+        return rec if rec and rec.get("date") else None
     if not resolve:
         return None
     from . import foundings

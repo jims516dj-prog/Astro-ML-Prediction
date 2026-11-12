@@ -210,7 +210,8 @@ def main():
         print("live record unavailable:", e)
     cache = json.loads(teamday.CACHE.read_text()) if teamday.CACHE.exists() else {}
     # teams already tried by an earlier run (the source noted as "none") are skipped until next month
-    todo = sorted(t for t in teams if not (cache.get(t) or {}).get("date"))
+    month = time.strftime("%Y-%m")
+    todo = sorted(t for t in teams if not (cache.get(t) or {}).get("date") and (cache.get(t) or {}).get("tried") != month)
     women_found = women_teams(cache)
     cache.update(women_found)
     teamday.CACHE.write_text(json.dumps(cache, indent=0, sort_keys=True))
@@ -242,6 +243,9 @@ def main():
                 cand[t] = {"team": label or t, "kind": "national_team" if "Q6979593" in kinds else "club",
                            "source": f"wikidata:{q}"}
                 break
+    for t in todo:
+        if t not in cand:
+            cache[t] = {"date": None, "tried": month}
     qids = sorted({c["source"].split(":", 1)[1] for c in cand.values()})
     print(f"{len(cand)} matched to a Wikidata item; fetching {len(qids)} items")
     ents = wikidata(qids)
@@ -273,6 +277,8 @@ def main():
             date, src = from_entity(ents.get(q) or {})
         if date:
             found[t] = {"date": date, "name": c["team"], "source": f"{src} ({q})"}
+        else:              # tried this month: the next run carries on with the others
+            found[t] = {"date": None, "name": c["team"], "tried": month}
         if n % 100 == 0:
             print(f"  {n}/{len(cand)}: {len(found)} found")
             teamday.CACHE.write_text(json.dumps({**cache, **found}, indent=0, sort_keys=True))     # progress
@@ -281,9 +287,11 @@ def main():
     teamday.CACHE.write_text(json.dumps(cache, indent=0, sort_keys=True))
     by = {}
     for v in found.values():
+        if not v.get("date"):
+            continue
         k = v["source"].split(" (")[0]
         by[k] = by.get(k, 0) + 1
-    print(f"found {len(found)} new founding dates: {by}")
+    print(f"found {sum(1 for v in found.values() if v.get('date'))} new founding dates: {by}")
     print(f"teams with a date known to the day: {sum(1 for t in teams if (cache.get(t) or {}).get('date'))} of {len(teams)}")
 
 
