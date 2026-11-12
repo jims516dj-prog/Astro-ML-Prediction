@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 8          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 9          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 6      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -269,6 +269,7 @@ def _row_ok(source: str, mine: set[str]) -> bool:
 HOME_AT: dict[str, list] = {}     # team -> home-game venues in the live record
 HOME_DIV: dict[str, str] = {}     # team -> a division it hosted games in (history)
 NEAR_KM = 40
+FAR_KM = 150         # a spelling-only match based further than this from the club's home is not taken
 
 
 def home_location(team: str):
@@ -283,7 +284,7 @@ def home_location(team: str):
             got = geo.resolve(team, HOME_DIV[team])
         except (OSError, ValueError):                 # venue tables not downloaded: no location
             got = None
-        if got:
+        if got and got[2] != "city":                  # stadium or curated city, not one read from the name
             return got[0], got[1]
     return None
 
@@ -397,6 +398,16 @@ def table_candidates(team: str, want: str | None) -> tuple[list[str], str | None
     if not pool:
         return [], None
     pool = list({x["source"]: x for x in pool}.values())
+    if at:
+        dist = lambda x: _km(at, (x["lat"], x["lon"])) if x.get("lat") is not None else None  # noqa: E731
+        near = [x for x in pool if (d := dist(x)) is not None and d <= NEAR_KM]
+        if near:
+            pool = near                               # where the club plays decides first (Central Córdoba of
+            # Santiago del Estero, not Instituto Atlético Central Córdoba of Córdoba)
+        else:
+            pool = [x for x in pool if x["match"] != "close" or (d := dist(x)) is None or d <= FAR_KM]
+        if not pool:
+            return [], None
     pool.sort(key=lambda x: -int(x.get("sitelinks") or 0))
     top, links = pool[0], int(pool[0].get("sitelinks") or 0)
     second = int(pool[1].get("sitelinks") or 0) if len(pool) > 1 else 0
@@ -436,7 +447,8 @@ def teams_and_countries():
                 comp[div] = geo.DIVISION_COUNTRY.get(div) or competition_country(div)
             c = comp[div]                             # a domestic competition: both sides are from its country
             pairs.append((r["home"], r["away"]))
-            if r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
+            if (r.get("venue_lat") is not None and div not in live.MULTI_CLUB
+                    and r.get("venue_source") != "city"):  # a city guessed from the name proves nothing
                 HOME_AT.setdefault(r["home"], []).append((r["venue_lat"], r["venue_lon"]))
             out[r["away"]] = out.get(r["away"]) or c
             if not c and r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
@@ -491,8 +503,12 @@ def club_search(base: str) -> list[str]:
     if not words:
         return []
     q = " ".join(words) + " haswbstatement:" + "|".join(f"P31={c}" for c in sorted(FOOTBALL - {"Q6979593"}))
-    d = get("https://www.wikidata.org/w/api.php?action=query&list=search&format=json&srnamespace=0&srlimit=8"
-            "&srsearch=" + urllib.parse.quote(q))
+    url = ("https://www.wikidata.org/w/api.php?action=query&list=search&format=json&srnamespace=0&srlimit=8"
+           "&srsearch=" + urllib.parse.quote(q))
+    d = get(url)
+    if d is None:                                     # rate limited: wait and try once more
+        time.sleep(15)
+        d = get(url, tries=4)
     if d is None:
         print(f"  club search failed for {base!r}")
     hits = [h["title"] for h in ((d or {}).get("query") or {}).get("search", []) if h.get("title", "").startswith("Q")]

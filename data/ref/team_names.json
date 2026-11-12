@@ -1347,10 +1347,8 @@
 "v": 7
 },
 "Central Cordoba": {
-"legal": "Instituto Atletico Central Cordoba",
-"qid": "Q1421829",
-"short": "Instituto Atlético Central Córdoba",
-"v": 8
+"tried": "reset",
+"why": "was Instituto Atlético Central Córdoba, a different club"
 },
 "Cercle Brugge": {
 "legal": "Cercle Brugge Koninklijke Sportvereniging",
