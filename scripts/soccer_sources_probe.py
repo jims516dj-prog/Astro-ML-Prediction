@@ -16,6 +16,58 @@ def get(url, headers=None):
         return e.code, e.read()[:600].decode("utf-8", "replace")
 
 
+def numeric(d, path=""):
+    """Only numbers, booleans and dates from an account answer (never names or e-mail addresses)."""
+    out = {}
+    if isinstance(d, dict):
+        for x, v in d.items():
+            out.update(numeric(v, f"{path}{x}."))
+    elif isinstance(d, list):
+        for i, v in enumerate(d[:3]):
+            out.update(numeric(v, f"{path}{i}."))
+    elif isinstance(d, (int, float, bool)) or (isinstance(d, str) and d[:2] in ("19", "20") and len(d) <= 30):
+        out[path.rstrip(".")] = d
+    return out
+
+
+k = os.environ.get("ODDS_PAPI")
+q = "apiKey=" + urllib.parse.quote(k)
+st, b = get(f"https://api.oddspapi.io/v4/account?{q}")
+try:
+    acc = json.loads(b)
+    print("oddspapi account:", st, "| fields:", sorted(acc.keys()) if isinstance(acc, dict) else type(acc).__name__)
+    print("  ", numeric(acc))
+except ValueError:
+    print("oddspapi account", st, b[:300].replace(k, "***"))
+
+t = date.today()
+fk = os.environ.get("API_FOOTBALL_KEY")
+print("API_FOOTBALL_KEY set:", bool(fk))
+if fk:
+    AF = {"x-apisports-key": fk}
+    for path in ("status", f"fixtures?date={t}", f"odds?date={t}", f"fixtures?date={t}&league=10&season={t.year}"):
+        st, b = get(f"https://v3.football.api-sports.io/{path}", AF)
+        try:
+            d = json.loads(b)
+        except ValueError:
+            print("api-football", path, st, b[:200].replace(fk, "***"))
+            continue
+        r = d.get("response")
+        print(f"api-football {path.split('?')[0]}: HTTP {st} | results {d.get('results')} | errors {d.get('errors')} "
+              f"| paging {d.get('paging')}")
+        if path == "status" and isinstance(r, dict):
+            print("   ", {x: r.get(x) for x in ("subscription", "requests")} if "requests" in r else numeric(r))
+        elif isinstance(r, list) and r:
+            if path.startswith("fixtures"):
+                lg = {}
+                for f in r:
+                    n = f"{f['league'].get('country')}: {f['league'].get('name')}"
+                    lg[n] = lg.get(n, 0) + 1
+                print("    leagues:", len(lg), sorted(lg.items(), key=lambda kv: -kv[1])[:40])
+                print("    venue sample:", [f["fixture"].get("venue") for f in r[:3]])
+            else:
+                print("    sample:", json.dumps(r[0])[:600])
+raise SystemExit
 k = os.environ.get("ODDS_PAPI")
 q = "apiKey=" + urllib.parse.quote(k)
 st, b = get(f"https://api.oddspapi.io/v4/markets?sportId=10&{q}")
