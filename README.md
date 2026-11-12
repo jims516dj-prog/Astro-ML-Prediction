@@ -410,7 +410,10 @@ Women page, its Live record, Top picks, My picks and Dataset) are looked up as w
 **Youth games and national teams.** U17–U23 competitions and sides (e.g. UEFA U21 qualifiers, "Liverpool U21") are
 included when ESPN prices them, always under their own names ("England U21"), never matched to the senior team or its
 history ("youth" badge). A youth side with no ground of its own plays at its senior team's ground; a national team
-whose stadium is not found is placed in the country's largest city. International and club friendlies are forecast
+whose stadium is not found is placed in its home city from TheSportsDB (free public key), else the country's largest
+city. A national team's ground is never placed abroad unless ESPN's own venue city confirms it (teams banned from their
+own stadiums do play "home" games elsewhere); map searches that return a namesake stadium in another country are
+rejected. International and club friendlies are forecast
 when ESPN prices them (only some are: games without odds cannot be forecast).
 
 ## Women's football (separate section)
