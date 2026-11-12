@@ -18,7 +18,7 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import (db, doublechance, form, foundings, goalmarkets, live, merged, mypicks, overunder, service, sync, teamday,
+from .. import (db, teamnames, doublechance, form, foundings, goalmarkets, live, merged, mypicks, overunder, service, sync, teamday,
                teamgoals, venues)
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
@@ -30,6 +30,7 @@ HERE = Path(__file__).parent
 app = FastAPI(title="Astrological Football Analyzer")
 app.mount("/static", StaticFiles(directory=HERE / "static"), name="static")
 T = Jinja2Templates(directory=HERE / "templates")
+T.env.filters["tn"] = teamnames.display
 T.env.globals.update(fmt_pct=lambda x, d=1: "—" if x is None else f"{100 * x:.{d}f}%",
                      fmt_num=lambda x, d=4: "—" if x is None or (isinstance(x, float) and math.isnan(x)) else f"{x:+.{d}f}",
                      JERSEY_COLORS=sorted(JERSEY_COLOR_PLANET),

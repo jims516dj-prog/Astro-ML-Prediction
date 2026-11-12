@@ -13,7 +13,8 @@ MARKET_NAMES = {"result": "Match result", "dc": "Double chance", "o15": "Over/un
 def options(r: dict, by_probability: bool = True) -> list[dict]:
     """Every pickable outcome of one game (a joined live/manual record): most probable first, or in natural
     order (home, draw, away; over before under) with by_probability=False."""
-    home, away = r["home"], r["away"]
+    from .teamnames import display
+    home, away = display(r["home"]), display(r["away"])             # official names in the labels
     probs = r["predictions"].get("synthesis") or r["predictions"]["market"]
     fh = r["fav_is_home"]
     p_home, p_away = (probs["fav"], probs["dog"]) if fh else (probs["dog"], probs["fav"])

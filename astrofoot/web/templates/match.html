@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "_teamday.html" as tdm %}
-{% block title %}{{ r.team_a }} v {{ r.team_b }} · Astro Football Lab{% endblock %}
+{% block title %}{{ r.team_a|tn }} v {{ r.team_b|tn }} · Astro Football Lab{% endblock %}
 {% set S = a.synthesis %}{% set E4 = a.engine4 %}
 {% set name = {"fav": a.fav, "dog": a.dog, "draw": "Draw", "disabled": "— disabled —"} %}
 {% block body %}
@@ -8,9 +8,9 @@
 (one entry per game). Here is the existing entry.</p>{% endif %}
 
 <p class="crumbs"><a href="/dataset">Dataset</a> › match record</p>
-<h1>{{ r.team_a }} <span class="v">v</span> {{ r.team_b }}</h1>
+<h1>{{ r.team_a|tn }} <span class="v">v</span> {{ r.team_b|tn }}</h1>
 <p class="meta">{{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %} · UK {{ a.kickoff_local_uk }} · {{ r.venue or "venue" }} ({{ "%.3f"|format(r.lat) }}, {{ "%.3f"|format(r.lon) }}, {{ r.loc_source }})
-· favourite: <strong>{{ a.fav }}</strong> · status: <span class="badge {{ 'ok' if r.status=='completed' else 'muted' }}">{{ r.status }}</span>
+· favourite: <strong>{{ a.fav|tn }}</strong> · status: <span class="badge {{ 'ok' if r.status=='completed' else 'muted' }}">{{ r.status }}</span>
 {% if r.score_a is not none %} · result <strong>{{ r.score_a }}–{{ r.score_b }}</strong>{% endif %}
 {% if r.post_hoc %} · <span class="badge warn">post-hoc</span>{% endif %}{% if r.stale_analysis %} · <span class="badge warn">stale analysis</span>{% endif %}</p>
 
@@ -24,8 +24,8 @@
     <h2>{{ "Enter result" if r.status == "pending" else "Result" }}</h2>
     {% if r.status == "pending" %}
     <form method="post" action="/match/{{ r.id }}/result" class="form">
-      <div class="grid3"><label>{{ r.team_a }}<input name="score_a" required inputmode="numeric"></label>
-      <label>{{ r.team_b }}<input name="score_b" required inputmode="numeric"></label>
+      <div class="grid3"><label>{{ r.team_a|tn }}<input name="score_a" required inputmode="numeric"></label>
+      <label>{{ r.team_b|tn }}<input name="score_b" required inputmode="numeric"></label>
       <label>Status<select name="status"><option value="completed">Completed</option><option value="abandoned">Abandoned</option><option value="walkover">Walkover</option></select></label></div>
       <label>Notes<input name="notes"></label><button class="btn">Save result</button></form>
     {% else %}<p>{{ r.score_a }}–{{ r.score_b }} ({{ r.status }}). Completed records are locked; corrections need an admin reason below.</p>{% endif %}

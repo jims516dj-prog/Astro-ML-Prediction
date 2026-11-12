@@ -15,6 +15,7 @@ from datetime import date
 from functools import lru_cache
 from pathlib import Path
 
+from . import teamnames
 from .config import MODELS, REF
 from .tennis import astro_num as an
 from .tennis import daychart as dc
@@ -148,8 +149,10 @@ def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, res
     for side, team in (("home", home), ("away", away)):
         given = an.clean_dob((founded or {}).get(side))
         f = {"date": given, "name": team} if given else founding(team, con, resolve, women)
-        r = _team_day(f["date"], f["name"], day, tz) if f else None
-        out[side] = {"team": team, "founded": f["date"] if f else None, "chart_name": f["name"] if f else None,
+        # name numerology reads the full legal name (FIFA's name for a national team) when it is known
+        name = (teamnames.legal(team, women) or f["name"]) if f else None
+        r = _team_day(f["date"], name, day, tz) if f else None
+        out[side] = {"team": team, "founded": f["date"] if f else None, "chart_name": name,
                      **(r or {"astro": {"score": None, "contacts": []}, "attack": {"score": None, "contacts": []},
                               "num": {"score": None, "parts": [], "numbers": {}}, "num_attack": {"score": None, "parts": []}})}
     h, a = out["home"], out["away"]

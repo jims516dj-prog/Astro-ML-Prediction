@@ -120,7 +120,7 @@ covers picks of the likelier team to score.</p>
 {% if loop.changed(p.slip_id) %}<h3 class="slip-head">{{ p.day }} · {{ p.slip_name }}{% if p.section == "women" %} · Women{% endif %}</h3>{% endif %}
 <article class="pick">
   <div class="pick-top">
-    <h3>{{ loop.index }}. {{ p.home }} v {{ p.away }}</h3>
+    <h3>{{ loop.index }}. {{ p.home|tn }} v {{ p.away|tn }}</h3>
     <span class="verdict {{ 'win' if p.hit else 'loss' if p.hit is not none else '' }}">
       {% if p.result %}{{ p.result.goals_home }}–{{ p.result.goals_away }} · {{ "WON" if p.hit else "LOST" }}{% elif p.status == "void" %}VOID{% else %}PENDING{% endif %}
       {% if p.late %} · not scored (picked after kickoff){% endif %}</span>
@@ -138,7 +138,7 @@ covers picks of the likelier team to score.</p>
         <td>{{ {"home": p.home ~ " win", "away": p.away ~ " win", "draw": "Draw"}.get(e.call, e.call or "–") }}{% if e.confidence %} <span class="small">({{ e.confidence }})</span>{% endif %}</td>
         <td>{{ "yes" if e.agrees else "no" if e.agrees is not none else "–" }}</td></tr>{% endfor %}</tbody></table>
       <p class="kv">Odds (home/draw/away): <b>{{ g.odds.home }} / {{ g.odds.draw }} / {{ g.odds.away }}</b> · {{ g.odds_source }}</p>
-      <p class="kv">Favourite: <b>{{ g.favourite }}</b> · venue {{ "%.3f"|format(g.venue_lat) if g.venue_lat is not none else "?" }}, {{ "%.3f"|format(g.venue_lon) if g.venue_lon is not none else "?" }} ({{ g.venue_source or "unknown" }})</p>
+      <p class="kv">Favourite: <b>{{ g.favourite|tn }}</b> · venue {{ "%.3f"|format(g.venue_lat) if g.venue_lat is not none else "?" }}, {{ "%.3f"|format(g.venue_lon) if g.venue_lon is not none else "?" }} ({{ g.venue_source or "unknown" }})</p>
       <p class="kv">{% if g.origin == "manual" %}Source: <b>added manually</b> (Analyze page), not sealed{% else %}Source: <b>live record</b>, sealed {{ g.committed_at[:16].replace("T", " ") }} UTC · SHA-256 <code>{{ (g.sha256 or "")[:16] }}…</code>{% endif %}
         {% if g.model_version %} · model {{ g.model_version }}{% endif %}</p>
       <p class="kv">Picked {{ p.picked_at[:16].replace("T", " ") }} UTC{% if p.result and p.result.source %} · result from {{ p.result.source }}{% endif %}</p>

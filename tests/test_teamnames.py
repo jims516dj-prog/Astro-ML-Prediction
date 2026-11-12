@@ -1,0 +1,50 @@
+import json
+
+from astrofoot import teamday, teamnames
+
+
+def test_fifa_names_for_national_teams():
+    cases = {"South Korea": "Korea Republic", "South Korea U21": "Korea Republic U21", "Czech Republic": "Czechia",
+             "DR Congo": "Congo DR", "Turkey": "Türkiye", "Iran": "IR Iran", "Ivory Coast": "Côte d'Ivoire",
+             "United States": "USA", "Ireland": "Republic of Ireland", "Cape Verde": "Cabo Verde",
+             "FYR Macedonia": "North Macedonia", "China": "China PR", "England U-21": "England U21", "Spain W": "Spain W"}
+    for given, fifa in cases.items():
+        assert teamnames.display(given) == fifa, given
+    assert teamnames.legal("South Korea U21") == "Korea Republic"
+
+
+def test_clubs_short_for_display_legal_for_numerology(tmp_path, monkeypatch):
+    f = tmp_path / "names.json"
+    f.write_text(json.dumps({"Bayern Munich": {"short": "FC Bayern München", "legal": "Fußball-Club Bayern München e. V."},
+                             "W:Barcelona": {"short": "FC Barcelona Femení", "legal": "Futbol Club Barcelona Femení"}}))
+    monkeypatch.setattr(teamnames, "FILE", f)
+    teamnames.reload()
+    try:
+        assert teamnames.display("Bayern Munich") == "FC Bayern München"
+        assert teamnames.display("Bayern Munich U19") == "FC Bayern München U19"
+        assert teamnames.legal("Bayern Munich") == "Fußball-Club Bayern München e. V."
+        assert teamnames.display("Unknown FC") == "Unknown FC" and teamnames.legal("Unknown FC") is None
+        assert teamnames.legal("Barcelona", women=True) == "Futbol Club Barcelona Femení"
+        assert teamnames.legal("Bayern Munich", women=True) is None        # never the men's club's name
+        # the day reading's name number uses the legal name
+        r = teamday.reading("Bayern Munich", "Unknown FC", "2026-11-14T14:30:00+00:00", 48.2, 11.6, None, False,
+                            founded={"home": "1900-02-27", "away": "1901-01-01"})
+        assert r["home"]["chart_name"] == "Fußball-Club Bayern München e. V." and r["away"]["chart_name"] == "Unknown FC"
+    finally:
+        teamnames.reload()
+
+
+def test_fetch_tidy_and_official_pick():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fo
+    assert fo.tidy("Manchester United F.C.") == "Manchester United FC"
+    assert fo.tidy("A.F.C. Bournemouth") == "AFC Bournemouth"
+    e = {"claims": {"P1448": [
+        {"rank": "normal", "mainsnak": {"datavalue": {"value": {"text": "Old Name", "language": "de"}}}, "qualifiers": {"P582": []}},
+        {"rank": "normal", "mainsnak": {"datavalue": {"value": {"text": "Fußball-Club Bayern München e. V.", "language": "de"}}}}]},
+         "labels": {"en": {"value": "FC Bayern Munich"}, "de": {"value": "FC Bayern München"}}}
+    legal, lang = fo.official(e)
+    assert legal == "Fußball-Club Bayern München e. V." and fo.short_name(e, lang) == "FC Bayern München"
+    e2 = {"labels": {"en": {"value": "FC Barcelona"}, "ca": {"value": "Futbol Club Barcelona"}}}
+    assert fo.short_name(e2, "ca") == "FC Barcelona"

@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% import "_teamday.html" as tdm %}
-{% block title %}{{ r.home }} v {{ r.away }} · Live record{% endblock %}
+{% block title %}{{ r.home|tn }} v {{ r.away|tn }} · Live record{% endblock %}
 {% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
 {% block body %}
 {% if dup %}<p class="callout small"><strong>This game is already in the live record</strong>, so it was not added again
@@ -10,9 +10,9 @@
 {% if women %}<p class="callout small">Women's football: the models behind Engine 4 and the goal-market recalibrations were trained on men's
 football, so these probabilities rest mainly on the bookmaker odds; the women's track record shows how well they hold up.
 Form checks use women's results only.</p>{% endif %}
-<h1>{{ r.home }} <span class="v">v</span> {{ r.away }}</h1>
+<h1>{{ r.home|tn }} <span class="v">v</span> {{ r.away|tn }}</h1>
 <p class="meta">{{ r.league }} · {{ r.kickoff_utc[:16].replace("T"," ") }} UTC{% if a.kickoff_local_venue %} · <strong>local {{ a.kickoff_local_venue }}</strong> ({{ a.venue_timezone }}){% endif %}
-· favourite: <strong>{{ r.favourite }}</strong> · odds {{ "%.2f"|format(r.odds.home) }} / {{ "%.2f"|format(r.odds.draw) }} / {{ "%.2f"|format(r.odds.away) }} ({{ r.odds_source }})
+· favourite: <strong>{{ r.favourite|tn }}</strong> · odds {{ "%.2f"|format(r.odds.home) }} / {{ "%.2f"|format(r.odds.draw) }} / {{ "%.2f"|format(r.odds.away) }} ({{ r.odds_source }})
 · {% if r.result %}<span class="badge ok">completed</span> result <strong>{{ r.result.goals_home }}–{{ r.result.goals_away }}</strong>{% elif r.status == "void" %}<span class="badge warn">void: postponed or abandoned, not scored</span>{% else %}<span class="badge muted">pending</span>{% endif %}</p>
 
 <section class="card">
@@ -20,7 +20,7 @@ Form checks use women's results only.</p>{% endif %}
   <p class="small">Committed {{ r.committed_at }} UTC, {{ "before" if r.pre_kickoff else "AFTER" }} kickoff ·
   SHA-256 <code>{{ r.sha256[:16] }}…</code> {{ "verifies ✓" if r.verified else "does NOT verify ✗" }} · model {{ r.model_version or "—" }}</p>
   <table class="data">
-    <thead><tr><th>Forecast</th><th>Call</th><th class="num">{{ r.favourite }}</th><th class="num">Draw</th><th class="num">{{ r.underdog }}</th><th>Result</th></tr></thead>
+    <thead><tr><th>Forecast</th><th>Call</th><th class="num">{{ r.favourite|tn }}</th><th class="num">Draw</th><th class="num">{{ r.underdog|tn }}</th><th>Result</th></tr></thead>
     <tbody>
     {% for k, label in [("market","Market (de-vigged odds)"),("engine4","Engine 4"),("synthesis","Synthesis")] %}{% set p = r.predictions.get(k) %}{% if p %}
     <tr><td>{{ label }}</td><td>{% set best = (p.fav >= p.draw and p.fav >= p.dog) and "fav" or (p.draw >= p.dog and "draw" or "dog") %}{{ W[best] }}</td>
@@ -60,17 +60,17 @@ Form checks use women's results only.</p>{% endif %}
 
 <section class="card">
   <h2>Home or away goal</h2>
-  <div class="probbar" role="img" aria-label="{{ r.home }} scores {{ fmt_pct(r.ts_p_home) }}">
-    <span class="pf" style="width: {{ 100 * r.ts_p_home }}%">{{ r.home }} scores {{ fmt_pct(r.ts_p_home) }}</span>
+  <div class="probbar" role="img" aria-label="{{ r.home|tn }} scores {{ fmt_pct(r.ts_p_home) }}">
+    <span class="pf" style="width: {{ 100 * r.ts_p_home }}%">{{ r.home|tn }} scores {{ fmt_pct(r.ts_p_home) }}</span>
     <span class="pd" style="width: {{ 100 * (1 - r.ts_p_home) }}%"></span></div>
-  <div class="probbar" role="img" aria-label="{{ r.away }} scores {{ fmt_pct(r.ts_p_away) }}">
-    <span class="pg" style="width: {{ 100 * r.ts_p_away }}%">{{ r.away }} scores {{ fmt_pct(r.ts_p_away) }}</span>
+  <div class="probbar" role="img" aria-label="{{ r.away|tn }} scores {{ fmt_pct(r.ts_p_away) }}">
+    <span class="pg" style="width: {{ 100 * r.ts_p_away }}%">{{ r.away|tn }} scores {{ fmt_pct(r.ts_p_away) }}</span>
     <span class="pd" style="width: {{ 100 * (1 - r.ts_p_away) }}%"></span></div>
   <p class="small">Chance each team scores at least once, from the match odds (calibrated). Likelier:
   <strong>{{ r.ts_team }} to score</strong> ({{ "home" if r.ts_pick == "home" else "away" }}) · astrology agrees {{ r.ts_agree }}/3
   {% if r.ts_hit is not none %}· {{ "✓ scored" if r.ts_hit else "✗ did not score" }}{% endif %}</p>
   <table class="data">
-    <thead><tr><th>Engine</th><th class="num">Predicted score (home first)</th><th>{{ r.home }} scores?</th><th>{{ r.away }} scores?</th></tr></thead>
+    <thead><tr><th>Engine</th><th class="num">Predicted score (home first)</th><th>{{ r.home|tn }} scores?</th><th>{{ r.away|tn }} scores?</th></tr></thead>
     <tbody>{% for k, label, dot in [("rao","Rao","rao"),("chokoisky","Chokoisky","cho"),("frawley","Frawley","fra")] %}{% set e = r.ts_engine_scores[k] %}
     <tr><td><span class="dot {{ dot }}"></span>{{ label }}</td><td class="num">{{ "%d–%d"|format(e[0], e[1]) if e else "–" }}</td>
       {% for j, g in ((0, r.result.goals_home if r.result else none), (1, r.result.goals_away if r.result else none)) %}
@@ -83,7 +83,7 @@ Form checks use women's results only.</p>{% endif %}
 <section class="card">
   <h2>Form check</h2>
   {% if fc.qualifies %}
-  <p class="small">{{ fc.agree }}/3 classical engines back <strong>{{ fc.team }}</strong> ({{ fc.role }}, {{ fc.venue_word }}).
+  <p class="small">{{ fc.agree }}/3 classical engines back <strong>{{ fc.team|tn }}</strong> ({{ fc.role }}, {{ fc.venue_word }}).
   Its scoring form: last 5 {{ fc.venue_word }} games, last 5 overall, last 3 meetings with {{ fc.opponent }}, and how
   {{ fc.opponent }} has been conceding.</p>
   {{ form_verdict(fc) }}

@@ -13,11 +13,11 @@
 {% macro detail(a) %}
 <div class="form-grid">
   <div>
-    <h4>{{ a.team }}: last {{ a.team_venue.n }} {{ a.venue_word }} game{{ "" if a.team_venue.n == 1 else "s" }}</h4>
+    <h4>{{ a.team|tn }}: last {{ a.team_venue.n }} {{ a.venue_word }} game{{ "" if a.team_venue.n == 1 else "s" }}</h4>
     <p class="small">{{ window_line(a.team_venue, "gf") }}</p>{{ games_table(a.team_venue, a.team) }}
   </div>
   <div>
-    <h4>{{ a.team }}: last {{ a.team_all.n }} game{{ "" if a.team_all.n == 1 else "s" }} overall</h4>
+    <h4>{{ a.team|tn }}: last {{ a.team_all.n }} game{{ "" if a.team_all.n == 1 else "s" }} overall</h4>
     <p class="small">{{ window_line(a.team_all, "gf") }}</p>{{ games_table(a.team_all, a.team) }}
   </div>
   <div>
@@ -35,7 +35,7 @@
 
 {% macro verdict(a) %}
 <div class="tiles">
-  <div class="tile"><div class="k">Form estimate for {{ a.team }}</div>
+  <div class="tile"><div class="k">Form estimate for {{ a.team|tn }}</div>
     {% if a.lam_form is not none %}<div class="v">{{ fmt_pct(a.p_form) }}</div>
     <div class="s">to score · 2+ goals {{ fmt_pct(a.p_form2) }} · expected goals {{ "%.2f"|format(a.lam_form) }}</div>
     {% else %}<div class="v sm">not enough history</div><div class="s">needs 3+ games in each window</div>{% endif %}</div>
@@ -43,6 +43,6 @@
     <div class="s">to score · 2+ goals {{ fmt_pct(a.p_market2) }} · expected goals {{ "%.2f"|format(a.lam_market) }}</div></div>
   <div class="tile"><div class="k">Result</div>
     {% if a.goals is not none %}<div class="v">{{ a.goals }} goal{{ "" if a.goals == 1 else "s" }} {{ "✓" if a.scored_hit else "✗" }}</div>
-    <div class="s">{{ a.team }} {{ "scored" if a.scored_hit else "did not score" }}</div>{% else %}<div class="v sm">not played yet</div>{% endif %}</div>
+    <div class="s">{{ a.team|tn }} {{ "scored" if a.scored_hit else "did not score" }}</div>{% else %}<div class="v sm">not played yet</div>{% endif %}</div>
 </div>
 {% endmacro %}

@@ -40,10 +40,10 @@ results come in (<strong>Get latest results</strong> on the <a href="/live">Live
 <thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th>Source</th><th>Status</th><th class="num">Score</th><th>Favourite</th><th>Result</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Agree</th><th class="num">Market F/D/U</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th></tr></thead>
 <tbody>{% for r in games %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
-<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if is_youth(r.home) or is_youth(r.away) %} <span class="badge" title="youth sides (U17-U23): their own names and history, never the senior team's">youth</span>{% endif %}{% if r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}{{ tdm.line(r.td) }}</td>
+<td><a href="{{ r.url }}">{{ r.home|tn }} v {{ r.away|tn }}</a>{% if is_youth(r.home) or is_youth(r.away) %} <span class="badge" title="youth sides (U17-U23): their own names and history, never the senior team's">youth</span>{% endif %}{% if r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}{{ tdm.line(r.td) }}</td>
 <td>{% if r.origin == "manual" %}<span class="badge">manual</span>{% else %}<span class="badge ok">live</span>{% endif %}</td>
 <td>{{ {"settled": "completed", "pending": "pending", "void": "void"}[r.status] }}</td>
-<td class="num">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }}{% else %}–{% endif %}</td><td>{{ r.favourite }}</td><td>{{ r.outcome or "" }}</td>
+<td class="num">{% if r.result %}{{ r.result.goals_home }}–{{ r.result.goals_away }}{% else %}–{% endif %}</td><td>{{ r.favourite|tn }}</td><td>{{ r.outcome or "" }}</td>
 {% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ p[k].winner }}</td>{% endfor %}
 <td class="num">{{ r.classical_agree }}/3</td>
 <td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td>
@@ -74,9 +74,9 @@ results come in (<strong>Get latest results</strong> on the <a href="/live">Live
 <thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Home</th><th>Away</th><th class="num">Score</th><th class="num">Odds H/D/A</th><th>Fav</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num">Agree</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score (from the market, recalibrated)">Goals</th><th>Location</th></tr></thead>
 <tbody>
 {% for r in rows %}
-<tr><td class="mono">{{ r.kickoff_utc.strftime("%Y-%m-%d %H:%M") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td><td>{{ r.home }}</td><td>{{ r.away }}{{ tdm.line(r.td) }}</td>
+<tr><td class="mono">{{ r.kickoff_utc.strftime("%Y-%m-%d %H:%M") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td><td>{{ r.home|tn }}</td><td>{{ r.away|tn }}{{ tdm.line(r.td) }}</td>
 <td class="num">{{ r.goals_home }}–{{ r.goals_away }}</td><td class="num">{{ "%.2f"|format(r.odds_home) }}/{{ "%.2f"|format(r.odds_draw) }}/{{ "%.2f"|format(r.odds_away) }}</td>
-<td>{{ r.home if r.fav_is_home else r.away }}</td>
+<td>{{ (r.home if r.fav_is_home else r.away)|tn }}</td>
 <td>{{ W.get(r.rao_win, "") }}</td><td>{{ W.get(r.chok_win, "") }}</td><td>{{ W.get(r.fraw_win, "") }}</td><td class="num">{{ r.agree }}/3</td><td>{{ gm_badges(r.gm) }}</td><td class="small">{{ r.loc_source }}</td></tr>
 {% endfor %}
 </tbody></table></div>

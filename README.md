@@ -697,6 +697,18 @@ python scripts/live.py verify        # re-check every record's SHA-256
 Full tables: `FINDINGS.md`, which is regenerated from `data/models/*.json` after each training run, or the
 Codex and ML pages in the app.
 
+## Team names
+
+National teams are shown under the names registered with FIFA ("Korea Republic", "Czechia", "Congo DR", "Türkiye",
+"IR Iran", "Côte d'Ivoire", "USA"), with their age group ("Korea Republic U21"). Clubs are shown under their short
+official name ("FC Bayern München", "Manchester United FC"), from the club's Wikidata item. The item is matched by
+`scripts/fetch_official_names.py` (monthly, in the founding-days workflow) and checked against the club's country, so
+a namesake abroad is never taken. Behind the scenes, the day reading's name numerology uses the full legal name
+(Wikidata's official name, e.g. "Fußball-Club Bayern München e. V."; FIFA's name for a national team). The analysis
+panel names it. A club not matched yet keeps the name the source gives, and women's teams use their own entry, never
+the men's club's name. The names the sources write stay unchanged internally, because ratings, history, founding
+dates and results are looked up by them.
+
 ## Data sources and licences
 
 - Match results and odds: football-data.co.uk, via `xgabora/Club-Football-Match-Data-2000-2025`.

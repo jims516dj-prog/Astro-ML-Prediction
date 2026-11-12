@@ -69,8 +69,8 @@ team says nothing about whether it scores. The expected goals column is what mov
 <th class="num">Form: scores</th><th class="num">Market: scores</th><th class="num">Expected goals</th><th>Result</th></tr></thead>
 <tbody>{% for row in rows %}{% set r = row.r %}{% set a = row.a %}
 <tr><td class="mono">{{ r.kickoff_utc[11:16] }}<br><span class="small">{{ league_name(r.division) }}</span></td>
-<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a></td>
-<td><strong>{{ a.team }}</strong><br><span class="badge {{ 'ok' if a.role == 'favourite' else 'warn' }}">{{ a.role }}</span> <span class="small">{{ a.venue_word }}</span></td>
+<td><a href="{{ r.url }}">{{ r.home|tn }} v {{ r.away|tn }}</a></td>
+<td><strong>{{ a.team|tn }}</strong><br><span class="badge {{ 'ok' if a.role == 'favourite' else 'warn' }}">{{ a.role }}</span> <span class="small">{{ a.venue_word }}</span></td>
 <td class="num">{{ a.agree }}/3</td>
 <td class="small">{% if a.team_venue.n %}{{ "%.1f"|format(a.team_venue.gf) }} gpg · scored {{ a.team_venue.scored }}/{{ a.team_venue.n }}{% else %}–{% endif %}</td>
 <td class="small">{% if a.team_all.n %}{{ "%.1f"|format(a.team_all.gf) }} gpg · scored {{ a.team_all.scored }}/{{ a.team_all.n }}{% else %}–{% endif %}</td>

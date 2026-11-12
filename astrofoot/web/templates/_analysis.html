@@ -8,9 +8,9 @@
       <div class="k">Most likely (probability source: {{ S.probability_source }})</div>
       <div class="big">{{ S.most_likely }} <span class="mono">{{ fmt_pct(S.most_likely_p) }}</span></div>
       <div class="probbar" aria-label="probabilities">
-        <span class="pf" style="width:{{ 100*S.probabilities.fav }}%">{{ a.fav }} {{ fmt_pct(S.probabilities.fav,0) }}</span>
+        <span class="pf" style="width:{{ 100*S.probabilities.fav }}%">{{ a.fav|tn }} {{ fmt_pct(S.probabilities.fav,0) }}</span>
         <span class="pd" style="width:{{ 100*S.probabilities.draw }}%">D {{ fmt_pct(S.probabilities.draw,0) }}</span>
-        <span class="pg" style="width:{{ 100*S.probabilities.dog }}%">{{ a.dog }} {{ fmt_pct(S.probabilities.dog,0) }}</span>
+        <span class="pg" style="width:{{ 100*S.probabilities.dog }}%">{{ a.dog|tn }} {{ fmt_pct(S.probabilities.dog,0) }}</span>
       </div>
     </div>
     <div>
@@ -24,7 +24,7 @@
   <div class="scroll"><table class="data cmp">
     <thead><tr><th>Methodology</th><th>Predicted</th><th>Score (fav–dog)</th><th>Confidence</th><th>Key testimonies</th></tr></thead>
     <tbody>
-      <tr><td><span class="dot mk"></span>Market (de-vigged odds)</td><td>{{ a.fav }} {{ fmt_pct(a.market.p_fav,0) }} · D {{ fmt_pct(a.market.p_draw,0) }} · {{ a.dog }} {{ fmt_pct(a.market.p_dog,0) }}</td><td>—</td><td>—</td><td>Baseline every learned model must beat</td></tr>
+      <tr><td><span class="dot mk"></span>Market (de-vigged odds)</td><td>{{ a.fav|tn }} {{ fmt_pct(a.market.p_fav,0) }} · D {{ fmt_pct(a.market.p_draw,0) }} · {{ a.dog|tn }} {{ fmt_pct(a.market.p_dog,0) }}</td><td>—</td><td>—</td><td>Baseline every learned model must beat</td></tr>
       {% for k, label, cls in [("rao","Rao — Inclusive Methodology","rao"),("chokoisky","Chokoisky — Gambler's Dharma","cho"),("frawley","Frawley — Event Chart","fra")] %}
       {% set v = a.verdicts[k] %}
       <tr><td><span class="dot {{ cls }}"></span>{{ label }}</td><td>{{ name[v.winner] }}</td>
@@ -33,7 +33,7 @@
         <td class="small">{% for t in (v.testimonies|sort(attribute="points", reverse=True))[:3] %}{{ t.text }}{% if not loop.last %}; {% endif %}{% endfor %}</td></tr>
       {% endfor %}
       <tr><td><span class="dot e4"></span>Engine 4 — Emergent Codex</td>
-        {% if E4 %}<td>{{ a.fav }} {{ fmt_pct(E4.p_fav,0) }} · D {{ fmt_pct(E4.p_draw,0) }} · {{ a.dog }} {{ fmt_pct(E4.p_dog,0) }}</td><td>—</td>
+        {% if E4 %}<td>{{ a.fav|tn }} {{ fmt_pct(E4.p_fav,0) }} · D {{ fmt_pct(E4.p_draw,0) }} · {{ a.dog|tn }} {{ fmt_pct(E4.p_dog,0) }}</td><td>—</td>
         <td>{% if E4.gate.engine4_in_synthesis %}<span class="badge ok">gate open</span>{% else %}<span class="badge warn">no demonstrated edge</span>{% endif %}</td>
         <td class="small">frame {{ E4.frame }}; Δ vs market model: {{ fmt_num(100*(E4.p_fav-E4.m0_fav),2) }} pp favourite</td>
         {% else %}<td colspan="4" class="small">Not available (needs a trained model and draw odds)</td>{% endif %}</tr>
@@ -78,7 +78,7 @@
   {% endfor %}</p>
   {% endif %}
   {% if v.table and k=="rao" %}
-  <table class="data"><thead><tr><th>Parameter</th><th class="num">{{ a.fav }}</th><th class="num">{{ a.dog }}</th><th>Notes</th></tr></thead><tbody>
+  <table class="data"><thead><tr><th>Parameter</th><th class="num">{{ a.fav|tn }}</th><th class="num">{{ a.dog|tn }}</th><th>Notes</th></tr></thead><tbody>
   {% for t in v.table %}<tr><td>{{ t.parameter }}</td><td class="num">{{ t.fav if t.fav is not none else "skipped" }}</td><td class="num">{{ t.dog if t.dog is not none else "skipped" }}</td><td class="small">{{ t.notes or "" }}</td></tr>{% endfor %}
   <tr class="tot"><td>Total</td><td class="num">{{ v.score_fav }}</td><td class="num">{{ v.score_dog }}</td><td></td></tr>
   </tbody></table>

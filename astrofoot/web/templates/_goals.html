@@ -29,7 +29,7 @@
       <div class="s">astrology agrees {{ gm.ou.agree }}/{{ gm.n_engines }}</div>
       {% else %}<div class="v sm">no over/under price</div><div class="s">Enter over/under 2.5 odds to get this prediction.</div>{% endif %}</div>
     <div class="tile"><div class="k">Home or away goal</div>
-      <div class="v sm">{{ gm.ts.team }} to score · {{ fmt_pct(gm.ts.pick_p) }}{{ mark(gm.ts.hit) }}</div>
+      <div class="v sm">{{ gm.ts.team|tn }} to score · {{ fmt_pct(gm.ts.pick_p) }}{{ mark(gm.ts.hit) }}</div>
       <div class="s">{{ home }} scores {{ fmt_pct(gm.ts.p_home) }} · {{ away }} scores {{ fmt_pct(gm.ts.p_away) }}</div>
       <div class="s">astrology agrees {{ gm.ts.agree }}/{{ gm.n_engines }}</div></div>
     <div class="tile"><div class="k">Both teams to score</div>

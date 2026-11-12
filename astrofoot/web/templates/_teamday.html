@@ -7,20 +7,20 @@
   The <em>day</em> reading asks which team the day favours; the <em>scoring</em> reading asks whether it favours each team to
   score (Mars and Jupiter contacts to the natal Mars and Sun; active numerology days).</p>
   <div class="tiles">
-    <div class="tile"><div class="k">Astrology favours</div><div class="v sm">{{ td.home.team if td.favours.astro == 1 else (td.away.team if td.favours.astro == 2 else "neither") }}</div>
+    <div class="tile"><div class="k">Astrology favours</div><div class="v sm">{{ (td.home.team if td.favours.astro == 1 else (td.away.team if td.favours.astro == 2 else "neither"))|tn }}</div>
       <div class="s">day score {{ td.home.astro.score if td.home.astro.score is not none else "—" }} vs {{ td.away.astro.score if td.away.astro.score is not none else "—" }}</div></div>
-    <div class="tile"><div class="k">Numerology favours</div><div class="v sm">{{ td.home.team if td.favours.num == 1 else (td.away.team if td.favours.num == 2 else "neither") }}</div>
+    <div class="tile"><div class="k">Numerology favours</div><div class="v sm">{{ (td.home.team if td.favours.num == 1 else (td.away.team if td.favours.num == 2 else "neither"))|tn }}</div>
       <div class="s">day score {{ td.home.num.score if td.home.num.score is not none else "—" }} vs {{ td.away.num.score if td.away.num.score is not none else "—" }}</div></div>
     {% for side in ("home", "away") %}{% set x = td[side] %}
-    <div class="tile"><div class="k">{{ x.team }} to score</div>
+    <div class="tile"><div class="k">{{ x.team|tn }} to score</div>
       <div class="v sm">{% if x.founded is none %}no founding date{% else %}astro {{ {1: "favourable", 0: "neutral", -1: "unfavourable"}[x.score_astro] }} · num {{ {1: "favourable", 0: "neutral", -1: "unfavourable"}[x.score_num] }}{% endif %}</div>
       <div class="s">scoring score {{ x.attack.score if x.attack.score is not none else "—" }} (astro), {{ x.num_attack.score if x.num_attack.score is not none else "—" }} (num)</div></div>
     {% endfor %}
   </div>
   <div class="cols2">
   {% for side in ("home", "away") %}{% set x = td[side] %}
-  <div><h3>{{ x.team }}</h3>
-  {% if x.founded %}<p class="small">Founded {{ x.founded }}{% if x.chart_name and x.chart_name != x.team %} ({{ x.chart_name }}){% endif %}.</p>
+  <div><h3>{{ x.team|tn }}</h3>
+  {% if x.founded %}<p class="small">Founded {{ x.founded }}.{% if x.chart_name and x.chart_name != x.team|tn %} Name numerology: {{ x.chart_name }}.{% endif %}</p>
   <p class="small"><strong>Day contacts:</strong></p>
   <ul class="small">{% for c in x.astro.contacts %}<li>{{ c.text }} ({{ c.orb }}°): <span class="mono">{{ "%+.2f"|format(c.points) }}</span></li>{% else %}<li>none within 3°</li>{% endfor %}</ul>
   <p class="small"><strong>Scoring contacts:</strong></p>
@@ -44,6 +44,6 @@
 
 {% macro line(td) %}{% if day_on() and td and (td.home.founded or td.away.founded) %}{% set fa, fn = td.favours.astro, td.favours.num %}
 <br><span class="small" title="date-only astrology and numerology of the founding dates for the match day">Day:
-{% if fa %}astro → {{ (td.home.team if fa == 1 else td.away.team) }}{% else %}astro level{% endif %} ·
-{% if fn %}num → {{ (td.home.team if fn == 1 else td.away.team) }}{% else %}num level{% endif %}
-{% for side in ("home", "away") %}{% set x = td[side] %}{% if x.score_astro == 1 and x.score_num == 1 %} · <strong>{{ x.team }}</strong> to score ↑{% endif %}{% endfor %}</span>{% endif %}{% endmacro %}
+{% if fa %}astro → {{ (td.home.team if fa == 1 else td.away.team)|tn }}{% else %}astro level{% endif %} ·
+{% if fn %}num → {{ (td.home.team if fn == 1 else td.away.team)|tn }}{% else %}num level{% endif %}
+{% for side in ("home", "away") %}{% set x = td[side] %}{% if x.score_astro == 1 and x.score_num == 1 %} · <strong>{{ x.team|tn }}</strong> to score ↑{% endif %}{% endfor %}</span>{% endif %}{% endmacro %}
