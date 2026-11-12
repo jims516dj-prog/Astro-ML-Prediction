@@ -27,6 +27,28 @@ jobs:
       - run: python scripts/fetch_data.py --live     # cities table: venue timezones for the match day's chart
       - if: ${{ inputs.cmd == 'soccer-probe' }}
         run: python scripts/soccer_sources_probe.py
+        env:
+          API_FOOTBALL_KEY: ${{ secrets.API_FOOTBALL_KEY }}
+          APIFOOTBALL_KEY: ${{ secrets.APIFOOTBALL_KEY }}
+          API_SPORTS_KEY: ${{ secrets.API_SPORTS_KEY }}
+          APISPORTS_KEY: ${{ secrets.APISPORTS_KEY }}
+          X_APISPORTS_KEY: ${{ secrets.X_APISPORTS_KEY }}
+          RAPIDAPI_KEY: ${{ secrets.RAPIDAPI_KEY }}
+          ODDS_API_IO_KEY: ${{ secrets.ODDS_API_IO_KEY }}
+          ODDSAPIIO_KEY: ${{ secrets.ODDSAPIIO_KEY }}
+          ODDS_API_IO: ${{ secrets.ODDS_API_IO }}
+          SPORTMONKS_KEY: ${{ secrets.SPORTMONKS_KEY }}
+          SPORTMONKS_TOKEN: ${{ secrets.SPORTMONKS_TOKEN }}
+          ODDSPAPI_KEY: ${{ secrets.ODDSPAPI_KEY }}
+          ODDSLINK_KEY: ${{ secrets.ODDSLINK_KEY }}
+          THESPORTSDB_KEY: ${{ secrets.THESPORTSDB_KEY }}
+          FIVEDOLLAR_KEY: ${{ secrets.FIVEDOLLAR_KEY }}
+          FOOTBALL_API_KEY: ${{ secrets.FOOTBALL_API_KEY }}
+          SPORTSDATA_KEY: ${{ secrets.SPORTSDATA_KEY }}
+          BSD_KEY: ${{ secrets.BSD_KEY }}
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          FOOTBALL_DATA_ORG_TOKEN: ${{ secrets.FOOTBALL_DATA_ORG_TOKEN }}
+          LIVETENNISAPI_KEY: ${{ secrets.LIVETENNISAPI_KEY }}
       - if: ${{ inputs.cmd == 'probe' }}
         run: python scripts/tennis_probe.py
         env:
