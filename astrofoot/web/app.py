@@ -18,7 +18,8 @@ from fastapi.responses import HTMLResponse, JSONResponse, RedirectResponse, Stre
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
-from .. import db, doublechance, form, foundings, goalmarkets, live, merged, mypicks, overunder, service, sync, teamgoals, venues
+from .. import (db, doublechance, form, foundings, goalmarkets, live, merged, mypicks, overunder, service, sync, teamday,
+               teamgoals, venues)
 from ..config import DATA, MODELS, ROOT, WORK
 from ..dataset import LEAGUE_NAMES
 from ..dataset import league_name as _league_name
@@ -480,6 +481,38 @@ def _all_games(include_withdrawn: bool = False) -> list[dict]:
     return merged.all_records([dict(r) for r in db.list_matches(con())], include_withdrawn=include_withdrawn)
 
 
+def _teamday(r: dict) -> dict | None:
+    """The day reading of a soccer game (founding dates already looked up; none are looked up while a page loads)."""
+    try:
+        return teamday.reading(r["home"], r["away"], r["kickoff_utc"], r.get("venue_lat"), r.get("venue_lon"), resolve=False)
+    except Exception:  # noqa: BLE001
+        return None
+
+
+def _pick_side(p: dict, market: str) -> str | None:
+    """The team a pick backs: 'home' / 'away' (None for draws and markets about both teams)."""
+    if market == "score":
+        return p.get("ts_pick")
+    if market == "result" and p.get("pick") in ("fav", "dog"):
+        return "home" if (p["pick"] == "fav") == bool(p.get("fav_is_home")) else "away"
+    return None
+
+
+def _dayfav_ok(p: dict, market: str, want: str) -> bool:
+    """Day-reading filter on Top picks: does astrology / numerology favour the pick (the team it backs)?"""
+    if not want:
+        return True
+    td, side = p.get("td"), _pick_side(p, market)
+    if not td or not side:
+        return False
+    if market == "score":
+        a, n = td[side]["score_astro"] == 1, td[side]["score_num"] == 1
+    else:
+        mine = 1 if side == "home" else 2
+        a, n = td["favours"]["astro"] == mine, td["favours"]["num"] == mine
+    return {"astro": a, "num": n, "both": a and n}.get(want, True)
+
+
 def _filter_live(recs, date_from="", date_to="", status="", league="", team="", engine="", hit="", agree="",
                  origin=""):
     out = []
@@ -540,6 +573,7 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
     shown = rows[(page_no - 1) * per: page_no * per]
     for r in shown:
         r["gm"] = _gm_live(r)
+        r["td"] = _teamday(r)
     return T.TemplateResponse(request, "live.html", {
         "rows": shown, "n": len(rows), "page_no": page_no, "pages": pages,
         "q": q, "qs": "&".join(f"{k}={urllib.parse.quote(v)}" for k, v in q.items() if v), "subset": subset, "syncing": bool(syncing) or SYNC["running"], "has_token": sync.token() is not None,
@@ -623,7 +657,7 @@ def live_match(request: Request, key: str, dup: int = 0, women: bool = False):
     wheels = {z: chart_wheel(a["chart"][z], z) for z in ("tropical", "lahiri")}
     fc = form.analyse(rec, form.history(recs, men=not women))     # women: women's results only
     return T.TemplateResponse(request, "live_match.html", {"r": rec, "a": a, "wheels": wheels, "diffs": diffs, "dup": dup,
-        "women": women,
+        "women": women, "td": _teamday(rec), "td_research": teamday.research(),
         "fc": fc, "fc_research": form.load_research(),
                                                            "team_a": rec["home"], "team_b": rec["away"],
                                                            "page": "women" if women else "live"})
@@ -792,7 +826,7 @@ TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Doubl
 
 
 @app.get("/top", response_class=HTMLResponse)
-def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "",
+def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "", dayfav: str = "",
              m: list[str] = Query(default=[]), role: str = "", xg: str = "", xg_for: str = "either",
              section: str = "men"):
     section = section if section in SECTIONS else "men"
@@ -819,8 +853,11 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
         day = today if today in tp else next((d for d in sorted(days) if d >= today), days[0] if days else "")
     hit_key, p_key, agree_key = live.PICK_KEYS[market]
     agree, ok_agree = _agree_test(agree)
+    for ps in tp.values():
+        for p in ps:
+            p.setdefault("td", _teamday(p))
     keep = lambda ps: [p for p in ps if ok_agree(p.get(agree_key) or 0) and p[p_key] >= mp      # noqa: E731
-                       and _xg_pass(p, xg_min, xg_for)]
+                       and _xg_pass(p, xg_min, xg_for) and _dayfav_ok(p, market, dayfav)]
     picks = keep(tp.get(day, []))
     all_picks = keep([p for ps in tp.values() for p in ps])
     by_agree = {k: live.score_picks([p for p in all_picks if (p.get(agree_key) or 0) == k], market) for k in range(4)}
@@ -834,7 +871,7 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
     return T.TemplateResponse(request, "top.html", {
         "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p,
         "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR, "xg_steps": [t for t in form.XG_STEPS if t > 0],
-        "keep": _xg_keep(xg, xg_for, "", section), "skeep": _xg_keep("", "", "", section),
+        "keep": _xg_keep(xg, xg_for, "", section), "skeep": _xg_keep("", "", "", section), "dayfav": dayfav,
         "section": section, "sections": SECTIONS,
         "markets": TOP_MARKETS, "n_day_all": len(tp.get(day, [])), "chosen": chosen,
         "summary_names": dict(TOP_MARKETS),

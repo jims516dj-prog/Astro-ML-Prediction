@@ -1,0 +1,2743 @@
+{
+"2 de Mayo": null,
+"A. Klagenfurt": null,
+"A. Lustenau": null,
+"AC Oulu": null,
+"AEK": {
+"date": "1924-04-13",
+"name": "AEK Athens F.C."
+},
+"AFC Eskilstuna": null,
+"AFC Wimbledon": {
+"date": "2002-05-30",
+"name": "AFC Wimbledon"
+},
+"AGF Aarhus": null,
+"AIK": null,
+"AVS": null,
+"AZ Alkmaar": {
+"date": "1967-05-10",
+"name": "AZ Alkmaar"
+},
+"Aalborg": null,
+"Aalesund": null,
+"Aarau": {
+"date": "1902-05-26",
+"name": "FC Aarau"
+},
+"Aarhus": null,
+"Aberdeen": {
+"date": "1903-04-14",
+"name": "Aberdeen F.C."
+},
+"Academica Clinceni": null,
+"Academico Viseu": null,
+"Accrington": null,
+"Accrington Stanley": null,
+"Ad. Demirspor": null,
+"Admira": null,
+"Airdrie Utd": null,
+"Ajaccio": null,
+"Ajax": {
+"date": "1900-03-18",
+"name": "AFC Ajax"
+},
+"Akhmat Grozny": null,
+"Akron Togliatti": null,
+"Alanyaspor": null,
+"Alaves": {
+"date": "1921-01-23",
+"name": "Deportivo Alav\u00e9s"
+},
+"Albacete": null,
+"Albania": {
+"date": "1912-11-28",
+"name": "Albania"
+},
+"Albion Rvs": null,
+"Albirex Niigata": null,
+"Alcorcon": null,
+"Aldershot": null,
+"Aldosivi": {
+"date": "1913-03-29",
+"name": "Club Atl\u00e9tico Aldosivi"
+},
+"Alessandria": null,
+"Alianza FC": null,
+"All Boys": null,
+"Alloa": null,
+"Almere City": {
+"date": "2001-09-14",
+"name": "Almere City FC"
+},
+"Almeria": {
+"date": "1989-07-26",
+"name": "Uni\u00f3n Deportiva Almer\u00eda"
+},
+"Altach": null,
+"Altay": {
+"date": "1914-01-16",
+"name": "Altay S.K."
+},
+"Altrincham": null,
+"Alverca": {
+"date": "1939-09-01",
+"name": "F.C. Alverca"
+},
+"Amedspor": null,
+"America MG": {
+"date": "1912-04-30",
+"name": "Am\u00e9rica Futebol Clube"
+},
+"Amiens": {
+"date": "1901-10-06",
+"name": "Amiens SC"
+},
+"Amkar": null,
+"Amorebieta": {
+"date": "1925-01-04",
+"name": "SD Amorebieta"
+},
+"Am\u00e9rica de Cali": {
+"date": "1927-02-13",
+"name": "Am\u00e9rica de Cali"
+},
+"Anaitasuna": null,
+"Anderlecht": {
+"date": "1908-05-27",
+"name": "R.S.C. Anderlecht"
+},
+"Andorra": null,
+"Angers": null,
+"Ankaragucu": {
+"date": "1910-08-31",
+"name": "MKE Ankarag\u00fcc\u00fc"
+},
+"Annan Athletic": null,
+"Annecy": null,
+"Antalyaspor": {
+"date": "1966-07-02",
+"name": "Antalyaspor"
+},
+"Antwerp": null,
+"Apollon": null,
+"Arbroath": {
+"date": "1878-07-01",
+"name": "Arbroath F.C."
+},
+"Arezzo": null,
+"Argentina": {
+"date": "1816-07-09",
+"name": "Argentina"
+},
+"Argentinos Jrs": null,
+"Aris": {
+"date": "1914-03-25",
+"name": "Aris Thessaloniki F.C."
+},
+"Arka Gdynia": null,
+"Armenia": {
+"date": "1991-09-23",
+"name": "Armenia"
+},
+"Arouca": {
+"date": "1951-12-25",
+"name": "F.C. Arouca"
+},
+"Arsenal": {
+"date": "1886-10-04",
+"name": "Arsenal F.C."
+},
+"Arsenal Sarandi": null,
+"Arsenal Tula": null,
+"Ascoli": null,
+"Asteras Tripolis": {
+"date": "1931-03-26",
+"name": "Asteras Tripoli F.C."
+},
+"Aston Villa": {
+"date": "1874-11-21",
+"name": "Aston Villa F.C."
+},
+"Astra": null,
+"Atalanta": {
+"date": "1907-10-17",
+"name": "Atalanta BC"
+},
+"Ath Bilbao": {
+"date": "1898-07-18",
+"name": "Athletic Club"
+},
+"Ath Madrid": {
+"date": "1903-04-26",
+"name": "Atl\u00e9tico Madrid"
+},
+"Athens Kallithea": {
+"date": "1966-08-18",
+"name": "Athens Kallithea F.C."
+},
+"Athletic": null,
+"Athletico-PR": null,
+"Athlone": null,
+"Atl. Rafaela": null,
+"Atl. San Luis": null,
+"Atl. Tucuman": null,
+"Atlanta Utd": {
+"date": "2014-04-16",
+"name": "Atlanta United FC"
+},
+"Atlante": {
+"date": "1916-04-18",
+"name": "Atlante F.C."
+},
+"Atlas": {
+"date": "1916-08-15",
+"name": "Atlas F.C."
+},
+"Atletico GO": null,
+"Atletico-MG": {
+"date": "1908-03-25",
+"name": "Clube Atl\u00e9tico Mineiro"
+},
+"Atl\u00e9tico Junior": {
+"date": "1924-08-07",
+"name": "Junior de Barranquilla"
+},
+"Atl\u00e9tico Nacional": {
+"date": "1947-03-07",
+"name": "Atl\u00e9tico Nacional"
+},
+"Atromitos": {
+"date": "1923-05-31",
+"name": "Atromitos F.C."
+},
+"Atvidabergs": null,
+"Augsburg": {
+"date": "1907-08-08",
+"name": "FC Augsburg"
+},
+"Aurora": null,
+"Austin FC": {
+"date": "2018-10-12",
+"name": "Austin FC"
+},
+"Australia": {
+"date": "1901-01-01",
+"name": "Australia"
+},
+"Austria Vienna": {
+"date": "1911-03-15",
+"name": "FK Austria Wien"
+},
+"Auxerre": {
+"date": "1905-12-29",
+"name": "AJ Auxerre"
+},
+"Avai": null,
+"Avellino": {
+"date": "1912-12-12",
+"name": "U.S. Avellino 1912"
+},
+"Aves": {
+"date": "1930-11-12",
+"name": "Clube Desportivo das Aves"
+},
+"Avispa Fukuoka": null,
+"Ayr": null,
+"Azerbaijan": null,
+"BK H\u00e4cken": {
+"date": "1940-08-02",
+"name": "BK H\u00e4cken"
+},
+"BW Linz": null,
+"Bahia": null,
+"Baltika": null,
+"Banfield": null,
+"Barbados": null,
+"Barcelona": {
+"date": "1899-11-29",
+"name": "FC Barcelona"
+},
+"Bari": {
+"date": "1908-01-15",
+"name": "SSC Bari"
+},
+"Barnet": null,
+"Barnsley": null,
+"Barracas Central": null,
+"Barrow": null,
+"Basel": {
+"date": "1893-11-15",
+"name": "FC Basel"
+},
+"Bastia": null,
+"Bayer Leverkusen": {
+"date": "1904-07-01",
+"name": "Bayer 04 Leverkusen"
+},
+"Bayern Munich": {
+"date": "1900-02-27",
+"name": "FC Bayern Munich"
+},
+"Beerschot VA": null,
+"Beijing Guoan": {
+"date": "1992-12-29",
+"name": "Beijing Guoan F.C."
+},
+"Beijing Renhe": null,
+"Belenenses": {
+"date": "1919-09-23",
+"name": "C.F. Os Belenenses"
+},
+"Belgium": {
+"date": "1830-10-04",
+"name": "Belgium"
+},
+"Belgrano": {
+"date": "1896-08-17",
+"name": "Belgrano Athletic Club"
+},
+"Benevento": null,
+"Benfica": {
+"date": "1904-02-28",
+"name": "S.L. Benfica"
+},
+"Benin": {
+"date": "1960-08-01",
+"name": "Benin"
+},
+"Berkhamsted FC": null,
+"Bermuda": null,
+"Besiktas": {
+"date": "1903-03-03",
+"name": "Be\u015fikta\u015f J.K."
+},
+"Besiktas JK": {
+"date": "1903-03-03",
+"name": "Be\u015fikta\u015f J.K."
+},
+"Betis": null,
+"Beveren": null,
+"Bielefeld": null,
+"Birmingham": null,
+"Bistrita": null,
+"Blackburn": {
+"date": "1875-11-05",
+"name": "Blackburn Rovers F.C."
+},
+"Blackpool": {
+"date": "1887-07-26",
+"name": "Blackpool F.C."
+},
+"Boavista": {
+"date": "1903-08-01",
+"name": "Boavista F.C."
+},
+"Boca Juniors": {
+"date": "1905-04-03",
+"name": "Boca Juniors"
+},
+"Bochum": {
+"date": "1938-04-14",
+"name": "VfL Bochum"
+},
+"Bodo/Glimt": null,
+"Bodrumspor": null,
+"Bohemians": null,
+"Bologna": {
+"date": "1909-10-03",
+"name": "Bologna F.C. 1909"
+},
+"Bolton": null,
+"Bonaire": null,
+"Bonnyrigg Rose": null,
+"Bordeaux": {
+"date": "1881-10-01",
+"name": "FC Girondins de Bordeaux"
+},
+"Boreham Wood": null,
+"Boston Utd": null,
+"Botafogo RJ": null,
+"Boulogne": null,
+"Bournemouth": null,
+"Boyac\u00e1 Chic\u00f3 FC": {
+"date": "2002-03-26",
+"name": "Boyac\u00e1 Chic\u00f3 F.C."
+},
+"Brackley Town": null,
+"Bradford": null,
+"Bradford City": null,
+"Bragantino": null,
+"Brage": null,
+"Braintree Town": {
+"date": "1898-09-24",
+"name": "Braintree Town F.C."
+},
+"Brann": {
+"date": "1908-09-26",
+"name": "SK Brann"
+},
+"Braunschweig": null,
+"Bray": null,
+"Brechin": null,
+"Brentford": {
+"date": "1889-10-10",
+"name": "Brentford F.C."
+},
+"Brescia": {
+"date": "1911-07-17",
+"name": "Brescia Calcio"
+},
+"Brest": null,
+"Brighton": {
+"date": "1901-06-24",
+"name": "Brighton & Hove Albion F.C."
+},
+"Brighton and Hove Albion": {
+"date": "1901-06-24",
+"name": "Brighton & Hove Albion F.C."
+},
+"Bristol City": null,
+"Bristol Rovers": null,
+"Bristol Rvs": null,
+"Bromley": null,
+"Brommapojkarna": null,
+"Brondby": {
+"date": "1964-12-03",
+"name": "Br\u00f8ndby IF"
+},
+"Bulgaria": {
+"date": "1878-07-13",
+"name": "Bulgaria"
+},
+"Burgos": null,
+"Burkina Faso": null,
+"Burnley": {
+"date": "1882-05-18",
+"name": "Burnley F.C."
+},
+"Burton": {
+"date": "1950-07-06",
+"name": "Burton Albion F.C."
+},
+"Burton Albion": {
+"date": "1950-07-06",
+"name": "Burton Albion F.C."
+},
+"Burundi": {
+"date": "1962-07-01",
+"name": "Burundi"
+},
+"Buyuksehyr": null,
+"C.D. Platense": null,
+"CD Artistico Navalcarnero": null,
+"CD Municipal Lime\u00f1o": {
+"date": "1949-09-11",
+"name": "C.D. Municipal Lime\u00f1o"
+},
+"CD Pamplona": null,
+"CD Tarancon": null,
+"CF Montreal": null,
+"CFR Cluj": {
+"date": "1907-11-10",
+"name": "CFR Cluj"
+},
+"CS Puertollano": null,
+"CS Turnu Severin": null,
+"CSA": null,
+"CSKA Moscow": null,
+"Cabinteely": null,
+"Cadiz": {
+"date": "1910-09-10",
+"name": "C\u00e1diz Club de F\u00fatbol"
+},
+"Caen": null,
+"Cagliari": null,
+"Calarasi": null,
+"Calvo Sotelo": null,
+"Cambridge": null,
+"Cambuur": {
+"date": "1964-06-19",
+"name": "SC Cambuur"
+},
+"Cameroon": {
+"date": "1960-01-01",
+"name": "Cameroon"
+},
+"Canada": {
+"date": "1867-07-01",
+"name": "Canada"
+},
+"Cangzhou": null,
+"Cardiff": null,
+"Carlisle": null,
+"Carrarese": null,
+"Cartagena": {
+"date": "1995-07-25",
+"name": "FC Cartagena"
+},
+"Casa Pia": {
+"date": "1920-07-03",
+"name": "Casa Pia A.C."
+},
+"Castellon": {
+"date": "1922-07-20",
+"name": "CD Castell\u00f3n"
+},
+"Catanzaro": null,
+"Cayman Islands": null,
+"Ceahlaul": null,
+"Ceara": {
+"date": "1914-06-02",
+"name": "Cear\u00e1 Sporting Club"
+},
+"Celta": {
+"date": "1923-08-23",
+"name": "RC Celta de Vigo"
+},
+"Celta B": null,
+"Celtic": {
+"date": "1887-11-06",
+"name": "Celtic F.C."
+},
+"Central African Republic": null,
+"Central Cordoba": null,
+"Cercle Brugge": {
+"date": "1899-04-09",
+"name": "Cercle Brugge K.S.V."
+},
+"Cerezo Osaka": null,
+"Cerro Largo": {
+"date": "2002-11-19",
+"name": "Cerro Largo FC"
+},
+"Cesena": null,
+"Ceuta": null,
+"Chacarita Juniors": {
+"date": "1906-05-01",
+"name": "Chacarita Juniors"
+},
+"Chambly": null,
+"Changchun Yatai": {
+"date": "1996-06-06",
+"name": "Changchun Yatai F.C."
+},
+"Chapecoense-SC": null,
+"Charleroi": null,
+"Charlotte": {
+"date": "2019-12-17",
+"name": "Charlotte FC"
+},
+"Charlton": {
+"date": "1905-06-09",
+"name": "Charlton Athletic F.C."
+},
+"Chateauroux": null,
+"Chaves": {
+"date": "1949-09-27",
+"name": "G.D. Chaves"
+},
+"Chelsea": {
+"date": "1905-03-10",
+"name": "Chelsea F.C."
+},
+"Cheltenham": null,
+"Cheltenham Town": null,
+"Chengdu Rongcheng": {
+"date": "2018-03-07",
+"name": "Chengdu Rongcheng F.C."
+},
+"Chesterfield": null,
+"Chiapas": {
+"date": "2002-06-27",
+"name": "Chiapas F.C."
+},
+"Chiba": null,
+"Chicago Fire": {
+"date": "1997-10-08",
+"name": "Chicago Fire FC"
+},
+"Chievo": {
+"date": "1929-09-06",
+"name": "AC ChievoVerona"
+},
+"Chile": {
+"date": "1810-09-18",
+"name": "Chile"
+},
+"Chindia Targoviste": {
+"date": "2010-08-13",
+"name": "AFC Chindia T\u00e2rgovi\u0219te"
+},
+"Chinese Taipei": null,
+"Chivas USA": null,
+"Chongqing Liangjiang Athletic": null,
+"Chongqing Tonglianglong": null,
+"Chorley": null,
+"Cittadella": null,
+"Clermont": null,
+"Club America": null,
+"Club Atl\u00e9tico La Paz": null,
+"Club Atl\u00e9tico Morelia": null,
+"Club Brugge": {
+"date": "1891-11-13",
+"name": "Club Brugge K.V."
+},
+"Club Leon": {
+"date": "1944-08-20",
+"name": "Club Le\u00f3n"
+},
+"Club Tijuana": null,
+"Clyde": null,
+"Cobh Ramblers": null,
+"Colchester": null,
+"Colombia": null,
+"Colon Santa FE": null,
+"Colon Santa Fe": null,
+"Colorado Rapids": {
+"date": "1995-06-06",
+"name": "Colorado Rapids"
+},
+"Columbus Crew": {
+"date": "1994-06-15",
+"name": "Columbus Crew"
+},
+"Como": {
+"date": "1907-05-25",
+"name": "Como 1907"
+},
+"Concarneau": {
+"date": "1911-03-11",
+"name": "US Concarneau"
+},
+"Concordia": null,
+"Congo DR": null,
+"Cordoba": null,
+"Corinthians": {
+"date": "1910-09-01",
+"name": "S.C. Corinthians Paulista"
+},
+"Coritiba": {
+"date": "1909-10-12",
+"name": "Coritiba F.C."
+},
+"Cork City": null,
+"Corona Brasov": null,
+"Corum": null,
+"Corvinul": null,
+"Cosenza": null,
+"Cottbus": null,
+"Cove Rangers": null,
+"Coventry": {
+"date": "1883-08-13",
+"name": "Coventry City F.C."
+},
+"Cowdenbeath": null,
+"Cracovia": {
+"date": "1906-06-13",
+"name": "Cracovia"
+},
+"Crawley Town": null,
+"Cremonese": {
+"date": "1903-03-24",
+"name": "US Cremonese"
+},
+"Crewe": null,
+"Crewe Alexandra": null,
+"Criciuma": null,
+"Croatia": {
+"date": "1991-06-25",
+"name": "Croatia"
+},
+"Crotone": null,
+"Crucero del Norte": null,
+"Cruz Azul": {
+"date": "1927-05-22",
+"name": "Cruz Azul"
+},
+"Cruzeiro": null,
+"Crystal Palace": {
+"date": "1905-09-10",
+"name": "Crystal Palace F.C."
+},
+"Csikszereda M. Ciuc": null,
+"Cuba": {
+"date": "1898-12-10",
+"name": "Cuba"
+},
+"Cuiaba": {
+"date": "2001-12-12",
+"name": "Cuiab\u00e1 Esporte Clube"
+},
+"Cultural Leonesa": null,
+"Cura\u00e7ao": null,
+"Cyprus": {
+"date": "1960-08-16",
+"name": "Cyprus"
+},
+"Czechia": null,
+"C\u00facuta Deportivo": {
+"date": "1924-09-10",
+"name": "C\u00facuta Deportivo"
+},
+"DC United": {
+"date": "1994-06-15",
+"name": "D.C. United"
+},
+"Daco-Getica Bucuresti": null,
+"Dag and Red": null,
+"Dalian Pro": null,
+"Dalian Yifang F.C.": {
+"date": "2009-09-20",
+"name": "Dalian Professional F.C."
+},
+"Dalkurd": null,
+"Darmstadt": null,
+"Defensa y Justicia": {
+"date": "1935-03-20",
+"name": "Defensa y Justicia"
+},
+"Degerfors": {
+"date": "1907-01-13",
+"name": "Degerfors IF"
+},
+"Delf\u00edn": null,
+"Den Haag": null,
+"Dender": null,
+"Denizlispor": {
+"date": "1966-05-26",
+"name": "Denizlispor"
+},
+"Dep. Riestra": null,
+"Derby": {
+"date": "1884-02-05",
+"name": "Derby County F.C."
+},
+"Derry City": null,
+"Dijon": {
+"date": "1998-05-25",
+"name": "Dijon FCO"
+},
+"Din. Bucuresti": null,
+"Dinamo Bucuresti": {
+"date": "1948-05-14",
+"name": "FC Dinamo Bucharest"
+},
+"Dinamo Zagreb": {
+"date": "1911-04-26",
+"name": "GNK Dinamo Zagreb"
+},
+"Djurgarden": null,
+"Dominica": null,
+"Doncaster": null,
+"Dorados de Sinaloa": {
+"date": "2003-08-08",
+"name": "Dorados de Sinaloa"
+},
+"Dorking": null,
+"Dortmund": {
+"date": "1909-12-19",
+"name": "Borussia Dortmund"
+},
+"Dover Athletic": null,
+"Dresden": null,
+"Drogheda": null,
+"Dumbarton": {
+"date": "1872-12-23",
+"name": "Dumbarton F.C."
+},
+"Dundalk": null,
+"Dundee": null,
+"Dundee United": {
+"date": "1909-05-24",
+"name": "Dundee United F.C."
+},
+"Dunfermline": {
+"date": "1885-06-02",
+"name": "Dunfermline Athletic F.C."
+},
+"Dunkerque": null,
+"Dynamo Makhachkala": null,
+"Dynamo Moscow": null,
+"East Fife": null,
+"East Kilbride": null,
+"Eastleigh": null,
+"Ebbsfleet": null,
+"Edinburgh City": null,
+"Egypt": {
+"date": "1922-02-28",
+"name": "Egypt"
+},
+"Eibar": {
+"date": "1940-11-30",
+"name": "SD Eibar"
+},
+"Ein Frankfurt": null,
+"Ekenas": null,
+"Elche": {
+"date": "1923-01-10",
+"name": "Elche CF"
+},
+"Eldense": {
+"date": "1921-09-17",
+"name": "CD Eldense"
+},
+"Elfsborg": {
+"date": "1904-06-26",
+"name": "IF Elfsborg"
+},
+"Elgin": null,
+"Elversberg": null,
+"Empoli": null,
+"England": {
+"date": "0927-07-17",
+"name": "England"
+},
+"Equatorial Guinea": {
+"date": "1968-10-12",
+"name": "Equatorial Guinea"
+},
+"Eritrea": {
+"date": "1993-05-24",
+"name": "Eritrea"
+},
+"Erzgebirge Aue": {
+"date": "1946-03-04",
+"name": "FC Erzgebirge Aue"
+},
+"Erzurum BB": null,
+"Erzurumspor": null,
+"Esbjerg": null,
+"Espanol": null,
+"Estonia": {
+"date": "1918-02-24",
+"name": "Estonia"
+},
+"Estoril": {
+"date": "1939-05-17",
+"name": "G.D. Estoril Praia"
+},
+"Estrela": null,
+"Estudiantes L.P.": {
+"date": "1905-08-04",
+"name": "Estudiantes de La Plata"
+},
+"Estudiantes Rio Cuarto": null,
+"Eswatini": {
+"date": "1968-09-06",
+"name": "Eswatini"
+},
+"Ethiopia": {
+"date": "1974-09-12",
+"name": "Ethiopia"
+},
+"Eupen": null,
+"Everton": null,
+"Excelsior": null,
+"Exeter": null,
+"Extremadura UD": null,
+"Eyupspor": null,
+"FC Ararat-Armenia": null,
+"FC Arges": {
+"date": "1953-08-06",
+"name": "FC Arge\u0219"
+},
+"FC Botosani": null,
+"FC Brasov": null,
+"FC Cincinnati": {
+"date": "2015-08-12",
+"name": "FC Cincinnati"
+},
+"FC Copenhagen": {
+"date": "1992-07-01",
+"name": "F.C. Copenhagen"
+},
+"FC Dallas": {
+"date": "1995-06-06",
+"name": "FC Dallas"
+},
+"FC Edinburgh": null,
+"FC Emmen": {
+"date": "1925-08-21",
+"name": "FC Emmen"
+},
+"FC Hermannstadt": null,
+"FC Iberia 1999": {
+"date": "1999-08-20",
+"name": "FC Iberia 1999"
+},
+"FC Kairat": null,
+"FC Koln": {
+"date": "1948-02-13",
+"name": "1. FC K\u00f6ln"
+},
+"FC Lugano": {
+"date": "1908-07-28",
+"name": "FC Lugano"
+},
+"FC Midtjylland": {
+"date": "1999-07-01",
+"name": "FC Midtjylland"
+},
+"FC Nordsjaelland": null,
+"FC Rapid Bucuresti": {
+"date": "1923-06-25",
+"name": "FC Rapid Bucure\u0219ti"
+},
+"FC Thun": {
+"date": "1898-05-01",
+"name": "FC Thun"
+},
+"FC Tokyo": null,
+"FC Voluntari": null,
+"FCSB": {
+"date": "1947-06-07",
+"name": "FCSB"
+},
+"FK Anzi Makhackala": null,
+"FK Jablonec": null,
+"FK Kauno \u017dalgiris": null,
+"FK Rostov": null,
+"Fakel Voronezh": null,
+"Falkenbergs": null,
+"Falkirk": null,
+"Famalicao": {
+"date": "1931-08-21",
+"name": "FC Famalic\u00e3o"
+},
+"Farense": {
+"date": "1910-04-01",
+"name": "S.C. Farense"
+},
+"Faroe Islands": {
+"date": "1948-04-01",
+"name": "Faroe Islands"
+},
+"Farul Constanta": {
+"date": "1920-11-12",
+"name": "SSC Farul Constan\u021ba"
+},
+"Fenerbahce": {
+"date": "1907-05-03",
+"name": "Fenerbah\u00e7e Istanbul"
+},
+"FeralpiSalo": null,
+"Ferencv\u00e1ros TC": null,
+"Ferrol": null,
+"Feyenoord": {
+"date": "1908-07-19",
+"name": "Feyenoord Rotterdam"
+},
+"Figueirense": {
+"date": "1921-06-12",
+"name": "Figueirense Futebol Clube"
+},
+"Finland": {
+"date": "1917-12-06",
+"name": "Finland"
+},
+"Finn Harps": null,
+"Fiorentina": {
+"date": "1926-08-29",
+"name": "ACF Fiorentina"
+},
+"Flamengo RJ": null,
+"Fleetwood Town": null,
+"Fluminense": {
+"date": "1902-07-21",
+"name": "Fluminense F.C."
+},
+"For Sittard": null,
+"Forest Green": null,
+"Forfar": null,
+"Fortaleza": null,
+"Fortuna Dusseldorf": {
+"date": "1895-05-05",
+"name": "Fortuna D\u00fcsseldorf"
+},
+"France": null,
+"Fredrikstad": {
+"date": "1903-04-07",
+"name": "Fredrikstad FK"
+},
+"Freiburg": {
+"date": "1904-05-30",
+"name": "SC Freiburg"
+},
+"Frosinone": {
+"date": "1928-09-19",
+"name": "Frosinone Calcio"
+},
+"Fuenlabrada": {
+"date": "1975-06-05",
+"name": "CF Fuenlabrada"
+},
+"Fuerte San Francisco": {
+"date": "1953-01-08",
+"name": "Fuerte San Francisco"
+},
+"Fulham": null,
+"Fylde": null,
+"GAIS": {
+"date": "1894-03-11",
+"name": "GAIS"
+},
+"GKS Belchatow": null,
+"GKS Katowice": {
+"date": "1964-02-27",
+"name": "GKS Katowice"
+},
+"Gabon": null,
+"Galatasaray": {
+"date": "1905-10-01",
+"name": "Galatasaray S.K."
+},
+"Galway": null,
+"Gamba Osaka": null,
+"Gambia": null,
+"Gateshead": null,
+"Gaz Metan Medias": null,
+"Gaziantep": null,
+"Gefle": {
+"date": "1882-12-05",
+"name": "Gefle IF"
+},
+"Genclerbirligi": {
+"date": "1923-03-14",
+"name": "Gen\u00e7lerbirli\u011fi S.K."
+},
+"Genk": null,
+"Genoa": {
+"date": "1893-09-07",
+"name": "Genoa CFC"
+},
+"Gent": {
+"date": "1964-11-26",
+"name": "KAA Gent"
+},
+"Germany": null,
+"Getafe": {
+"date": "1983-07-08",
+"name": "Getafe CF"
+},
+"Ghana": null,
+"Giannina": null,
+"Gibraltar": null,
+"Gil Vicente": {
+"date": "1924-05-03",
+"name": "Gil Vicente F.C."
+},
+"Gillingham": null,
+"Gimnasia L.P.": null,
+"Gimnasia Mendoza": null,
+"Giresunspor": null,
+"Girona": {
+"date": "1930-07-23",
+"name": "Girona FC"
+},
+"Gloria Buzau": {
+"date": "1973-06-16",
+"name": "FC Gloria Buz\u0103u"
+},
+"Gnistan": null,
+"Go Ahead Eagles": {
+"date": "1902-12-02",
+"name": "Go Ahead Eagles"
+},
+"Godoy Cruz": null,
+"Goias": null,
+"Gornik Z.": null,
+"Gornik Zabrze": {
+"date": "1948-12-14",
+"name": "G\u00f3rnik Zabrze"
+},
+"Goteborg": null,
+"Goztep": null,
+"Granada": {
+"date": "1931-04-06",
+"name": "Granada CF"
+},
+"Grasshoppers": {
+"date": "1886-09-01",
+"name": "Grasshopper Club Z\u00fcrich"
+},
+"Grazer AK": {
+"date": "1902-08-18",
+"name": "Grazer AK"
+},
+"Greece": {
+"date": "1821-04-06",
+"name": "Greece"
+},
+"Gremio": {
+"date": "1903-09-15",
+"name": "Gr\u00eamio FBPA"
+},
+"Grenoble": null,
+"Greuther Furth": {
+"date": "1903-09-23",
+"name": "SpVgg Greuther F\u00fcrth"
+},
+"Grimsby": null,
+"Grodig": {
+"date": "1948-03-20",
+"name": "SV Gr\u00f6dig"
+},
+"Groningen": {
+"date": "1971-06-16",
+"name": "FC Groningen"
+},
+"Guadalajara Chivas": null,
+"Guadeloupe": {
+"date": "1946-03-21",
+"name": "Guadeloupe"
+},
+"Guangzhou City": {
+"date": "2011-06-25",
+"name": "Guangzhou City F.C."
+},
+"Guangzhou Evergrande": null,
+"Guangzhou FC": null,
+"Guangzhou R&F": null,
+"Guatemala": null,
+"Guimaraes": null,
+"Guinea": {
+"date": "1958-10-02",
+"name": "Guinea"
+},
+"Guinea-Bissau": null,
+"Guingamp": null,
+"Guizhou Zhicheng": null,
+"Guyana": null,
+"HB K\u00f8ge": null,
+"HIFK": null,
+"HJK": null,
+"Hacken": {
+"date": "1940-08-02",
+"name": "BK H\u00e4cken"
+},
+"Hajduk Split": {
+"date": "1911-02-13",
+"name": "HNK Hajduk Split"
+},
+"Haka": null,
+"Halifax": null,
+"Halmstad": null,
+"Ham-Kam": null,
+"HamKam": {
+"date": "1918-08-10",
+"name": "Hamarkameratene"
+},
+"Hamburg": {
+"date": "1887-09-29",
+"name": "Hamburger SV"
+},
+"Hamilton": null,
+"Hammarby": {
+"date": "1915-08-13",
+"name": "Hammarby Fotboll"
+},
+"Hangzhou Greentown": {
+"date": "1998-01-14",
+"name": "Zhejiang Professional F.C."
+},
+"Hannover": null,
+"Hansa Rostock": {
+"date": "1965-12-28",
+"name": "F.C. Hansa Rostock"
+},
+"Hapoel Be'er Sheva": null,
+"Harrogate": null,
+"Hartberg": {
+"date": "1946-04-29",
+"name": "TSV Hartberg"
+},
+"Hartlepool": null,
+"Hatayspor": {
+"date": "1967-07-23",
+"name": "Hatayspor"
+},
+"Haugesund": {
+"date": "1993-10-28",
+"name": "FK Haugesund"
+},
+"Hearts": null,
+"Hebei": null,
+"Heerenveen": {
+"date": "1920-07-20",
+"name": "SC Heerenveen"
+},
+"Heidenheim": null,
+"Helsingborg": null,
+"Helsingor": null,
+"Henan Songshan Longmen": {
+"date": "1994-08-28",
+"name": "Henan F.C."
+},
+"Heracles": null,
+"Hertha": {
+"date": "1892-07-25",
+"name": "Hertha BSC"
+},
+"Hibernian": {
+"date": "1875-08-06",
+"name": "Hibernian F.C."
+},
+"Hobro": null,
+"Hoffenheim": {
+"date": "1899-07-01",
+"name": "TSG 1899 Hoffenheim"
+},
+"Hokkaido Consadole Sapporo": null,
+"Holstein Kiel": {
+"date": "1900-10-07",
+"name": "Holstein Kiel"
+},
+"Honefoss": null,
+"Honka": null,
+"Hornchurch": null,
+"Horsens": null,
+"Houston Dynamo": {
+"date": "2005-12-15",
+"name": "Houston Dynamo FC"
+},
+"Huddersfield": {
+"date": "1908-08-15",
+"name": "Huddersfield Town A.F.C."
+},
+"Huesca": null,
+"Hull": {
+"date": "1904-06-28",
+"name": "Hull City A.F.C."
+},
+"Huracan": null,
+"Hvidovre IF": {
+"date": "1925-10-15",
+"name": "Hvidovre IF"
+},
+"Ibiza": {
+"date": "2015-07-31",
+"name": "UD Ibiza"
+},
+"Iceland": {
+"date": "1918-12-01",
+"name": "Iceland"
+},
+"Ilves": null,
+"Ind. Rivadavia": null,
+"Independiente": {
+"date": "1905-01-01",
+"name": "Club Atl\u00e9tico Independiente"
+},
+"Independiente Santa Fe": {
+"date": "1941-02-28",
+"name": "Independiente Santa Fe"
+},
+"India": {
+"date": "1947-08-15",
+"name": "India"
+},
+"Ingolstadt": null,
+"Instituto": null,
+"Inter": {
+"date": "1908-03-09",
+"name": "Inter Milan"
+},
+"Inter Club d'Escaldes": null,
+"Inter Miami": {
+"date": "2018-01-29",
+"name": "Inter Miami CF"
+},
+"Inter Turku": null,
+"Internacional": {
+"date": "1909-04-04",
+"name": "S.C. Internacional"
+},
+"Internacional de Bogot\u00e1": {
+"date": "2025-12-10",
+"name": "Internacional de Bogot\u00e1"
+},
+"Internazionale": {
+"date": "1908-03-09",
+"name": "Inter Milan"
+},
+"Inverness C": null,
+"Ionikos": null,
+"Ipswich": {
+"date": "1878-10-16",
+"name": "Ipswich Town F.C."
+},
+"Iraklis": null,
+"Isidro Metap\u00e1n": null,
+"Istanbulspor": null,
+"Italy": null,
+"Ivory Coast": null,
+"Iwata": null,
+"JJK Jyvaskyla": null,
+"Jagiellonia": null,
+"Jaro": null,
+"Jerv": {
+"date": "1921-08-21",
+"name": "FK Jerv"
+},
+"Jiangsu Suning": null,
+"Joinville": {
+"date": "1976-01-29",
+"name": "Joinville Esporte Clube"
+},
+"Jonkopings": null,
+"Juarez": null,
+"Juve Stabia": null,
+"Juventude": null,
+"Juventus": {
+"date": "1897-11-01",
+"name": "Juventus FC"
+},
+"KF Egnatia": null,
+"KFUM Oslo": {
+"date": "1939-01-01",
+"name": "KFUM-Kameratene Oslo"
+},
+"KPV Kokkola": null,
+"KTP": null,
+"KV Mechelen": null,
+"Kaiserslautern": {
+"date": "1900-06-02",
+"name": "1. FC Kaiserslautern"
+},
+"Kalamata": null,
+"Kalmar": null,
+"Karagumruk": null,
+"Karlsruhe": null,
+"Kashima Antlers": null,
+"Kashiwa Reysol": null,
+"Kasimpasa": null,
+"Kawasaki Frontale": null,
+"Kayserispor": {
+"date": "1966-07-01",
+"name": "Kayserispor"
+},
+"Kazakhstan": null,
+"Kelty Hearts": null,
+"Kenya": null,
+"Khimki": null,
+"Kidderminster": null,
+"Kifisia": null,
+"Kilmarnock": {
+"date": "1869-01-05",
+"name": "Kilmarnock F.C."
+},
+"King's Lynn": null,
+"Kocaelispor": {
+"date": "1966-04-24",
+"name": "Kocaelispor"
+},
+"Kofu": null,
+"Kongsvinger": null,
+"Konyaspor": {
+"date": "1922-06-22",
+"name": "Konyaspor"
+},
+"Korona Kielce": {
+"date": "1973-07-10",
+"name": "Korona Kielce"
+},
+"Kortrijk": null,
+"Krasnodar": null,
+"Kristiansund": {
+"date": "2003-09-02",
+"name": "Kristiansund BK"
+},
+"Krylya Sovetov": null,
+"KuPS": {
+"date": "1923-03-16",
+"name": "Kuopion Palloseura"
+},
+"KuPS Kuopio": null,
+"Kuban": null,
+"Kumamoto": null,
+"Kyoto": null,
+"LASK": {
+"date": "1899-08-07",
+"name": "LASK Linz"
+},
+"LKS Lodz": null,
+"La Coruna": null,
+"Lahti": null,
+"Lamia": null,
+"Lanus": {
+"date": "1915-01-03",
+"name": "Club Atl\u00e9tico Lan\u00fas"
+},
+"Larisa": null,
+"Las Palmas": {
+"date": "1949-08-22",
+"name": "UD Las Palmas"
+},
+"Latvia": {
+"date": "1918-11-18",
+"name": "Latvia"
+},
+"Lausanne": null,
+"Lausanne Ouchy": null,
+"Laval": null,
+"Lazio": {
+"date": "1900-01-09",
+"name": "SS Lazio"
+},
+"Le Havre": null,
+"Le Mans": {
+"date": "1985-06-12",
+"name": "Le Mans F.C."
+},
+"Lecce": {
+"date": "1908-03-17",
+"name": "US Lecce"
+},
+"Lecco": null,
+"Lech Poznan": {
+"date": "1922-03-19",
+"name": "Lech Pozna\u0144"
+},
+"Lech Pozna\u0144": {
+"date": "1922-03-19",
+"name": "Lech Pozna\u0144"
+},
+"Lechia Gdansk": null,
+"Leczna": null,
+"Leeds": {
+"date": "1919-10-17",
+"name": "Leeds United F.C."
+},
+"Leganes": {
+"date": "1928-06-23",
+"name": "CD Legan\u00e9s"
+},
+"Legia": null,
+"Legnica": null,
+"Leicester": null,
+"Leicester City": null,
+"Lens": null,
+"Leones Negros": null,
+"Lesotho": null,
+"Levadeiakos": null,
+"Levante": {
+"date": "1909-09-06",
+"name": "Levante UD"
+},
+"Leverkusen": {
+"date": "1904-07-01",
+"name": "Bayer 04 Leverkusen"
+},
+"Leyton Orient": null,
+"Liaoning": null,
+"Liaoning Tieren": {
+"date": "2015-06-26",
+"name": "Liaoning Tieren F.C."
+},
+"Libya": {
+"date": "1977-03-02",
+"name": "Libya"
+},
+"Liechtenstein": {
+"date": "1806-07-12",
+"name": "Liechtenstein"
+},
+"Lille": {
+"date": "1944-09-23",
+"name": "Lille OSC"
+},
+"Lillestrom": null,
+"Limerick": null,
+"Lincoln": null,
+"Lithuania": {
+"date": "1918-02-16",
+"name": "Lithuania"
+},
+"Liverpool": {
+"date": "1892-06-03",
+"name": "Liverpool F.C."
+},
+"Livingston": null,
+"Livorno": null,
+"Ljungskile": {
+"date": "1926-05-16",
+"name": "Ljungskile SK"
+},
+"Llaneros FC": null,
+"Lobos BUAP": null,
+"Logrones": null,
+"Lokomotiv Moscow": null,
+"Lommel SK": null,
+"Londrina": null,
+"Longford": null,
+"Lorient": {
+"date": "1926-04-02",
+"name": "F.C. Lorient"
+},
+"Los Angeles FC": {
+"date": "2014-10-30",
+"name": "Los Angeles FC"
+},
+"Los Angeles Galaxy": null,
+"Lugano": {
+"date": "1908-07-28",
+"name": "FC Lugano"
+},
+"Lugo": {
+"date": "1953-07-08",
+"name": "Club Deportivo Lugo"
+},
+"Luton": {
+"date": "1885-04-11",
+"name": "Luton Town F.C."
+},
+"Luxembourg": null,
+"Luzern": {
+"date": "1901-08-12",
+"name": "FC Luzern"
+},
+"Lyngby": null,
+"Lyon": {
+"date": "1950-05-26",
+"name": "Olympique Lyonnais"
+},
+"M'gladbach": null,
+"M. Saransk": null,
+"MGladbach": null,
+"Macclesfield": {
+"date": "2020-10-13",
+"name": "Macclesfield F.C."
+},
+"Machida": null,
+"Madagascar": null,
+"Magdeburg": {
+"date": "1965-12-22",
+"name": "1. FC Magdeburg"
+},
+"Maidenhead": null,
+"Maidstone": null,
+"Mainz": {
+"date": "1905-03-16",
+"name": "1. FSV Mainz 05"
+},
+"Malaga": {
+"date": "1904-04-03",
+"name": "M\u00e1laga CF"
+},
+"Malawi": {
+"date": "1964-07-06",
+"name": "Malawi"
+},
+"Mali": {
+"date": "1960-09-22",
+"name": "Mali"
+},
+"Mallorca": {
+"date": "1916-03-05",
+"name": "RCD Mallorca"
+},
+"Malmo FF": {
+"date": "1910-02-24",
+"name": "Malm\u00f6 FF"
+},
+"Malta": {
+"date": "1964-09-21",
+"name": "Malta"
+},
+"Man City": {
+"date": "1894-04-16",
+"name": "Manchester City F.C."
+},
+"Man United": {
+"date": "1878-03-05",
+"name": "Manchester United F.C."
+},
+"Manchester City": {
+"date": "1894-04-16",
+"name": "Manchester City F.C."
+},
+"Mansfield": null,
+"Mansfield Town": null,
+"Manta F.C.": {
+"date": "1998-07-27",
+"name": "Manta F\u00fatbol Club"
+},
+"Mantova": null,
+"Mariehamn": null,
+"Maritimo": {
+"date": "1910-09-20",
+"name": "C.S. Mar\u00edtimo"
+},
+"Marseille": {
+"date": "1899-08-31",
+"name": "Olympique de Marseille"
+},
+"Martigues": null,
+"Mattersburg": {
+"date": "1922-06-10",
+"name": "SV Mattersburg"
+},
+"Mauritania": {
+"date": "1960-11-28",
+"name": "Mauritania"
+},
+"Mazatlan FC": {
+"date": "2020-06-08",
+"name": "Mazatl\u00e1n F\u00fatbol Club"
+},
+"Mechelen": null,
+"Meizhou Hakka": null,
+"Mervue": null,
+"Metz": null,
+"Middlesbrough": {
+"date": "1876-10-20",
+"name": "Middlesbrough F.C."
+},
+"Midtjylland": {
+"date": "1999-07-01",
+"name": "FC Midtjylland"
+},
+"Milan": {
+"date": "1899-12-16",
+"name": "AC Milan"
+},
+"Millwall": null,
+"Milton Keynes Dons": {
+"date": "2004-06-21",
+"name": "Milton Keynes Dons F.C."
+},
+"Minnesota United": null,
+"Mioveni": null,
+"Mirandes": {
+"date": "1927-05-03",
+"name": "CD Mirand\u00e9s"
+},
+"Mirassol": null,
+"Mito": null,
+"Mjallby": null,
+"Mjondalen": null,
+"Modena": {
+"date": "1912-04-05",
+"name": "Modena F.C."
+},
+"Molde": {
+"date": "1911-06-19",
+"name": "Molde FK"
+},
+"Moldova": {
+"date": "1991-08-27",
+"name": "Moldova"
+},
+"Monaco": {
+"date": "1924-08-23",
+"name": "AS Monaco FC"
+},
+"Monaghan": null,
+"Monarcas": null,
+"Montedio Yamagata": null,
+"Montenegro": {
+"date": "2006-06-03",
+"name": "Montenegro"
+},
+"Monterrey": {
+"date": "1945-06-28",
+"name": "Club de F\u00fatbol Monterrey"
+},
+"Montevideo City Torque": null,
+"Montpellier": null,
+"Montrose": {
+"date": "1879-10-13",
+"name": "Montrose F.C."
+},
+"Monza": {
+"date": "1912-09-01",
+"name": "AC Monza"
+},
+"Morecambe": {
+"date": "1920-05-07",
+"name": "Morecambe F.C."
+},
+"Moreirense": {
+"date": "1938-11-01",
+"name": "Moreirense F.C."
+},
+"Morocco": {
+"date": "1956-03-02",
+"name": "Morocco"
+},
+"Morton": null,
+"Motherwell": {
+"date": "1886-05-17",
+"name": "Motherwell F.C."
+},
+"Motor Lublin": null,
+"Mouscron": null,
+"Mozambique": {
+"date": "1975-06-25",
+"name": "Mozambique"
+},
+"Mushuc Runa": null,
+"MyPa": {
+"date": "1947-12-14",
+"name": "MYPA"
+},
+"NAC Breda": {
+"date": "1912-09-19",
+"name": "NAC Breda"
+},
+"NEC Nijmegen": {
+"date": "1900-11-15",
+"name": "N.E.C."
+},
+"NK Celje": {
+"date": "1919-12-28",
+"name": "NK Celje"
+},
+"Nacional": null,
+"Nagoya Grampus": null,
+"Namibia": null,
+"Nancy": null,
+"Nantes": {
+"date": "1943-04-21",
+"name": "FC Nantes"
+},
+"Nantong Zhiyun": null,
+"Napoli": {
+"date": "1926-08-25",
+"name": "SSC Napoli"
+},
+"Nashville SC": null,
+"Nautico": {
+"date": "1901-04-07",
+"name": "Clube N\u00e1utico Capibaribe"
+},
+"Navodari": null,
+"Necaxa": {
+"date": "1923-08-21",
+"name": "Club Necaxa"
+},
+"Netherlands": {
+"date": "1954-12-29",
+"name": "Netherlands"
+},
+"Neustadt": null,
+"New England Revolution": null,
+"New York City": {
+"date": "2013-05-21",
+"name": "New York City FC"
+},
+"New York Red Bulls": null,
+"New Zealand": {
+"date": "1841-05-03",
+"name": "New Zealand"
+},
+"Newcastle": {
+"date": "1892-12-09",
+"name": "Newcastle United F.C."
+},
+"Newells Old Boys": {
+"date": "1903-11-03",
+"name": "Newell's Old Boys"
+},
+"Newport County": null,
+"Nice": null,
+"Niger": null,
+"Nigeria": {
+"date": "1963-10-01",
+"name": "Nigeria"
+},
+"Nijmegen": null,
+"Nimes": {
+"date": "1937-04-10",
+"name": "N\u00eemes Olympique"
+},
+"Niort": null,
+"Nordsjaelland": null,
+"Norrkoping": null,
+"North Macedonia": null,
+"Northampton": null,
+"Northampton Town": null,
+"Norwich": {
+"date": "1902-06-17",
+"name": "Norwich City F.C."
+},
+"Nott'm Forest": null,
+"Nottm Forest": null,
+"Notts County": null,
+"Nueva Chicago": null,
+"Numancia": {
+"date": "1945-04-09",
+"name": "Club Deportivo Numancia de Soria"
+},
+"Nurnberg": null,
+"N\u00e1utico": {
+"date": "1901-04-07",
+"name": "Clube N\u00e1utico Capibaribe"
+},
+"OFI Crete": {
+"date": "1925-11-25",
+"name": "OFI Crete F.C."
+},
+"OH Leuven": null,
+"OL Lyonnes": null,
+"Odd": null,
+"Odense": null,
+"Oita Trinita": null,
+"Okayama": null,
+"Oldham": {
+"date": "1895-07-04",
+"name": "Oldham Athletic A.F.C."
+},
+"Oldham Athletic": {
+"date": "1895-07-04",
+"name": "Oldham Athletic A.F.C."
+},
+"Olimpo Bahia Blanca": null,
+"Olympiakos": {
+"date": "1925-03-10",
+"name": "Olympiacos F.C."
+},
+"Omiya Ardija": null,
+"Omonoia FC": null,
+"Once Caldas": {
+"date": "1947-04-16",
+"name": "Once Caldas"
+},
+"Oostende": null,
+"Oper\u00e1rio PR": null,
+"Orebro": {
+"date": "1908-10-28",
+"name": "\u00d6rebro SK"
+},
+"Orenburg": null,
+"Orlando City": null,
+"Orleans": null,
+"Osasuna": {
+"date": "1920-10-24",
+"name": "Club Atl\u00e9tico Osasuna"
+},
+"Osnabruck": null,
+"Oster": {
+"date": "1930-04-20",
+"name": "\u00d6sters IF"
+},
+"Osters": {
+"date": "1930-04-20",
+"name": "\u00d6sters IF"
+},
+"Ostersunds": {
+"date": "1996-10-31",
+"name": "\u00d6stersunds FK"
+},
+"Otelul": null,
+"Oud-Heverlee Leuven": null,
+"Oviedo": null,
+"Oxford": null,
+"Oxford City": null,
+"Oxford United": {
+"date": "1893-10-27",
+"name": "Oxford United F.C."
+},
+"Oxford Utd": {
+"date": "1893-10-27",
+"name": "Oxford United F.C."
+},
+"PAOK": {
+"date": "1926-04-20",
+"name": "PAOK FC"
+},
+"PFC CSKA Sofia": {
+"date": "1948-05-05",
+"name": "PFC CSKA Sofia"
+},
+"PK-35 Vantaa": null,
+"PS Kemi": null,
+"PSV Eindhoven": {
+"date": "1913-08-31",
+"name": "PSV Eindhoven"
+},
+"Pachuca": {
+"date": "1901-11-28",
+"name": "CF Pachuca"
+},
+"Pacos Ferreira": null,
+"Paderborn": null,
+"Padova": null,
+"Pafos FC": {
+"date": "2014-06-10",
+"name": "Pafos FC"
+},
+"Palermo": {
+"date": "1900-11-01",
+"name": "Palermo F.C."
+},
+"Palmeiras": null,
+"Panama": null,
+"Panathinaikos": {
+"date": "1908-02-03",
+"name": "Panathinaikos F.C."
+},
+"Pandurii": null,
+"Panetolikos": {
+"date": "1926-03-09",
+"name": "Panetolikos F.C."
+},
+"Panionios": {
+"date": "1890-09-14",
+"name": "Panionios F.C."
+},
+"Panserraikos": {
+"date": "1964-05-31",
+"name": "Panserraikos F.C."
+},
+"Parana": null,
+"Pari NN": null,
+"Paris FC": null,
+"Paris SG": {
+"date": "1970-08-12",
+"name": "Paris Saint-Germain FC"
+},
+"Paris Saint-Germain": {
+"date": "1970-08-12",
+"name": "Paris Saint-Germain FC"
+},
+"Parma": {
+"date": "1913-07-27",
+"name": "Parma Calcio 1913"
+},
+"Partick": null,
+"Patronato": null,
+"Pau FC": null,
+"Pendikspor": null,
+"Perugia": null,
+"Pescara": null,
+"Peterboro": null,
+"Peterhead": null,
+"Petrolul": null,
+"Philadelphia Union": {
+"date": "2008-02-28",
+"name": "Philadelphia Union"
+},
+"Piast Gliwice": null,
+"Piratas": null,
+"Pisa": null,
+"Platense": null,
+"Plymouth": null,
+"Plymouth Argyle": null,
+"Plymouth Parkway FC": null,
+"Podbeskidzie": null,
+"Pogon Szczecin": {
+"date": "1948-04-21",
+"name": "Pogo\u0144 Szczecin"
+},
+"Poli Iasi": null,
+"Poli Timisoara": null,
+"Polonia Warszawa": {
+"date": "1911-11-19",
+"name": "Polonia Warsaw"
+},
+"Ponferradina": {
+"date": "1922-06-07",
+"name": "Sociedad Deportiva Ponferradina"
+},
+"Ponte Preta": null,
+"Pordenone": null,
+"Port Vale": null,
+"Portimonense": {
+"date": "1914-08-14",
+"name": "Portimonense S.C."
+},
+"Portland Timbers": {
+"date": "2009-03-20",
+"name": "Portland Timbers"
+},
+"Porto": {
+"date": "1893-09-28",
+"name": "FC Porto"
+},
+"Portsmouth": {
+"date": "1898-04-05",
+"name": "Portsmouth F.C."
+},
+"Portuguesa": null,
+"Preston": null,
+"Preussen Munster": {
+"date": "1906-04-30",
+"name": "SC Preu\u00dfen M\u00fcnster"
+},
+"Preu\u00dfen M\u00fcnster": {
+"date": "1906-04-30",
+"name": "SC Preu\u00dfen M\u00fcnster"
+},
+"Progreso": {
+"date": "1917-04-30",
+"name": "C.A. Progreso"
+},
+"Puebla": {
+"date": "1944-05-07",
+"name": "Puebla F.C."
+},
+"Puerto Rico": null,
+"Puszcza": null,
+"QPR": null,
+"Qatar": null,
+"Qingdao FC": null,
+"Qingdao Hainiu": null,
+"Qingdao West Coast": null,
+"Queen of Sth": null,
+"Queens Park": null,
+"Queretaro": {
+"date": "1950-07-08",
+"name": "Quer\u00e9taro F.C."
+},
+"Quevilly Rouen": null,
+"Quilmes": {
+"date": "1887-11-27",
+"name": "Quilmes Atl\u00e9tico Club"
+},
+"R. Volgograd": null,
+"RAAL La Louviere": null,
+"RB Leipzig": {
+"date": "2009-05-19",
+"name": "RB Leipzig"
+},
+"RWD Molenbeek": null,
+"Racing (Montevideo)": null,
+"Racing Club": null,
+"Radomiak Radom": null,
+"Raith Rvs": null,
+"Rakow": null,
+"Randers FC": {
+"date": "2003-01-01",
+"name": "Randers FC"
+},
+"Rangers": null,
+"Ranheim": null,
+"Reading": {
+"date": "1871-12-25",
+"name": "Reading F.C."
+},
+"Real Madrid": {
+"date": "1902-03-06",
+"name": "Real Madrid Club de F\u00fatbol"
+},
+"Real Salt Lake": null,
+"Real Sociedad": {
+"date": "1909-09-07",
+"name": "Real Sociedad"
+},
+"Red Star": null,
+"Red Star Belgrade": {
+"date": "1945-03-04",
+"name": "FK Crvena zvezda"
+},
+"Regensburg": null,
+"Reggiana": {
+"date": "1919-09-25",
+"name": "A.C. Reggiana 1919"
+},
+"Reggina": null,
+"Reims": null,
+"Remo": null,
+"Rennes": {
+"date": "1901-03-10",
+"name": "Stade Rennais F.C."
+},
+"Ried": {
+"date": "1912-05-05",
+"name": "SV Ried"
+},
+"Riga FC": {
+"date": "2014-04-30",
+"name": "Riga FC"
+},
+"Rio Ave": {
+"date": "1939-01-18",
+"name": "Rio Ave F.C."
+},
+"River Plate": {
+"date": "1901-05-25",
+"name": "Club Atl\u00e9tico River Plate"
+},
+"Rizespor": null,
+"Rochdale": null,
+"Rodez": null,
+"Rodina Moscow": null,
+"Roma": {
+"date": "1927-06-07",
+"name": "AS Roma"
+},
+"Rosario Central": null,
+"Rosenborg": {
+"date": "1917-05-19",
+"name": "Rosenborg BK"
+},
+"Ross County": null,
+"Rotherham": {
+"date": "1925-05-27",
+"name": "Rotherham United F.C."
+},
+"Rovaniemi": null,
+"Rubin Kazan": {
+"date": "1958-04-20",
+"name": "Rubin Kazan"
+},
+"Rubio \u00d1\u00fa": {
+"date": "1913-08-24",
+"name": "Club Rubio \u00d1u"
+},
+"Ruch": null,
+"Ruch Chorzow": {
+"date": "1920-04-20",
+"name": "Ruch Chorz\u00f3w"
+},
+"Rwanda": null,
+"SJK": {
+"date": "2007-11-05",
+"name": "Sein\u00e4joen Jalkapallokerho"
+},
+"SK Brann": {
+"date": "1908-09-26",
+"name": "SK Brann"
+},
+"SK Rapid": null,
+"SK Sturm Graz": {
+"date": "1909-05-01",
+"name": "SK Sturm Graz"
+},
+"SKA Khabarovsk": null,
+"Sabadell": {
+"date": "1903-12-11",
+"name": "Centre d'Esports Sabadell Futbol Club"
+},
+"Sagan Tosu": null,
+"Salernitana": {
+"date": "1919-06-19",
+"name": "U.S. Salernitana 1919"
+},
+"Salford": null,
+"Salzburg": null,
+"Sampdoria": null,
+"Samsunspor": {
+"date": "1965-06-30",
+"name": "Samsunspor FC"
+},
+"San Diego FC": {
+"date": "2023-05-18",
+"name": "San Diego FC"
+},
+"San Jose Earthquakes": null,
+"San Lorenzo": {
+"date": "1908-04-01",
+"name": "San Lorenzo de Almagro"
+},
+"San Martin S.J.": null,
+"San Martin T.": null,
+"Sandecja Nowy S.": null,
+"Sandefjord": null,
+"Sandhausen": null,
+"Sandnes": null,
+"Sanfrecce Hiroshima": null,
+"Santa Clara": {
+"date": "1927-05-12",
+"name": "C.D. Santa Clara"
+},
+"Santa Cruz": {
+"date": "1914-02-03",
+"name": "Santa Cruz Futebol Clube"
+},
+"Santander": null,
+"Santos": {
+"date": "1912-04-14",
+"name": "Santos F.C."
+},
+"Santos Laguna": null,
+"Sao Paulo": null,
+"Sarmiento Junin": null,
+"Sarpsborg 08": {
+"date": "2003-12-11",
+"name": "Sarpsborg 08 FF"
+},
+"Sassuolo": null,
+"Schaffhausen": null,
+"Schalke 04": {
+"date": "1904-05-04",
+"name": "Schalke 04"
+},
+"Scotland": null,
+"Scunthorpe": null,
+"Seattle Sounders": null,
+"Senegal": null,
+"Sepsi Sf. Gheorghe": null,
+"Seraing": null,
+"Serbia": null,
+"Servette": {
+"date": "1890-03-20",
+"name": "Servette FC"
+},
+"Setubal": null,
+"Sevilla": {
+"date": "1890-01-25",
+"name": "Sevilla FC"
+},
+"Shamrock Rovers": null,
+"Shandong Luneng": null,
+"Shandong Taishan": null,
+"Shanghai Port": {
+"date": "2005-12-25",
+"name": "Shanghai Port F.C."
+},
+"Shanghai SIPG": {
+"date": "2005-12-25",
+"name": "Shanghai Port F.C."
+},
+"Shanghai Shenhua": {
+"date": "1993-12-10",
+"name": "Shanghai Shenhua F.C."
+},
+"Shanghai Shenxin": null,
+"Sheffield United": {
+"date": "1889-03-22",
+"name": "Sheffield United F.C."
+},
+"Sheffield Utd": {
+"date": "1889-03-22",
+"name": "Sheffield United F.C."
+},
+"Sheffield Wednesday": {
+"date": "1867-09-04",
+"name": "Sheffield Wednesday F.C."
+},
+"Sheffield Weds": null,
+"Shelbourne": null,
+"Shenzhen": {
+"date": "1994-01-26",
+"name": "Shenzhen F.C."
+},
+"Shenzhen Xinpengcheng": null,
+"Shijiazhuang": null,
+"Shimizu S-Pulse": null,
+"Shonan Bellmare": null,
+"Shrewsbury": {
+"date": "1886-05-20",
+"name": "Shrewsbury Town F.C."
+},
+"Sierra Leone": {
+"date": "1971-04-19",
+"name": "Sierra Leone"
+},
+"Silkeborg": null,
+"Sint Truiden": null,
+"Sion": {
+"date": "1909-07-01",
+"name": "FC Sion"
+},
+"Sirius": null,
+"Sivasspor": null,
+"Slask Wroclaw": null,
+"Sligo Rovers": null,
+"Slovakia": {
+"date": "1939-03-14",
+"name": "Slovakia"
+},
+"Slovenia": null,
+"Sochaux": null,
+"Sochi": {
+"date": "2018-06-06",
+"name": "PFC Sochi"
+},
+"Sociedad": null,
+"Sociedad B": null,
+"Sogndal": null,
+"Solihull": {
+"date": "2007-07-10",
+"name": "Solihull Moors F.C."
+},
+"Somalia": null,
+"Sonderjyske": null,
+"South Africa": {
+"date": "1910-05-31",
+"name": "South Africa"
+},
+"Southampton": {
+"date": "1885-11-21",
+"name": "Southampton F.C."
+},
+"Southend": {
+"date": "1906-05-19",
+"name": "Southend United F.C."
+},
+"Sp Braga": {
+"date": "1921-01-19",
+"name": "S.C. Braga"
+},
+"Sp Gijon": {
+"date": "1905-07-01",
+"name": "Sporting de Gij\u00f3n"
+},
+"Sp Lisbon": {
+"date": "1906-07-01",
+"name": "Sporting CP"
+},
+"Spain": {
+"date": "1812-03-19",
+"name": "Spain"
+},
+"Spal": null,
+"Sparta Prague": null,
+"Sparta Rotterdam": {
+"date": "1888-04-01",
+"name": "Sparta Rotterdam"
+},
+"Spartak Moscow": null,
+"Spartak Nalchik": null,
+"Spartans": null,
+"Spezia": {
+"date": "1906-10-10",
+"name": "Spezia Calcio"
+},
+"Sport Recife": {
+"date": "1905-05-13",
+"name": "Sport Club do Recife"
+},
+"Sporting Kansas City": {
+"date": "1995-06-06",
+"name": "Sporting Kansas City"
+},
+"Sportivo Luque\u00f1o": null,
+"Sportivo San Lorenzo": {
+"date": "1930-04-16",
+"name": "Club Sportivo San Lorenzo"
+},
+"St Etienne": null,
+"St Johnstone": null,
+"St Mirren": null,
+"St Pauli": {
+"date": "1910-05-15",
+"name": "FC St. Pauli"
+},
+"St Truiden": null,
+"St. Gallen": {
+"date": "1879-04-19",
+"name": "FC St. Gallen"
+},
+"St. Gilloise": null,
+"St. Louis City": {
+"date": "2019-08-20",
+"name": "St. Louis City SC"
+},
+"St. Lucia": {
+"date": "1967-03-01",
+"name": "Saint Lucia"
+},
+"St. Patricks": null,
+"St. Polten": null,
+"Stabaek": null,
+"Stal Mielec": {
+"date": "1939-04-10",
+"name": "Stal Mielec"
+},
+"Standard": null,
+"Start": null,
+"Stenhousemuir": null,
+"Stevenage": null,
+"Stirling": null,
+"Stockport": null,
+"Stockport County": null,
+"Stoke": null,
+"Stranraer": null,
+"Strasbourg": {
+"date": "1906-01-01",
+"name": "RC Strasbourg Alsace"
+},
+"Stromsgodset": null,
+"Sturm Graz": {
+"date": "1909-05-01",
+"name": "SK Sturm Graz"
+},
+"Stuttgart": {
+"date": "1893-09-09",
+"name": "VfB Stuttgart"
+},
+"Sudan": {
+"date": "1956-01-01",
+"name": "Sudan"
+},
+"Sudtirol": null,
+"Sunderland": null,
+"Sundsvall": null,
+"Suriname": {
+"date": "1975-11-25",
+"name": "Suriname"
+},
+"Sutton": {
+"date": "1898-03-05",
+"name": "Sutton United F.C."
+},
+"Swansea": null,
+"Swindon": null,
+"Swindon Town": null,
+"Switzerland": {
+"date": "1848-09-12",
+"name": "Switzerland"
+},
+"Syrianska": null,
+"S\u00e3o Bernardo": {
+"date": "2004-12-20",
+"name": "S\u00e3o Bernardo Futebol Clube"
+},
+"T. Moscow": null,
+"TPS": null,
+"Talleres Cordoba": null,
+"Tambov": null,
+"Tamworth": null,
+"Tanzania": {
+"date": "1964-04-26",
+"name": "Tanzania"
+},
+"Targu Mures": null,
+"Telstar": {
+"date": "1963-07-17",
+"name": "SC Telstar"
+},
+"Temperley": null,
+"Tenerife": {
+"date": "1922-08-08",
+"name": "C.D. Tenerife"
+},
+"Termalica B-B.": null,
+"Ternana": null,
+"Thun": {
+"date": "1898-05-01",
+"name": "FC Thun"
+},
+"Tianjin Jinmen Tiger": null,
+"Tianjin Quanjian": {
+"date": "2006-06-06",
+"name": "Tianjin Tianhai F.C."
+},
+"Tianjin Tianhai": {
+"date": "2006-06-06",
+"name": "Tianjin Tianhai F.C."
+},
+"Tigre": null,
+"Tirol": null,
+"Tokushima": null,
+"Toluca": {
+"date": "1917-02-12",
+"name": "Toluca FC"
+},
+"Tomsk": null,
+"Tondela": {
+"date": "1933-06-06",
+"name": "CD Tondela"
+},
+"Torino": {
+"date": "1906-12-03",
+"name": "Torino FC"
+},
+"Toronto FC": null,
+"Torpedo Moscow": {
+"date": "1924-08-17",
+"name": "FC Torpedo Moscow"
+},
+"Torquay": null,
+"Torreense": null,
+"Tosno": null,
+"Tottenham": {
+"date": "1882-09-05",
+"name": "Tottenham Hotspur F.C."
+},
+"Toulouse": {
+"date": "1970-05-25",
+"name": "Toulouse FC"
+},
+"Trabzonspor": {
+"date": "1967-08-02",
+"name": "Trabzonspor"
+},
+"Tranmere": null,
+"Tranmere Rovers": null,
+"Trapani": null,
+"Treaty United": null,
+"Trelleborgs": null,
+"Tromso": null,
+"Troyes": {
+"date": "1986-06-28",
+"name": "ES Troyes AC"
+},
+"Truro": null,
+"Tunisia": {
+"date": "1956-03-20",
+"name": "Tunisia"
+},
+"Twente": {
+"date": "1965-07-01",
+"name": "FC Twente"
+},
+"T\u00e9cnico Universitario": {
+"date": "1971-03-26",
+"name": "T\u00e9cnico Universitario"
+},
+"T\u00fcrkiye": null,
+"U Craiova": null,
+"U Craiova 1948": null,
+"U. Cluj": null,
+"U.A.N.L.- Tigres": null,
+"U.N.A.M.- Pumas": {
+"date": "1954-08-02",
+"name": "Pumas UNAM"
+},
+"UC Dublin": null,
+"UTA Arad": {
+"date": "1945-04-18",
+"name": "FC UTA Arad"
+},
+"Udinese": {
+"date": "1896-11-30",
+"name": "Udinese Calcio"
+},
+"Ufa": null,
+"Ull/Kisa": null,
+"Ulm": null,
+"Umraniyespor": null,
+"Union Berlin": {
+"date": "1966-01-20",
+"name": "1. FC Union Berlin"
+},
+"Union de Santa Fe": {
+"date": "1907-04-15",
+"name": "Uni\u00f3n de Santa Fe"
+},
+"Unirea Slobozia": null,
+"Univ. Craiova": null,
+"Universitario de Vinto": null,
+"Universitatea Craiova": null,
+"Ural": null,
+"Urawa Reds": null,
+"Uruguay": {
+"date": "1825-08-25",
+"name": "Uruguay"
+},
+"Utrecht": {
+"date": "1970-07-01",
+"name": "FC Utrecht"
+},
+"V-Varen Nagasaki": null,
+"VPS": null,
+"VVV Venlo": {
+"date": "1903-02-07",
+"name": "VVV-Venlo"
+},
+"Vaduz": {
+"date": "1932-02-14",
+"name": "FC Vaduz"
+},
+"Valencia": {
+"date": "1919-03-18",
+"name": "Valencia CF"
+},
+"Valenciennes": null,
+"Valerenga": null,
+"Valladolid": {
+"date": "1928-06-20",
+"name": "Real Valladolid"
+},
+"Vallecano": {
+"date": "1924-05-29",
+"name": "Rayo Vallecano"
+},
+"Vancouver Whitecaps": null,
+"Varberg": null,
+"Varnamo": null,
+"Vasco": {
+"date": "1898-08-21",
+"name": "CR Vasco da Gama"
+},
+"Vaslui": null,
+"Vasteras SK": null,
+"Vegalta Sendai": null,
+"Vejle": null,
+"Velez Sarsfield": {
+"date": "1910-01-01",
+"name": "Club Atl\u00e9tico V\u00e9lez Sarsfield"
+},
+"Vendsyssel": null,
+"Venezia": {
+"date": "1907-12-14",
+"name": "Venezia F.C."
+},
+"Veracruz": null,
+"Verdy": null,
+"Verona": null,
+"Vestsjaelland": null,
+"Viborg": null,
+"Vicenza": {
+"date": "1902-03-09",
+"name": "LR Vicenza"
+},
+"Vietnam": {
+"date": "1945-09-02",
+"name": "Vietnam"
+},
+"Viitorul Constanta": null,
+"Viking": {
+"date": "1899-08-10",
+"name": "Viking FK"
+},
+"Viktoria Plze\u0148": {
+"date": "1911-06-11",
+"name": "FC Viktoria Plze\u0148"
+},
+"Villarreal": {
+"date": "1923-03-10",
+"name": "Villarreal CF"
+},
+"Villarreal B": null,
+"Virtus Entella": null,
+"Vissel Kobe": null,
+"Vitesse": {
+"date": "1892-05-14",
+"name": "SBV Vitesse"
+},
+"Vitoria": null,
+"Vizela": {
+"date": "1939-01-01",
+"name": "F.C. Vizela"
+},
+"Vladikavkaz": null,
+"Volendam": {
+"date": "1977-06-01",
+"name": "FC Volendam"
+},
+"Volga N. Novgorod": null,
+"Volgar-Astrakhan": null,
+"Volos NFC": {
+"date": "2017-06-02",
+"name": "Volos N.F.C."
+},
+"Waalwijk": null,
+"Waasland-Beveren": null,
+"Wacker Innsbruck": null,
+"Walsall": null,
+"Waregem": null,
+"Warta Poznan": {
+"date": "1912-06-15",
+"name": "Warta Pozna\u0144"
+},
+"Waterford": null,
+"Watford": null,
+"Wealdstone": null,
+"Wehen": null,
+"Werder Bremen": {
+"date": "1899-02-04",
+"name": "SV Werder Bremen"
+},
+"West Brom": null,
+"West Ham": {
+"date": "1895-06-29",
+"name": "West Ham United F.C."
+},
+"Westerlo": {
+"date": "1933-09-05",
+"name": "K.V.C. Westerlo"
+},
+"Wexford": null,
+"Weymouth": null,
+"Widzew Lodz": {
+"date": "1910-11-25",
+"name": "RTS Widzew \u0141\u00f3d\u017a"
+},
+"Wieczysta Krakow": null,
+"Wigan": null,
+"Wigan Athletic": null,
+"Willem II": {
+"date": "1896-08-12",
+"name": "Willem II"
+},
+"Winterthur": {
+"date": "1896-04-18",
+"name": "FC Winterthur"
+},
+"Wisla": null,
+"Wisla Plock": null,
+"Woking": null,
+"Wolfsberger AC": null,
+"Wolfsburg": {
+"date": "1945-09-12",
+"name": "VfL Wolfsburg"
+},
+"Wolves": null,
+"Worthing": null,
+"Wrexham": {
+"date": "1864-10-04",
+"name": "Wrexham A.F.C."
+},
+"Wuhan FC": null,
+"Wuhan Three Towns": {
+"date": "2013-12-28",
+"name": "Wuhan Three Towns F.C."
+},
+"Wurzburger Kickers": {
+"date": "1907-11-04",
+"name": "W\u00fcrzburger Kickers"
+},
+"Wycombe": null,
+"Xamax": null,
+"Xanthi": {
+"date": "1967-06-04",
+"name": "Xanthi F.C."
+},
+"Yamaga": null,
+"Yanbian": null,
+"Yeni Malatyaspor": null,
+"Yenisey": null,
+"Yeovil": {
+"date": "1895-08-27",
+"name": "Yeovil Town F.C."
+},
+"Yokohama F. Marinos": null,
+"Yokohama FC": null,
+"York": null,
+"York City": null,
+"Young Boys": {
+"date": "1898-03-14",
+"name": "BSC Young Boys"
+},
+"Yverdon": null,
+"Zaglebie": null,
+"Zaglebie Sosnowiec": null,
+"Zambia": {
+"date": "1964-10-24",
+"name": "Zambia"
+},
+"Zaragoza": null,
+"Zawisza": null,
+"Zenit": {
+"date": "1925-05-25",
+"name": "FC Zenit Saint Petersburg"
+},
+"Zhejiang Greentown": null,
+"Zhejiang Professional": {
+"date": "1998-01-14",
+"name": "Zhejiang Professional F.C."
+},
+"Zhejiang Yiteng": null,
+"Zimbabwe": {
+"date": "1980-04-18",
+"name": "Zimbabwe"
+},
+"Zurich": {
+"date": "1896-08-01",
+"name": "FC Z\u00fcrich"
+},
+"Zwolle": {
+"date": "1910-06-12",
+"name": "PEC Zwolle"
+},
+"\u00c1guila": {
+"date": "1926-02-15",
+"name": "C.D. \u00c1guila"
+}
+}

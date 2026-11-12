@@ -386,6 +386,21 @@ Scored once played; presentation report and CSV like soccer's.
 
 Commands: `python scripts/tennis.py build` (history + players), `train` (features + training), `cycle` (live forecasts).
 
+## Soccer day reading (astrology and numerology for the match day)
+
+Each soccer match page has a **Day reading** card: date-only astrology and numerology of both clubs' founding dates
+(their "birth", from the founding-charts table; only dates known to the day) for the match day at the venue, as for
+tennis players. The *day* reading says which team the day favours; the *scoring* reading says whether it favours each
+team to score (Mars and Jupiter contacts to the natal Mars and Sun add, Saturn subtracts; numerology: active personal days
+1, 3, 5, 8, 9 add, 4 and 7 subtract). Lists show a one-line "Day:" note under each game, and Top picks (Match result and
+Home or away goal tabs) can filter on whether astrology / numerology / both favour the pick.
+
+Tested on 91,525 past team-matches (391 clubs; `python scripts/teamday_research.py`, results in
+`data/models/teamday.json`): teams the reading favoured to score scored as often as those it disfavoured, both in line
+with the odds, and a model trained on every contact and number did slightly worse than the odds on unseen seasons. The
+reading is shown for interest; forecasts do not use it. Founding dates are looked up by each GitHub cycle and kept in
+`data/ref/team_founding_days.json` (about half the teams have one known to the day).
+
 ## Women's football (separate section)
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger

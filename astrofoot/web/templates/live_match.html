@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_teamday.html" as tdm %}
 {% block title %}{{ r.home }} v {{ r.away }} · Live record{% endblock %}
 {% set W = {"fav": "Fav", "draw": "Draw", "dog": "Dog", "disabled": "—"} %}
 {% block body %}
@@ -95,6 +96,8 @@ Form checks use women's results only.</p>{% endif %}
   <p class="small">Not analysed: no team is backed by 2 or more of the 3 classical engines (at most {{ fc.agree }}/3 agree on a winner).</p>
   {% endif %}
 </section>
+
+{% if td %}{{ tdm.panel(td, td_research) }}{% endif %}
 
 <h2>Full analysis</h2>
 <p class="note">Recomputed from the same inputs as the sealed forecast (kickoff, venue, odds). Founding charts are not used in live forecasts.</p>

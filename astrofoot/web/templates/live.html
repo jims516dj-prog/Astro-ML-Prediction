@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_teamday.html" as tdm %}
 {% import "_section.html" as section_ui %}
 {% from "_goals.html" import badges as gm_badges %}
 {% block title %}Live record · Astro Football Lab{% endblock %}
@@ -106,7 +107,7 @@ something; within it, it doesn't.</p>{% endif %}
 <thead><tr><th>Kickoff (UTC)</th><th>League</th><th>Match</th><th class="num">xG home · away</th><th>Favourite</th><th class="num">Market F/D/U</th><th class="num">Engine 4 F/D/U</th><th>Rao</th><th>Chok.</th><th>Fraw.</th><th class="num" title="classical engines agreeing with the outlook's call">Agree</th><th title="Double chance · over/under 1.5 · over/under 2.5 · home or away goal · both teams to score">Goals</th><th>Result</th><th>Seal</th></tr></thead>
 <tbody>{% for r in rows %}{% set p = r.predictions %}
 <tr><td class="mono">{{ r.kickoff_utc[:16].replace("T"," ") }}</td><td title="{{ r.division }}">{{ league_name(r.division) }}</td>
-<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.origin == "manual" %} <span class="badge" title="added by hand on the Analyze page">manual</span>{% elif r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}</td><td class="num mono" style="white-space:nowrap" title="expected goals from the odds: home · away">{{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</td><td>{{ r.favourite }}</td>
+<td><a href="{{ r.url }}">{{ r.home }} v {{ r.away }}</a>{% if r.origin == "manual" %} <span class="badge" title="added by hand on the Analyze page">manual</span>{% elif r.also %} <a class="badge" href="{{ r.also[0] }}" title="you also analysed this game by hand">+ your analysis</a>{% endif %}{% if r.eng_backed %}<br><span class="small" style="white-space:nowrap" title="engines calling each team to win: {{ r.home }} {{ r.eng_home }}/3 · {{ r.away }} {{ r.eng_away }}/3">{{ r.eng_n }}/3 engines back {{ r.eng_backed }}</span>{% endif %}{{ tdm.line(r.td) }}</td><td class="num mono" style="white-space:nowrap" title="expected goals from the odds: home · away">{{ "%.2f"|format(r.xg_home) }} · {{ "%.2f"|format(r.xg_away) }}</td><td>{{ r.favourite }}</td>
 <td class="num">{{ fmt_pct(p.market.fav,0) }}/{{ fmt_pct(p.market.draw,0) }}/{{ fmt_pct(p.market.dog,0) }}</td>
 <td class="num">{% if p.engine4 %}{{ fmt_pct(p.engine4.fav,0) }}/{{ fmt_pct(p.engine4.draw,0) }}/{{ fmt_pct(p.engine4.dog,0) }}{% else %}—{% endif %}</td>
 {% for k in ["rao","chokoisky","frawley"] %}<td class="{{ 'ok-txt' if r.outcome and p[k].winner == r.outcome }}">{{ W[p[k].winner] }}</td>{% endfor %}
