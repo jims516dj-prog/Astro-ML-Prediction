@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 7          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 8          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 6      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -150,7 +150,7 @@ def _agrees(a: str, b: str) -> bool:
     return not mine or any(_abbrev_ok(w, theirs) for w in mine)
 
 
-def names_agree(team: str, e) -> bool:
+def names_agree(team: str, e, strict: bool = False) -> bool:
     """The item's labels or aliases (any language) share a name word with the team, or it is an initialism."""
     base = teamnames.split(team)[0]
     if re.fullmatch(r"[A-Z][A-Za-z]{1,4}", base) and sum(ch.isupper() for ch in base) >= 2:
@@ -165,9 +165,12 @@ def names_agree(team: str, e) -> bool:
         for v in vs:
             theirs |= _words(v.get("value"))
     theirs |= _words(official(e)[0] or "")
-    initials = {ch.lower() for ch in re.findall(r"(?<![A-Za-z])([A-Z])(?:\.|\b)(?![A-Za-z])", base)}
+    plain = re.sub(r"\b(?:A\.?F\.?C|F\.?C|C\.?F|C\.?D|S\.?C|A\.?C|U\.?D|S\.?D|F\.?K|S\.?K|N\.?K)\b\.?", " ", base)
+    initials = {ch.lower() for ch in re.findall(r"(?<![A-Za-z])([A-Z])(?:\.|\b)(?![A-Za-z])", plain)}
     if initials and not all(any(w.startswith(i) for w in theirs) for i in initials):
         return False                                  # "T. Moscow" is Torpedo, not Spartak
+    if strict:                                        # every word: "Volga N. Novgorod" is not FC Nizhny Novgorod
+        return all(_abbrev_ok(a, theirs) for a in mine)
     return any(_abbrev_ok(a, theirs) for a in mine)   # "nykoebing" ~ "nykobing", "dynamo" ~ "dinamo"
 
 
@@ -487,10 +490,14 @@ def club_search(base: str) -> list[str]:
     words = [w for w in re.findall(r"[^\W\d_]{2,}|\d+", base.replace(".", ". ")) if len(w) > 1]
     if not words:
         return []
-    q = " ".join(words) + " haswbstatement:P31=Q476028"
+    q = " ".join(words) + " haswbstatement:" + "|".join(f"P31={c}" for c in sorted(FOOTBALL - {"Q6979593"}))
     d = get("https://www.wikidata.org/w/api.php?action=query&list=search&format=json&srnamespace=0&srlimit=8"
             "&srsearch=" + urllib.parse.quote(q))
-    return [h["title"] for h in ((d or {}).get("query") or {}).get("search", []) if h.get("title", "").startswith("Q")]
+    if d is None:
+        print(f"  club search failed for {base!r}")
+    hits = [h["title"] for h in ((d or {}).get("query") or {}).get("search", []) if h.get("title", "").startswith("Q")]
+    print(f"  club search {base!r}: {len(hits)} hit(s)")
+    return hits
 
 
 def main():
@@ -566,7 +573,7 @@ def main():
                 if not (at and ll and _km(at, ll) <= NEAR_KM):
                     why.append(f"{q}: no country to confirm with")
                     continue                          # nothing to confirm the match with
-            if not names_agree(t, e):
+            if not names_agree(t, e, strict=t in searched):
                 why.append(f"{q}: names differ")
                 print(f"  rejected {t} -> {q} {((e.get('labels') or {}).get('en') or {}).get('value')}: names differ")
                 continue

@@ -147,3 +147,12 @@ def test_initials_must_match():
     assert not fon.names_agree("T. Moscow", lab("FC Spartak Moscow"))
     assert fon.names_agree("T. Moscow", lab("FC Torpedo Moscow"))
     assert fon.names_agree("San Martin S.J.", lab("Club Atlético San Martín de San Juan"))
+
+
+def test_club_abbreviations_are_not_initials_and_search_needs_every_word():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    lab = lambda n: {"labels": {"en": {"value": n}}}  # noqa: E731
+    assert fon.names_agree("Manta F.C.", lab("Manta Fútbol Club"))
+    assert not fon.names_agree("Volga N. Novgorod", lab("FC Nizhny Novgorod"), strict=True)
