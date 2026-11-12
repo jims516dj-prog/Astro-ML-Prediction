@@ -1,37 +1,34 @@
-"""Diagnostics: free sources of Challenger / Hopman Cup results (prints only, commits nothing)."""
+"""Diagnostics for the Live Tennis API key (free tier): checks the key, the quota, and the shape of an upcoming
+Challenger match. Uses 2-3 of the 100 daily requests. Prints only."""
 import json
 import os
 import urllib.request
 
-HEADERS = {"User-Agent": "astro-football-research (GitHub Actions)", "Accept": "application/vnd.github+json"}
+KEY = os.environ.get("LIVETENNISAPI_KEY")
+BASE = "https://api.livetennisapi.com/api/public/v1"
 
 
-def get(url, raw=False):
-    h = dict(HEADERS)
-    if "api.github.com" in url and os.environ.get("GH_TOKEN"):
-        h["Authorization"] = "Bearer " + os.environ["GH_TOKEN"]
+def get(path):
+    req = urllib.request.Request(BASE + path, headers={"Authorization": f"Bearer {KEY}", "Accept": "application/json",
+                                                       "User-Agent": "astro-football-research"})
     try:
-        with urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=60) as r:
-            b = r.read()
-            return b if raw else json.loads(b)
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.loads(r.read())
     except Exception as e:  # noqa: BLE001
-        print(f"FAIL {url} {type(e).__name__}: {e}")
+        print(f"FAIL {path}: {type(e).__name__}: {e}")
         return None
 
 
-for q in ("atp_matches_qual_chall_2025", "atp_matches_qual_chall_2026", "challenger tennis results csv 2026",
-          "tennis_atp fork", "atp challenger matches dataset"):
-    d = get("https://api.github.com/search/repositories?per_page=10&sort=updated&q=" + urllib.parse.quote(q)) if False else None
-import urllib.parse  # noqa: E402
-for q in ("tennis_atp", "tennis atp challenger", "atp challenger", "tennis_wta", "hopman cup"):
-    d = get("https://api.github.com/search/repositories?per_page=12&sort=updated&q=" + urllib.parse.quote(q))
-    print(f"== repos '{q}'")
-    for it in (d or {}).get("items", []):
-        print("  ", it["full_name"], "| pushed", it["pushed_at"][:10], "| size", it["size"], "| fork", it["fork"],
-              "| licence", (it.get("license") or {}).get("spdx_id"), "|", (it.get("description") or "")[:90])
-# code search for the Sackmann Challenger file names (shows which repos still carry them, and how recent)
-for name in ("atp_matches_qual_chall_2025.csv", "atp_matches_qual_chall_2026.csv", "wta_matches_qual_itf_2025.csv"):
-    d = get("https://api.github.com/search/code?per_page=15&q=" + urllib.parse.quote(f"filename:{name}"))
-    print(f"== files named {name}: {(d or {}).get('total_count')}")
-    for it in (d or {}).get("items", []):
-        print("  ", it["repository"]["full_name"], it["path"])
+if not KEY:
+    print("LIVETENNISAPI_KEY is not set (add it as a GitHub secret)")
+else:
+    print("usage:", json.dumps(get("/usage"))[:400])
+    d = get("/matches?status=upcoming&tour=challenger&limit=3")
+    if d:
+        print("meta:", d.get("meta"))
+        for m in (d.get("data") or [])[:2]:
+            print(json.dumps(m)[:1500])
+    d = get("/matches?status=upcoming&tour=atp&limit=200")
+    if d:
+        names = sorted({m.get("tournament") for m in d.get("data") or []})
+        print("ATP tournaments listed:", names[:40])

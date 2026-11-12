@@ -11,6 +11,7 @@ import pandas as pd
 
 from .. import live as football_live
 from . import DATA, LEDGER, build, daychart, espn, features, model, venue
+from . import lta
 from . import odds as tennis_odds
 
 HORIZON_H = 36          # forecast matches starting within this many hours
@@ -30,12 +31,84 @@ def _append(path: Path, recs: list[dict]):
             f.write(json.dumps(r, sort_keys=True, default=str) + "\n")
 
 
+def _norm_name(n: str) -> str:
+    import unicodedata
+    s = unicodedata.normalize("NFKD", n or "").encode("ascii", "ignore").decode().lower()
+    return " ".join(w for w in s.replace("-", " ").split())
+
+
+def _lta_to_espn_ids(df: pd.DataFrame, matches: pd.DataFrame, ledger: Path) -> pd.DataFrame:
+    """Players ESPN knows (same name, one id) keep their ESPN id, so their ratings and form apply; the others keep
+    their Live Tennis API id. Birthdays from the API go to ledger/tennis/players.json for the astrology."""
+    names: dict[str, set] = {}
+    if len(matches):
+        for i, n in zip(pd.concat([matches.p1_id, matches.p2_id]), pd.concat([matches.p1, matches.p2])):
+            if not str(i).startswith("-"):
+                names.setdefault(_norm_name(n), set()).add(str(i))
+    df = df.copy()
+    dobs = {}
+    for side in ("p1", "p2"):
+        new_ids = []
+        for i, n, dob, hand in zip(df[f"{side}_id"], df[side], df["_dob"], df["_hand"]):
+            ids = names.get(_norm_name(n), set())
+            new = next(iter(ids)) if len(ids) == 1 else i
+            new_ids.append(new)
+            if dob.get(i):
+                dobs[new] = {"id": new, "name": n, "full_name": n, "dob": str(dob[i])[:10], "birthplace": "",
+                             "hand": (hand.get(i) or "")[:1].upper(), "height_in": None, "country": ""}
+        df[f"{side}_id"] = new_ids
+    if dobs:
+        path = ledger / "players.json"
+        have = json.loads(path.read_text()) if path.exists() else []
+        known = {str(p["id"]) for p in have}
+        espn_dob = {str(p["id"]) for p in have if p.get("dob")}
+        add = [v for k, v in dobs.items() if k not in known or (k not in espn_dob and v["dob"])]
+        if add:
+            keep = [p for p in have if str(p["id"]) not in {a["id"] for a in add}]
+            path.write_text(json.dumps(keep + add, indent=0, default=str))
+    return df
+
+
+def _espn_has(r: dict, up: pd.DataFrame) -> bool:
+    """The same match already listed by ESPN (same two players within 36 hours)."""
+    if up.empty:
+        return False
+    a, b, t = _norm_name(r["p1"]), _norm_name(r["p2"]), pd.Timestamp(r["date"])
+    for x in up.to_dict("records"):
+        if {_norm_name(x["p1"]), _norm_name(x["p2"])} == {a, b} and abs((pd.Timestamp(x["date"]) - t).total_seconds()) < 36 * 3600:
+            return True
+    return False
+
+
 def effective_start(venue_name: str, when) -> pd.Timestamp:
     """ESPN's start, or midnight at the venue on the date for its date-only placeholder."""
     w = pd.Timestamp(when)
     if venue.date_only(w):
         return pd.Timestamp(venue.day_start_utc(venue_name, venue.local_day(venue_name, w)[0]))
     return w
+
+
+def _lta_history(ledger: Path) -> pd.DataFrame:
+    """Settled Challenger / team-event forecasts as completed matches, so those players build up ratings and form."""
+    res = results(ledger)
+    rows = []
+    for r in predictions(ledger):
+        x = res.get(r["match_id"])
+        if not r["match_id"].startswith(lta.PREFIX) or not x or x.get("void") or not x.get("set_winners"):
+            continue
+        rows.append({"id": r["match_id"], "event_id": "", "event": r["event"], "tour": r["tour"], "level": r.get("level"),
+                     "date": pd.Timestamp(r["start_utc"]), "venue": r.get("venue") or "", "round": r.get("round") or "",
+                     "best_of": int(r.get("best_of") or 3), "state": "post", "status": "completed", "completed": True,
+                     "p1_id": str(r["p1_id"]), "p1": r["p1"], "p1_country": r.get("p1_country") or "", "p1_seed": None,
+                     "p1_entry": None, "p1_rank": None, "p2_id": str(r["p2_id"]), "p2": r["p2"],
+                     "p2_country": r.get("p2_country") or "", "p2_seed": None, "p2_entry": None, "p2_rank": None,
+                     "winner": int(x["winner"]), "score": x.get("score") or "", "set_winners": x["set_winners"],
+                     "retired": bool(x.get("retired")), "walkover": False, "note": "", "surface": r.get("surface") or "hard"})
+    if not rows:
+        return pd.DataFrame()
+    out = pd.DataFrame(rows)
+    out["date"] = pd.to_datetime(out["date"], utc=True)
+    return out
 
 
 def predictions(ledger: Path = LEDGER) -> list[dict]:
@@ -67,6 +140,9 @@ def load_matches(ledger: Path = LEDGER) -> pd.DataFrame:
         return pd.DataFrame()
     df = pd.concat(parts, ignore_index=True).drop_duplicates("id", keep="last")
     df["date"] = pd.to_datetime(df["date"], utc=True)
+    lta_rows = _lta_history(ledger)
+    if len(lta_rows):
+        df = pd.concat([df, lta_rows], ignore_index=True).drop_duplicates("id", keep="last")
     from . import ids
     df = ids.apply(df, ids.aliases(df, load_players(ledger)))      # one id per player
     df["best_of"] = [espn.best_of(t, e, r) for t, e, r in zip(df.tour, df.event, df["round"])]
@@ -104,7 +180,7 @@ def forecast(st: features.State, m: dict, players: dict, bundle=None, odds: dict
 
 
 def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=build.crawl, fetch_players=build.players,
-          odds_fetch=tennis_odds.fetch) -> dict:
+          odds_fetch=tennis_odds.fetch, lta_client=None) -> dict:
     now = now or datetime.now(timezone.utc)
     ledger.mkdir(parents=True, exist_ok=True)
     fresh = crawl((now - timedelta(days=45)).date(), (now + timedelta(days=3)).date(), log)
@@ -123,7 +199,23 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                  & (matches.start <= pd.Timestamp(now + timedelta(hours=HORIZON_H)))]
     up = up[pd.Series([not (features.placeholder(a, x) or features.placeholder(b, y))
                        for a, x, b, y in zip(up.p1_id, up.p1, up.p2_id, up.p2)], index=up.index, dtype=bool)]
-    need = set(up.p1_id) | set(up.p2_id)
+    # Challenger and team-event matches (Live Tennis API, free tier), when its key is set
+    client = lta_client
+    if client is None and lta.token():
+        client = lta.Client(lta.token(), ledger / "lta_state.json", now)
+    if client is not None:
+        extra_up = lta.upcoming(client, log)
+        if len(extra_up):
+            extra_up = _lta_to_espn_ids(extra_up, matches, ledger)
+            extra_up = extra_up.assign(start=extra_up.date)
+            extra_up = extra_up[(extra_up.start >= pd.Timestamp(now))
+                                & (extra_up.start <= pd.Timestamp(now + timedelta(hours=HORIZON_H)))]
+            extra_up = extra_up[[not _espn_has(r, up) for r in extra_up.to_dict("records")]]
+            log(f"tennis: {len(extra_up)} Challenger / team-event match(es) from {lta.SOURCE} within {HORIZON_H} h")
+            up = pd.concat([up, extra_up.drop(columns=[c for c in extra_up.columns if c.startswith("_")])],
+                           ignore_index=True)
+            pl = load_players(ledger)          # with the birthdays the API just gave
+    need = {i for i in set(up.p1_id) | set(up.p2_id) if not str(i).startswith(lta.PREFIX)}
     if need - set(pl.id):
         extra_path = ledger / "players.json"
         extra = pd.DataFrame(json.loads(extra_path.read_text())) if extra_path.exists() else pd.DataFrame()
@@ -144,7 +236,8 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
         if fc is None:
             log("tennis: no trained model yet")
             break
-        rec = {"match_id": m["id"], "tour": m["tour"], "event": m["event"], "round": m["round"], "venue": m["venue"],
+        rec = {"match_id": m["id"], "tour": m["tour"], "level": m.get("level") or "tour",
+               "source": lta.SOURCE if str(m["id"]).startswith(lta.PREFIX) else "espn.com", "event": m["event"], "round": m["round"], "venue": m["venue"],
                "surface": m["surface"], "best_of": int(m["best_of"]), "start_utc": m["start"].isoformat(),
                "time_known": not venue.date_only(m["date"]), "scheduled_utc": m["date"].isoformat(),
                "p1": m["p1"], "p1_id": m["p1_id"], "p1_seed": _seed(m.get("p1_seed")), "p1_country": m.get("p1_country"),
@@ -157,6 +250,13 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
     # settle
     res, by_id = results(ledger), matches.set_index("id")
     settled = []
+    if client is not None:
+        pend = [r for r in predictions(ledger) if r["match_id"] not in res and r["match_id"].startswith(lta.PREFIX)]
+        for mid, x in lta.settle(pend, client, now, log).items():
+            settled.append({"match_id": mid, **{k: v for k, v in x.items() if k != "walkover"}, "source": lta.SOURCE,
+                            "settled_at": now.isoformat(timespec="seconds")})
+        client.save()
+        res = {**res, **{x["match_id"]: x for x in settled}}
     for r in predictions(ledger):
         if r["match_id"] in res:
             continue
@@ -177,7 +277,7 @@ def cycle(now: datetime | None = None, ledger: Path = LEDGER, log=print, crawl=b
                             "source": "espn.com", "settled_at": now.isoformat(timespec="seconds"),
                             # ESPN's final scheduled start (the order of play moves); None if it never set a time
                             "start_final": None if venue.date_only(m["date"]) else pd.Timestamp(m["date"]).isoformat()})
-        elif now - start > timedelta(days=VOID_DAYS):
+        elif now - start > timedelta(days=VOID_DAYS + (3 if r["match_id"].startswith(lta.PREFIX) else 0)):
             settled.append({"match_id": r["match_id"], "winner": None, "set_winners": "", "score": "", "retired": False,
                             "void": True, "void_reason": "no result", "source": "", "settled_at": now.isoformat(timespec="seconds")})
     _append(ledger / "results.jsonl", settled)
@@ -216,6 +316,15 @@ def _plain(o):
     if isinstance(o, (pd.Timestamp, datetime)):
         return o.isoformat()
     return str(o)
+
+
+def predictions_keys(r: dict) -> set[str]:
+    """The keys of a sealed record (a joined record adds others)."""
+    joined = {"result", "status", "verified", "pre_kickoff", "e", "fav", "set_pick", "p_set_pick", "first_pick",
+              "p_first_pick", "match_pick", "p_match_pick", "one_pick", "p_one_pick", "dog", "p_dog_one_set", "p_fav_one_set",
+              "sets_a", "sets_b", "first_winner", "dog_won_set", "match_hit", "first_hit", "one_hit", "set_hits",
+              "sets_played", "dayv", "pick", "when", "manual", "result_by_you"}
+    return set(r) - joined
 
 
 def join(r: dict, res: dict | None) -> dict:

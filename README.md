@@ -334,6 +334,15 @@ features (last-5 win share, sets won in the last 5, last-5 meetings, who won the
 the same name and the same (or a missing) date of birth are merged, so ratings, form and head-to-head see the whole
 record. Real namesakes with different dates of birth stay apart.
 
+**Challengers and team events (Live Tennis API, free tier).** ESPN has no Challengers, Hopman Cup, United Cup, Davis /
+Billie Jean King Cup or Laver Cup. With a free key from livetennisapi.com saved as the GitHub secret `LIVETENNISAPI_KEY`,
+each cycle lists upcoming Challenger singles and those team events, forecasts and seals them like the rest ("Challenger" /
+"team event" badges), takes players' birthdays from the API for the astrology and numerology, and keeps a player's ESPN
+history when the name matches. The free tier allows 100 requests a day: listings first (about 12 a day), then one look-up
+per finished match to settle it, oldest first, keeping 10 spare. A result the quota has not reached yet can be typed on
+the match page ("your result", stored on your computer until the official one arrives). Settled Challenger matches join
+the history, so those players build up ratings over time.
+
 **Matches you add.** ESPN covers the ATP and WTA tours (including WTA 125s) but not Challengers, ITF, Davis Cup or
 exhibitions, and no other free source offers them for automated use. On Analyze, **Add this match to my tennis matches**
 saves any match: it appears on Forecasts, Live record, Top picks and My picks with a "manual" badge; enter the score on its

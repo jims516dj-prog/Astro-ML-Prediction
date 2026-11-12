@@ -40,6 +40,9 @@ jobs:
         if: ${{ !inputs.diagnose }}
         continue-on-error: true
         run: python scripts/tennis.py cycle
+        env:
+          ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+          LIVETENNISAPI_KEY: ${{ secrets.LIVETENNISAPI_KEY }}
       - name: Push ledger
         if: ${{ !inputs.diagnose }}
         run: |

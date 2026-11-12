@@ -44,6 +44,9 @@ CREATE TABLE IF NOT EXISTS venues (
 CREATE TABLE IF NOT EXISTS tennis_manual (
   id INTEGER PRIMARY KEY AUTOINCREMENT, created_at TEXT NOT NULL, rec_json TEXT NOT NULL, result_json TEXT
 );
+CREATE TABLE IF NOT EXISTS tennis_local_results (
+  match_id TEXT PRIMARY KEY, result_json TEXT NOT NULL, entered_at TEXT NOT NULL
+);
 CREATE TABLE IF NOT EXISTS tennis_odds (
   match_id TEXT PRIMARY KEY, a REAL NOT NULL, b REAL NOT NULL, entered_at TEXT NOT NULL, note TEXT
 );
@@ -312,4 +315,19 @@ def set_tennis_manual_result(con, match_id: str, res: dict | None):
 
 def delete_tennis_manual(con, match_id: str):
     con.execute("DELETE FROM tennis_manual WHERE id=?", (int(match_id.lstrip("u")),))
+    con.commit()
+
+
+# ----------------------------------------------------------------------------- tennis results entered by hand
+def tennis_local_results(con) -> dict[str, dict]:
+    return {r["match_id"]: {**json.loads(r["result_json"]), "entered_at": r["entered_at"]}
+            for r in con.execute("SELECT * FROM tennis_local_results").fetchall()}
+
+
+def set_tennis_local_result(con, match_id: str, res: dict | None):
+    if res is None:
+        con.execute("DELETE FROM tennis_local_results WHERE match_id=?", (match_id,))
+    else:
+        con.execute("INSERT OR REPLACE INTO tennis_local_results (match_id, result_json, entered_at) VALUES (?,?,?)",
+                    (match_id, json.dumps(res), utcnow()))
     con.commit()

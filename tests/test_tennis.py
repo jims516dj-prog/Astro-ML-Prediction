@@ -486,3 +486,125 @@ def test_duplicate_player_ids_are_merged_but_namesakes_kept_apart():
     al = ids.aliases(m, pl)
     assert al == {"2": "1"}                                  # Kim K (8) and Kim K (5) are different people
     assert list(ids.apply(m, al).p1_id) == ["1", "1", "1", "5"]
+
+
+class FakeLTA:
+    """A Live Tennis API stand-in with the free tier's daily budget."""
+
+    def __init__(self, matches, left=90):
+        self.matches, self._left, self.calls = matches, left, []
+        self.state = {}
+
+    @property
+    def left(self):
+        return self._left
+
+    def get(self, path, **kw):
+        if self._left <= 0:
+            raise RuntimeError("budget")
+        self._left -= 1
+        self.calls.append((path, kw))
+        if path == "/matches":
+            data = [m for m in self.matches if m["status"] == kw["status"] and (
+                m["tour"] == kw["tour"] if kw["tour"] == "challenger" else m["tour"] == kw["tour"])]
+            return {"data": data, "meta": {"has_more": False}}
+        mid = int(path.rsplit("/", 1)[1])
+        return {"data": next(m for m in self.matches if m["id"] == mid)}
+
+    def save(self):
+        pass
+
+
+def _lta_match(mid, p1, p2, when, status="upcoming", tour="challenger", tournament="Challenger Sao Paulo", games=None,
+               winner=None):
+    return {"id": mid, "tournament": tournament, "tournament_id": 7, "tour": tour, "surface": "Clay", "format": "BO3",
+            "round": "R32", "status": status, "scheduled_time": when, "is_doubles": False,
+            "players": {"p1": {"id": 100 + mid, "name": p1, "birthday": "2000-02-02", "hand": "right"},
+                        "p2": {"id": 200 + mid, "name": p2, "birthday": "1999-09-09", "hand": "left"}},
+            "score": {"games": games} if games else None, "winner": winner}
+
+
+def test_lta_parsing_and_results():
+    from astrofoot.tennis import lta
+    m = lta.to_match(_lta_match(1, "Ann A", "Bea B", "2030-01-02T14:00:00Z"))
+    assert m["id"] == "lta:1" and m["level"] == "challenger" and m["surface"] == "clay" and m["state"] == "pre"
+    assert m["venue"] == "Sao Paulo" and m["_dob"]["lta:101"] == "2000-02-02"
+    done = _lta_match(1, "Ann A", "Bea B", "2030-01-02T14:00:00Z", "completed", games=[[6, 3, 7], [4, 6, 6]], winner=1)
+    assert lta.result_of(done) == {"winner": 1, "set_winners": "121", "score": "6-4 3-6 7-6", "retired": False,
+                                   "walkover": False, "void": False}
+    ret = _lta_match(1, "Ann A", "Bea B", "2030-01-02T14:00:00Z", "completed", games=[[6, 2], [3, 1]], winner=2)
+    r = lta.result_of(ret)
+    assert r["retired"] and r["winner"] == 2 and r["set_winners"] == "1"
+    assert lta.result_of({**done, "status": "cancelled"})["void"]
+    assert lta.team_event("Hopman Cup") and not lta.team_event("Paris Masters")
+    assert lta.to_match({**done, "is_doubles": True}) is None
+
+
+def test_challengers_are_forecast_settled_and_join_the_history(tmp_path, monkeypatch):
+    from astrofoot.tennis import live as tlive
+
+    monkeypatch.setattr(model, "BUNDLE", tmp_path / "t.joblib")
+    monkeypatch.setattr(model, "REPORT", tmp_path / "t.json")
+    monkeypatch.setattr(model, "MODELS", tmp_path)
+    monkeypatch.setattr(tlive, "DATA", tmp_path / "data")
+    hist, pl = fake_matches(1500)
+    f, _ = features.history(hist, pl, since=None)
+    model.train(f, log=lambda *a: None, quick=True)
+    (tmp_path / "data").mkdir()
+    hist.to_parquet(tmp_path / "data" / "matches.parquet", index=False)
+    pl.to_parquet(tmp_path / "data" / "players.parquet", index=False)
+    now = (hist.date.max() + pd.Timedelta(days=1)).to_pydatetime()
+    start = (now + timedelta(hours=6)).strftime("%Y-%m-%dT%H:%M:%SZ")
+    api = FakeLTA([_lta_match(1, "Player 3", "New Guy", start),                       # Player 3 is in the history
+                   _lta_match(2, "Cat C", "Dee D", start, tour="atp", tournament="Hopman Cup"),
+                   _lta_match(3, "Eve E", "Fay F", start, tour="atp", tournament="Some ATP 250")])   # not a team event
+    ledger = tmp_path / "ledger"
+    quiet = dict(log=lambda *a: None, crawl=lambda a, b, log: pd.DataFrame(), fetch_players=lambda ids, known, log: pd.DataFrame(),
+                 odds_fetch=lambda *a, **k: {})
+    out = tlive.cycle(now, ledger, lta_client=api, **quiet)
+    recs = {r["match_id"]: r for r in tlive.predictions(ledger)}
+    assert out["new"] == 2 and set(recs) == {"lta:1", "lta:2"}
+    assert recs["lta:1"]["p1_id"] == "3" and recs["lta:1"]["level"] == "challenger"          # ESPN id kept for Player 3
+    assert recs["lta:2"]["level"] == "team" and recs["lta:1"]["day"]["dob"]["b"] == "1999-09-09"
+    # finished: the next cycle settles it with one look-up
+    api.matches[0].update(status="completed", score={"games": [[6, 6], [2, 3]]}, winner=1)
+    api.matches[1].update(status="completed", score={"games": [[6, 6], [2, 3]]}, winner=2)
+    out = tlive.cycle(now + timedelta(hours=12), ledger, lta_client=api, **quiet)
+    assert out["settled"] == 2
+    r = next(x for x in tlive.records(ledger) if x["match_id"] == "lta:1")
+    assert r["status"] == "settled" and r["result"]["set_winners"] == "11" and r["result"]["source"] == "livetennisapi.com"
+    h = tlive._lta_history(ledger)
+    assert set(h.id) == {"lta:1", "lta:2"} and (h.completed).all()                # Challenger results feed the ratings
+
+
+def test_settling_stops_at_the_daily_budget(tmp_path):
+    from astrofoot.tennis import lta
+    pend = [{"match_id": f"lta:{i}", "start_utc": "2030-01-01T10:00:00+00:00"} for i in range(1, 6)]
+    api = FakeLTA([_lta_match(i, "A", "B", "2030-01-01T10:00:00Z", "completed", games=[[6, 6], [1, 1]], winner=1)
+                   for i in range(1, 6)], left=3)
+    got = lta.settle(pend, api, datetime(2030, 1, 2, tzinfo=timezone.utc), log=lambda *a: None)
+    assert len(got) == 3 and api.left == 0
+
+
+def test_result_entered_by_hand_for_an_unsettled_challenger(tmp_path, monkeypatch):
+    from fastapi.testclient import TestClient
+
+    from astrofoot import db
+    from astrofoot.tennis import live as tlive
+    from astrofoot.web import app as web
+    from astrofoot.web import tennis_web
+
+    rec = {**_rec("lta:9", "Ann A", "Bea B"), "level": "challenger", "start_utc": "2020-01-02T12:00:00+00:00",
+           "committed_at": "2020-01-01T10:00:00+00:00"}
+    monkeypatch.setattr(tlive, "predictions", lambda ledger=None: [rec])
+    monkeypatch.setattr(tlive, "results", lambda ledger=None: {})
+    path = tmp_path / "t.sqlite3"
+    monkeypatch.setattr(web, "con", lambda: db.connect(path))
+    client = TestClient(web.app)
+    assert "free daily quota" in client.get("/tennis/match/lta:9").text
+    client.post("/tennis/match/lta:9/result", data={"score": "6-2 6-3"})
+    (r,) = tennis_web.records()
+    assert r["status"] == "settled" and r["result_by_you"] and r["result"]["winner"] == 1 and r["match_hit"]
+    assert "your result" in client.get("/tennis/live").text
+    client.post("/tennis/match/lta:9/result", data={"clear": "1"})
+    assert tennis_web.records()[0]["status"] == "pending"

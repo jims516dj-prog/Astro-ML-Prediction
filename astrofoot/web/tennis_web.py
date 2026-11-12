@@ -68,10 +68,12 @@ def records() -> list[dict]:
     from .app import con
     try:
         c = con()
-        uo, manual = db.tennis_odds(c), db.tennis_manual(c)
+        uo, manual, local = db.tennis_odds(c), db.tennis_manual(c), db.tennis_local_results(c)
     except Exception:  # noqa: BLE001
-        uo, manual = {}, []
+        uo, manual, local = {}, [], {}
     recs = tlive.records(user_odds=uo) if uo else tlive.records()
+    if local:       # results you typed for Challenger / team-event matches the free quota could not settle yet
+        recs = [_with_local_result(r, local.get(r["match_id"])) for r in recs]
     for rec, res in manual:
         # once ESPN lists the same match, the sealed forecast takes over
         t = pd.Timestamp(rec["start_utc"])
@@ -107,6 +109,15 @@ def when_of(r: dict, latest=None) -> dict:
             "label": (f"{pd.Timestamp(day).strftime('%a %d %b')} · {local}" + (" local" if tz else " GMT")
                       + (f" ({w.strftime('%H:%M')} GMT)" if tz else "")) if known
             else f"{pd.Timestamp(day).strftime('%a %d %b')} · time not set yet"}
+
+
+def _with_local_result(r: dict, x: dict | None) -> dict:
+    if not x or r["status"] != "pending":
+        return r
+    raw = {k: v for k, v in r.items() if k in tlive.predictions_keys(r)}
+    j = tlive.join(raw, {**x, "match_id": r["match_id"], "source": "entered by you"})
+    j.update(verified=r["verified"], e=r["e"], when=r.get("when"), result_by_you=True)
+    return j
 
 
 def parse_score(text: str, best_of: int = 3, winner: int | None = None) -> dict | None:
@@ -326,6 +337,21 @@ async def tennis_manual_result(request: Request, mid: str):
     from .app import con
     form = await request.form()
     c = con()
+    if mid.startswith("lta:"):        # a Challenger / team-event forecast the free quota has not settled
+        w = str(form.get("winner", ""))
+        if form.get("clear"):
+            db.set_tennis_local_result(c, mid, None)
+            msg = "Your result removed."
+        else:
+            rec = next((r for r in tlive.predictions() if r["match_id"] == mid), {})
+            res = parse_score(str(form.get("score", "")), int(rec.get("best_of") or 3), int(w) if w in ("1", "2") else None)
+            if res is None:
+                msg = ("Could not read a finished score: the first-listed player's games first, e.g. 6-4 3-6 7-6 "
+                       "(for a retirement add 'ret' and choose the winner).")
+            else:
+                db.set_tennis_local_result(c, mid, res)
+                msg = "Result saved (until the official one arrives from livetennisapi.com)."
+        return RedirectResponse(f"/tennis/match/{mid}?msg=" + urllib.parse.quote(msg), status_code=303)
     if not mid.startswith("u"):
         raise HTTPException(400, "only matches you added can be edited")
     if form.get("delete"):
@@ -385,6 +411,7 @@ def tennis_match(request: Request, mid: str, msg: str = ""):
     return _T().TemplateResponse(request, "tennis_match.html", {
         "r": rec, "p": rec["p"], "x": explain(rec["features"], rec), "used": groups, "sealed": True, "day": day_of(rec),
         "msg": msg, "five": last_five(rec["p1_id"], rec["p2_id"], rec["start_utc"]),
+        "now_iso": datetime.now(timezone.utc).isoformat(timespec="seconds"),
         "edge_pts": edge_pts, "page": "tennis_home"})
 
 
