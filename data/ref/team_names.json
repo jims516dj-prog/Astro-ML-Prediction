@@ -189,7 +189,7 @@
 "legal": "Al Nasr Egypt",
 "qid": "Q4704532",
 "short": "Al Nasr Egypt",
-"v": 17
+"v": 18
 },
 "Al Yarmouk": {
 "legal": "Al-Yarmouk FC",
@@ -2345,7 +2345,7 @@
 "legal": "Tersana SC",
 "qid": "Q3049474",
 "short": "Tersana SC",
-"v": 17
+"v": 18
 },
 "Elche": {
 "legal": "Elche Club de Fútbol",
@@ -2686,7 +2686,7 @@
 "FK Anzi Makhackala": {
 "tried": "2026-11",
 "v": 18,
-"why": "no Wikidata item found"
+"why": "Q19353: not a football club"
 },
 "FK Jablonec": {
 "legal": "FK Jablonec",
@@ -3492,8 +3492,9 @@
 "v": 13
 },
 "Hornchurch": {
-"tried": "reset",
-"why": "was Hornchurch Cricket Club"
+"tried": "2026-11",
+"v": 18,
+"why": "Q1628404: not a football club; Q1656021: not a football club; Q5904186: not a football club; Q3337041: not a football club; Q16844845: not a football club"
 },
 "Horsens": {
 "legal": "AC Horsens",
@@ -4004,10 +4005,10 @@
 "v": 13
 },
 "Kuban": {
-"legal": "FC Kuban Krasnodar",
-"qid": "Q29103",
-"short": "FC Kuban Krasnodar",
-"v": 17
+"legal": "FC Kuban Holding",
+"qid": "Q65038152",
+"short": "FC Kuban Holding",
+"v": 18
 },
 "Kumamoto": {
 "legal": "Roasso Kumamoto",
@@ -4406,10 +4407,9 @@
 "v": 13
 },
 "M. Saransk": {
-"legal": "FC Mordovia Saransk",
-"qid": "Q37091",
-"short": "FC Mordovia Saransk",
-"v": 17
+"tried": "2026-11",
+"v": 18,
+"why": "Q9207590: no Latin-script name"
 },
 "MGladbach": {
 "legal": "Borussia Mönchengladbach",
@@ -4771,7 +4771,7 @@
 "legal": "Mount Pleasant Football Academy",
 "qid": "Q60751382",
 "short": "Mount Pleasant Football Academy",
-"v": 17
+"v": 18
 },
 "Mouscron": {
 "legal": "Royal Excel Mouscron",
@@ -5052,7 +5052,7 @@
 "legal": "OL Lyonnes",
 "qid": "Q1276685",
 "short": "OL Lyonnes",
-"v": 17
+"v": 18
 },
 "Odd": {
 "legal": "Odds Ballklubb",
@@ -5289,8 +5289,9 @@
 "v": 13
 },
 "Padova": {
-"tried": "reset",
-"why": "the present club cannot be told from the 1910 club on Wikidata; left unnamed"
+"tried": "2026-11",
+"v": 18,
+"why": "Q5018786: none of its names is the team's (Vigontina San Paolo FC)"
 },
 "Pafos FC": {
 "legal": "Pafos FC",
@@ -6336,7 +6337,7 @@
 "legal": "Shenzhen Peng City FC",
 "qid": "Q7507434",
 "short": "Shenzhen Peng City FC",
-"v": 17
+"v": 18
 },
 "Shijiazhuang": {
 "legal": "Shijiazhuang Ever Bright FC",
@@ -6791,7 +6792,7 @@
 "legal": "FC Torpedo Moscow",
 "qid": "Q324338",
 "short": "FC Torpedo Moscow",
-"v": 17
+"v": 18
 },
 "TOP Oss": {
 "legal": "Tot Ons Plezier Oss",
@@ -6836,10 +6837,9 @@
 "v": 13
 },
 "Tambov": {
-"legal": "FC Tambov",
-"qid": "Q14161251",
-"short": "FC Tambov",
-"v": 17
+"tried": "2026-11",
+"v": 18,
+"why": "Q3544: not a football club; Q3550: not a football club; Q1045074: not a football club; Q1540306: not a football club; Q4450883: not a football club; Q113025712: founded 2022 / dissolved None, but the team played [2018, 2021]"
 },
 "Tamworth": {
 "legal": "Tamworth Football Club",
@@ -6986,10 +6986,9 @@
 "v": 13
 },
 "Tosno": {
-"legal": "FC Tosno",
-"qid": "Q14508335",
-"short": "FC Tosno",
-"v": 17
+"tried": "2026-11",
+"v": 18,
+"why": "Q15337: not a football club; Q4461423: not a football club; Q9089186: not a football club; Q4461425: not a football club; Q4461426: not a football club"
 },
 "Tottenham": {
 "legal": "Tottenham Hotspur Football Club",
