@@ -1,6 +1,6 @@
 # Live track record
 
-_Updated 2026-11-13T10:52:31+00:00 · 635 settled · 185 pending · 865/865 records verify · 0 excluded as committed after kickoff_
+_Updated 2026-11-13T12:50:07+00:00 · 635 settled · 189 pending · 869/869 records verify · 0 excluded as committed after kickoff_
 
 Every forecast below was committed to this ledger and pushed to git **before kickoff**. Each record carries a SHA-256 of its contents. Only these pre-registered forecasts count.
 

@@ -1300,6 +1300,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Clermont Foot": null,
 "Cliftonville FC": {
 "date": "1879-09-01",
 "name": "Cliftonville F.C."
@@ -2252,6 +2253,7 @@
 "date": "1902-07-21",
 "name": "Fluminense F.C."
 },
+"Fontenay Foot": null,
 "For Sittard": {
 "date": null,
 "tried": "2026-11"
@@ -2946,6 +2948,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Iraq": null,
 "Ireland": {
 "date": "1937-12-29",
 "name": "Ireland",
@@ -3308,6 +3311,10 @@
 "Le Mans": {
 "date": "1985-06-12",
 "name": "Le Mans F.C."
+},
+"Lebanon": {
+"date": "1943-11-22",
+"name": "Lebanon"
 },
 "Lecce": {
 "date": "1908-03-17",
@@ -4753,6 +4760,7 @@
 "tried": "2026-11"
 },
 "Rodez AF": null,
+"Rodez Aveyron": null,
 "Rodina Moscow": {
 "date": null,
 "name": "FC Rodina Moscow",
@@ -5742,6 +5750,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"US Quevilly": null,
 "UTA Arad": {
 "date": "1945-04-18",
 "name": "FC UTA Arad"
@@ -5948,6 +5957,7 @@
 "name": "Hellas Verona FC",
 "tried": "2026-11"
 },
+"Versailles 78": null,
 "Vestsjaelland": {
 "date": null,
 "tried": "2026-11"

@@ -529,6 +529,11 @@
   "lon": 21.94611,
   "source": "city: Leskovac"
  },
+ "Dunkerque": {
+  "lat": 51.03297,
+  "lon": 2.377,
+  "source": "city"
+ },
  "Dynamo Dresden": {
   "lat": 51.05089,
   "lon": 13.73832,
@@ -648,6 +653,11 @@
   "lat": 61.5003,
   "lon": 23.7853,
   "source": "wikipedia: Tammelan Stadion"
+ },
+ "Fontenay Foot": {
+  "lat": 46.4625456,
+  "lon": -0.8100013,
+  "source": "openstreetmap: Stade Emmanuel Murzeau, Rue Octave de Rochebrune, Terre-Neuve, Fontenay-le-Comte, Vendée, Pays de la Loire, France métropolitaine, 85200, France"
  },
  "Fortaleza": {
   "lat": -3.71722,
@@ -783,6 +793,11 @@
   "lat": 45.58277778,
   "lon": 9.30805556,
   "source": "wikipedia: Stadio Brianteo"
+ },
+ "Iraq": {
+  "lat": 30.4399273,
+  "lon": 47.7798634,
+  "source": "openstreetmap: إستاد البصرة الدولي, طريق الزبير, البصرة, ناحية مرکز قضاء البصرة, قضاء البصرة, محافظة البصرة, 60001, العراق"
  },
  "Isidro Metapán": {
   "lat": 14.3320903,
@@ -1598,6 +1613,11 @@
   "lat": 38.7527,
   "lon": -9.1847,
   "source": "wikipedia: Estádio da Luz"
+ },
+ "Versailles 78": {
+  "lat": 48.9126,
+  "lon": 2.0815,
+  "source": "wikipedia: Stade Georges Lefèvre"
  },
  "VfL Bochum": {
   "lat": 51.4912464,
