@@ -189,7 +189,7 @@
 "legal": "Al Nasr Egypt",
 "qid": "Q4704532",
 "short": "Al Nasr Egypt",
-"v": 19
+"v": 20
 },
 "Al Yarmouk": {
 "legal": "Al-Yarmouk FC",
@@ -524,7 +524,7 @@
 "legal": "Athletic Club",
 "qid": "Q9636189",
 "short": "Athletic Club",
-"v": 19
+"v": 20
 },
 "Athletico-PR": {
 "legal": "Club Athletico Paranaense",
@@ -649,7 +649,7 @@
 "legal": "Aurora FC",
 "qid": "Q777289",
 "short": "Aurora FC",
-"v": 19
+"v": 20
 },
 "Austin FC": {
 "legal": "Austin FC",
@@ -733,7 +733,7 @@
 "legal": "Baladeyet El-Mahalla",
 "qid": "Q2880438",
 "short": "Baladeyet El-Mahalla",
-"v": 19
+"v": 20
 },
 "Ballymena United": {
 "legal": "Ballymena United FC",
@@ -1201,13 +1201,13 @@
 "legal": "İstanbul Başakşehir FK",
 "qid": "Q857938",
 "short": "İstanbul Başakşehir FK",
-"v": 19
+"v": 20
 },
 "C.D. Platense": {
 "legal": "Club Deportivo Platense - Zacatecoluca",
 "qid": "Q2979887",
 "short": "Club Deportivo Platense - Zacatecoluca",
-"v": 19
+"v": 20
 },
 "CD Artistico Navalcarnero": {
 "legal": "CDA Navalcarnero",
@@ -1253,14 +1253,14 @@
 },
 "CS Drobeta-Turnu Severin": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q1024481: based 274 km from where the team plays"
 },
 "CS Puertollano": {
 "legal": "Calvo Sotelo Puertollano CF",
 "qid": "Q56244937",
 "short": "Calvo Sotelo Puertollano CF",
-"v": 19
+"v": 20
 },
 "CS Turnu Severin": {
 "legal": "CS Turnu Severin",
@@ -1617,7 +1617,7 @@
 },
 "Ciudad de Bolívar": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q1102967: not a football club"
 },
 "Clermont": {
@@ -2018,7 +2018,7 @@
 },
 "Delta United FC": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q3269948: in ['BU'], not EG; Q110998651: in ['ID'], not EG; Q134469786: in ['ID'], not EG"
 },
 "Den Haag": {
@@ -2331,7 +2331,7 @@
 "legal": "Al-Sekka Al-Hadid",
 "qid": "Q2829406",
 "short": "Al-Sekka Al-Hadid",
-"v": 19
+"v": 20
 },
 "El Sekka El Hadid": {
 "legal": "Al-Sekka Al-Hadid",
@@ -2343,7 +2343,7 @@
 "legal": "Tersana SC",
 "qid": "Q3049474",
 "short": "Tersana SC",
-"v": 18
+"v": 20
 },
 "Elche": {
 "legal": "Elche Club de Fútbol",
@@ -3228,7 +3228,7 @@
 },
 "Gunners FC": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q1923335: in ['ZW'], not TZ; Q859887: in ['BW'], not TZ; Q7566513: in ['AU'], not TZ; Q1530996: in ['NA'], not TZ; Q9617: in ['GB'], not TZ"
 },
 "HB Køge": {
@@ -3538,7 +3538,7 @@
 },
 "IAA SC": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "no Wikidata item found"
 },
 "IF Brommapojkarna": {
@@ -4311,7 +4311,7 @@
 "legal": "UD Logroñés",
 "qid": "Q1067737",
 "short": "UD Logroñés",
-"v": 19
+"v": 20
 },
 "Lokomotiv Moscow": {
 "legal": "FC Lokomotiv Moscow",
@@ -4423,7 +4423,7 @@
 "legal": "Ma'an SC",
 "qid": "Q106129787",
 "short": "Ma'an SC",
-"v": 19
+"v": 20
 },
 "Macclesfield": {
 "legal": "Macclesfield Football Club",
@@ -4570,7 +4570,7 @@
 },
 "Mega Sport": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q43295515: not a football club; Q79013384: not a football club; Q129177473: not a football club; Q118875256: not a football club; Q129932218: not a football club; Q47519832: a sports club, not shown to play football"
 },
 "Meizhou Hakka": {
@@ -4599,7 +4599,7 @@
 },
 "Midland": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q128321: not a football club; Q1931996: not a football club; Q3857059: not a football club; Q30603462: not a football club; Q68078331: a sports club, not shown to play football; Q5261486: founded 1881 / dissolved 1891, but the team played [2026, 2026]; Q24993207: a sports club, not shown to play football; Q126372405: no country to confirm with; Q16970903: a sports club, not shown to play football; Q111529429: a sports club, not shown to play football; namesakes: Q5136249 (9), Q7986660 (5), Q16250410 (4)"
 },
 "Midtjylland": {
@@ -4768,7 +4768,7 @@
 "legal": "Mount Pleasant Football Academy",
 "qid": "Q60751382",
 "short": "Mount Pleasant Football Academy",
-"v": 19
+"v": 20
 },
 "Mouscron": {
 "legal": "Royal Excel Mouscron",
@@ -4820,7 +4820,7 @@
 },
 "Naftagas": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q140302346: no country to confirm with"
 },
 "Nagoya Grampus": {
@@ -5049,7 +5049,7 @@
 "legal": "OL Lyonnes",
 "qid": "Q1276685",
 "short": "OL Lyonnes",
-"v": 19
+"v": 20
 },
 "Odd": {
 "legal": "Odds Ballklubb",
@@ -5287,7 +5287,7 @@
 },
 "Padova": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q5018786: none of its names is the team's (Vigontina San Paolo FC)"
 },
 "Pafos FC": {
@@ -5516,7 +5516,7 @@
 "legal": "ACS Poli Timișoara",
 "qid": "Q9213751",
 "short": "ACS Poli Timișoara",
-"v": 19
+"v": 20
 },
 "Polonia Warszawa": {
 "legal": "Polonia Warsaw",
@@ -5612,7 +5612,7 @@
 "legal": "DNŠ Primorje",
 "qid": "Q5205823",
 "short": "DNŠ Primorje",
-"v": 19
+"v": 20
 },
 "Progreso": {
 "legal": "CA Progreso",
@@ -5622,7 +5622,7 @@
 },
 "Proxy": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q1432581: not a football club; Q25415577: not a football club; Q11189: not a football club; Q1517802: not a football club; Q56404221: not a football club; Q37930915: in ['DK'], not EG; Q12316776: in ['DK'], not EG; Q20033401: in ['DK'], not EG"
 },
 "Puebla": {
@@ -5969,7 +5969,7 @@
 },
 "Ruh Lviv": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q12149497: based 461 km from where the team plays"
 },
 "Râmnicu Sărat": {
@@ -6249,7 +6249,7 @@
 },
 "Shakhter Soligorsk": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q36896: not a football club; Q531866: names differ"
 },
 "Shamrock Rovers": {
@@ -6416,7 +6416,7 @@
 },
 "Smail": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q37291573: not a football club; Q42256694: not a football club; Q116600749: not a football club; Q102406262: not a football club; Q63453939: not a football club"
 },
 "Sochaux": {
@@ -6789,7 +6789,7 @@
 "legal": "FC Torpedo Moscow",
 "qid": "Q324338",
 "short": "FC Torpedo Moscow",
-"v": 19
+"v": 20
 },
 "TOP Oss": {
 "legal": "Tot Ons Plezier Oss",
@@ -6926,7 +6926,7 @@
 "legal": "WSG Tirol",
 "qid": "Q686659",
 "short": "WSG Tirol",
-"v": 19
+"v": 20
 },
 "Tokushima": {
 "legal": "Tokushima Vortis",
@@ -7138,7 +7138,7 @@
 },
 "Uljanik": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q725916: none of its names is the team's (NK Istra 1961)"
 },
 "Ull/Kisa": {
@@ -7418,7 +7418,7 @@
 },
 "Viitorul Corbeanca": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q18539434: names differ"
 },
 "Viking": {
@@ -7872,7 +7872,7 @@
 },
 "Águilas Doradas": {
 "tried": "2026-11",
-"v": 19,
+"v": 20,
 "why": "Q332833: based 335 km from where the team plays; Q28503735: a sports club, not shown to play football; Q6138227: not a football club"
 }
 }
