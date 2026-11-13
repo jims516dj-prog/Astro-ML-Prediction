@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 15          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 16          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -701,6 +701,9 @@ def main():
                 if not (at and ll and _km(at, ll) <= NEAR_KM):
                     why.append(f"{q}: no country to confirm with")
                     continue                          # nothing to confirm the match with
+            if t in searched and (at := home_location(t)) and (ll := item_location(e)) and _km(at, ll) > FAR_KM:
+                why.append(f"{q}: based {_km(at, ll):.0f} km from where the team plays")
+                continue                              # "Kuban" (Krasnodar) is not FC Kuban Holding (Pavlovskaya)
             if not lifetime_ok(t, e):
                 why.append(f"{q}: founded {_year(e, 'P571')} / dissolved {_year(e, 'P576')}, "
                            f"but the team played {PLAYED.get(teamnames.split(t)[0])}")
