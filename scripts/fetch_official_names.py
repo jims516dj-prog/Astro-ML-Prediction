@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 22          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 23          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -872,6 +872,14 @@ def main():
             for lang in ["en", lang or "", "es", "pt", "fr", "de", "it", "nl", *sorted(labels)]:
                 v = tidy((labels.get(lang) or {}).get("value") or "")
                 if v and is_latin(v) and _agrees(t, v):
+                    short = v
+                    break
+        if t in hand and short and not _agrees(t, short):
+            # an English translation ("Gold Eagles" for Águilas Doradas): the club's own name in another language
+            labels = e.get("labels") or {}
+            for lg in ["es", "pt", "fr", "it", "de", "nl", "pl", "ro", "tr", *sorted(labels)]:
+                v = tidy((labels.get(lg) or {}).get("value") or "")
+                if lg != "en" and v and is_latin(v) and _agrees(t, v):
                     short = v
                     break
         if t in searched and short and not _agrees(t, short):
