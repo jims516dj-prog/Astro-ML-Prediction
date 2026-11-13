@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 20          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 21          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -320,6 +320,8 @@ def lifetime_ok(team: str, e) -> bool:
     if not span:
         return True
     born, gone = _year(e, "P571"), _year(e, "P576")
+    if born and gone == born:
+        gone = None                                   # founded and dissolved the same year: a data slip
     return not ((born and born > span[1]) or (gone and gone < span[0] - 1))
 
 
@@ -780,7 +782,8 @@ def main():
             e = ents.get(q) or {}
             if t in hand:
                 kinds = set(claim_ids(e, "P31")) & (FOOTBALL | WOMEN_CLUB)
-                if not kinds or (kinds <= GENERIC_CLUB and "Q2736" not in claim_ids(e, "P641")):
+                plays = "Q2736" in claim_ids(e, "P641") or bool(claim_ids(e, "P118"))   # its sport, or a league
+                if not (kinds - GENERIC_CLUB or plays):     # a defunct club keeps its league; a station has none
                     why.append(f"{q}: not a football club")
                     continue                          # a redirect to a station or a league is never taken
                 if not lifetime_ok(t, e):
