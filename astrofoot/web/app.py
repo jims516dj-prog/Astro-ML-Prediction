@@ -102,13 +102,44 @@ def team_founding_delete(request: Request, team: str = Form(...), back: str = Fo
     return RedirectResponse(_safe_back(request, back), status_code=303)
 
 
+RESEARCH_RUN = {"running": False, "started": None, "finished": None, "ok": None, "log": ""}
+
+
+def _run_research():
+    """The day-reading research on this computer, with your founding dates (scripts/teamday_research.py --mine)."""
+    import threading
+
+    def work():
+        RESEARCH_RUN.update(running=True, started=datetime.now(timezone.utc).isoformat(timespec="seconds"),
+                            finished=None, ok=None, log="")
+        try:
+            p = subprocess.run([sys.executable, "scripts/teamday_research.py", "--mine"], cwd=ROOT, capture_output=True,
+                               text=True, timeout=3 * 3600)
+            RESEARCH_RUN.update(ok=p.returncode == 0, log=(p.stdout + p.stderr)[-3000:])
+        except Exception as e:  # noqa: BLE001
+            RESEARCH_RUN.update(ok=False, log=f"{type(e).__name__}: {e}")
+        RESEARCH_RUN.update(running=False, finished=datetime.now(timezone.utc).isoformat(timespec="seconds"))
+
+    threading.Thread(target=work, daemon=True).start()
+
+
+@app.post("/team-foundings/research")
+def team_foundings_research():
+    if not RESEARCH_RUN["running"]:
+        _run_research()
+    return RedirectResponse("/team-foundings", status_code=303)
+
+
 @app.get("/team-foundings", response_class=HTMLResponse)
 def team_foundings_page(request: Request):
     rows = db.team_charts(con())
     for r in rows:
         r["women"] = r["team"].startswith("W:")
         r["name"] = r["team"][2:] if r["women"] else r["team"]
-    return T.TemplateResponse(request, "team_foundings.html", {"rows": rows, "page": "analyze"})
+    res = teamday.research()
+    return T.TemplateResponse(request, "team_foundings.html", {"rows": rows, "page": "analyze", "res": res,
+                                                               "run": RESEARCH_RUN,
+                                                               "mine": teamday.RESEARCH_MINE.exists()})
 
 
 def _day_label(d: str) -> str:

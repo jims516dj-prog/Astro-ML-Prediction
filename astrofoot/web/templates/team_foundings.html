@@ -1,5 +1,18 @@
 {% extends "base.html" %}
-{% block title %}Founding dates you entered{% endblock %}
+{% block title %}Founding dates you entered<section class="card">
+<h2>Research with your dates</h2>
+<p class="note">The "Does it work?" figures under each game's day reading test the reading on past games: the match history
+plus the settled games of the live record, men's and women's. Recompute them here to include the dates above: it runs on this
+computer (a few minutes) and the result replaces the shared one on the soccer pages.</p>
+{% if res %}<p class="small">Shown now: {{ "your computer's rerun" if mine else "the shared result" }} of {{ (res.generated or "")[:16]|replace("T", " ") }} UTC:
+{{ "{:,}".format(res.n) }} team-matches, {{ res.teams }} clubs{% if res.live_games %}, {{ "{:,}".format(res.live_games) }} of them from the live record{% endif %}{% if res.includes_your_dates %};
+your dates: {{ res.your_teams }} club{{ "" if res.your_teams == 1 else "s" }}, {{ res.your_team_matches }} team-match{{ "" if res.your_team_matches == 1 else "es" }}{% endif %}.</p>{% endif %}
+{% if run.running %}<p><span class="badge">running</span> started {{ run.started[11:19] }} UTC: reload this page to see when it is done.</p>
+{% else %}<form method="post" action="/team-foundings/research"><button class="btn" type="submit">Recompute the research with my dates</button></form>
+{% if run.finished %}<p class="small">Last run finished {{ run.finished[11:19] }} UTC: {{ "done" if run.ok else "failed" }}.</p>
+{% if not run.ok %}<pre class="small" style="white-space:pre-wrap">{{ run.log }}</pre>{% endif %}{% endif %}{% endif %}
+</section>
+{% endblock %}
 {% block body %}
 <h1>Founding dates you entered</h1>
 <p class="note">The day reading (astrology and numerology) needs a club's founding date known to the day. When the founding
@@ -13,4 +26,17 @@ game of that team from then on, ahead of the founding table. Dates entered on An
 <input type="hidden" name="team" value="{{ r.team }}"><input type="hidden" name="back" value="/team-foundings">
 <button class="btn ghost small" type="submit">Remove</button></form></td></tr>
 {% else %}<tr><td colspan="6">None yet.</td></tr>{% endfor %}</tbody></table></div>
+<section class="card">
+<h2>Research with your dates</h2>
+<p class="note">The "Does it work?" figures under each game's day reading test the reading on past games: the match history
+plus the settled games of the live record, men's and women's. Recompute them here to include the dates above: it runs on this
+computer (a few minutes) and the result replaces the shared one on the soccer pages.</p>
+{% if res %}<p class="small">Shown now: {{ "your computer's rerun" if mine else "the shared result" }} of {{ (res.generated or "")[:16]|replace("T", " ") }} UTC:
+{{ "{:,}".format(res.n) }} team-matches, {{ res.teams }} clubs{% if res.live_games %}, {{ "{:,}".format(res.live_games) }} of them from the live record{% endif %}{% if res.includes_your_dates %};
+your dates: {{ res.your_teams }} club{{ "" if res.your_teams == 1 else "s" }}, {{ res.your_team_matches }} team-match{{ "" if res.your_team_matches == 1 else "es" }}{% endif %}.</p>{% endif %}
+{% if run.running %}<p><span class="badge">running</span> started {{ run.started[11:19] }} UTC: reload this page to see when it is done.</p>
+{% else %}<form method="post" action="/team-foundings/research"><button class="btn" type="submit">Recompute the research with my dates</button></form>
+{% if run.finished %}<p class="small">Last run finished {{ run.finished[11:19] }} UTC: {{ "done" if run.ok else "failed" }}.</p>
+{% if not run.ok %}<pre class="small" style="white-space:pre-wrap">{{ run.log }}</pre>{% endif %}{% endif %}{% endif %}
+</section>
 {% endblock %}

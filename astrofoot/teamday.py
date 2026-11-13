@@ -22,6 +22,7 @@ from .tennis import daychart as dc
 
 CACHE = REF / "team_founding_days.json"
 RESEARCH = MODELS / "teamday.json"
+RESEARCH_MINE = MODELS / "teamday_mine.json"   # rerun on this computer with your dates (git-ignored)
 
 # transit → natal (conjunction, harmonious, hard) weights for scoring
 ATTACK_RULES = {
@@ -205,4 +206,12 @@ def _lean(v, margin) -> int:
 
 
 def research() -> dict:
-    return json.loads(RESEARCH.read_text()) if RESEARCH.exists() else {}
+    """The research shown on the soccer pages: your computer's rerun with your dates when there is one, else the
+    shared result."""
+    for path in (RESEARCH_MINE, RESEARCH):
+        try:
+            if path.exists():
+                return json.loads(path.read_text())
+        except (OSError, ValueError):
+            continue
+    return {}

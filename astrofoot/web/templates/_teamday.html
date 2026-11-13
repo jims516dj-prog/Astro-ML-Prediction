@@ -40,7 +40,7 @@
   </div>
   {% if res and res.scoring %}{% set sa = res.scoring.score_astro %}{% set sn = res.scoring.score_num %}
   <p class="note"><strong>Does it work?</strong> On {{ "{:,}".format(res.n) }} past team-matches ({{ res.teams }} clubs with a founding
-  date known to the day): when the astrology scoring reading was favourable the team scored {{ fmt_pct(sa["1"].rate) }} of the time
+  date known to the day{% if res.includes_your_dates %}, {{ res.your_teams }} of them dated by you: <a href="/team-foundings">recompute</a>{% endif %}): when the astrology scoring reading was favourable the team scored {{ fmt_pct(sa["1"].rate) }} of the time
   (the odds expected {{ fmt_pct(sa["1"].expected) }}); when unfavourable {{ fmt_pct(sa["-1"].rate) }} ({{ fmt_pct(sa["-1"].expected) }} expected).
   Numerology: {{ fmt_pct(sn["1"].rate) }} vs {{ fmt_pct(sn["1"].expected) }} favourable, {{ fmt_pct(sn["-1"].rate) }} vs {{ fmt_pct(sn["-1"].expected) }} unfavourable.
   Teams the day's astrology favoured won {{ fmt_pct(res.day.day_astro["1"].rate) }} (odds {{ fmt_pct(res.day.day_astro["1"].expected) }}).

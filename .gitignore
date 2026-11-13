@@ -13,3 +13,5 @@ data/*.log
 data/models/local_backup/
 .github_token
 data/tennis/features.parquet
+# the day-reading research rerun on your computer with the founding dates you entered
+data/models/teamday_mine.json
