@@ -931,3 +931,17 @@
 {"goals_away":2,"goals_home":1,"match_key":"758d1dbf4fa2","settled_at":"2026-11-12T22:45:45+00:00","sha256":"cd1772566525f87801a365c83ea4db7a2c3c9cd1541d6c2cec6d6510d118c256","source":"api-football"}
 {"goals_away":1,"goals_home":0,"match_key":"8d33ac613a46","settled_at":"2026-11-12T22:45:45+00:00","sha256":"b6a7a82604e4948e57ce7572b7c0d4cea4f2d29fe7e39bf37e895bfb004aca61","source":"api-football"}
 {"goals_away":0,"goals_home":0,"match_key":"e19d6b6a889d","settled_at":"2026-11-12T22:45:45+00:00","sha256":"8d682a8a6ec4efe919e4d22cb997f76f7cc5a08021cc508091c4f5ca34634209","source":"espn.com"}
+{"goals_away":2,"goals_home":0,"match_key":"85201e770ee9","settled_at":"2026-11-13T10:34:50+00:00","sha256":"02b72080c71e59320d38d72983c4ce684b43993f5cb7f41b5024d80f9a0d9499","source":"espn.com"}
+{"goals_away":2,"goals_home":2,"match_key":"8c6a6e7b2561","settled_at":"2026-11-13T10:34:50+00:00","sha256":"be81b40023651c0f04e1d1e6ca260853b38421b1ebe4e973bfe42a275fa64239","source":"espn.com"}
+{"goals_away":0,"goals_home":0,"match_key":"395cd9aa697a","settled_at":"2026-11-13T10:34:50+00:00","sha256":"fb00b43049b8e3d0cccb24a39bde90603d1f325b1dd46b45b9e20d860f810723","source":"espn.com"}
+{"goals_away":2,"goals_home":2,"match_key":"08ac9949d9b4","settled_at":"2026-11-13T10:34:50+00:00","sha256":"e9654da47a7b15cf4bfc7a49f8587ba9b2cea222da1c09f5db3782087eac7ffc","source":"espn.com"}
+{"goals_away":0,"goals_home":0,"match_key":"1f8965a50ad2","settled_at":"2026-11-13T10:34:50+00:00","sha256":"df4cfbaae6a8018c306eb773b6c7ab0dbe63209213aa80bdb9d56b8590834b75","source":"espn.com"}
+{"goals_away":1,"goals_home":1,"match_key":"3a73a9d74781","settled_at":"2026-11-13T10:34:50+00:00","sha256":"236c3b27eed9ebbba214a98d97e8b9fdcdbb7dfb0a7716a153c108bcad88f32f","source":"espn.com"}
+{"goals_away":0,"goals_home":1,"match_key":"40facc257507","settled_at":"2026-11-13T10:34:50+00:00","sha256":"1cb1613ab6b1c3efbe5a66d2fe9db39bbc100c1ee2dd9193bea0a91e7852b801","source":"espn.com"}
+{"goals_away":1,"goals_home":0,"match_key":"e3e2a3164a12","settled_at":"2026-11-13T10:34:50+00:00","sha256":"1fd8fa9eb3310034ee506c00ed080da29eb9b1d518d9f531af2bdbad8c381072","source":"espn.com"}
+{"goals_away":1,"goals_home":4,"match_key":"c6cdfbb54ac0","settled_at":"2026-11-13T10:34:50+00:00","sha256":"637da2206a6bda8903a4c13258d0003343926c6567086e7721a7f32ef344810f","source":"espn.com"}
+{"goals_away":1,"goals_home":0,"match_key":"808145fc0cbf","settled_at":"2026-11-13T10:34:50+00:00","sha256":"ab4beecadf896a22e56b1f0ee4c513abb7f2658fe76dd06aa084b976f0620fa3","source":"espn.com"}
+{"goals_away":0,"goals_home":0,"match_key":"fd9a7f1e0f77","settled_at":"2026-11-13T10:34:50+00:00","sha256":"02239b8a90165c769d45ce00580be86635ad880f79396507125cd62454b5f2cd","source":"api-football"}
+{"goals_away":3,"goals_home":1,"match_key":"625c0fabd403","settled_at":"2026-11-13T10:34:50+00:00","sha256":"6deb2697ecebcc431205d2e6a93a9443dcb91f0d2c30e37d4f398fa56e52b45c","source":"api-football"}
+{"goals_away":3,"goals_home":2,"match_key":"4cae90d4329e","settled_at":"2026-11-13T10:34:50+00:00","sha256":"e2b60e09b09104c492447e530acd951fc73fa66760f90dd10a84d4a7fba12baf","source":"api-football"}
+{"goals_away":2,"goals_home":2,"match_key":"6ce7f03c162d","settled_at":"2026-11-13T10:34:50+00:00","sha256":"ed26b092ce21e757ef5f28e4e209e4517bb19edb605a33cf5bf69a906b9e2c73","source":"api-football"}

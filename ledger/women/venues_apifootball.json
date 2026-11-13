@@ -1,13 +1,43 @@
 {
+ "Elfsborg W": {
+  "lat": 57.73783,
+  "lon": 12.94076,
+  "source": "thesportsdb: Borås Arena, Borås"
+ },
  "Hamburger SV W": {
   "lat": 53.588637,
   "lon": 9.9442513,
   "source": "openstreetmap: Sportpark Eimsbüttel, Hagenbeckstraße, Stellingen, Eimsbüttel, Hamburg, 22527, Deutschland"
  },
+ "Häcken II W": {
+  "lat": 57.70716,
+  "lon": 11.96679,
+  "source": "thesportsdb: Bravida Arena, Gothenburg, Sweden"
+ },
+ "Krasnodar W": {
+  "lat": 45.04484,
+  "lon": 38.97603,
+  "source": "city: Krasnodar"
+ },
+ "Lokomotiv Moskva W": {
+  "lat": 55.8065,
+  "lon": 37.7377,
+  "source": "wikipedia: Sapsan Arena"
+ },
  "Osasuna": {
   "lat": 42.796667,
   "lon": -1.636944,
   "source": "stadium"
+ },
+ "Rubin Kazan W": {
+  "lat": 55.82111111,
+  "lon": 49.16083333,
+  "source": "wikipedia: Ak Bars Arena"
+ },
+ "Spartak Moskva W": {
+  "lat": 55.75222,
+  "lon": 37.61556,
+  "source": "city: Moscow"
  },
  "Sturm Graz W": {
   "lat": 47.0462785,
@@ -18,5 +48,15 @@
   "lat": 39.0947815,
   "lon": -9.256795,
   "source": "openstreetmap: Estádio Manuel Marques, Rua Cândido dos Reis, Santa Maria, São Pedro e Matacães, Torres Vedras, Lisboa, 2560-273, Portugal"
+ },
+ "Trelleborg W": {
+  "lat": 55.37514,
+  "lon": 13.15691,
+  "source": "city: Trelleborg"
+ },
+ "Yenisey W": {
+  "lat": 56.01839,
+  "lon": 92.86717,
+  "source": "city: Krasnoyarsk"
  }
 }

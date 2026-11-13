@@ -166,6 +166,7 @@
 "date": "1912-11-28",
 "name": "Albania"
 },
+"Albion FC": null,
 "Albion Rvs": {
 "date": null,
 "tried": "2026-11"
@@ -194,6 +195,10 @@
 "name": "US Alessandria Calcio 1912",
 "tried": "2026-11"
 },
+"Algeria": {
+"date": "1962-07-05",
+"name": "Algeria"
+},
 "Alianza FC": {
 "date": null,
 "name": "Alianza F.C.",
@@ -214,6 +219,10 @@
 "Almeria": {
 "date": "1989-07-26",
 "name": "Uni\u00f3n Deportiva Almer\u00eda"
+},
+"Almirante Brown": {
+"date": "1912-07-01",
+"name": "Club Almirante Brown"
 },
 "Altach": {
 "date": null,
@@ -251,6 +260,10 @@
 "Amorebieta": {
 "date": "1925-01-04",
 "name": "SD Amorebieta"
+},
+"Am\u00e9rica Mineiro": {
+"date": "1912-04-30",
+"name": "Am\u00e9rica Futebol Clube"
 },
 "Am\u00e9rica de Cali": {
 "date": "1927-02-13",
@@ -424,6 +437,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Atlanta": null,
 "Atlanta Utd": {
 "date": "2014-04-16",
 "name": "Atlanta United FC"
@@ -449,6 +463,11 @@
 "date": "1908-03-25",
 "name": "Clube Atl\u00e9tico Mineiro"
 },
+"Atl\u00e9tico Bucaramanga": {
+"date": "1949-05-11",
+"name": "Atl\u00e9tico Bucaramanga"
+},
+"Atl\u00e9tico Goianiense": null,
 "Atl\u00e9tico Junior": {
 "date": "1924-08-07",
 "name": "Junior de Barranquilla"
@@ -487,6 +506,10 @@
 "date": "1901-01-01",
 "name": "Australia"
 },
+"Austria": {
+"date": "0996-11-06",
+"name": "Austria"
+},
 "Austria Vienna": {
 "date": "1911-03-15",
 "name": "FK Austria Wien"
@@ -499,6 +522,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Ava\u00ed": null,
 "Avellino": {
 "date": "1912-12-12",
 "name": "U.S. Avellino 1912"
@@ -776,6 +800,7 @@
 "date": "1900-08-01",
 "name": "Borussia M\u00f6nchengladbach"
 },
+"Bosnia-Herzegovina": null,
 "Boston Utd": {
 "date": null,
 "name": "Boston United F.C.",
@@ -784,6 +809,11 @@
 "Botafogo RJ": {
 "date": null,
 "tried": "2026-11"
+},
+"Botafogo-SP": null,
+"Botswana": {
+"date": "1966-09-30",
+"name": "Botswana"
 },
 "Boulogne": {
 "date": null,
@@ -839,6 +869,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Brazil": {
+"date": "1822-09-07",
+"name": "Brazil"
+},
 "Brechin": {
 "date": null,
 "name": "Brechin City F.C.",
@@ -892,6 +926,10 @@
 "Brondby": {
 "date": "1964-12-03",
 "name": "Br\u00f8ndby IF"
+},
+"Buducnost Podgorica": {
+"date": "1925-06-12",
+"name": "FK Budu\u0107nost Podgorica"
 },
 "Bulgaria": {
 "date": "1878-07-13",
@@ -958,6 +996,8 @@
 "date": "1907-11-10",
 "name": "CFR Cluj"
 },
+"CRB": null,
+"CS Drobeta-Turnu Severin": null,
 "CS Puertollano": {
 "date": null,
 "tried": "2026-11"
@@ -1082,6 +1122,10 @@
 "date": "1914-06-02",
 "name": "Cear\u00e1 Sporting Club"
 },
+"Cear\u00e1": {
+"date": "1914-06-02",
+"name": "Cear\u00e1 Sporting Club"
+},
 "Celta": {
 "date": "1923-08-23",
 "name": "RC Celta de Vigo"
@@ -1158,6 +1202,7 @@
 "name": "RAAL La Louvi\u00e8re",
 "tried": "2026-11"
 },
+"Charleston Battery": null,
 "Charlotte": {
 "date": "2019-12-17",
 "name": "Charlotte FC"
@@ -1250,6 +1295,7 @@
 "name": "Associazione Sportiva Cittadella",
 "tried": "2026-11"
 },
+"Ciudad de Bol\u00edvar": null,
 "Clermont": {
 "date": null,
 "tried": "2026-11"
@@ -1304,6 +1350,10 @@
 "name": "Cobh Ramblers F.C.",
 "tried": "2026-11"
 },
+"Cob\u00e1n Imperial": {
+"date": "1924-08-01",
+"name": "Cob\u00e1n Imperial"
+},
 "Colchester": {
 "date": null,
 "name": "Colchester United F.C.",
@@ -1335,6 +1385,7 @@
 "date": "1994-06-15",
 "name": "Columbus Crew"
 },
+"Col\u00f3n (Santa Fe)": null,
 "Como": {
 "date": "1907-05-25",
 "name": "Como 1907"
@@ -1343,6 +1394,7 @@
 "date": "1975-07-06",
 "name": "Comoros"
 },
+"Comunicaciones": null,
 "Concarneau": {
 "date": "1911-03-11",
 "name": "US Concarneau"
@@ -1451,6 +1503,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Crici\u00fama": null,
 "Croatia": {
 "date": "1991-06-25",
 "name": "Croatia"
@@ -1491,6 +1544,10 @@
 "name": "Cuba"
 },
 "Cuiaba": {
+"date": "2001-12-12",
+"name": "Cuiab\u00e1 Esporte Clube"
+},
+"Cuiab\u00e1": {
 "date": "2001-12-12",
 "name": "Cuiab\u00e1 Esporte Clube"
 },
@@ -1559,6 +1616,10 @@
 "name": "Dayrout SC",
 "tried": "2026-11"
 },
+"De Graafschap": {
+"date": "1954-02-01",
+"name": "De Graafschap"
+},
 "Defensa y Justicia": {
 "date": "1935-03-20",
 "name": "Defensa y Justicia"
@@ -1604,6 +1665,23 @@
 "date": null,
 "tried": "2026-11"
 },
+"Deportes Tolima": {
+"date": "1954-12-18",
+"name": "Deportes Tolima"
+},
+"Deportivo Cali": {
+"date": "1912-11-23",
+"name": "Deportivo Cali"
+},
+"Deportivo Madryn": null,
+"Deportivo Maip\u00fa": {
+"date": "1927-12-16",
+"name": "Deportivo Maip\u00fa"
+},
+"Deportivo Maldonado": {
+"date": "1928-08-25",
+"name": "Deportivo Maldonado"
+},
 "Deportivo Mixco": {
 "date": null,
 "name": "Deportivo Mixco",
@@ -1613,6 +1691,10 @@
 "date": null,
 "name": "Deportivo Pasto",
 "tried": "2026-11"
+},
+"Deportivo Pereira": {
+"date": "1944-02-12",
+"name": "Deportivo Pereira"
 },
 "Derby": {
 "date": "1884-02-05",
@@ -1643,6 +1725,7 @@
 "date": "1948-05-14",
 "name": "FC Dinamo Bucharest"
 },
+"Dinamo Minsk II": null,
 "Dinamo Zagreb": {
 "date": "1911-04-26",
 "name": "GNK Dinamo Zagreb"
@@ -1697,6 +1780,8 @@
 "name": "Drogheda United F.C.",
 "tried": "2026-11"
 },
+"Dubo\u010dica": null,
+"Dukla Praha U19": null,
 "Dumbarton": {
 "date": "1872-12-23",
 "name": "Dumbarton F.C."
@@ -1872,6 +1957,7 @@
 "name": "C.F. Estrela da Amadora",
 "source": "wikipedia:en (Q838134)"
 },
+"Estudiantes (Buenos Aires)": null,
 "Estudiantes L.P.": {
 "date": "1905-08-04",
 "name": "Estudiantes de La Plata"
@@ -1951,14 +2037,24 @@
 "date": "1995-06-06",
 "name": "FC Dallas"
 },
+"FC Den Bosch": {
+"date": "1965-08-18",
+"name": "FC Den Bosch"
+},
+"FC Dordrecht": {
+"date": "1883-08-16",
+"name": "FC Dordrecht"
+},
 "FC Edinburgh": {
 "date": null,
 "tried": "2026-11"
 },
+"FC Eindhoven": null,
 "FC Emmen": {
 "date": "1925-08-21",
 "name": "FC Emmen"
 },
+"FC Energetik-Bgu Minsk": null,
 "FC Hermannstadt": {
 "date": null,
 "name": "FC Hermannstadt",
@@ -2004,6 +2100,7 @@
 "name": "FC Roskilde",
 "tried": "2026-11"
 },
+"FC Slutsk": null,
 "FC Stade Lausanne-Ouchy": {
 "date": "2000-07-01",
 "name": "FC Stade Lausanne-Ouchy",
@@ -2018,9 +2115,14 @@
 "name": "FC Tokyo",
 "source": "wikipedia:de (Q856619)"
 },
+"FC Versailles": null,
 "FC Viktoria Plzen B": {
 "date": null,
 "tried": "2026-11"
+},
+"FC Volendam": {
+"date": "1977-06-01",
+"name": "FC Volendam"
 },
 "FC Voluntari": {
 "date": null,
@@ -2145,6 +2247,7 @@
 "name": "Fleetwood Town F.C.",
 "tried": "2026-11"
 },
+"Floridsdorfer AC": null,
 "Fluminense": {
 "date": "1902-07-21",
 "name": "Fluminense F.C."
@@ -2167,6 +2270,7 @@
 "name": "Fortaleza E.C.",
 "tried": "2026-11"
 },
+"Fortaleza CEIF": null,
 "Fortuna Dusseldorf": {
 "date": "1895-05-05",
 "name": "Fortuna D\u00fcsseldorf"
@@ -2283,6 +2387,10 @@
 "date": "1964-11-26",
 "name": "KAA Gent"
 },
+"Georgia": {
+"date": "1918-05-26",
+"name": "Georgia"
+},
 "Germany": {
 "date": null,
 "name": "Germany",
@@ -2323,6 +2431,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Gimnasia y Esgrima (Jujuy)": null,
 "Giresunspor": {
 "date": null,
 "name": "Giresunspor",
@@ -2350,6 +2459,7 @@
 "date": "1902-12-02",
 "name": "Go Ahead Eagles"
 },
+"Gocza\u0142kowice Zdr\u00f3j": null,
 "Godoy Cruz": {
 "date": "1921-06-01",
 "name": "Godoy Cruz Antonio Tomba",
@@ -2360,6 +2470,7 @@
 "name": "Goi\u00e1s Esporte Clube",
 "source": "wikidata (Q816779)"
 },
+"Goi\u00e1s": null,
 "Gornik Z.": {
 "date": null,
 "tried": "2026-11"
@@ -2516,6 +2627,10 @@
 "date": "1940-08-02",
 "name": "BK H\u00e4cken"
 },
+"Haiti": {
+"date": "1804-01-01",
+"name": "Haiti"
+},
 "Hajduk Split": {
 "date": "1911-02-13",
 "name": "HNK Hajduk Split"
@@ -2621,6 +2736,10 @@
 "name": "1. FC Heidenheim 1846",
 "tried": "2026-11"
 },
+"Helmond Sport": {
+"date": "1967-07-27",
+"name": "Helmond Sport"
+},
 "Helsingborg": {
 "date": null,
 "tried": "2026-11"
@@ -2636,6 +2755,10 @@
 "Heracles": {
 "date": null,
 "tried": "2026-11"
+},
+"Heracles Almelo": {
+"date": "1903-05-03",
+"name": "Heracles Almelo"
 },
 "Hertha": {
 "date": "1892-07-25",
@@ -2709,6 +2832,7 @@
 "date": "1904-06-28",
 "name": "Hull City A.F.C."
 },
+"Hungary": null,
 "Huracan": {
 "date": "1954-08-01",
 "name": "Hurac\u00e1n Football Club",
@@ -2722,6 +2846,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"IF Brommapojkarna": null,
 "Ibiza": {
 "date": "2015-07-31",
 "name": "UD Ibiza"
@@ -2754,6 +2879,10 @@
 "Independiente": {
 "date": "1905-01-01",
 "name": "Club Atl\u00e9tico Independiente"
+},
+"Independiente Medell\u00edn": {
+"date": "1913-11-14",
+"name": "Deportivo Independiente Medell\u00edn"
 },
 "Independiente Santa Fe": {
 "date": "1941-02-28",
@@ -2827,6 +2956,10 @@
 "name": "A.D. Isidro Metap\u00e1n",
 "tried": "2026-11"
 },
+"Israel": {
+"date": "1948-05-14",
+"name": "Israel"
+},
 "Istanbulspor": {
 "date": "1926-01-04",
 "name": "\u0130stanbulspor A.\u015e.",
@@ -2855,6 +2988,11 @@
 "date": null,
 "tried": "2026-11"
 },
+"Jaguares de C\u00f3rdoba": {
+"date": "2012-12-05",
+"name": "Jaguares de C\u00f3rdoba"
+},
+"Jamaica": null,
 "Japan": {
 "date": "1890-11-29",
 "name": "Japan"
@@ -2871,6 +3009,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Jezero": null,
 "Jiangsu Suning": {
 "date": null,
 "tried": "2026-11"
@@ -3055,6 +3194,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Kosovo": {
+"date": "2008-02-17",
+"name": "Kosovo"
+},
 "Krasnodar": {
 "date": null,
 "name": "FC Krasnodar",
@@ -3097,6 +3240,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Kyrgyzstan": null,
 "LASK": {
 "date": "1899-08-07",
 "name": "LASK Linz"
@@ -3266,6 +3410,7 @@
 "date": "1977-03-02",
 "name": "Libya"
 },
+"Lida": null,
 "Liechtenstein": {
 "date": "1806-07-12",
 "name": "Liechtenstein"
@@ -3365,6 +3510,10 @@
 "date": null,
 "name": "LA Galaxy",
 "tried": "2026-11"
+},
+"Louisville City FC": {
+"date": "2014-06-04",
+"name": "Louisville City FC"
 },
 "Lugano": {
 "date": "1908-07-28",
@@ -3560,10 +3709,15 @@
 "name": "FC Metz",
 "tried": "2026-11"
 },
+"Mexico": {
+"date": "1821-08-24",
+"name": "Mexico"
+},
 "Middlesbrough": {
 "date": "1876-10-20",
 "name": "Middlesbrough F.C."
 },
+"Midland": null,
 "Midtjylland": {
 "date": "1999-07-01",
 "name": "FC Midtjylland"
@@ -3571,6 +3725,10 @@
 "Milan": {
 "date": "1899-12-16",
 "name": "AC Milan"
+},
+"Millonarios": {
+"date": "1946-06-18",
+"name": "Millonarios"
 },
 "Millwall": {
 "date": null,
@@ -3737,6 +3895,7 @@
 "name": "Club Nacional de Football",
 "source": "wikidata (Q499616)"
 },
+"Naftagas": null,
 "Nagoya Grampus": {
 "date": null,
 "name": "Nagoya Grampus",
@@ -3875,6 +4034,10 @@
 "name": "Northampton Town F.C.",
 "tried": "2026-11"
 },
+"Northern Ireland": {
+"date": "1921-05-08",
+"name": "Northern Ireland"
+},
 "Norway": {
 "date": "1905-06-07",
 "name": "Norway"
@@ -3898,6 +4061,7 @@
 "name": "Notts County F.C.",
 "tried": "2026-11"
 },
+"Novorizontino": null,
 "Nueva Chicago": {
 "date": null,
 "tried": "2026-11"
@@ -3915,6 +4079,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Nyva Ternopil II": null,
 "N\u00e1utico": {
 "date": "1901-04-07",
 "name": "Clube N\u00e1utico Capibaribe"
@@ -4446,6 +4611,10 @@
 "date": "2009-05-19",
 "name": "RB Leipzig"
 },
+"RKC Waalwijk": {
+"date": "1940-08-26",
+"name": "RKC Waalwijk"
+},
 "RWD Molenbeek": {
 "date": null,
 "tried": "2026-11"
@@ -4543,6 +4712,7 @@
 "date": "1901-03-10",
 "name": "Stade Rennais F.C."
 },
+"Republic of Ireland": null,
 "Republic of Ireland U21": {
 "date": "1937-12-29",
 "name": "Ireland",
@@ -4574,10 +4744,15 @@
 "name": "Rochdale A.F.C.",
 "tried": "2026-11"
 },
+"Roda JC Kerkrade": {
+"date": "1962-06-27",
+"name": "Roda JC Kerkrade"
+},
 "Rodez": {
 "date": null,
 "tried": "2026-11"
 },
+"Rodez AF": null,
 "Rodina Moscow": {
 "date": null,
 "name": "FC Rodina Moscow",
@@ -4587,6 +4762,7 @@
 "date": "1927-06-07",
 "name": "AS Roma"
 },
+"Romania": null,
 "Rosario Central": {
 "date": null,
 "name": "Club Atl\u00e9tico Rosario Central",
@@ -4625,6 +4801,7 @@
 "date": "1920-04-20",
 "name": "Ruch Chorz\u00f3w"
 },
+"Ruh Lviv": null,
 "Russia": {
 "date": "1991-12-25",
 "name": "Russia",
@@ -4635,6 +4812,7 @@
 "name": "Rwanda",
 "tried": "2026-11"
 },
+"R\u00e2mnicu S\u0103rat": null,
 "SC Corinthians SP": {
 "date": null,
 "tried": "2026-11"
@@ -4668,6 +4846,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"SV Kapfenberg": null,
 "Sabadell": {
 "date": "1903-12-11",
 "name": "Centre d'Esports Sabadell Futbol Club"
@@ -4851,6 +5030,7 @@
 "date": "1890-01-25",
 "name": "Sevilla FC"
 },
+"Shakhter Soligorsk": null,
 "Shamrock Rovers": {
 "date": null,
 "name": "Shamrock Rovers F.C.",
@@ -4973,6 +5153,7 @@
 "name": "Sligo Rovers F.C.",
 "tried": "2026-11"
 },
+"Slonim": null,
 "Slovakia": {
 "date": "1939-03-14",
 "name": "Slovakia"
@@ -5087,6 +5268,10 @@
 "date": "1906-10-10",
 "name": "Spezia Calcio"
 },
+"Sport": {
+"date": "1905-05-13",
+"name": "Sport Club do Recife"
+},
 "Sport Recife": {
 "date": "1905-05-13",
 "name": "Sport Club do Recife"
@@ -5187,6 +5372,7 @@
 "name": "Stevenage F.C.",
 "tried": "2026-11"
 },
+"Stilon Gorz\u00f3w": null,
 "Stirling": {
 "date": null,
 "tried": "2026-11"
@@ -5298,6 +5484,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"TOP Oss": {
+"date": "1928-04-09",
+"name": "TOP Oss"
+},
 "TPS": {
 "date": null,
 "name": "TPS Turku",
@@ -5306,6 +5496,10 @@
 "TSV 1860 Munich II": {
 "date": null,
 "tried": "2026-11"
+},
+"TSV Hartberg": {
+"date": "1946-04-29",
+"name": "TSV Hartberg"
 },
 "TSV Havelse": {
 "date": null,
@@ -5393,6 +5587,10 @@
 "Tirol": {
 "date": null,
 "tried": "2026-11"
+},
+"Togo": {
+"date": "1960-04-27",
+"name": "Togo"
 },
 "Tokushima": {
 "date": null,
@@ -5501,6 +5699,7 @@
 "date": "1956-03-20",
 "name": "Tunisia"
 },
+"Turku PS": null,
 "Twente": {
 "date": "1965-07-01",
 "name": "FC Twente"
@@ -5556,10 +5755,12 @@
 "name": "FC Ufa",
 "tried": "2026-11"
 },
+"Uganda": null,
 "Ukraine": {
 "date": "1917-11-20",
 "name": "Ukraine"
 },
+"Uljanik": null,
 "Ull/Kisa": {
 "date": null,
 "tried": "2026-11"
@@ -5582,6 +5783,7 @@
 "date": "1907-04-15",
 "name": "Uni\u00f3n de Santa Fe"
 },
+"Unirea Bascov": null,
 "Unirea Slobozia": {
 "date": null,
 "name": "FC Unirea Slobozia",
@@ -5591,6 +5793,10 @@
 "date": null,
 "name": "United Arab Emirates",
 "tried": "2026-11"
+},
+"United States": {
+"date": "1784-05-12",
+"name": "United States"
 },
 "Univ. Craiova": {
 "date": null,
@@ -5637,6 +5843,10 @@
 "tried": "2026-11"
 },
 "VVV Venlo": {
+"date": "1903-02-07",
+"name": "VVV-Venlo"
+},
+"VVV-Venlo": {
 "date": "1903-02-07",
 "name": "VVV-Venlo"
 },
@@ -5692,6 +5902,7 @@
 "name": "V\u00e4ster\u00e5s SK Fotboll",
 "tried": "2026-11"
 },
+"Vasteras SK FK": null,
 "Vegalta Sendai": {
 "date": null,
 "name": "Vegalta Sendai",
@@ -5728,6 +5939,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Verl": {
+"date": "1924-09-06",
+"name": "SC Verl"
+},
 "Verona": {
 "date": null,
 "name": "Hellas Verona FC",
@@ -5736,6 +5951,10 @@
 "Vestsjaelland": {
 "date": null,
 "tried": "2026-11"
+},
+"VfL Bochum": {
+"date": "1938-04-14",
+"name": "VfL Bochum"
 },
 "VfL Wolfsburg": {
 "date": "1945-09-12",
@@ -5759,6 +5978,7 @@
 "name": "FC Viitorul Constan\u021ba",
 "tried": "2026-11"
 },
+"Viitorul Corbeanca": null,
 "Viking": {
 "date": "1899-08-10",
 "name": "Viking FK"
@@ -5767,6 +5987,7 @@
 "date": "1911-06-11",
 "name": "FC Viktoria Plze\u0148"
 },
+"Vila Nova": null,
 "Villarreal": {
 "date": "1923-03-10",
 "name": "Villarreal CF"
@@ -5888,6 +6109,7 @@
 "name": "FC Wacker Innsbruck",
 "tried": "2026-11"
 },
+"Wales": null,
 "Walsall": {
 "date": null,
 "name": "Walsall F.C.",
@@ -6128,6 +6350,7 @@
 "date": "1980-04-18",
 "name": "Zimbabwe"
 },
+"Zl\u00edn U19": null,
 "Znicz Pruszk\u00f3w": {
 "date": "1923-12-19",
 "name": "Znicz Pruszk\u00f3w",
@@ -6144,5 +6367,9 @@
 "\u00c1guila": {
 "date": "1926-02-15",
 "name": "C.D. \u00c1guila"
+},
+"\u00c1guilas Doradas": {
+"date": "2008-07-16",
+"name": "Gold Eagles"
 }
 }

@@ -19,6 +19,8 @@
   "esp.2": "Spanish LALIGA 2",
   "esp.copa_del_rey": "Spanish Copa del Rey",
   "fifa.friendly": "International Friendly",
+  "fra.coupe_de_france": "Coupe de France",
+  "gua.1": "Guatemalan Liga Nacional",
   "mex.1": "Mexican Liga BBVA MX",
   "mex.2": "Mexican Liga de Expansión MX",
   "ned.2": "Dutch Keuken Kampioen Divisie",
@@ -32,5 +34,5 @@
   "uru.1": "Liga AUF Uruguaya",
   "usa.usl.1": "USL Championship"
  },
- "generated_at": "2026-11-12T09:41:03+00:00"
+ "generated_at": "2026-11-13T10:34:50+00:00"
 }

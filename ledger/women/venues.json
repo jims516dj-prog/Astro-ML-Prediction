@@ -4,10 +4,25 @@
   "lon": -3.61416667,
   "source": "wikipedia: Alfredo Di Stéfano Stadium"
  },
+ "American Express Stadium | Falmer": {
+  "lat": 50.8615471,
+  "lon": -0.0836931,
+  "source": "openstreetmap: American Express Stadium, Village Way, Coldean, Brighton, Brighton and Hove, England, BN1 9BL, United Kingdom"
+ },
+ "Audi Field | Washington, District of Columbia": {
+  "lat": 37.13054,
+  "lon": -113.50829,
+  "source": "city: Washington, District of Columbia"
+ },
  "Bravida Arena | Gothenburg": {
   "lat": 57.71916667,
   "lon": 11.93055556,
   "source": "wikipedia: Nordic Wellness Arena"
+ },
+ "Central Coast Stadium | New South Wales": {
+  "lat": -33.42833333,
+  "lon": 151.33805556,
+  "source": "wikipedia: Central Coast Stadium"
  },
  "Estadio Banorte | Mexico City": {
   "lat": 19.303,
@@ -34,6 +49,11 @@
   "lon": -9.1847,
   "source": "wikipedia: Estádio da Luz"
  },
+ "Gaughan Group Stadium | London": {
+  "lat": 51.56027778,
+  "lon": -0.01277778,
+  "source": "wikipedia: Brisbane Road"
+ },
  "King Power at Den Dreef Stadion | Leuven": {
   "lat": 50.8684105,
   "lon": 4.6942994,
@@ -44,6 +64,16 @@
   "lon": 144.965,
   "source": "wikipedia: Lakeside Stadium"
  },
+ "Leigh Sports Village | Manchester": {
+  "lat": 53.491,
+  "lon": -2.529,
+  "source": "wikipedia: Leigh Sports Village"
+ },
+ "McKellar Park | Canberra": {
+  "lat": -35.28346,
+  "lon": 149.12807,
+  "source": "city: Canberra"
+ },
  "Melbourne City Football Academy | Melbourne": {
   "lat": -37.814,
   "lon": 144.96332,
@@ -53,6 +83,11 @@
   "lat": 48.8413634,
   "lon": 2.2530693,
   "source": "openstreetmap: Parc des Princes, 24, Rue du Commandant Guilbaud, Quartier d'Auteuil, Paris 16e Arrondissement, Paris, Île-de-France, France métropolitaine, 75016, France"
+ },
+ "Porirua Park | Porirua": {
+  "lat": -41.14472222,
+  "lon": 174.85666667,
+  "source": "wikipedia: Jerry Collins Stadium"
  },
  "Spotify Camp Nou | Barcelona": {
   "lat": 41.38879,
@@ -68,6 +103,11 @@
   "lat": 45.04166667,
   "lon": 7.65,
   "source": "wikipedia: Stadio Olimpico Grande Torino"
+ },
+ "Stamford Bridge | London": {
+  "lat": 51.4816869,
+  "lon": -0.1910336,
+  "source": "openstreetmap: Stamford Bridge, Britannia Gate, Walham Green, Fulham, London Borough of Hammersmith and Fulham, Greater London, England, SW6 1HD, United Kingdom"
  },
  "U-Power Stadium | Monza": {
   "lat": 45.58277778,

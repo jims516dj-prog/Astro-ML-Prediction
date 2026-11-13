@@ -4948,5 +4948,175 @@
 "hand": "",
 "height_in": null,
 "country": ""
+},
+{
+"id": "11223",
+"name": "Tom Gentzsch",
+"full_name": "Tom Gentzsch",
+"dob": "2003-09-05",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "10033",
+"name": "Sascha Gueymard Wayenburg",
+"full_name": "Sascha Gueymard Wayenburg",
+"dob": "2003-08-01",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "12112",
+"name": "Francisco Rocha",
+"full_name": "Francisco Rocha",
+"dob": "1999-10-04",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2010",
+"name": "Marcel Zielinski",
+"full_name": "Marcel Zielinski",
+"dob": "2000-10-27",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2158",
+"name": "Niklas Guttau",
+"full_name": "Niklas Guttau",
+"dob": "2000-01-03",
+"birthplace": "",
+"hand": "L",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:560",
+"name": "Rafael Izquierdo Luque",
+"full_name": "Rafael Izquierdo Luque",
+"dob": "2000-01-10",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2616",
+"name": "Anita Sahdiieva",
+"full_name": "Anita Sahdiieva",
+"dob": "2004-01-21",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:620",
+"name": "Raphael Perot",
+"full_name": "Raphael Perot",
+"dob": "2001-06-30",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "10257",
+"name": "Luis Carlos Alvarez Valdes",
+"full_name": "Luis Carlos Alvarez Valdes",
+"dob": "2004-09-03",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "3568",
+"name": "Miriam Bianca Bulgaru",
+"full_name": "Miriam Bianca Bulgaru",
+"dob": "1998-10-08",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "17105",
+"name": "Carol Youngsuh Lee",
+"full_name": "Carol Youngsuh Lee",
+"dob": "2001-12-21",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "16565",
+"name": "Daniel Jade",
+"full_name": "Daniel Jade",
+"dob": "2009-03-16",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:1236",
+"name": "Mario Gonzalez Fernandez",
+"full_name": "Mario Gonzalez Fernandez",
+"dob": "2002-04-28",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2287",
+"name": "Ignacio Parisca",
+"full_name": "Ignacio Parisca",
+"dob": "2005-08-20",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "10426",
+"name": "Sebastian Sorger",
+"full_name": "Sebastian Sorger",
+"dob": "2005-12-19",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2014",
+"name": "Pavel Lagutin",
+"full_name": "Pavel Lagutin",
+"dob": "2005-03-06",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "17301",
+"name": "Julia Camargo Silva Konishi",
+"full_name": "Julia Camargo Silva Konishi",
+"dob": "2000-01-26",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
 }
 ]
