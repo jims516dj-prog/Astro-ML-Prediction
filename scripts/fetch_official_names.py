@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 16          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 17          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -587,6 +587,39 @@ def expand(base: str) -> str:
 GENERIC_CLUB = {"Q847017"}   # "sports club": football only when its sport (P641) says so
 
 
+CURATED_FILE = Path("data/ref/team_names_curated.csv")
+
+
+def curated() -> dict[str, str]:
+    """{team: article(s) | Q id | =Other team} from the hand-checked list."""
+    if not CURATED_FILE.exists():
+        return {}
+    c = pd.read_csv(CURATED_FILE, comment="#", dtype=str, keep_default_na=False)
+    return {r.team.strip(): r.article.strip() for r in c.itertuples() if r.team.strip() and r.article.strip()}
+
+
+def wiki_items(titles: list[str]) -> dict[str, str]:
+    """{English Wikipedia title: Wikidata id}, redirects followed."""
+    out = {}
+    for i in range(0, len(titles), 40):
+        batch = titles[i:i + 40]
+        d = get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item"
+                "&redirects=1&titles=" + urllib.parse.quote("|".join(batch)))
+        q = (d or {}).get("query") or {}
+        back = {}
+        for m in (q.get("normalized") or []) + (q.get("redirects") or []):
+            back[m["to"]] = back.get(m["from"], m["from"])
+        for page in (q.get("pages") or {}).values():
+            item = (page.get("pageprops") or {}).get("wikibase_item")
+            if item:
+                title = page.get("title")
+                while title in back and title not in batch:
+                    title = back[title]
+                out[title] = item
+        time.sleep(0.5)
+    return out
+
+
 def club_search(base: str) -> list[str]:
     """Wikidata full-text search limited to association football clubs (P31 = Q476028), on the team's name words
     (initials like "T." left out): finds "Royal Excel Mouscron" for "Mouscron", "WSG Tirol" for "Tirol"."""
@@ -621,8 +654,28 @@ def main():
                and ((cache.get(t) or {}).get("v") or 0) < VERSION or
                (not (cache.get(t) or {}).get("short") and (cache.get(t) or {}).get("tried") != month)]
     todo = sorted(set(cand) | set(unnamed))
-    print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone, {len(unnamed)} not named yet)")
+    picked = curated()
+    hand: set[str] = set()                            # clubs identified by hand: their item is taken as given
+    titles = sorted({a for v in picked.values() if not v.startswith(("=", "Q")) for a in v.split("|")})
+    items = wiki_items(titles) if titles else {}
+    for t, v in picked.items():
+        if t not in teams:
+            continue
+        if v.startswith("="):
+            continue                                  # copied from the other team at the end
+        qs = [v] if re.fullmatch(r"Q\d+", v) else list(dict.fromkeys(items[a] for a in v.split("|") if a in items))
+        if not qs:
+            print(f"  curated {t}: no Wikidata item for {v!r}")
+            continue
+        if (cache.get(t) or {}).get("qid") not in qs or (cache.get(t) or {}).get("v") != VERSION:
+            cand[t] = qs                              # tried in order: the first that existed when the team played
+            hand.add(t)
+    todo = sorted(set(todo) | hand)
+    print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone, {len(unnamed)} not named yet, "
+          f"{len(hand)} identified by hand)")
     for t in todo:
+        if t in hand:
+            continue                                  # the hand-checked item alone
         if t in cand:
             better = table_candidates(t, teams.get(t))[0]
             if better and better[0] not in cand[t]:
@@ -675,6 +728,13 @@ def main():
         pick, why, passing = None, ["no Wikidata item found"], []
         for q in cand.get(t, []):
             e = ents.get(q) or {}
+            if t in hand:
+                if not lifetime_ok(t, e):
+                    why.append(f"{q}: founded {_year(e, 'P571')} / dissolved {_year(e, 'P576')}, "
+                               f"but the team played {PLAYED.get(teamnames.split(t)[0])}")
+                    continue
+                pick = (q, e)                         # identified by hand: only its lifetime is checked
+                break
             en = ((e.get("labels") or {}).get("en") or {}).get("value") or ""
             if RESERVE_ITEM.search(en) and not RESERVE_ITEM.search(teamnames.split(t)[0]):
                 why.append(f"{q}: a reserve, youth or women's side ({en})")
@@ -782,6 +842,12 @@ def main():
             for c in (e.get("claims") or {}).get("P297", []):
                 iso[q] = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value")
         found += sum(1 for t in retry if t in searched and decide(t))
+    for t, v in picked.items():
+        if t in teams and v.startswith("=") and (cache.get(v[1:]) or {}).get("short"):
+            cache[t] = {**cache[v[1:]], "v": VERSION}  # the same club under another name
+    for t in sorted(hand):
+        c = cache.get(t) or {}
+        print(f"  curated {t} -> {c.get('short') or 'not named: ' + str(c.get('why'))}")
     teamnames.FILE.parent.mkdir(parents=True, exist_ok=True)
     teamnames.FILE.write_text(json.dumps(cache, indent=0, sort_keys=True, ensure_ascii=False))
     print(f"found {found} official names; {sum(1 for v in cache.values() if v.get('short'))} clubs named in all")

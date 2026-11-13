@@ -189,3 +189,13 @@ def test_spelling_variants_only_by_a_vowel():
     import fetch_official_names as fon
     assert fon._abbrev_ok("dynamo", {"dinamo"}) and fon._abbrev_ok("nykoebing", {"nykobing"})
     assert not fon._abbrev_ok("ceuta", {"celta"}) and not fon._abbrev_ok("remo", {"gremio"})
+
+
+def test_curated_identities_file_is_well_formed():
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    c = fon.curated()
+    assert c.get("Buyuksehyr") == "İstanbul Başakşehir F.K."
+    assert c.get("CS Puertollano", "").startswith("=")
+    assert all(v for v in c.values())

@@ -1,0 +1,41 @@
+# Hand-checked club identities for names the automatic matching cannot settle (misspellings, refounded clubs,
+# namesakes). team = the name as the sources write it; article = the club's English Wikipedia article (several
+# separated by |, tried in order), or a Wikidata id (Q...), or =Other team (the same club under another name).
+# The names job still checks the club's founding / dissolution against the years the team played.
+team,article,note
+Buyuksehyr,İstanbul Başakşehir F.K.,football-data's spelling of Başakşehir (Süper Lig)
+FK Anzi Makhackala,FC Anzhi Makhachkala,misspelt
+T. Moscow,FC Torpedo Moscow,Torpedo (Russian Premier League 2014/15)
+Tambov,FC Tambov,the club of 2013-2021
+Tosno,FC Tosno,the club of 2013-2018
+Volga N. Novgorod,FC Volga Nizhny Novgorod,the club of 1998-2016
+Kuban,FC Kuban Krasnodar,the club of 1928-2018
+M. Saransk,FC Mordovia Saransk,Mordovia
+Tirol,WSG Tirol,WSG Tirol (Austrian Bundesliga since 2019)
+Jiangsu Suning,Jiangsu F.C.,Jiangsu Suning (dissolved 2021)
+Chivas USA,Chivas USA,MLS club of 2004-2014
+All Boys,Club Atlético All Boys,Buenos Aires
+Logrones,UD Logroñés,Segunda 2020/21
+Padova,Calcio Padova|Calcio Padova (2014),the present club
+Poli Timisoara,ACS Poli Timișoara,the club of 2012-2021
+Vestsjaelland,FC Vestsjælland,Superliga 2014/15
+Hornchurch,Hornchurch F.C.,National League
+Athletic,Athletic Club (Minas Gerais),São João del-Rei (Série B)
+Aurora FC,Aurora F.C.,Guatemala
+C.D. Platense,C.D. Platense Municipal Zacatecoluca,El Salvador
+Atletico Balboa,C.D. Atlético Balboa,El Salvador
+CS Puertollano,=Calvo Sotelo,Calvo Sotelo Puertollano CF
+El Seka El Hadid,=El Sekka El Hadid,another spelling
+El Terasanah,Tersana SC,Egypt
+Baladiyyat AL Mehalla,Baladeyet El Mahalla SC|Baladiyat El Mahalla SC,Egypt
+Al Nasr Cairo,Al Nasr SC (Egypt),Egypt
+Maan SC,Ma'an SC,Jordan
+Shenzhen Xinpengcheng,Shenzhen Peng City F.C.,Chinese Super League
+OL Lyonnes,OL Lyonnes,the women's club (UEFA Women's Champions League)
+Primorje,ND Primorje|NK Primorje,Ajdovščina
+KS Polonia Nysa,Polonia Nysa,III Liga
+MKS Czarni Polaniec,Czarni Połaniec,III Liga
+SC Wieselburg,SC Wieselburg,Lower Austria
+Mbeya Kwanza FC,Mbeya Kwanza F.C.,Tanzania
+Transit Camp FC,Transit Camp F.C.,Tanzania
+Mount Pleasant FC,Mount Pleasant F.A.|Mount Pleasant Football Academy,Jamaica
