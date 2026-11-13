@@ -24,6 +24,16 @@
   "lon": 151.33805556,
   "source": "wikipedia: Central Coast Stadium"
  },
+ "Ciutat Esportiva Dani Jarque | Barcelona": {
+  "lat": 41.42638889,
+  "lon": 2.21361111,
+  "source": "wikipedia: Ciutat Esportiva Dani Jarque"
+ },
+ "Estadio Akron | Guadalajara": {
+  "lat": 20.68166667,
+  "lon": -103.46277778,
+  "source": "wikipedia: Estadio Akron"
+ },
  "Estadio Banorte | Mexico City": {
   "lat": 19.303,
   "lon": -99.1505,
@@ -43,6 +53,11 @@
   "lat": 19.33194444,
   "lon": -99.19222222,
   "source": "wikipedia: Estadio Olímpico Universitario"
+ },
+ "Estadio Universitario | San Nicolás de los Garza": {
+  "lat": 25.7226067,
+  "lon": -100.3119863,
+  "source": "openstreetmap: Estadio Universitario, Pedro de Alba, San Nicolás de los Garza, Nuevo León, 66455, México"
  },
  "Estádio da Luz | Lisbon": {
   "lat": 38.7527,
@@ -93,6 +108,11 @@
   "lat": 41.38879,
   "lon": 2.15899,
   "source": "city: Barcelona"
+ },
+ "Stade Bernard Gasset No. 7 | Montpellier": {
+  "lat": 43.61092,
+  "lon": 3.87723,
+  "source": "city: Montpellier"
  },
  "Stade Francis-Turcan | Martigues": {
   "lat": 43.40722222,

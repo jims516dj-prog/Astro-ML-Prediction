@@ -1264,6 +1264,7 @@
 "date": "1810-09-18",
 "name": "Chile"
 },
+"China": null,
 "Chindia Targoviste": {
 "date": "2010-08-13",
 "name": "AFC Chindia T\u00e2rgovi\u0219te"
@@ -2948,6 +2949,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Iran": {
+"date": "1925-12-15",
+"name": "Iran"
+},
 "Iraq": null,
 "Ireland": {
 "date": "1937-12-29",
@@ -3243,6 +3248,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Kyrgyz Republic": null,
 "Kyrgyzstan": null,
 "LASK": {
 "date": "1899-08-07",
@@ -3609,6 +3615,10 @@
 "Malawi": {
 "date": "1964-07-06",
 "name": "Malawi"
+},
+"Malaysia": {
+"date": "1963-09-16",
+"name": "Malaysia"
 },
 "Mali": {
 "date": "1960-09-22",
@@ -4285,6 +4295,10 @@
 "Palermo": {
 "date": "1900-11-01",
 "name": "Palermo F.C."
+},
+"Palestine": {
+"date": "1988-11-15",
+"name": "Palestine"
 },
 "Palmeiras": {
 "date": null,

@@ -344,6 +344,11 @@
   "lon": -71.19944444,
   "source": "wikipedia: Nicolás Chahuán Nazar Municipal Stadium"
  },
+ "China": {
+  "lat": 23.212012,
+  "lon": 112.604327,
+  "source": "wikipedia: Zhaoqing New District Sports Center Stadium"
+ },
  "Chinese Taipei": {
   "lat": 24.1469,
   "lon": 120.6839,
@@ -1123,6 +1128,11 @@
   "lat": 51.71905,
   "lon": 8.75439,
   "source": "senior team's ground: city"
+ },
+ "Palestine": {
+  "lat": 31.3421385,
+  "lon": 34.3046543,
+  "source": "national team: Bani Suheila (largest city)"
  },
  "Panathinaikos": {
   "lat": 37.98376,
