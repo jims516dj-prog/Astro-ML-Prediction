@@ -162,7 +162,22 @@ def test_club_must_have_existed_while_the_team_played(monkeypatch):
     import sys
     sys.path.insert(0, "scripts")
     import fetch_official_names as fon
-    monkeypatch.setattr(fon, "PLAYED", {"Volga N. Novgorod": [2012, 2016]})
+    monkeypatch.setattr(fon, "PLAYED", {"Volga N. Novgorod": [2012, 2014], "Cesena": [2024, 2026]})
     born = lambda y: {"claims": {"P571": [{"mainsnak": {"datavalue": {"value": {"time": f"+{y}-01-01T00:00:00Z"}}}}]}}  # noqa: E731
     assert not fon.lifetime_ok("Volga N. Novgorod", born(2015))
     assert fon.lifetime_ok("Volga N. Novgorod", born(1963))
+
+
+def test_refounded_club_and_namesake_tie_break(monkeypatch):
+    import sys
+    sys.path.insert(0, "scripts")
+    import fetch_official_names as fon
+    monkeypatch.setattr(fon, "PLAYED", {"Cesena": [2024, 2026], "Atl. San Luis": [2012, 2026]})
+    gone = {"claims": {"P576": [{"mainsnak": {"datavalue": {"value": {"time": "+2018-01-01T00:00:00Z"}}}}]}}
+    assert not fon.lifetime_ok("Cesena", gone)                # the old club, dissolved before the team played
+    born = {"claims": {"P571": [{"mainsnak": {"datavalue": {"value": {"time": "+2017-01-01T00:00:00Z"}}}}]}}
+    assert fon.lifetime_ok("Atl. San Luis", born)             # one name across a club and its refounding
+    city = {"labels": {"en": {"value": "Guangzhou City F.C."}}, "aliases": {"en": [{"value": "Guangzhou R&F"}]}}
+    fc = {"labels": {"en": {"value": "Guangzhou F.C."}}, "aliases": {"en": [{"value": "Guangzhou Evergrande"}]}}
+    mine = fon._tokens("Guangzhou R&F")
+    assert mine <= fon.item_tokens(city) and not mine <= fon.item_tokens(fc)

@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 11          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 12          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 10      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -288,14 +288,25 @@ def _year(e, prop):
     return None
 
 
+def item_tokens(e) -> set[str]:
+    out = set()
+    for v in (e.get("labels") or {}).values():
+        out |= _tokens(v.get("value"))
+    for vs in (e.get("aliases") or {}).values():
+        for v in vs:
+            out |= _tokens(v.get("value"))
+    return out
+
+
 def lifetime_ok(team: str, e) -> bool:
-    """The club existed while the team played: not founded after its first game in our records, nor dissolved
-    before its last (a year's slack): "Volga N. Novgorod" (2011-2016) is not FC Nizhny Novgorod (founded 2015)."""
+    """The club existed while the team played: not founded after its last game in our records, nor dissolved
+    before its first (a year's slack): "Volga N. Novgorod" (2012-2014) is not FC Nizhny Novgorod (founded 2015).
+    The test is lenient because one name in the records can span a club and its refounding."""
     span = PLAYED.get(teamnames.split(team)[0])
     if not span:
         return True
     born, gone = _year(e, "P571"), _year(e, "P576")
-    return not ((born and born > span[0] + 1) or (gone and gone < span[1] - 1))
+    return not ((born and born > span[1]) or (gone and gone < span[0] - 1))
 
 
 HOME_AT: dict[str, list] = {}     # team -> home-game venues in the live record
@@ -609,13 +620,10 @@ def main():
     print(f"searching Wikidata for {len(rest)} clubs the founding table does not match "
           f"({time.time() - START:.0f}s in)")
     search_start = time.time()
-    for t in rest:
-        if time.time() - search_start > BUDGET_S / 3:
-            print("  search budget reached; the rest wait for the next run")
-            break
-        d = get("https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&type=item&limit=5"
-                "&search=" + urllib.parse.quote(teamnames.split(t)[0]))
+    def search(t):
         base = teamnames.split(t)[0]
+        d = get("https://www.wikidata.org/w/api.php?action=wbsearchentities&format=json&language=en&type=item&limit=5"
+                "&search=" + urllib.parse.quote(base))
         hits = [h["id"] for h in (d or {}).get("search", [])
                 if similar(base, h.get("label") or "") or similar(t, h.get("label") or "")
                 or (_words(base) and all(_abbrev_ok(w, _words(h.get("label") or "") | _words(" ".join(
@@ -624,8 +632,14 @@ def main():
         words = base.split()
         if teams.get(t) == "BR" and len(words) > 1 and words[-1].lower() in BR_STATES:
             hits += club_search(" ".join(words[:-1]))  # "Red Bull Bragantino SP": the state is not in the name
-        hits = list(dict.fromkeys(hits))
         time.sleep(1.0)                               # the API's fair use: searches were being turned away
+        return list(dict.fromkeys(hits))
+
+    for t in rest:
+        if time.time() - search_start > BUDGET_S / 3:
+            print("  search budget reached; the rest wait for the next run")
+            break
+        hits = search(t)
         if hits:
             cand[t] = hits
             searched.add(t)
@@ -637,10 +651,10 @@ def main():
     for q, e in entities(countries, labels=False).items():
         for c in (e.get("claims") or {}).get("P297", []):
             iso[q] = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value")
-    found = 0
-    for t in todo:
+    def decide(t):
+        """Names the club from its candidates; True when named, False when not, None when the lookup failed."""
         if cand.get(t) and not any(q in ents for q in cand[t]):
-            continue                                  # the lookup failed: try again next run, keep the entry
+            return None                               # the lookup failed: try again next run, keep the entry
         pick, why, passing = None, ["no Wikidata item found"], []
         for q in cand.get(t, []):
             e = ents.get(q) or {}
@@ -673,7 +687,14 @@ def main():
             passing.sort(key=lambda x: -x[0])         # prominence: the number of languages it is named in
             if len(passing) == 1 or passing[0][0] >= DOMINANCE * passing[1][0]:
                 pick = passing[0][1:]
-            elif (at := home_location(t)):
+            if not pick:
+                # namesakes of similar standing: the one whose own names carry every word of the team's name
+                # ("Tirol" -> WSG Tirol, not Wacker Innsbruck; "Guangzhou R&F" -> Guangzhou City, not Guangzhou FC)
+                mine = _tokens(teamnames.split(t)[0])
+                full = [(n, q, e) for n, q, e in passing if mine and mine <= item_tokens(e)]
+                if len(full) == 1:
+                    pick = full[0][1:]
+            if not pick and (at := home_location(t)):
                 # namesakes of similar standing: the one whose ground or seat is where the club plays
                 near = [(n, q, e) for n, q, e in passing
                         if (ll := item_location(e)) and _km(at, ll) <= NEAR_KM]
@@ -683,7 +704,7 @@ def main():
                 why.append("namesakes: " + ", ".join(f"{q} ({n})" for n, q, _ in passing[:3]))
         if not pick:
             cache[t] = {"tried": month, "why": "; ".join(why[1:] or why), "v": VERSION}
-            continue
+            return False
         q, e = pick
         legal, lang = official(e)
         short = short_name(e, lang)
@@ -701,9 +722,30 @@ def main():
             legal = None                              # a vandalised or unrelated official name: not trusted
         if not short:
             cache[t] = {"tried": month, "why": f"{q}: no Latin-script name", "v": VERSION}
-            continue
+            return False
         cache[t] = {"short": short, "legal": legal or short, "qid": q, "v": VERSION}
-        found += 1
+        return True
+
+    found = sum(1 for t in todo if decide(t))
+    # a club whose table item was turned down (a predecessor, a namesake abroad) is searched for in Wikidata
+    retry = [t for t in todo if t not in searched and not (cache.get(t) or {}).get("short")
+             and cand.get(t) and any(q in ents for q in cand[t])]
+    if retry:
+        print(f"searching Wikidata again for {len(retry)} clubs whose table match was turned down")
+        for t in retry:
+            if time.time() - search_start > BUDGET_S * 2 / 3:
+                break
+            hits = [q for q in search(t) if q not in cand[t]]
+            if hits:
+                cand[t] = hits
+                searched.add(t)
+        more = sorted({q for t in retry for q in cand.get(t, [])} - set(ents))
+        ents.update(entities(more))
+        new_c = sorted({c for q in more for c in claim_ids(ents.get(q) or {}, "P17") if c} - set(iso))
+        for q, e in entities(new_c, labels=False).items():
+            for c in (e.get("claims") or {}).get("P297", []):
+                iso[q] = ((c.get("mainsnak") or {}).get("datavalue") or {}).get("value")
+        found += sum(1 for t in retry if t in searched and decide(t))
     teamnames.FILE.parent.mkdir(parents=True, exist_ok=True)
     teamnames.FILE.write_text(json.dumps(cache, indent=0, sort_keys=True, ensure_ascii=False))
     print(f"found {found} official names; {sum(1 for v in cache.values() if v.get('short'))} clubs named in all")
