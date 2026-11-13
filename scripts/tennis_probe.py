@@ -1,5 +1,6 @@
-"""Diagnostics: ITF volume on the Live Tennis API, and whether tournament / fixture look-ups carry results
-(so one request could settle a whole event). Uses about 6 of the 100 daily requests. Prints only."""
+"""Diagnostics: can the Live Tennis API list recently finished Challenger / ITF matches in bulk (for players' last five
+matches)? Tries a completed listing, date filters and a player's match list. About 8 of the 100 daily requests.
+Prints counts and field names only."""
 import json
 import os
 import urllib.request
@@ -19,18 +20,29 @@ def get(path):
         return None
 
 
-d = get("/matches?status=upcoming&tour=itf&limit=200")
-data = (d or {}).get("data") or []
-singles = [m for m in data if not m.get("is_doubles")]
-print("ITF upcoming page:", len(data), "singles:", len(singles), "meta:", (d or {}).get("meta"))
-print("ITF tournaments:", sorted({m.get("tournament") for m in singles})[:40])
-print("birthdays known:", sum(1 for m in singles for s in ("p1", "p2") if (m["players"].get(s) or {}).get("birthday")), "of", 2 * len(singles))
-tid = singles[0]["tournament_id"] if singles else None
-t = get(f"/tournaments/{tid}") if tid else None
-print("TOURNAMENT keys:", sorted((t or {}).get("data", t or {}).keys()) if t else None)
-print("TOURNAMENT:", json.dumps(t)[:1500] if t else None)
-f = get("/fixtures?tour=itf&limit=5")
-print("FIXTURES:", json.dumps(f)[:1500] if f else None)
-ts = get("/tournaments?tour=challenger&limit=3")
-print("TOURNAMENTS list:", json.dumps(ts)[:800] if ts else None)
-print("usage:", json.dumps((get("/usage") or {}).get("today")))
+
+
+def show(label, d):
+    data = (d or {}).get("data") if isinstance(d, dict) else None
+    rows = data if isinstance(data, list) else []
+    done = [m for m in rows if (m.get("status") or "").lower() == "completed"]
+    when = sorted(str(m.get("scheduled_time"))[:10] for m in done)
+    print(f"{label}: {len(rows)} rows, {len(done)} completed, dates {when[:1]}..{when[-1:]}, meta {(d or {}).get('meta') if isinstance(d, dict) else None}")
+    if done:
+        m = done[0]
+        print("   keys:", sorted(m.keys()))
+        print("   score:", json.dumps(m.get("score"))[:200], "| winner:", m.get("winner"))
+    return rows
+
+
+for tour in ("itf", "challenger"):
+    show(f"{tour} completed", get(f"/matches?status=completed&tour={tour}&limit=200"))
+show("itf finished", get("/matches?status=finished&tour=itf&limit=200"))
+show("itf completed yesterday", get("/matches?status=completed&tour=itf&limit=200&date=2026-11-12"))
+show("itf from/to", get("/matches?tour=itf&limit=200&from=2026-11-10&to=2026-11-12"))
+up = show("itf upcoming", get("/matches?status=upcoming&tour=itf&limit=5"))
+pid = ((up[0].get("players") or {}).get("p1") or {}).get("id") if up else None
+if pid:
+    show("player matches", get(f"/players/{pid}/matches?limit=20"))
+    p = get(f"/players/{pid}")
+    print("player keys:", sorted(((p or {}).get("data") or p or {}).keys()) if p else None)
