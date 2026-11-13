@@ -284,7 +284,8 @@ def recent(pid: str, before, n: int = 5, opp: str | None = None) -> list[dict]:
     out = []
     for r in sub.sort_values("date").tail(n).iloc[::-1].to_dict("records"):
         first = r["p1_id"] == pid
-        out.append({"date": r["date"].strftime("%Y-%m-%d"), "event": r["event"], "round": r["round"], "surface": r["surface"],
+        out.append({"date": r["date"].strftime("%Y-%m-%d"), "ago": (when - r["date"]).days,
+                    "event": r["event"], "round": r["round"], "surface": r["surface"],
                     "opponent": r["p2"] if first else r["p1"], "won": (r["winner"] == 1) == first,
                     "score": _view_score(str(r["score"]).replace(" ret.", ""), not first),
                     "retired": bool(r.get("retired")), "manual": bool(r.get("manual"))})
@@ -306,8 +307,16 @@ def _manual_played() -> pd.DataFrame:
                           "retired": bool(res.get("retired")), "manual": True} for rec, res in rows])
 
 
+STALE_DAYS = 60   # a newest match older than this is not current form
+
+
 def last_five(p1_id: str, p2_id: str, before) -> dict:
-    return {"a": recent(p1_id, before), "b": recent(p2_id, before), "h2h": recent(p1_id, before, 5, opp=p2_id)}
+    """Both players' last five matches on record and their last five meetings, with a flag when a player's newest
+    match on record is old: ESPN covers ATP / WTA tour events only, and no free source lists ITF results, so an ITF
+    regular's "last five" can be tour matches from years ago."""
+    a, b = recent(p1_id, before), recent(p2_id, before)
+    stale = {side: (not rows) or rows[0]["ago"] > STALE_DAYS for side, rows in (("a", a), ("b", b))}
+    return {"a": a, "b": b, "h2h": recent(p1_id, before, 5, opp=p2_id), "stale": stale, "stale_days": STALE_DAYS}
 
 
 def _bundle_groups():

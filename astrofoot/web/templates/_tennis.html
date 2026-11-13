@@ -65,14 +65,18 @@ personal day {{ nv[side].numbers.personal_day }}, universal day {{ nv[side].numb
 {% endmacro %}
 
 {% macro five_panel(five, a, b) %}
-<h2>Last 5 matches and head-to-head</h2>
-<p class="note">From the ESPN history (completed singles, ATP and WTA, before this match) plus matches you added with a result,
-newest first.</p>
+<h2>Last 5 matches on record and head-to-head</h2>
+<p class="note">From the ESPN history (completed ATP and WTA tour singles before this match), Challenger and ITF results of
+forecasts this app settled, and matches you added with a result; newest first. No free source lists ITF results, so a player
+who mostly plays ITF events can have little recent history here.</p>
 <div class="cols2">
 {% for side, nm in [("a", a), ("b", b)] %}{% set rows = five[side] %}
 <div><h3>{{ nm }} <span class="small">{% if rows %}{{ rows|selectattr("won")|list|length }}–{{ rows|rejectattr("won")|list|length }}{% endif %}</span></h3>
+{% if five.stale and five.stale[side] %}<p class="note"><span class="badge warn">not current</span> {% if rows %}The newest match on record is
+{{ rows[0].ago }} days before this one{% else %}No matches on record{% endif %}: this player's recent results (most likely ITF events) are in
+no source the app can read, so this is not their current form.</p>{% endif %}
 <div class="scroll"><table class="data small"><thead><tr><th>Date</th><th>Opponent</th><th></th><th>Score</th><th>Tournament</th></tr></thead>
-<tbody>{% for r in rows %}<tr><td class="mono">{{ r.date }}</td><td>{{ r.opponent }}</td>
+<tbody>{% for r in rows %}<tr><td class="mono" title="{{ r.ago }} days before this match">{{ r.date }}</td><td>{{ r.opponent }}</td>
 <td><span class="badge {{ 'ok' if r.won else 'warn' }}">{{ "W" if r.won else "L" }}</span></td>
 <td class="mono">{{ r.score }}{% if r.retired %} ret.{% endif %}</td><td class="small">{{ r.event }} · {{ r.round }} · {{ r.surface }}{% if r.manual %} <span class="badge">added by you</span>{% endif %}</td></tr>
 {% else %}<tr><td colspan="5">No matches in the history.</td></tr>{% endfor %}</tbody></table></div></div>
