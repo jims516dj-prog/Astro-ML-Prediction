@@ -2,10 +2,11 @@
  "competitions": {
   "aus.w.1": "Australian A-League Women",
   "eng.w.1": "English Women's Super League",
+  "esp.w.1": "Spanish Liga F",
   "fra.w.1": "French Première Ligue",
   "mex.w.1": "Mexican Liga BBVA MX Femenil",
   "uefa.wchampions": "UEFA Women's Champions League",
   "usa.nwsl": "NWSL"
  },
- "generated_at": "2026-11-12T22:45:45+00:00"
+ "generated_at": "2026-11-13T22:41:12+00:00"
 }
