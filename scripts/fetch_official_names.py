@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 17          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 18          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -599,25 +599,21 @@ def curated() -> dict[str, str]:
 
 
 def wiki_items(titles: list[str]) -> dict[str, str]:
-    """{English Wikipedia title: Wikidata id}, redirects followed."""
+    """{English Wikipedia title: Wikidata id}, redirects followed; one title per request, so a redirect can never
+    be credited to another title."""
     out = {}
-    for i in range(0, len(titles), 40):
-        batch = titles[i:i + 40]
+    for title in titles:
         d = get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item"
-                "&redirects=1&titles=" + urllib.parse.quote("|".join(batch)))
-        q = (d or {}).get("query") or {}
-        back = {}
-        for m in (q.get("normalized") or []) + (q.get("redirects") or []):
-            back[m["to"]] = back.get(m["from"], m["from"])
-        for page in (q.get("pages") or {}).values():
-            item = (page.get("pageprops") or {}).get("wikibase_item")
-            if item:
-                title = page.get("title")
-                while title in back and title not in batch:
-                    title = back[title]
-                out[title] = item
-        time.sleep(0.5)
+                "&redirects=1&titles=" + urllib.parse.quote(title))
+        pages = list((((d or {}).get("query") or {}).get("pages") or {}).values())
+        item = (pages[0].get("pageprops") or {}).get("wikibase_item") if len(pages) == 1 else None
+        if item:
+            out[title] = item
+        time.sleep(0.3)
     return out
+
+
+WOMEN_CLUB = {"Q51481377", "Q28140340"}   # women's association football club
 
 
 def club_search(base: str) -> list[str]:
@@ -729,6 +725,10 @@ def main():
         for q in cand.get(t, []):
             e = ents.get(q) or {}
             if t in hand:
+                kinds = set(claim_ids(e, "P31"))
+                if not (kinds & (FOOTBALL | WOMEN_CLUB) or "Q2736" in claim_ids(e, "P641")):
+                    why.append(f"{q}: not a football club")
+                    continue                          # a redirect to a station or a league is never taken
                 if not lifetime_ok(t, e):
                     why.append(f"{q}: founded {_year(e, 'P571')} / dissolved {_year(e, 'P576')}, "
                                f"but the team played {PLAYED.get(teamnames.split(t)[0])}")
@@ -801,7 +801,7 @@ def main():
         q, e = pick
         legal, lang = official(e)
         short = short_name(e, lang)
-        if short and not _agrees(t, short):
+        if short and t not in hand and not _agrees(t, short):
             # a label from another era, or a vandalised one ("Real Madrid" on Barracas Central's item): the first
             # Latin label, English first, that names the club as the team is known
             labels = e.get("labels") or {}

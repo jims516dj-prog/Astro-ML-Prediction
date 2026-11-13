@@ -1201,8 +1201,7 @@
 "Buyuksehyr": {
 "legal": "İstanbul Büyükşehir Belediyespor",
 "qid": "Q857938",
-"short": "İstanbul Büyükşehir Belediyespor",
-"v": 17
+"short": "İstanbul Büyükşehir Belediyespor"
 },
 "C.D. Platense": {
 "legal": "Club Deportivo Platense - Zacatecoluca",
@@ -3492,10 +3491,8 @@
 "v": 13
 },
 "Hornchurch": {
-"legal": "Hornchurch tube station",
-"qid": "Q1628404",
-"short": "Hornchurch tube station",
-"v": 17
+"tried": "reset",
+"why": "a wrong curated resolution"
 },
 "Horsens": {
 "legal": "AC Horsens",
@@ -5285,10 +5282,8 @@
 "v": 13
 },
 "Padova": {
-"legal": "Padova",
-"qid": "Q617",
-"short": "Padova",
-"v": 17
+"tried": "reset",
+"why": "a wrong curated resolution"
 },
 "Pafos FC": {
 "legal": "Pafos FC",
@@ -7020,10 +7015,8 @@
 "v": 13
 },
 "Transit Camp FC": {
-"legal": "Tanzanian First Division League",
-"qid": "Q25241773",
-"short": "Tanzanian First Division League",
-"v": 17
+"tried": "reset",
+"why": "a wrong curated resolution"
 },
 "Trapani": {
 "legal": "FC Trapani 1905",
