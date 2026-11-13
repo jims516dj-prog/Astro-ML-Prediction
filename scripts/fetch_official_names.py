@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 19          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 20          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -849,6 +849,9 @@ def main():
                     pick = near[0][1:]
             if not pick and len(passing) > 1:
                 why.append("namesakes: " + ", ".join(f"{q} ({n})" for n, q, _ in passing[:3]))
+        if not pick and t in hand:
+            print(f"  curated {t}: the item failed its checks ({'; '.join(why[1:])}); its entry is kept as it is")
+            return None                               # never replaced by a guess
         if not pick:
             cache[t] = {"tried": month, "why": "; ".join(why[1:] or why), "v": VERSION}
             return False
@@ -878,7 +881,7 @@ def main():
 
     found = sum(1 for t in todo if decide(t))
     # a club whose table item was turned down (a predecessor, a namesake abroad) is searched for in Wikidata
-    retry = [t for t in todo if t not in searched and not (cache.get(t) or {}).get("short")
+    retry = [t for t in todo if t not in searched and t not in hand and not (cache.get(t) or {}).get("short")
              and cand.get(t) and any(q in ents for q in cand[t])]
     if retry:
         print(f"searching Wikidata again for {len(retry)} clubs whose table match was turned down")

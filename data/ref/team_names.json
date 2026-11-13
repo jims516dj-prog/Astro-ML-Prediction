@@ -264,10 +264,9 @@
 "v": 13
 },
 "All Boys": {
-"legal": "Club Atlético All Boys women",
-"qid": "Q116051518",
-"short": "Club Atlético All Boys women",
-"v": 19
+"legal": "Club Atlético All Boys",
+"qid": "Q646088",
+"short": "Club Atlético All Boys"
 },
 "Alloa": {
 "legal": "Alloa Athletic FC",
@@ -1588,9 +1587,9 @@
 "v": 13
 },
 "Chivas USA": {
-"tried": "2026-11",
-"v": 19,
-"why": "Q642433: not a football club"
+"legal": "Chivas USA",
+"qid": "Q642433",
+"short": "Chivas USA"
 },
 "Chongqing Liangjiang Athletic": {
 "legal": "Chongqing Liangjiang Athletic FC",
@@ -4004,10 +4003,9 @@
 "v": 13
 },
 "Kuban": {
-"legal": "FC Kuban Holding",
-"qid": "Q65038152",
-"short": "FC Kuban Holding",
-"v": 19
+"legal": "FC Kuban Krasnodar",
+"qid": "Q29103",
+"short": "FC Kuban Krasnodar"
 },
 "Kumamoto": {
 "legal": "Roasso Kumamoto",
@@ -4406,9 +4404,9 @@
 "v": 13
 },
 "M. Saransk": {
-"tried": "2026-11",
-"v": 19,
-"why": "Q9207590: no Latin-script name"
+"legal": "FC Mordovia Saransk",
+"qid": "Q37091",
+"short": "FC Mordovia Saransk"
 },
 "MGladbach": {
 "legal": "Borussia Mönchengladbach",
@@ -6836,9 +6834,9 @@
 "v": 13
 },
 "Tambov": {
-"tried": "2026-11",
-"v": 19,
-"why": "Q3544: not a football club; Q3550: not a football club; Q1045074: not a football club; Q1540306: not a football club; Q4450883: not a football club; Q113025712: founded 2022 / dissolved None, but the team played [2018, 2021]"
+"legal": "FC Tambov",
+"qid": "Q14161251",
+"short": "FC Tambov"
 },
 "Tamworth": {
 "legal": "Tamworth Football Club",
@@ -6985,9 +6983,9 @@
 "v": 13
 },
 "Tosno": {
-"tried": "2026-11",
-"v": 19,
-"why": "Q15337: not a football club; Q4461423: not a football club; Q9089186: not a football club; Q4461425: not a football club; Q4461426: not a football club"
+"legal": "FC Tosno",
+"qid": "Q14508335",
+"short": "FC Tosno"
 },
 "Tottenham": {
 "legal": "Tottenham Hotspur Football Club",
@@ -7384,9 +7382,9 @@
 "v": 13
 },
 "Vestsjaelland": {
-"tried": "2026-11",
-"v": 19,
-"why": "Q12340836: not a football club; Q12340833: not a football club; Q48215224: not a football club; Q1842016: not a football club; Q866823: not a football club; Q18180784: not a football club"
+"legal": "FC Vestsjælland",
+"qid": "Q742329",
+"short": "FC Vestsjælland"
 },
 "VfL Bochum": {
 "legal": "VfL Bochum",
@@ -7496,9 +7494,9 @@
 "v": 13
 },
 "Volga N. Novgorod": {
-"tried": "2026-11",
-"v": 19,
-"why": "Q20740338: founded 2015 / dissolved None, but the team played [2012, 2014]"
+"legal": "FC Volga Nizhny Novgorod",
+"qid": "Q643083",
+"short": "FC Volga Nizhny Novgorod"
 },
 "Volgar-Astrakhan": {
 "legal": "FC Volgar Astrakhan",
