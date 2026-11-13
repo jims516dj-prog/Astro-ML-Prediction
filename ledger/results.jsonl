@@ -945,3 +945,4 @@
 {"goals_away":3,"goals_home":1,"match_key":"625c0fabd403","settled_at":"2026-11-13T10:34:50+00:00","sha256":"6deb2697ecebcc431205d2e6a93a9443dcb91f0d2c30e37d4f398fa56e52b45c","source":"api-football"}
 {"goals_away":3,"goals_home":2,"match_key":"4cae90d4329e","settled_at":"2026-11-13T10:34:50+00:00","sha256":"e2b60e09b09104c492447e530acd951fc73fa66760f90dd10a84d4a7fba12baf","source":"api-football"}
 {"goals_away":2,"goals_home":2,"match_key":"6ce7f03c162d","settled_at":"2026-11-13T10:34:50+00:00","sha256":"ed26b092ce21e757ef5f28e4e209e4517bb19edb605a33cf5bf69a906b9e2c73","source":"api-football"}
+{"goals_away":1,"goals_home":1,"match_key":"045b8b41f541","settled_at":"2026-11-13T13:10:55+00:00","sha256":"d9523c2eedc98d9c14d81d990d82cd2cc9755a3221aee510af22b2652590f12b","source":"api-football"}
