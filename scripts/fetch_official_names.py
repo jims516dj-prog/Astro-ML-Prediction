@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 14          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 15          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -195,6 +195,21 @@ def competition_country(division: str) -> str | None:
     return None
 
 
+def _vowel_variant(a: str, b: str) -> bool:
+    """The two spellings differ by one vowel only: swapped, added or dropped."""
+    v = set("aeiouy")
+    if len(a) == len(b):
+        diff = [(x, y) for x, y in zip(a, b) if x != y]
+        return len(diff) == 1 and diff[0][0] in v and diff[0][1] in v
+    if abs(len(a) - len(b)) != 1:
+        return False
+    s, l = (a, b) if len(a) < len(b) else (b, a)
+    for i in range(len(l)):
+        if l[:i] + l[i + 1:] == s:
+            return l[i] in v
+    return False
+
+
 def _abbrev_ok(word: str, theirs: set[str]) -> bool:
     """"rvs" ~ "rovers", "atl" ~ "atletico", "dynamo" ~ "dinamo", "go" ~ "goianiense": a prefix, a close spelling or
     an in-order contraction (same first letter)."""
@@ -202,9 +217,8 @@ def _abbrev_ok(word: str, theirs: set[str]) -> bool:
     for t in theirs:
         if t.startswith(word) or (len(t) >= 3 and word.startswith(t)):
             return True
-        if (len(word) >= 4 and word[0] == t[0] and abs(len(word) - len(t)) <= 1
-                and difflib.SequenceMatcher(None, word, t).ratio() >= 0.8):    # "dynamo" ~ "dinamo", not "remo" ~ "gremio"
-            return True
+        if len(word) >= 4 and word[0] == t[0] and _vowel_variant(word, t):
+            return True                               # "dynamo" ~ "dinamo", "nykoebing" ~ "nykobing"; not "ceuta" ~ "celta"
         if len(word) >= 3 and word[0] == t[0]:
             it = iter(t)
             if all(ch in it for ch in word):
@@ -612,7 +626,7 @@ def main():
         if t in cand:
             better = table_candidates(t, teams.get(t))[0]
             if better and better[0] not in cand[t]:
-                cand[t] = better                      # the table now points elsewhere (a stray alias before)
+                cand[t] = cand[t] + better            # the club keeps its item unless that fails the checks
             continue
         c, country = table_candidates(t, teams.get(t))
         if c:
@@ -661,6 +675,10 @@ def main():
         pick, why, passing = None, ["no Wikidata item found"], []
         for q in cand.get(t, []):
             e = ents.get(q) or {}
+            en = ((e.get("labels") or {}).get("en") or {}).get("value") or ""
+            if RESERVE_ITEM.search(en) and not RESERVE_ITEM.search(teamnames.split(t)[0]):
+                why.append(f"{q}: a reserve, youth or women's side ({en})")
+                continue                              # "América de Cali B" for América de Cali
             kinds = set(claim_ids(e, "P31")) & FOOTBALL
             if not kinds:
                 why.append(f"{q}: not a football club")

@@ -334,10 +334,9 @@
 "v": 13
 },
 "América de Cali": {
-"legal": "América de Cali B",
-"qid": "Q5673508",
-"short": "América de Cali B",
-"v": 14
+"legal": "América de Cali",
+"qid": "Q391987",
+"short": "América de Cali"
 },
 "Anaitasuna": {
 "legal": "CD Anaitasuna",
@@ -1376,10 +1375,8 @@
 "v": 13
 },
 "Ceuta": {
-"legal": "RC Celta de Vigo",
-"qid": "Q8749",
-"short": "RC Celta de Vigo",
-"v": 14
+"tried": "reset",
+"why": "was RC Celta de Vigo (Ceuta is AD Ceuta)"
 },
 "Chacarita Juniors": {
 "legal": "Club Atlético Chacarita Juniors",
@@ -5504,10 +5501,9 @@
 "v": 13
 },
 "Riga FC": {
-"legal": "FK Daugava Riga",
-"qid": "Q995093",
-"short": "FK Daugava Riga",
-"v": 14
+"legal": "Riga FC",
+"qid": "Q19963391",
+"short": "Riga FC"
 },
 "Rio Ave": {
 "legal": "Rio Ave FC",
