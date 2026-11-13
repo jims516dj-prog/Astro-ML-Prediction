@@ -2,7 +2,12 @@
 # associations for national teams. Monthly, or on demand.
 name: founding-days
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      only:
+        description: "run one part only (founding-days, club-names or tennis-names); empty runs all three"
+        required: false
+        default: ""
   schedule:
     - cron: "11 4 9 * *"
 permissions:
@@ -11,6 +16,7 @@ concurrency: founding-days
 jobs:
   # three lookups side by side, each with its own time limit, each publishing its own file
   founding-days:
+    if: ${{ !inputs.only || inputs.only == 'founding-days' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -33,6 +39,7 @@ jobs:
           git diff --cached --quiet || { git commit -m "founding dates: Wikidata / Wikipedia $(date -u +%Y-%m-%d)"; ok=; for i in 1 2 3 4 5; do git pull --rebase -X theirs && git push && { ok=1; break; }; git rebase --abort 2>/dev/null; sleep $((i * 10)); done; test -n "$ok"; }
 
   club-names:
+    if: ${{ !inputs.only || inputs.only == 'club-names' }}
     runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
@@ -71,6 +78,7 @@ jobs:
           exit 1
 
   tennis-names:
+    if: ${{ !inputs.only || inputs.only == 'tennis-names' }}
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
