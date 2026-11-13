@@ -3492,10 +3492,8 @@
 "v": 13
 },
 "Hornchurch": {
-"legal": "Hornchurch Cricket Club",
-"qid": "Q16844845",
-"short": "Hornchurch Cricket Club",
-"v": 18
+"tried": "reset",
+"why": "was Hornchurch Cricket Club"
 },
 "Horsens": {
 "legal": "AC Horsens",
@@ -5291,10 +5289,8 @@
 "v": 13
 },
 "Padova": {
-"legal": "Thermomec Padova",
-"qid": "Q16482115",
-"short": "Thermomec Padova",
-"v": 18
+"tried": "reset",
+"why": "the present club cannot be told from the 1910 club on Wikidata; left unnamed"
 },
 "Pafos FC": {
 "legal": "Pafos FC",

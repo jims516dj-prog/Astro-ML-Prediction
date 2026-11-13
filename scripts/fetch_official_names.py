@@ -603,13 +603,17 @@ def wiki_items(titles: list[str]) -> dict[str, str]:
     be credited to another title."""
     out = {}
     for title in titles:
-        d = get("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item"
-                "&redirects=1&titles=" + urllib.parse.quote(title))
+        url = ("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item"
+               "&redirects=1&titles=" + urllib.parse.quote(title))
+        d = get(url)
+        if d is None:                                 # turned away: wait and try once more
+            time.sleep(20)
+            d = get(url, tries=3)
         pages = list((((d or {}).get("query") or {}).get("pages") or {}).values())
         item = (pages[0].get("pageprops") or {}).get("wikibase_item") if len(pages) == 1 else None
         if item:
             out[title] = item
-        time.sleep(0.3)
+        time.sleep(1.5)
     return out
 
 
@@ -725,8 +729,8 @@ def main():
         for q in cand.get(t, []):
             e = ents.get(q) or {}
             if t in hand:
-                kinds = set(claim_ids(e, "P31"))
-                if not (kinds & (FOOTBALL | WOMEN_CLUB) or "Q2736" in claim_ids(e, "P641")):
+                kinds = set(claim_ids(e, "P31")) & (FOOTBALL | WOMEN_CLUB)
+                if not kinds or (kinds <= GENERIC_CLUB and "Q2736" not in claim_ids(e, "P641")):
                     why.append(f"{q}: not a football club")
                     continue                          # a redirect to a station or a league is never taken
                 if not lifetime_ok(t, e):
