@@ -1,6 +1,7 @@
 # Hand-checked club identities for names the automatic matching cannot settle (misspellings, refounded clubs,
 # namesakes). team = the name as the sources write it; article = the club's English Wikipedia article (several
-# separated by |, tried in order), or a Wikidata id (Q...), or =Other team (the same club under another name).
+# separated by |, tried in order), a Wikidata id (Q...), =Other team (the same club under another name), or -
+# (left unnamed on purpose).
 # The names job still checks the club's founding / dissolution against the years the team played.
 team,article,note
 Buyuksehyr,İstanbul Başakşehir F.K.,football-data's spelling of Başakşehir (Süper Lig)
@@ -38,3 +39,8 @@ SC Wieselburg,SC Wieselburg,Lower Austria
 Mbeya Kwanza FC,Mbeya Kwanza F.C.,Tanzania
 Transit Camp FC,Transit Camp F.C.|Transit Camp FC,Tanzania
 Mount Pleasant FC,Mount Pleasant F.A.|Mount Pleasant Football Academy,Jamaica
+Shakhter Soligorsk,FC Shakhtyor Soligorsk,Belarus
+Midland,Club Atlético Midland,Argentina (Primera Nacional)
+Ciudad de Bolívar,Club Ciudad de Bolívar,Argentina (Primera Nacional)
+Águilas Doradas,Águilas Doradas Rionegro,Colombia
+Ruh Lviv,-,a third-tier side (Druha Liga): probably Rukh Lviv's second team; not guessed

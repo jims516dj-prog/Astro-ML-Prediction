@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 21          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 22          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -525,7 +525,8 @@ def teams_and_countries():
             for side in (r["home"], r["away"]):
                 _played(side, r.get("kickoff_utc"))
             if (r.get("venue_lat") is not None and div not in live.MULTI_CLUB
-                    and r.get("venue_source") != "city"):  # a city guessed from the name proves nothing
+                    and r.get("venue_source") != "city"   # a city guessed from the name proves nothing,
+                    and "main city" not in str(r.get("venue_source"))):   # nor the country's capital as a stand-in
                 HOME_AT.setdefault(r["home"], []).append((r["venue_lat"], r["venue_lon"]))
             out[r["away"]] = out.get(r["away"]) or c
             if not c and r.get("venue_lat") is not None and div not in live.MULTI_CLUB:
@@ -712,6 +713,9 @@ def main():
             continue
         if v.startswith("="):
             continue                                  # copied from the other team at the end
+        if v == "-":
+            held.add(t)                               # left unnamed on purpose: not to be guessed
+            continue
         qs = [v] if re.fullmatch(r"Q\d+", v) else list(dict.fromkeys(items[a] for a in v.split("|") if a in items))
         if not qs:
             print(f"  curated {t}: no Wikidata item for {v!r}; its entry is kept as it is")
