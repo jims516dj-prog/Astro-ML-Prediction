@@ -3218,10 +3218,8 @@
 "v": 11
 },
 "Hornchurch": {
-"legal": "Hornchurch Cricket Club",
-"qid": "Q16844845",
-"short": "Hornchurch Cricket Club",
-"v": 12
+"tried": "reset",
+"why": "was Hornchurch Cricket Club"
 },
 "Horsens": {
 "legal": "AC Horsens",
@@ -4259,10 +4257,8 @@
 "v": 11
 },
 "Mega Sport": {
-"legal": "Aris Mega Revma",
-"qid": "Q47519832",
-"short": "Aris Mega Revma",
-"v": 12
+"tried": "reset",
+"why": "was Aris Mega Revma (Greece)"
 },
 "Meizhou Hakka": {
 "legal": "Meizhou Hakka FC",
@@ -6934,10 +6930,8 @@
 "v": 11
 },
 "Vestsjaelland": {
-"legal": "Team Skælskør-Slagelse",
-"qid": "Q18180784",
-"short": "Team Skælskør-Slagelse",
-"v": 11
+"tried": "reset",
+"why": "was Team Skælskør-Slagelse, not shown to be the same club"
 },
 "VfL Wolfsburg": {
 "legal": "VfL Wolfsburg",

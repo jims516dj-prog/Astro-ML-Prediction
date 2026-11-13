@@ -30,8 +30,8 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 12          # unnamed clubs decided under an older version of the rules are tried again
-NAMED_SINCE = 10      # named clubs are redone only when named under an older version than this
+VERSION = 13          # unnamed clubs decided under an older version of the rules are tried again
+NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
 TABLE_COUNTRY = {"People's Republic of China": "CN", "United States": "US", "Russia": "RU", "United Kingdom": "GB", "Kingdom of the Netherlands": "NL", "England": "GB", "Scotland": "GB",
@@ -570,6 +570,9 @@ def expand(base: str) -> str:
                     else w for w in base.split())
 
 
+GENERIC_CLUB = {"Q847017"}   # "sports club": football only when its sport (P641) says so
+
+
 def club_search(base: str) -> list[str]:
     """Wikidata full-text search limited to association football clubs (P31 = Q476028), on the team's name words
     (initials like "T." left out): finds "Royal Excel Mouscron" for "Mouscron", "WSG Tirol" for "Tirol"."""
@@ -658,14 +661,23 @@ def main():
         pick, why, passing = None, ["no Wikidata item found"], []
         for q in cand.get(t, []):
             e = ents.get(q) or {}
-            if not set(claim_ids(e, "P31")) & FOOTBALL:
+            kinds = set(claim_ids(e, "P31")) & FOOTBALL
+            if not kinds:
                 why.append(f"{q}: not a football club")
                 continue
+            if kinds <= GENERIC_CLUB and "Q2736" not in claim_ids(e, "P641"):
+                why.append(f"{q}: a sports club, not shown to play football")
+                continue                              # "Hornchurch Cricket Club"
             want = teams.get(t)
             have = {iso.get(c) for c in claim_ids(e, "P17")} - {None}
             if want and have and not same_country(want, have):
                 why.append(f"{q}: in {sorted(have)}, not {want}")
                 continue                              # a namesake in another country
+            if want and not have and t in searched:
+                at, ll = home_location(t), item_location(e)
+                if not (at and ll and _km(at, ll) <= NEAR_KM):
+                    why.append(f"{q}: no country to confirm with")
+                    continue                          # "Mega Sport" (Egypt) is not Aris Mega Revma (Greece)
             if not want and not have:
                 at, ll = home_location(t), item_location(e)
                 if not (at and ll and _km(at, ll) <= NEAR_KM):
