@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 13          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 14          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -729,6 +729,9 @@ def main():
                 if v and is_latin(v) and _agrees(t, v):
                     short = v
                     break
+        if t in searched and short and not _agrees(t, short):
+            cache[t] = {"tried": month, "why": f"{q}: none of its names is the team's ({short})", "v": VERSION}
+            return False                              # "Padova" only as an alias of Vigontina San Paolo FC
         if legal and (sum(ch.isupper() for ch in legal) > 0.8 * sum(ch.isalpha() for ch in legal) > 8
                       or not (_agrees(t, legal) or _agrees(short, legal))):
             legal = None                              # a vandalised or unrelated official name: not trusted

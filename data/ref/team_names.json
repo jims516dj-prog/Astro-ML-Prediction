@@ -4946,10 +4946,8 @@
 "v": 13
 },
 "Padova": {
-"legal": "Vigontina San Paolo FC",
-"qid": "Q5018786",
-"short": "Vigontina San Paolo FC",
-"v": 13
+"tried": "reset",
+"why": "was Vigontina San Paolo FC"
 },
 "Pafos FC": {
 "legal": "Pafos FC",
