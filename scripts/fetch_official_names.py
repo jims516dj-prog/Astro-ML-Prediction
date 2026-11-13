@@ -30,7 +30,7 @@ from astrofoot import foundings, geo, nations, teamnames  # noqa: E402
 from fetch_founding_days import FOOTBALL, get, similar  # noqa: E402
 
 BUDGET_S = 60 * 60
-VERSION = 18          # unnamed clubs decided under an older version of the rules are tried again
+VERSION = 19          # unnamed clubs decided under an older version of the rules are tried again
 NAMED_SINCE = 13      # named clubs are redone only when named under an older version than this
 DOMINANCE = 2.0      # a close spelling is taken only when it is this many times as prominent as the next one
 SHARED = {"US": {"CA"}, "CH": {"LI"}, "FR": {"MC"}, "ES": {"AD"}, "IE": {"GB"}, "GB": {"IE"}, "IT": {"SM"}}
@@ -599,6 +599,52 @@ def curated() -> dict[str, str]:
 
 
 def wiki_items(titles: list[str]) -> dict[str, str]:
+    """{English Wikipedia title: Wikidata id}: through Wikidata's sitelinks (the API the rest of this script uses,
+    which answers reliably), then Wikipedia itself for titles that are redirects; one title per Wikipedia request,
+    so a redirect can never be credited to another title."""
+    out = {}
+    norm = lambda x: x.replace("_", " ").strip()  # noqa: E731
+    for i in range(0, len(titles), 40):
+        batch = titles[i:i + 40]
+        d = get("https://www.wikidata.org/w/api.php?action=wbgetentities&format=json&sites=enwiki&props=sitelinks"
+                "&sitefilter=enwiki&titles=" + urllib.parse.quote("|".join(batch)))
+        for q, e in ((d or {}).get("entities") or {}).items():
+            title = (((e.get("sitelinks") or {}).get("enwiki")) or {}).get("title")
+            if q.startswith("Q") and title:
+                for t in batch:
+                    if norm(t) == norm(title):
+                        out[t] = q
+        time.sleep(0.5)
+    for title in [t for t in titles if t not in out]:      # redirects: ask Wikipedia
+        url = ("https://en.wikipedia.org/w/api.php?action=query&format=json&prop=pageprops&ppprop=wikibase_item"
+               "&redirects=1&titles=" + urllib.parse.quote(title))
+        d = get(url)
+        if d is None:
+            time.sleep(20)
+            d = get(url, tries=3)
+        pages = list((((d or {}).get("query") or {}).get("pages") or {}).values())
+        item = (pages[0].get("pageprops") or {}).get("wikibase_item") if len(pages) == 1 else None
+        if item:
+            out[title] = item
+        time.sleep(1.5)
+    return out
+
+
+GENERIC_CLUB = {"Q847017"}   # "sports club": football only when its sport (P641) says so
+
+
+CURATED_FILE = Path("data/ref/team_names_curated.csv")
+
+
+def curated() -> dict[str, str]:
+    """{team: article(s) | Q id | =Other team} from the hand-checked list."""
+    if not CURATED_FILE.exists():
+        return {}
+    c = pd.read_csv(CURATED_FILE, comment="#", dtype=str, keep_default_na=False)
+    return {r.team.strip(): r.article.strip() for r in c.itertuples() if r.team.strip() and r.article.strip()}
+
+
+def wiki_items(titles: list[str]) -> dict[str, str]:
     """{English Wikipedia title: Wikidata id}, redirects followed; one title per request, so a redirect can never
     be credited to another title."""
     out = {}
@@ -656,6 +702,7 @@ def main():
     todo = sorted(set(cand) | set(unnamed))
     picked = curated()
     hand: set[str] = set()                            # clubs identified by hand: their item is taken as given
+    held: set[str] = set()                            # identified by hand, but the look-up failed: left alone
     titles = sorted({a for v in picked.values() if not v.startswith(("=", "Q")) for a in v.split("|")})
     items = wiki_items(titles) if titles else {}
     for t, v in picked.items():
@@ -665,12 +712,15 @@ def main():
             continue                                  # copied from the other team at the end
         qs = [v] if re.fullmatch(r"Q\d+", v) else list(dict.fromkeys(items[a] for a in v.split("|") if a in items))
         if not qs:
-            print(f"  curated {t}: no Wikidata item for {v!r}")
+            print(f"  curated {t}: no Wikidata item for {v!r}; its entry is kept as it is")
+            held.add(t)
             continue
         if (cache.get(t) or {}).get("qid") not in qs or (cache.get(t) or {}).get("v") != VERSION:
             cand[t] = qs                              # tried in order: the first that existed when the team played
             hand.add(t)
-    todo = sorted(set(todo) | hand)
+    todo = sorted((set(todo) | hand) - held)
+    for t in held:
+        cand.pop(t, None)
     print(f"{len(teams)} clubs; {len(todo)} to name ({len(cand)} redone, {len(unnamed)} not named yet, "
           f"{len(hand)} identified by hand)")
     for t in todo:

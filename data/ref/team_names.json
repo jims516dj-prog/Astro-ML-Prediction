@@ -3492,9 +3492,8 @@
 "v": 13
 },
 "Hornchurch": {
-"tried": "2026-11",
-"v": 18,
-"why": "Q1628404: not a football club; Q1656021: not a football club; Q5904186: not a football club; Q3337041: not a football club; Q16844845: not a football club"
+"tried": "reset",
+"why": "a wrong resolution (tube station)"
 },
 "Horsens": {
 "legal": "AC Horsens",
@@ -4005,10 +4004,9 @@
 "v": 13
 },
 "Kuban": {
-"legal": "FC Kuban Holding",
-"qid": "Q65038152",
-"short": "FC Kuban Holding",
-"v": 18
+"legal": "FC Kuban Krasnodar",
+"qid": "Q29103",
+"short": "FC Kuban Krasnodar"
 },
 "Kumamoto": {
 "legal": "Roasso Kumamoto",
@@ -4407,9 +4405,9 @@
 "v": 13
 },
 "M. Saransk": {
-"tried": "2026-11",
-"v": 18,
-"why": "Q9207590: no Latin-script name"
+"legal": "FC Mordovia Saransk",
+"qid": "Q37091",
+"short": "FC Mordovia Saransk"
 },
 "MGladbach": {
 "legal": "Borussia Mönchengladbach",
@@ -6837,9 +6835,9 @@
 "v": 13
 },
 "Tambov": {
-"tried": "2026-11",
-"v": 18,
-"why": "Q3544: not a football club; Q3550: not a football club; Q1045074: not a football club; Q1540306: not a football club; Q4450883: not a football club; Q113025712: founded 2022 / dissolved None, but the team played [2018, 2021]"
+"legal": "FC Tambov",
+"qid": "Q14161251",
+"short": "FC Tambov"
 },
 "Tamworth": {
 "legal": "Tamworth Football Club",
@@ -6986,9 +6984,9 @@
 "v": 13
 },
 "Tosno": {
-"tried": "2026-11",
-"v": 18,
-"why": "Q15337: not a football club; Q4461423: not a football club; Q9089186: not a football club; Q4461425: not a football club; Q4461426: not a football club"
+"legal": "FC Tosno",
+"qid": "Q14508335",
+"short": "FC Tosno"
 },
 "Tottenham": {
 "legal": "Tottenham Hotspur Football Club",
@@ -7021,9 +7019,8 @@
 "v": 13
 },
 "Transit Camp FC": {
-"tried": "2026-11",
-"v": 18,
-"why": "no Wikidata item found"
+"tried": "reset",
+"why": "a wrong resolution (a league)"
 },
 "Trapani": {
 "legal": "FC Trapani 1905",
