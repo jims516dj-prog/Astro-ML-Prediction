@@ -187,6 +187,11 @@ def team_charts(con):
     return [{**dict(r), "date_precision": "day"} for r in con.execute("SELECT * FROM team_charts ORDER BY team")]
 
 
+def delete_team_chart(con, team: str):
+    con.execute("DELETE FROM team_charts WHERE team=?", (team,))
+    con.commit()
+
+
 # ----------------------------------------------------------------------------- my picks (slips)
 def slips(con, day: str | None = None, section: str | None = None) -> list[dict]:
     """Slips, optionally of one day and/or one section ("men" or "women")."""

@@ -28,7 +28,14 @@
   {% if x.num.numbers %}<p class="small"><strong>Numerology:</strong> life path {{ x.num.numbers.life_path }}, personal year {{ x.num.numbers.personal_year }},
   personal day {{ x.num.numbers.personal_day }}, universal day {{ x.num.numbers.universal_day }}{% if x.num.numbers.expression %}, name number {{ x.num.numbers.expression }}{% endif %}.</p>
   <ul class="small">{% for p in x.num.parts + x.num_attack.parts %}<li>{{ p.text }}: <span class="mono">{{ "%+.2f"|format(p.points) }}</span></li>{% endfor %}</ul>{% endif %}
-  {% else %}<p class="small">No founding date known to the day (the founding-charts table has only the year, or no record), so no day reading.</p>{% endif %}
+  {% if x.founded_by == "you" %}<p class="small"><span class="badge">your date</span> <a href="/team-foundings">change or remove</a></p>{% endif %}
+  {% else %}<p class="small">No founding date known to the day (the founding-charts table has only the year, or no record), so no day reading.</p>
+  <form method="post" action="/team-founding" class="row" style="gap:6px;align-items:center">
+    <input type="hidden" name="team" value="{{ x.key }}">
+    <label class="small">Founded <input type="date" name="founded" required min="1850-01-01"></label>
+    <button class="btn small" type="submit">Save and compute</button>
+  </form>
+  <p class="small">Saved on this computer and used for every game of {{ x.team|tn }} from then on (<a href="/team-foundings">your dates</a>).</p>{% endif %}
   </div>{% endfor %}
   </div>
   {% if res and res.scoring %}{% set sa = res.scoring.score_astro %}{% set sn = res.scoring.score_num %}

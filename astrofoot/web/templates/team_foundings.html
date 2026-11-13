@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Founding dates you entered{% endblock %}
+{% block body %}
+<h1>Founding dates you entered</h1>
+<p class="note">The day reading (astrology and numerology) needs a club's founding date known to the day. When the founding
+table has none, you can enter it on the game's page; it is saved here, on this computer (data/app.sqlite3), and used for every
+game of that team from then on, ahead of the founding table. Dates entered on Analyze are kept here too.</p>
+<div class="scroll"><table class="data">
+<thead><tr><th>Team</th><th></th><th>Founded</th><th>Entered</th><th>From</th><th></th></tr></thead>
+<tbody>{% for r in rows %}<tr><td>{{ r.name|tn }}</td><td class="small">{{ "women" if r.women else "" }}</td>
+<td class="mono">{{ r.founded_date }}</td><td class="small mono">{{ (r.updated_at or "")[:10] }}</td><td class="small">{{ r.based_on or "" }}</td>
+<td><form method="post" action="/team-founding/delete" onsubmit="return confirm('Remove the founding date of {{ r.name }}?')">
+<input type="hidden" name="team" value="{{ r.team }}"><input type="hidden" name="back" value="/team-foundings">
+<button class="btn ghost small" type="submit">Remove</button></form></td></tr>
+{% else %}<tr><td colspan="6">None yet.</td></tr>{% endfor %}</tbody></table></div>
+{% endblock %}

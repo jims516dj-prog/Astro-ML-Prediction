@@ -64,6 +64,53 @@ def day_reading_toggle(on: int = 1, back: str = "/"):
     return resp
 
 
+# ------------------------------------------------------------------ founding dates you enter
+def _safe_back(request: Request, back: str | None) -> str:
+    b = back or request.headers.get("referer") or "/team-foundings"
+    u = urllib.parse.urlparse(b)
+    b = (u.path or "/") + (f"?{u.query}" if u.query else "")
+    return b if b.startswith("/") and not b.startswith("//") else "/team-foundings"
+
+
+def _valid_founding(date_str: str) -> str | None:
+    """YYYY-MM-DD between 1850 and today, else None."""
+    from datetime import date as _date
+    try:
+        d = _date.fromisoformat((date_str or "").strip())
+    except ValueError:
+        return None
+    return d.isoformat() if 1850 <= d.year and d <= _date.today() else None
+
+
+@app.post("/team-founding")
+def team_founding_save(request: Request, team: str = Form(...), founded: str = Form(...), back: str = Form("")):
+    """Save a team's founding date (from a game page without one): the day reading is worked out with it at once,
+    and the date is kept for every later game of that team (team_charts; a women's team under 'W:<name>')."""
+    team = team.strip()
+    d = _valid_founding(founded)
+    if not team or not d:
+        raise HTTPException(400, "Enter the founding date as YYYY-MM-DD (from 1850 up to today).")
+    db.save_team_chart(con(), team, d, None, None, None, None, based_on="entered on a game page")
+    teamday.reload_user_dates()
+    return RedirectResponse(_safe_back(request, back), status_code=303)
+
+
+@app.post("/team-founding/delete")
+def team_founding_delete(request: Request, team: str = Form(...), back: str = Form("")):
+    db.delete_team_chart(con(), team.strip())
+    teamday.reload_user_dates()
+    return RedirectResponse(_safe_back(request, back), status_code=303)
+
+
+@app.get("/team-foundings", response_class=HTMLResponse)
+def team_foundings_page(request: Request):
+    rows = db.team_charts(con())
+    for r in rows:
+        r["women"] = r["team"].startswith("W:")
+        r["name"] = r["team"][2:] if r["women"] else r["team"]
+    return T.TemplateResponse(request, "team_foundings.html", {"rows": rows, "page": "analyze"})
+
+
 def _day_label(d: str) -> str:
     """'Today', 'Yesterday' or 'Tomorrow' for those three dates (UTC, like the game dates); others unchanged."""
     from datetime import date as _date
@@ -210,6 +257,7 @@ async def analyze_submit(request: Request):
         if f and f.pop("save", False):
             db.save_team_chart(c, team, f["founded_date"], f["founded_time"], f["place"], f["lat"], f["lon"],
                                based_on=f["source"])
+            teamday.reload_user_dates()                # used on every game of the team from now on
     rec = {"team_a": inp["team_a"], "team_b": inp["team_b"], "home_side": inp["home_side"], "sport": "football",
            "context": inp["context"], "kickoff_utc": inp["kickoff_utc"], "time_precision": inp["time_precision"],
            "venue": inp["venue"], "lat": inp["lat"], "lon": inp["lon"], "loc_source": inp["loc_source"],

@@ -416,6 +416,15 @@ own stadiums do play "home" games elsewhere); map searches that return a namesak
 rejected. International and club friendlies are forecast
 when ESPN prices them (only some are: games without odds cannot be forecast).
 
+### Founding dates you enter
+
+A game whose club has no founding date known to the day shows a date field in its day-reading panel. **Save and
+compute** stores the date and works out the reading at once; the date is kept on this computer (`data/app.sqlite3`,
+table `team_charts`, the same store as the founding charts you save on Analyze) and is used for every game of that team
+from then on: live games, lists, filters, My picks and the Dataset page. Your date comes before the founding table, so
+a later table update never overrides it. A women's team is stored under `W:<name>`, apart from the men's club. The dates
+are listed, and can be removed, at `/team-foundings`. They are not sent anywhere: `git pull` leaves them alone.
+
 ## Women's football (separate section)
 
 The **Women** page has its own forecasts, sealed before kickoff and scored like the men's, in their own ledger

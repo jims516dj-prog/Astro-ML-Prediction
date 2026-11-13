@@ -49,12 +49,41 @@ WOMEN_VARIANTS = ("{} (women)", "{} Women", "{} W.F.C.", "{} Ladies", "{} Femeni
                   "{} Frauen", "{} Femminile", "{} Féminine", "{} Femení", "{} Vrouwen")
 
 
+_USER: dict | None = None
+
+
+def user_dates() -> dict:
+    """{team key: founding date} you entered (Analyze, or a game page with no founding date): kept in this
+    computer's database (data/app.sqlite3, the team_charts table), and used before every other source. A women's
+    team's key is 'W:<name>'."""
+    global _USER
+    if _USER is None:
+        _USER = {}
+        from .config import DB_PATH
+        if DB_PATH.exists():
+            try:
+                from . import db
+                _USER = {r["team"]: r["founded_date"] for r in db.team_charts(db.connect()) if r.get("founded_date")}
+            except Exception:  # noqa: BLE001
+                _USER = {}
+    return _USER
+
+
+def reload_user_dates() -> None:
+    global _USER
+    _USER = None
+
+
 def founding(team: str, con=None, resolve: bool = True, women: bool = False) -> dict | None:
-    """{'date', 'name'} of a team's founding (known to the day), or None. Name look-ups are slow, so every answer
-    (found or not) is kept in data/ref/team_founding_days.json. Women's teams are looked up as women's teams
-    ('Chelsea (women)', 'Chelsea Women', …, under the key 'W:Chelsea'), never with the men's club's date."""
-    cache = _load()
+    """{'date', 'name', 'source'} of a team's founding (known to the day), or None: the date you entered first,
+    then the founding table. Name look-ups are slow, so every answer (found or not) is kept in
+    data/ref/team_founding_days.json. Women's teams are looked up as women's teams ('Chelsea (women)',
+    'Chelsea Women', …, under the key 'W:Chelsea'), never with the men's club's date."""
     key = f"W:{team}" if women else team
+    mine = an.clean_dob(user_dates().get(key))
+    if mine:
+        return {"date": mine, "name": team, "source": "you"}
+    cache = _load()
     if key in cache:
         rec = cache[key]
         return rec if rec and rec.get("date") else None
@@ -153,6 +182,8 @@ def reading(home: str, away: str, kickoff_utc, lat=None, lon=None, con=None, res
         name = (teamnames.legal(team, women) or f["name"]) if f else None
         r = _team_day(f["date"], name, day, tz) if f else None
         out[side] = {"team": team, "founded": f["date"] if f else None, "chart_name": name,
+                     "founded_by": "you" if given or (f or {}).get("source") == "you" else ("table" if f else None),
+                     "key": f"W:{team}" if women else team,
                      **(r or {"astro": {"score": None, "contacts": []}, "attack": {"score": None, "contacts": []},
                               "num": {"score": None, "parts": [], "numbers": {}}, "num_attack": {"score": None, "parts": []}})}
     h, a = out["home"], out["away"]
