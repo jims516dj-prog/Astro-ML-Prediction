@@ -57,7 +57,10 @@ personal day {{ nv[side].numbers.personal_day }}, universal day {{ nv[side].numb
 
 {% macro factors(x) %}
 <h2>Statistics the model saw</h2>
-<p class="note">Ratings, form, rest, head-to-head, seeds and the match format.</p>
+<p class="note">Ratings, form, rest, head-to-head, seeds and the match format.{% if x.uncovered %} <strong>At Challenger and ITF level</strong>
+rest, recent load, experience, form and head-to-head are left unknown (—): the match history holds ATP and WTA tour matches,
+so it misses most of what these players have played, and the model would otherwise read them as rusty newcomers. The
+forecast rests on the ratings and the other factors.{% endif %}</p>
 <div class="scroll"><table class="data small">
 <thead><tr><th>Factor</th><th class="num">{{ x.a }}</th><th class="num">{{ x.b }}</th><th>Note</th></tr></thead>
 <tbody>{% for label, va, vb, n in x.stats %}<tr><td>{{ label }}</td><td class="num mono">{{ "—" if va is none else va }}</td>

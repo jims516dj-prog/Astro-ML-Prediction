@@ -224,7 +224,8 @@ def explain(f: dict, m: dict) -> dict:
         ("Last 5 matches won (share)", num("a_form5"), num("b_form5"), "see the last five below"),
         ("Sets won share, last 5 matches (A − B)", num("sets5_diff"), None, ""),
         ("Last 5 meetings: wins A − B", num("h2h5_diff", 0), None, "+1 = A won the last meeting" if f.get("h2h_last") == 1
-         else ("+1 = B won the last meeting" if f.get("h2h_last") == -1 else "no meeting yet")),
+         else ("+1 = B won the last meeting" if f.get("h2h_last") == -1
+               else ("unknown at this level" if _v(f, "h2h_last") is None else "no meeting yet"))),
         ("Form: share of the last 10 matches won", num("a_form"), num("b_form"), ""),
         ("Sets won share, last 30 sets (A − B)", num("setform_diff"), None, ""),
         ("Days since last match", num("a_rest", 1), num("b_rest", 1), "60 = 60+ days or none"),
@@ -241,7 +242,7 @@ def explain(f: dict, m: dict) -> dict:
         ("Format", "best of 5" if f.get("best_of5") else "best of 3", None,
          ("Grand Slam · " if f.get("slam") else "") + ("qualifying" if f.get("qualifying") else f"round {int(f.get('round_no') or 0)}")),
     ]
-    return {"stats": stats, "a": a, "b": b}
+    return {"stats": stats, "a": a, "b": b, "uncovered": not features.covered(m) and _v(f, "a_rest") is None}   # forecasts sealed before keep theirs
 
 
 def day_of(rec: dict) -> dict:
@@ -537,7 +538,7 @@ def tennis_analyze(request: Request, a: str = "", b: str = "", when: str = "", s
         tr = tour or s["tours"].get(ids["a"]) or "atp"
         m = {"id": "analyze", "p1_id": ids["a"], "p2_id": ids["b"], "p1": a.strip(), "p2": b.strip(), "date": pd.Timestamp(t),
              "surface": surface if surface in ("hard", "clay", "grass") else "hard", "best_of": 5 if best_of == 5 else 3,
-             "tour": tr, "round": round, "event": event, "venue": venue,
+             "tour": tr, "round": round, "event": event, "venue": venue, "level": features.level_of_event(event),
              "p1_seed": int(a_seed) if a_seed.isdigit() else None, "p2_seed": int(b_seed) if b_seed.isdigit() else None,
              "p1_country": (pdict.get(ids["a"]) or {}).get("country"), "p2_country": (pdict.get(ids["b"]) or {}).get("country")}
         f = features.row(s["st"], m, pdict)

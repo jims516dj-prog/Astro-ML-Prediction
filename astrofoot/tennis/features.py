@@ -7,6 +7,8 @@ from collections import defaultdict, deque
 from dataclasses import dataclass, field
 from datetime import datetime
 
+import re
+
 import numpy as np
 import pandas as pd
 
@@ -175,8 +177,35 @@ def row(st: State, m: dict, players: dict) -> dict:
     meet = list(st.meet[frozenset((a, b))])
     out["h2h5_diff"] = float(sum(w == a for w in meet) - sum(w == b for w in meet))
     out["h2h_last"] = 0.0 if not meet else (1.0 if meet[-1] == a else -1.0)
+    if not covered(m):
+        out.update(dict.fromkeys(HISTORY_FEATURES, np.nan))
     out.update(day_features(pa, pb, m["p1"], m["p2"], when, m.get("venue")))
     return out
+
+
+# Inputs read from a player's match history. The history is ESPN's ATP / WTA tour matches (plus the few Challenger /
+# ITF forecasts this app settled), so at Challenger and ITF level it misses most of what the players have played:
+# there rest came out as "60+ days", experience and load as zero and form from years-old tour matches. At those
+# levels these inputs are left unknown (NaN, which the boosted trees handle as its own case) instead of wrong.
+HISTORY_FEATURES = ("a_rest", "b_rest", "load_diff", "n_diff", "a_n_log", "b_n_log", "a_form", "b_form", "form_diff",
+                    "setform_diff", "a_form5", "b_form5", "form5_diff", "sets5_diff", "h2h_diff", "h2h_n", "h2h5_diff",
+                    "h2h_last")
+UNCOVERED_LEVELS = ("challenger", "itf")
+
+
+def level_of_event(event: str | None) -> str | None:
+    """'challenger' or 'itf' from an event name ("Challenger Lima", "M15 Antalya", "W25 Nules", "ITF …"), else None."""
+    e = str(event or "")
+    if re.search(r"(?i)challenger", e):
+        return "challenger"
+    if re.search(r"(?i)\bITF\b|\b[MW](15|25|35|40|50|60|75|80|100)\b", e):
+        return "itf"
+    return None
+
+
+def covered(m: dict) -> bool:
+    """Whether the match history covers this level of play (ATP / WTA tour and team events: yes)."""
+    return str(m.get("level") or "").lower() not in UNCOVERED_LEVELS
 
 
 def day_features(pa: dict, pb: dict, name_a: str, name_b: str, when, venue_name: str | None = None) -> dict:
