@@ -325,13 +325,31 @@ def _bundle_groups():
 
 
 # ----------------------------------------------------------------------------- pages
-DAY_FAVOURS = [("", "any"), ("both", "astrology and numerology favour the same player"),
+DAY_FAVOURS = [("", "any"), ("all4", "all four favour the same player (astrology, numerology, both machine-learned)"),
+               ("both", "astrology and numerology favour the same player"),
                ("split", "they favour different players"), ("astro", "astrology favours a player"),
                ("num", "numerology favours a player")]
+NO_EDGE_PTS = 0.05   # a machine-learned edge smaller than this (points on an even set) is shown as "no edge"
 
 
-def day_favours_ok(dv: dict, want: str) -> bool:
+def _ml_side(logit) -> int:
+    """1 or 2: the player a machine-learned edge favours (as the match page's tiles show it), 0 for no edge."""
+    pts = edge_pts(logit)
+    return 0 if pts is None or abs(pts) < NO_EDGE_PTS else (1 if pts > 0 else 2)
+
+
+def all_four(dv: dict, p: dict | None) -> int:
+    """1 or 2 when the traditional astrology and numerology readings and the machine-learned astrology and
+    numerology edges all favour the same player; else 0 (a level reading or no edge counts as not agreeing)."""
+    p = p or {}
+    sides = {dv["astro"]["favours"], dv["num"]["favours"], _ml_side(p.get("astro_edge")), _ml_side(p.get("num_edge"))}
+    return sides.pop() if len(sides) == 1 and 0 not in sides else 0
+
+
+def day_favours_ok(dv: dict, want: str, p: dict | None = None) -> bool:
     a, n = dv["astro"]["favours"], dv["num"]["favours"]
+    if want == "all4":
+        return all_four(dv, p) > 0
     return {"both": a > 0 and a == n, "split": a > 0 and n > 0 and a != n, "astro": a > 0, "num": n > 0}.get(want, True)
 
 
@@ -350,7 +368,9 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
         r["dayv"] = day_of(r)
     favours = favours if favours in dict(DAY_FAVOURS) else ""
     shown_all = len(rows)
-    rows = [r for r in rows if day_favours_ok(r["dayv"], favours) and level_ok(r, level)]
+    for r in rows:
+        r["all4"] = all_four(r["dayv"], r.get("p"))
+    rows = [r for r in rows if day_favours_ok(r["dayv"], favours, r.get("p")) and level_ok(r, level)]
     rep = model.load_report()
     return _T().TemplateResponse(request, "tennis_home.html", {
         "favours": favours, "favour_choices": DAY_FAVOURS, "hidden": shown_all - len(rows), "level": level,
@@ -874,10 +894,11 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
                 or (event and event.lower() not in r["event"].lower()):
             continue
         r["dayv"] = day_of(r)
+        r["all4"] = all_four(r["dayv"], r.get("p"))
         r["pick"] = pick_of(r, market)
         k = r["pick"]
         if k["p"] < mp or (astro and (astro == "yes") != k["astro"]) or (num and (num == "yes") != k["num"]) \
-                or not day_favours_ok(r["dayv"], favours) or not level_ok(r, level):
+                or not day_favours_ok(r["dayv"], favours, r.get("p")) or not level_ok(r, level):
             continue
         if hit:
             if k["hit"] is None:
