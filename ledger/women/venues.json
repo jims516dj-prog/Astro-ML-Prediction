@@ -29,10 +29,20 @@
   "lon": 2.21361111,
   "source": "wikipedia: Ciutat Esportiva Dani Jarque"
  },
+ "Emirates Stadium | London": {
+  "lat": 51.5550404,
+  "lon": -0.1083997,
+  "source": "openstreetmap: Emirates Stadium, 75, Drayton Park, Finsbury Park, London Borough of Islington, Greater London, England, N5 1BU, United Kingdom"
+ },
  "Estadio Akron | Guadalajara": {
   "lat": 20.68166667,
   "lon": -103.46277778,
   "source": "wikipedia: Estadio Akron"
+ },
+ "Estadio BBVA | Guadalupe": {
+  "lat": 25.6691106,
+  "lon": -100.2444506,
+  "source": "openstreetmap: Estadio BBVA, Avenida Pablo Livas, La Quinta, Guadalupe, Nuevo León, 67176, México"
  },
  "Estadio Banorte | Mexico City": {
   "lat": 19.303,
@@ -43,6 +53,11 @@
   "lat": 20.10527778,
   "lon": -98.75611111,
   "source": "wikipedia: Estadio Hidalgo"
+ },
+ "Estadio Nemesio Díez Riega | Toluca": {
+  "lat": 19.3278,
+  "lon": -99.66024,
+  "source": "city: Toluca"
  },
  "Estadio Olímpico Benito Juárez | Ciudad Juárez": {
   "lat": 31.75305556,
@@ -68,6 +83,11 @@
   "lat": 51.56027778,
   "lon": -0.01277778,
   "source": "wikipedia: Brisbane Road"
+ },
+ "Icahn Stadium | New York City, New York": {
+  "lat": 40.7933017,
+  "lon": -73.9252817,
+  "source": "openstreetmap: Icahn Stadium, Randalls Island Greenway, Manhattan Community Board 11, Manhattan, New York County, New York, 10035, United States"
  },
  "King Power at Den Dreef Stadion | Leuven": {
   "lat": 50.8684105,
@@ -138,5 +158,15 @@
   "lat": 45.58277778,
   "lon": 9.30805556,
   "source": "wikipedia: Stadio Brianteo"
+ },
+ "Victoria Road | Dagenham": {
+  "lat": 51.5475442,
+  "lon": 0.1598273,
+  "source": "openstreetmap: Victoria Road, Dagenham, London Borough of Barking and Dagenham, Greater London, England, RM10 7XL, United Kingdom"
+ },
+ "Villa Park | Birmingham": {
+  "lat": 52.5091264,
+  "lon": -1.8850354,
+  "source": "openstreetmap: Villa Park, Trinity Road, Aston, Birmingham, West Midlands, England, B6 6HE, United Kingdom"
  }
 }

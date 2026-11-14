@@ -1,18 +1,38 @@
 {
+ "Brommapojkarna W": {
+  "lat": 59.36222222,
+  "lon": 17.85166667,
+  "source": "wikipedia: Grimsta IP"
+ },
  "Elfsborg W": {
   "lat": 57.73783,
   "lon": 12.94076,
   "source": "thesportsdb: Borås Arena, Borås"
+ },
+ "Eskilstuna United W": {
+  "lat": 59.37055556,
+  "lon": 16.495,
+  "source": "wikipedia: Tunavallen"
  },
  "Hamburger SV W": {
   "lat": 53.588637,
   "lon": 9.9442513,
   "source": "openstreetmap: Sportpark Eimsbüttel, Hagenbeckstraße, Stellingen, Eimsbüttel, Hamburg, 22527, Deutschland"
  },
+ "Hammarby W": {
+  "lat": 59.3064065,
+  "lon": 18.0849898,
+  "source": "openstreetmap: Hammarby idrottsplats, Tullgårdsgatan, Södermalm, Södermalms stadsdelsområde, Stockholm, Stockholms kommun, Stockholms län, 106 68, Sverige"
+ },
  "Häcken II W": {
   "lat": 57.70716,
   "lon": 11.96679,
   "source": "thesportsdb: Bravida Arena, Gothenburg, Sweden"
+ },
+ "Häcken W": {
+  "lat": 57.71916667,
+  "lon": 11.93055556,
+  "source": "wikipedia: Nordic Wellness Arena"
  },
  "Krasnodar W": {
   "lat": 45.04484,
@@ -23,6 +43,16 @@
   "lat": 55.8065,
   "lon": 37.7377,
   "source": "wikipedia: Sapsan Arena"
+ },
+ "Malmö FF W": {
+  "lat": 55.58361111,
+  "lon": 12.98780556,
+  "source": "wikipedia: Stadion, Malmö"
+ },
+ "Norrköping W": {
+  "lat": 58.5843928,
+  "lon": 16.1720584,
+  "source": "openstreetmap: Idrottsparken, Matchgatan, Såpkullen, Norrköping, Norrköpings kommun, Östergötlands län, 601 86, Sverige"
  },
  "Osasuna": {
   "lat": 42.796667,
@@ -53,6 +83,11 @@
   "lat": 55.37514,
   "lon": 13.15691,
   "source": "city: Trelleborg"
+ },
+ "Uppsala W": {
+  "lat": 59.84958,
+  "lon": 17.64532,
+  "source": "wikipedia: Studenternas IP"
  },
  "Yenisey W": {
   "lat": 56.01839,

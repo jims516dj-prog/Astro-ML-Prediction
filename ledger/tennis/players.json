@@ -5118,5 +5118,75 @@
 "hand": "",
 "height_in": null,
 "country": ""
+},
+{
+"id": "lta:2365",
+"name": "Edoardo Cherie Ligniere",
+"full_name": "Edoardo Cherie Ligniere",
+"dob": "2004-06-19",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "14199",
+"name": "Thasaporn Naklo",
+"full_name": "Thasaporn Naklo",
+"dob": "2001-08-20",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2685",
+"name": "Xi Luo",
+"full_name": "Xi Luo",
+"dob": "2007-12-16",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2601",
+"name": "Lavinia Luciano",
+"full_name": "Lavinia Luciano",
+"dob": "2006-12-24",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:1921",
+"name": "Noritaka Koizumi",
+"full_name": "Noritaka Koizumi",
+"dob": "2003-06-11",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:11818",
+"name": "Valeriya Yushchenko",
+"full_name": "Valeriya Yushchenko",
+"dob": "1999-06-26",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:2230",
+"name": "Julien Penzlin",
+"full_name": "Julien Penzlin",
+"dob": "2002-06-14",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
 }
 ]

@@ -1,4 +1,39 @@
 {
- "bought": {},
- "events": {}
+ "bought": {
+  "tennis_atp_finals": "2026-11-14T01:00:10+00:00"
+ },
+ "events": {
+  "2e7a66dfb5caacad9c224d3eaf230dee": {
+   "at": "2026-11-14T01:00:10+00:00",
+   "away": "Arthur Fils",
+   "away_odds": 2.381111111111111,
+   "home": "Ben Shelton",
+   "home_odds": 1.5555555555555556,
+   "source": "the-odds-api.com, average of 9 bookmakers"
+  },
+  "7ac3bf138012785e65835d1481524d5c": {
+   "at": "2026-11-14T01:00:10+00:00",
+   "away": "Flavio Cobolli",
+   "away_odds": 4.21875,
+   "home": "Daniil Medvedev",
+   "home_odds": 1.205,
+   "source": "the-odds-api.com, average of 8 bookmakers"
+  },
+  "a09dfd51fadc5c32dd0adb4f799b8628": {
+   "at": "2026-11-14T01:00:10+00:00",
+   "away": "Rafael Jodar",
+   "away_odds": 2.888888888888889,
+   "home": "Alexander Zverev",
+   "home_odds": 1.3944444444444442,
+   "source": "the-odds-api.com, average of 9 bookmakers"
+  },
+  "c81851847baf5e3a479993ec167a8e2a": {
+   "at": "2026-11-14T01:00:10+00:00",
+   "away": "Frances Tiafoe",
+   "away_odds": 5.84375,
+   "home": "Carlos Alcaraz",
+   "home_odds": 1.1187500000000001,
+   "source": "the-odds-api.com, average of 8 bookmakers"
+  }
+ }
 }
