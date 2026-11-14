@@ -1,8 +1,8 @@
 # Tennis live track record
 
-Forecasts: 427 · settled before-start forecasts: 173
+Forecasts: 427 · settled before-start forecasts: 174
 
-- Sets (favoured player per set): 227/401 (56.6%), expected 61.1%
-- First set: 101/173 (58.4%), expected 60.3%
-- Match: 101/173 (58.4%), expected 64.0%
-- Underdog wins at least one set: 105/173 (60.7%), expected 54.5%
+- Sets (favoured player per set): 229/403 (56.8%), expected 61.2%
+- First set: 102/174 (58.6%), expected 60.4%
+- Match: 102/174 (58.6%), expected 64.1%
+- Underdog wins at least one set: 105/174 (60.3%), expected 54.4%

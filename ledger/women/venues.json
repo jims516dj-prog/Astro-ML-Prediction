@@ -29,6 +29,11 @@
   "lon": 2.21361111,
   "source": "wikipedia: Ciutat Esportiva Dani Jarque"
  },
+ "De Grolsch Veste | Enschede": {
+  "lat": 52.23666667,
+  "lon": 6.8375,
+  "source": "wikipedia: De Grolsch Veste"
+ },
  "Emirates Stadium | London": {
   "lat": 51.5550404,
   "lon": -0.1083997,
@@ -138,6 +143,11 @@
   "lat": 43.30138889,
   "lon": -1.97361111,
   "source": "wikipedia: Anoeta Stadium"
+ },
+ "Sportcomplex Varkenoord Hoofdveld | Rotterdam": {
+  "lat": 51.9225,
+  "lon": 4.47917,
+  "source": "city: Rotterdam"
  },
  "Spotify Camp Nou | Barcelona": {
   "lat": 41.38879,

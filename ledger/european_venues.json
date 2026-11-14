@@ -304,6 +304,11 @@
   "lon": -3.84055556,
   "source": "wikipedia: Estadio Municipal de Santo Domingo"
  },
+ "CD Malacateco": {
+  "lat": 14.9117513,
+  "lon": -92.0601464,
+  "source": "openstreetmap: Estadio Municipal Santa Lucía, 2a Calle, Malacatan, Casco Urbano., San Sebastián, Malacatán, San Marcos, 12015, Guatemala"
+ },
  "CD Pamplona": {
   "lat": 42.7905115,
   "lon": -1.6222418,
@@ -1318,6 +1323,11 @@
   "lat": 31.3421385,
   "lon": 34.3046543,
   "source": "national team: Bani Suheila (largest city)"
+ },
+ "Panama": {
+  "lat": 8.9936,
+  "lon": -79.51973,
+  "source": "city: Panama City"
  },
  "Panathinaikos": {
   "lat": 37.98376,
