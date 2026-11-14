@@ -808,11 +808,35 @@ def pick_of(r: dict, market: str, side: int | None = None) -> dict:
             "num": d["num"]["favours"] == side, "num_any": d["num"]["favours"] != 0}
 
 
+TOP_STATUS = [("", "pending and completed"), ("pending", "pending"), ("settled", "completed"), ("void", "void")]
+TOP_AGREE = [("", "any"), ("same", "astrology and numerology favour the same player"),
+             ("pick", "astrology and numerology both favour the pick"),
+             ("all4", "all four favour the pick (with both machine-learned)")]
+
+
+def _agree_ok(r: dict, want: str) -> bool:
+    """The day readings against the pick: 'same' = astrology and numerology favour the same player (either one),
+    'pick' = both favour the pick, 'all4' = they and both machine-learned edges favour the pick."""
+    if not want:
+        return True
+    d, side = r["dayv"], r["pick"]["side"]
+    a, n = d["astro"]["favours"], d["num"]["favours"]
+    if want == "same":
+        return a > 0 and a == n
+    if want == "pick":
+        return a == n == side
+    if want == "all4":
+        return all_four(d, r.get("p")) == side
+    return True
+
+
 @router.get("/tennis/top", response_class=HTMLResponse)
 def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
-               num: str = "", odds: str = "", level: str = "", role: str = ""):
+               num: str = "", odds: str = "", level: str = "", role: str = "", agree: str = "", status: str = ""):
     market = market if market in dict(TOP_MARKETS) else "win_set"
-    recs = [r for r in records() if r["status"] != "void"]
+    agree = agree if agree in dict(TOP_AGREE) else ""
+    status = status if status in dict(TOP_STATUS) else ""
+    recs = [r for r in records() if (r["status"] == status if status else r["status"] != "void")]
     for r in recs:
         r["dayv"] = day_of(r)
     if market == "win_set":                           # each player of a match is a pick of their own
@@ -828,7 +852,7 @@ def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: s
     def keep(r):
         k = r["pick"]
         return ((not tour or r["tour"] == tour) and level_ok(r, level) and k["p"] >= mp
-                and (role not in ("favourite", "underdog") or k["role"] == role)
+                and (role not in ("favourite", "underdog") or k["role"] == role) and _agree_ok(r, agree)
                 and (not astro or (astro == "yes") == k["astro"]) and (not num or (num == "yes") == k["num"])
                 and (not odds or bool(r.get("odds"))))
 
@@ -854,10 +878,11 @@ def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: s
     return _T().TemplateResponse(request, "tennis_top.html", {
         "rows": rows, "market": market, "markets": TOP_MARKETS, "day": day, "days": days, "tour": tour, "tours": TOUR,
         "min_p": min_p, "astro": astro, "num": num, "odds": odds, "agree": AGREE, "level": level, "levels": LEVELS,
-        "role": role,
+        "role": role, "agree_both": agree, "agree_choices": TOP_AGREE, "status": status, "statuses": TOP_STATUS,
         "score_all": tally(pool), "score_day": tally(rows), "by_view": by_view, "verdicts": rep.get("verdicts"),
         "qs": urllib.parse.urlencode({k: v for k, v in {"day": day, "tour": tour, "min_p": min_p, "astro": astro, "num": num,
-                                                         "odds": odds, "level": level, "role": role}.items() if v}),
+                                                         "odds": odds, "level": level, "role": role, "agree": agree,
+                                                         "status": status}.items() if v}),
         "page": "tennis_top"})
 
 

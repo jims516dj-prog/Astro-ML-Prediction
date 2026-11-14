@@ -40,6 +40,10 @@ bookmaker odds where The Odds API prices the match.</p>
     {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if astro == v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Numerology for the day<select name="num" onchange="this.form.submit()">
     {% for v, l in agree %}<option value="{{ v }}" {{ "selected" if num == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Astrology and numerology<select name="agree" onchange="this.form.submit()">
+    {% for v, l in agree_choices %}<option value="{{ v }}" {{ "selected" if agree_both == v }}>{{ l }}</option>{% endfor %}</select></label>
+  <label>Status<select name="status" onchange="this.form.submit()">
+    {% for v, l in statuses %}<option value="{{ v }}" {{ "selected" if status == v }}>{{ l }}</option>{% endfor %}</select></label>
   <label>Odds<select name="odds" onchange="this.form.submit()"><option value="">any</option>
     <option value="1" {{ "selected" if odds }}>priced by the bookmakers only</option></select></label>
   <label>Level<select name="level" onchange="this.form.submit()">
@@ -59,7 +63,7 @@ bookmaker odds where The Odds API prices the match.</p>
 <td class="num"><strong>{{ fmt_pct(k.p) }}</strong></td>
 <td>{% if k.astro %}<span class="badge ok">favours</span>{% elif k.astro_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>
 <td>{% if k.num %}<span class="badge ok">favours</span>{% elif k.num_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>
-<td class="mono">{% if k.hit is not none %}{{ r.result.score }}<br>{% if market == "set" %}{{ k.hit }}/{{ k.n }} sets{% else %}{{ "✓" if k.hit else "✗" }}{% endif %}{% else %}pending{% endif %}</td></tr>
+<td class="mono">{% if r.status == "void" %}<span class="badge">void</span>{% if r.result and r.result.void_reason %}<br><span class="small">{{ r.result.void_reason }}</span>{% endif %}{% elif k.hit is not none %}{{ r.result.score }}<br>{% if market == "set" %}{{ k.hit }}/{{ k.n }} sets{% else %}{{ "✓" if k.hit else "✗" }}{% endif %}{% else %}pending{% endif %}</td></tr>
 {% else %}<tr><td colspan="9">No picks match these filters{% if day != "all" %} for {{ day_label(day) }}{% endif %}.</td></tr>{% endfor %}</tbody>
 </table></div>
 
