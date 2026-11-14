@@ -44,6 +44,11 @@
   "lon": -103.46277778,
   "source": "wikipedia: Estadio Akron"
  },
+ "Estadio Antonio Puchades | Paterna": {
+  "lat": 39.5425,
+  "lon": -0.45555556,
+  "source": "wikipedia: Ciudad Deportiva de Paterna"
+ },
  "Estadio BBVA | Guadalupe": {
   "lat": 25.6691106,
   "lon": -100.2444506,
@@ -118,6 +123,11 @@
   "lat": 53.491,
   "lon": -2.529,
   "source": "wikipedia: Leigh Sports Village"
+ },
+ "MAC³PARK Stadion | Zwolle": {
+  "lat": 52.51722222,
+  "lon": 6.12083333,
+  "source": "wikipedia: MAC3PARK Stadion"
  },
  "McKellar Park | Canberra": {
   "lat": -35.28346,

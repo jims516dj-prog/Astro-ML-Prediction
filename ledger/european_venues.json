@@ -584,6 +584,11 @@
   "lon": -75.72222,
   "source": "city"
  },
+ "Deportivo San Pedro": {
+  "lat": 14.96807,
+  "lon": -91.76172,
+  "source": "city: San Pedro Sacatepéquez"
+ },
  "Deren": {
   "lat": 47.90213889,
   "lon": 106.91625,

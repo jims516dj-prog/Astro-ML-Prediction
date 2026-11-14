@@ -35,3 +35,8 @@
 {"goals_away":0,"goals_home":1,"match_key":"bffdf1a57a28","settled_at":"2026-11-14T18:42:22+00:00","sha256":"295ce68bede84609113ac39a042a85117482028cd4431d1a65c0c5a6dbb28542","source":"espn.com"}
 {"goals_away":0,"goals_home":0,"match_key":"5de484f49c0f","settled_at":"2026-11-14T18:42:22+00:00","sha256":"959f5444da734cf1fc693f5f1ca6b566e21223ad31694275253f7ee374693ae1","source":"espn.com"}
 {"goals_away":3,"goals_home":3,"match_key":"8be9f21c07c1","settled_at":"2026-11-14T18:42:22+00:00","sha256":"b019c8cbc1b1758feee4b3f54cbb28bac3336d8d3b99ae0e9cdfa3ae911c16ac","source":"kickoffapi.com"}
+{"match_key":"9860d2927a9e","reason":"no result from football-data.org or ESPN within 3 days: postponed, abandoned or not covered","settled_at":"2026-11-14T21:32:36+00:00","sha256":"f0f7eb69e745bb230106cfc3a2865128689a720f3311550ce9fd5387408126ee","source":"none","void":true}
+{"goals_away":1,"goals_home":2,"match_key":"9bccf9cef11a","settled_at":"2026-11-14T21:32:36+00:00","sha256":"c37dd2696e4a4fbfe8fb17469fb8808732abd31d11746d753c81ab142b49adb7","source":"kickoffapi.com"}
+{"goals_away":3,"goals_home":0,"match_key":"14f1f104e60f","settled_at":"2026-11-14T21:32:36+00:00","sha256":"805042a03a3e7ccf0a4e076f9854da963f6303478a0d0de5c223bb6083269126","source":"kickoffapi.com"}
+{"goals_away":3,"goals_home":1,"match_key":"91f82d484322","settled_at":"2026-11-14T21:32:36+00:00","sha256":"73422b33751d25b65e8ed802489066a7ec643e1ed6ee18b9dd1507abbb8e67c5","source":"kickoffapi.com"}
+{"goals_away":1,"goals_home":0,"match_key":"72b44086554f","settled_at":"2026-11-14T21:32:36+00:00","sha256":"003bb0a53e376bf16cc8bc6d39b7648b71ffcec3b1fcb240bee621b9c101f23f","source":"espn.com"}

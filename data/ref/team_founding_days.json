@@ -1750,6 +1750,7 @@
 "date": "1944-02-12",
 "name": "Deportivo Pereira"
 },
+"Deportivo San Pedro": null,
 "Derby": {
 "date": "1884-02-05",
 "name": "Derby County F.C."
@@ -3755,6 +3756,10 @@
 "Maritimo": {
 "date": "1910-09-20",
 "name": "C.S. Mar\u00edtimo"
+},
+"Marquense": {
+"date": "1958-04-01",
+"name": "Deportivo Marquense"
 },
 "Marseille": {
 "date": "1899-08-31",

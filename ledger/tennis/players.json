@@ -5188,5 +5188,25 @@
 "hand": "",
 "height_in": null,
 "country": ""
+},
+{
+"id": "19372",
+"name": "Camila Rodero Contreras",
+"full_name": "Camila Rodero Contreras",
+"dob": null,
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": "Chile"
+},
+{
+"id": "19373",
+"name": "Samantha Alvarez",
+"full_name": "Samantha Alvarez",
+"dob": null,
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": "Chile"
 }
 ]
