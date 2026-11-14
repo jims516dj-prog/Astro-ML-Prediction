@@ -743,17 +743,51 @@ def tennis_dataset(request: Request, tour: str = "", surface: str = "", year: st
 
 
 # ----------------------------------------------------------------------------- top picks
-TOP_MARKETS = [("set", "Sets"), ("first", "First set"), ("match", "Match"), ("one_set", "Wins at least one set"),
-               ("dog_set", "Underdog wins a set")]
+TOP_MARKETS = [("win_set", "Wins a set (each player)"), ("dog_set", "Underdog wins a set"), ("set", "Sets"),
+               ("first", "First set"), ("match", "Match"), ("one_set", "Wins at least one set (likelier player)")]
 AGREE = [("", "any"), ("yes", "favours the pick"), ("no", "does not favour it")]
 
 
-def pick_of(r: dict, market: str) -> dict:
-    """The pick of one forecast in one market: which player, its expected probability and, once played, the result."""
+def set_drivers(r: dict, side: int) -> list[tuple[str, int]]:
+    """What helps (+1) or hurts (−1) this player's chance of winning a set, from the factors that did so on 28,000
+    unseen tour matches beyond the rating gap: experience, best of five, recent match load, a long layoff (the
+    player's or the opponent's), a women's underdog. History-based factors only where the history covers the level."""
+    f, out = r.get("features") or {}, []
+    me, other = ("a", "b") if side == 1 else ("b", "a")
+    sign = 1 if side == 1 else -1
+    num = lambda k: (lambda v: None if v is None or (isinstance(v, float) and math.isnan(v)) else float(v))(f.get(k))  # noqa: E731
+    if f.get("best_of5"):
+        out.append(("best of five", 1))
+    if features.covered(r):
+        n = num("n_diff")
+        if n is not None and abs(n) >= 0.7:
+            out.append(("more experienced" if n * sign > 0 else "less experienced", 1 if n * sign > 0 else -1))
+        load = num("load_diff")
+        if load is not None and abs(load) >= 2:
+            out.append(("busier lately" if load * sign > 0 else "less match play lately", 1 if load * sign > 0 else -1))
+        mine, theirs = num(f"{me}_rest"), num(f"{other}_rest")
+        if mine is not None and mine >= 45:
+            out.append(("long layoff", -1))
+        if theirs is not None and theirs >= 45:
+            out.append(("opponent back from a layoff", 1))
+    elif r.get("level") in features.UNCOVERED_LEVELS:
+        out.append(("form and rest unknown at this level", 0))
+    if r.get("tour") == "wta" and side != r.get("match_pick"):
+        out.append(("women's underdog", -1))
+    return out
+
+
+def pick_of(r: dict, market: str, side: int | None = None) -> dict:
+    """The pick of one forecast in one market: which player, its expected probability and, once played, the result.
+    'win_set' takes the player given (each player of a match is a pick of their own)."""
     e = r["e"]
-    side = {"set": r["set_pick"], "first": r["first_pick"], "match": r["match_pick"], "one_set": r["one_pick"],
-            "dog_set": r["dog"]}[market]
-    key = {"set": "set", "first": "first", "match": "match", "one_set": "one_set", "dog_set": "one_set"}[market]
+    if market == "win_set":
+        side = side or 1
+    else:
+        side = {"set": r["set_pick"], "first": r["first_pick"], "match": r["match_pick"], "one_set": r["one_pick"],
+                "dog_set": r["dog"]}[market]
+    key = {"set": "set", "first": "first", "match": "match", "one_set": "one_set", "dog_set": "one_set",
+           "win_set": "one_set"}[market]
     p = e[("a_" if side == 1 else "b_") + key]
     hit = n = None
     if r["status"] == "settled":
@@ -768,18 +802,24 @@ def pick_of(r: dict, market: str) -> dict:
             hit, n = int(str(side) in sw), 1
     d = r["dayv"]
     return {"side": side, "player": r["p1"] if side == 1 else r["p2"], "p": p, "hit": hit, "n": n,
+            "role": "favourite" if side == r.get("match_pick") else "underdog",
+            "drivers": set_drivers(r, side) if market in ("win_set", "dog_set", "one_set") else [],
             "astro": d["astro"]["favours"] == side, "astro_any": d["astro"]["favours"] != 0,
             "num": d["num"]["favours"] == side, "num_any": d["num"]["favours"] != 0}
 
 
 @router.get("/tennis/top", response_class=HTMLResponse)
-def tennis_top(request: Request, market: str = "set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
-               num: str = "", odds: str = "", level: str = ""):
-    market = market if market in dict(TOP_MARKETS) else "set"
+def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
+               num: str = "", odds: str = "", level: str = "", role: str = ""):
+    market = market if market in dict(TOP_MARKETS) else "win_set"
     recs = [r for r in records() if r["status"] != "void"]
     for r in recs:
         r["dayv"] = day_of(r)
-        r["pick"] = pick_of(r, market)
+    if market == "win_set":                           # each player of a match is a pick of their own
+        recs = [{**r, "pick": pick_of(r, market, side)} for r in recs for side in (1, 2)]
+    else:
+        for r in recs:
+            r["pick"] = pick_of(r, market)
     try:
         mp = float(min_p) if min_p else 0.0
     except ValueError:
@@ -788,6 +828,7 @@ def tennis_top(request: Request, market: str = "set", day: str = "", tour: str =
     def keep(r):
         k = r["pick"]
         return ((not tour or r["tour"] == tour) and level_ok(r, level) and k["p"] >= mp
+                and (role not in ("favourite", "underdog") or k["role"] == role)
                 and (not astro or (astro == "yes") == k["astro"]) and (not num or (num == "yes") == k["num"])
                 and (not odds or bool(r.get("odds"))))
 
@@ -813,9 +854,10 @@ def tennis_top(request: Request, market: str = "set", day: str = "", tour: str =
     return _T().TemplateResponse(request, "tennis_top.html", {
         "rows": rows, "market": market, "markets": TOP_MARKETS, "day": day, "days": days, "tour": tour, "tours": TOUR,
         "min_p": min_p, "astro": astro, "num": num, "odds": odds, "agree": AGREE, "level": level, "levels": LEVELS,
+        "role": role,
         "score_all": tally(pool), "score_day": tally(rows), "by_view": by_view, "verdicts": rep.get("verdicts"),
         "qs": urllib.parse.urlencode({k: v for k, v in {"day": day, "tour": tour, "min_p": min_p, "astro": astro, "num": num,
-                                                         "odds": odds, "level": level}.items() if v}),
+                                                         "odds": odds, "level": level, "role": role}.items() if v}),
         "page": "tennis_top"})
 
 

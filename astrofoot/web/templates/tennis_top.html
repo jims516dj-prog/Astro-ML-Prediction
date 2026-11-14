@@ -7,7 +7,11 @@
 <nav class="seg" aria-label="Market">
   {% for k, label in markets %}<a href="/tennis/top?market={{ k }}{% if qs %}&{{ qs }}{% endif %}" class="{{ 'on' if market == k }}">{{ label }}</a>{% endfor %}
 </nav>
-<p class="lede">{% if market == "set" %}Every forecast match, ranked by how likely the favoured player is to win <em>any given set</em>.
+<p class="lede">{% if market == "win_set" %}Every player in every forecast match, ranked by their chance of winning <em>at least one
+set</em>: favourites and underdogs alike, so both players of a match can appear. Beside each pick, what helps or hurts that
+chance beyond the rating gap, from what did so on 28,000 unseen tour matches: experience, best of five, recent match play, a
+long layoff (theirs or the opponent's) and, for women, being the underdog.
+{% elif market == "set" %}Every forecast match, ranked by how likely the favoured player is to win <em>any given set</em>.
 Once played, every set counts: a 6-3 4-6 6-2 win is 2 of 3.{% elif market == "first" %}Ranked by how likely the pick is to win
 the <em>first set</em>.{% elif market == "match" %}Ranked by how likely the pick is to win the <em>match</em>.{% elif market == "one_set" %}Ranked
 by the player most likely to win <em>at least one set</em> (usually the favourite: losing in straight sets is rarer than it
@@ -28,6 +32,8 @@ bookmaker odds where The Odds API prices the match.</p>
     {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
   <label>Tour<select name="tour" onchange="this.form.submit()"><option value="">Both</option>
     {% for k, l in tours.items() %}<option value="{{ k }}" {{ "selected" if tour == k }}>{{ l }}</option>{% endfor %}</select></label>
+  {% if market in ("win_set", "one_set") %}<label>Role<select name="role" onchange="this.form.submit()">
+    {% for v, l in [("", "any"), ("favourite", "favourites"), ("underdog", "underdogs")] %}<option value="{{ v }}" {{ "selected" if role == v }}>{{ l }}</option>{% endfor %}</select></label>{% endif %}
   <label>Minimum probability<select name="min_p" onchange="this.form.submit()"><option value="">any</option>
     {% for v in ("0.55", "0.6", "0.65", "0.7", "0.75", "0.8", "0.85", "0.9") %}<option value="{{ v }}" {{ "selected" if min_p == v }}>{{ (v|float * 100)|round|int }}%+</option>{% endfor %}</select></label>
   <label>Astrology for the day<select name="astro" onchange="this.form.submit()">
@@ -47,7 +53,9 @@ bookmaker odds where The Odds API prices the match.</p>
 <tr><td class="num">{{ loop.index }}</td><td class="small" style="white-space:nowrap">{{ r.when.label }}{% if r.when.moved %}<br><span class="badge" title="ESPN moved it from {{ r.start_utc[11:16] }} GMT when forecast">moved</span>{% endif %}</td>
 <td>{{ r.event }}<br><span class="small">{{ r.level_name or r.tour|upper }} · {{ r.surface }} · {{ r.round }}</span></td>
 <td><a href="/tennis/match/{{ r.match_id }}">{{ r.p1 }} v {{ r.p2 }}</a>{% set cn = {"wta125": "WTA 125", "challenger": "Challenger", "itf_w": "ITF", "itf_m": "ITF", "team": "team event"}.get(r.cat) %}{% if cn %} <span class="badge" title="{{ 'from livetennisapi.com (free tier)' if r.match_id.startswith('lta:') else 'from ESPN' }}">{{ cn }}</span>{% endif %}{% if r.result_by_you %} <span class="badge" title="result entered by you">your result</span>{% endif %}{% if r.manual %} <span class="badge" title="added by you on Analyze: not sealed, not in the official track record">manual</span>{% endif %}{% if r.odds %} <span class="badge" title="{{ r.odds.source }}">{{ "your odds" if r.odds.manual else "odds" }}</span>{% elif r.status == "pending" %} <a class="small" href="/tennis/match/{{ r.match_id }}#odds">add odds</a>{% endif %}</td>
-<td><strong>{{ k.player }}</strong>{% if market == "dog_set" or market == "one_set" %} to win a set{% elif market == "first" %} first set{% endif %}</td>
+<td><strong>{{ k.player }}</strong>{% if market in ("dog_set", "one_set", "win_set") %} to win a set
+<span class="badge {{ 'ok' if k.role == 'favourite' else '' }}">{{ k.role }}</span>{% elif market == "first" %} first set{% endif %}
+{% if k.drivers %}<br>{% for t, s in k.drivers %}<span class="small" style="color:{{ 'var(--ok, #2e7d32)' if s > 0 else ('var(--warn, #b26a00)' if s < 0 else 'inherit') }}">{{ "+" if s > 0 else ("−" if s < 0 else "·") }} {{ t }}</span>{% if not loop.last %}, {% endif %}{% endfor %}{% endif %}</td>
 <td class="num"><strong>{{ fmt_pct(k.p) }}</strong></td>
 <td>{% if k.astro %}<span class="badge ok">favours</span>{% elif k.astro_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>
 <td>{% if k.num %}<span class="badge ok">favours</span>{% elif k.num_any %}<span class="badge">other player</span>{% else %}<span class="small">level</span>{% endif %}</td>
