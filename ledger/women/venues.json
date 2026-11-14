@@ -49,6 +49,11 @@
   "lon": -99.1505,
   "source": "wikipedia: Estadio Azteca"
  },
+ "Estadio Fernando Torres | Fuenlabrada": {
+  "lat": 40.29166667,
+  "lon": -3.82609722,
+  "source": "wikipedia: Estadio Fernando Torres"
+ },
  "Estadio Hidalgo | Pachuca": {
   "lat": 20.10527778,
   "lon": -98.75611111,
@@ -123,6 +128,11 @@
   "lat": -41.14472222,
   "lon": 174.85666667,
   "source": "wikipedia: Jerry Collins Stadium"
+ },
+ "Reale Arena | San Sebastian": {
+  "lat": 43.30138889,
+  "lon": -1.97361111,
+  "source": "wikipedia: Anoeta Stadium"
  },
  "Spotify Camp Nou | Barcelona": {
   "lat": 41.38879,

@@ -49,6 +49,7 @@
 "name": "AIK",
 "tried": "2026-11"
 },
+"ASPTT Dijon": null,
 "AVS": {
 "date": null,
 "tried": "2026-11"
@@ -583,6 +584,7 @@
 "name": "Ballymena United F.C.",
 "tried": "2026-11"
 },
+"Balma SC": null,
 "Baltika": {
 "date": null,
 "tried": "2026-11"
@@ -981,10 +983,15 @@
 "name": "Club Atl\u00e9tico Platense",
 "tried": "2026-11"
 },
+"CA Boulay": null,
 "CD Arabe Unido": null,
 "CD Artistico Navalcarnero": {
 "date": null,
 "tried": "2026-11"
+},
+"CD FAS": {
+"date": "1947-02-16",
+"name": "C.D. FAS"
 },
 "CD Municipal Lime\u00f1o": {
 "date": "1949-09-11",
@@ -2906,6 +2913,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"IC Croix": null,
 "IF Brommapojkarna": null,
 "Ibiza": {
 "date": "2015-07-31",
@@ -3324,6 +3332,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"La Saint-Pierre Milizac": null,
 "Lahti": {
 "date": null,
 "name": "FC Lahti",
@@ -5129,6 +5138,10 @@
 "name": "Seattle Sounders FC",
 "tried": "2026-11"
 },
+"Selongey": {
+"date": "1938-10-24",
+"name": "SC Selongey"
+},
 "Senegal": {
 "date": null,
 "name": "Senegal",
@@ -5479,6 +5492,11 @@
 "date": null,
 "tried": "2026-11"
 },
+"Stade B\u00e9thunois": null,
+"Stade de Reims": {
+"date": "1931-06-18",
+"name": "Stade de Reims"
+},
 "Stal Mielec": {
 "date": "1939-04-10",
 "name": "Stal Mielec"
@@ -5697,6 +5715,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Thaon": null,
 "Thespakusatsu Gunma": null,
 "Thisted FC": {
 "date": "1989-01-01",
@@ -5784,6 +5803,7 @@
 "date": "1970-05-25",
 "name": "Toulouse FC"
 },
+"Tourcoing": null,
 "Trabzonspor": {
 "date": "1967-08-02",
 "name": "Trabzonspor"
@@ -5888,6 +5908,10 @@
 "tried": "2026-11"
 },
 "UMECIT": null,
+"US Castanet": {
+"date": "1937-01-06",
+"name": "U.S. Castanet"
+},
 "US Quevilly": null,
 "UTA Arad": {
 "date": "1945-04-18",
@@ -6174,6 +6198,7 @@
 "name": "Vit\u00f3ria S.C.",
 "tried": "2026-11"
 },
+"Vitr\u00e9": null,
 "Vizela": {
 "date": "1939-01-01",
 "name": "F.C. Vizela"

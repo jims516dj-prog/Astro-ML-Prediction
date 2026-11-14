@@ -4,6 +4,11 @@
   "lon": 16.25527778,
   "source": "wikipedia: Stadion Wiener Neustadt"
  },
+ "ASPTT Dijon": {
+  "lat": 47.31667,
+  "lon": 5.01667,
+  "source": "thesportsdb: L'Astragale Terrain 1998, Dijon, Bourgogne-Franche-Comté, France"
+ },
  "Academica Recea": {
   "lat": 47.63108,
   "lon": 23.4861,
@@ -38,6 +43,11 @@
   "lat": 36.729,
   "lon": 4.01313889,
   "source": "wikipedia: Hocine Aït Ahmed Stadium"
+ },
+ "Alianza FC": {
+  "lat": 13.68111111,
+  "lon": -89.2225,
+  "source": "wikipedia: Cuscatlán Stadium"
  },
  "Almere City": {
   "lat": 52.37,
@@ -174,6 +184,11 @@
   "lon": -6.26507,
   "source": "wikipedia: Ballymena Showgrounds"
  },
+ "Balma SC": {
+  "lat": 43.61111,
+  "lon": 1.49944,
+  "source": "thesportsdb: Balma, Balma, Occitania, France"
+ },
  "Banfield": {
   "lat": -34.74563,
   "lon": -58.39365,
@@ -273,6 +288,16 @@
   "lat": 52.82194444,
   "lon": -1.62694444,
   "source": "wikipedia: Pirelli Stadium"
+ },
+ "C.D. Platense": {
+  "lat": 13.519658,
+  "lon": -88.871659,
+  "source": "wikipedia: Antonio Toledo Valle Stadium"
+ },
+ "CA Boulay": {
+  "lat": 49.18333,
+  "lon": 6.5,
+  "source": "thesportsdb: Boulay-Moselle, Boulay-Moselle, Grand Est, France"
  },
  "CD Artistico Navalcarnero": {
   "lat": 40.33888889,
@@ -854,6 +879,11 @@
   "lon": 10.13489,
   "source": "city"
  },
+ "IC Croix": {
+  "lat": 50.67846,
+  "lon": 3.1493,
+  "source": "thesportsdb: Stade Henri Seigneur, Croix, Hauts-de-France, France"
+ },
  "Iceland": {
   "lat": 64.13548,
   "lon": -21.89541,
@@ -863,6 +893,11 @@
   "lat": 64.13548,
   "lon": -21.89541,
   "source": "senior team's ground: national team: Reykjavík (largest city)"
+ },
+ "Inca Aruba": {
+  "lat": 13.72805556,
+  "lon": -89.72361111,
+  "source": "wikipedia: Estadio Anna Mercedes Campos"
  },
  "Internacional de Bogotá": {
   "lat": 4.6234294,
@@ -1644,6 +1679,11 @@
   "lon": 5.18647,
   "source": "manual"
  },
+ "Stade Béthunois": {
+  "lat": 50.52965,
+  "lon": 2.64003,
+  "source": "thesportsdb: Béthune, Béthune, Hauts-de-France, France"
+ },
  "Stockport County": {
   "lat": 53.39972222,
   "lon": -2.16638889,
@@ -1728,6 +1768,11 @@
   "lat": 52.86195,
   "lon": -3.05497,
   "source": "city: Oswestry"
+ },
+ "Tourcoing": {
+  "lat": 50.72391,
+  "lon": 3.16117,
+  "source": "thesportsdb: Tourcoing, Tourcoing, Hauts-de-France, France"
  },
  "Trabzonspor": {
   "lat": 41.0,
@@ -1858,6 +1903,11 @@
   "lat": 49.75,
   "lon": 13.38555556,
   "source": "senior team's ground: wikipedia: Doosan Arena"
+ },
+ "Vitré": {
+  "lat": 48.11776,
+  "lon": -1.20577,
+  "source": "thesportsdb: Stade Municipal de Vitré, Vitré, Ille-et-Vilaine, France"
  },
  "Voluntari": {
   "lat": 44.45605556,
