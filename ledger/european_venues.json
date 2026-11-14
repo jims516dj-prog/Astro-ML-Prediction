@@ -1299,6 +1299,11 @@
   "lon": -1.20805556,
   "source": "wikipedia: Kassam Stadium"
  },
+ "PAOK": {
+  "lat": 40.64361,
+  "lon": 22.93086,
+  "source": "manual"
+ },
  "Paderborn": {
   "lat": 51.71905,
   "lon": 8.75439,
@@ -1678,6 +1683,11 @@
   "lat": 50.81679,
   "lon": 5.18647,
   "source": "manual"
+ },
+ "St. Vincent and the Grenadines": {
+  "lat": 13.14186111,
+  "lon": -61.21180556,
+  "source": "wikipedia: Arnos Vale Stadium"
  },
  "Stade Béthunois": {
   "lat": 50.52965,

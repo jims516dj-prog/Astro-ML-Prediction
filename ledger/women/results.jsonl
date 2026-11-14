@@ -23,3 +23,10 @@
 {"goals_away":2,"goals_home":1,"match_key":"34f35772a2d8","settled_at":"2026-11-14T12:14:41+00:00","sha256":"4c48fa22ca1a61d4972c166cd4fabd42d0867f6ccb61a19e36d19df4f306833e","source":"kickoffapi.com"}
 {"goals_away":1,"goals_home":2,"match_key":"2caf59b742d8","settled_at":"2026-11-14T12:14:41+00:00","sha256":"7df27cb53e7ff337fc63c34d8a65c9f1263654e12107cba66554261eee66d2fa","source":"kickoffapi.com"}
 {"goals_away":1,"goals_home":3,"match_key":"84d1f0be0241","settled_at":"2026-11-14T12:14:41+00:00","sha256":"9b2e9ceced38611839ae8c99380af3092f59bd8911f16354eb1a4a2361aaa6aa","source":"kickoffapi.com"}
+{"goals_away":0,"goals_home":1,"match_key":"4b5bd3891044","settled_at":"2026-11-14T14:33:50+00:00","sha256":"565cb0a2aaf942adea6a8ba5439d16c53e2e288e44282d79a24dfefa6359031e","source":"kickoffapi.com"}
+{"goals_away":3,"goals_home":1,"match_key":"14fdf12ff8a4","settled_at":"2026-11-14T14:33:50+00:00","sha256":"31a52450fcf4bda25e24510683edf3fb26c2dcbc6fdf9fafffc4c78e8ea2b3b8","source":"kickoffapi.com"}
+{"goals_away":0,"goals_home":1,"match_key":"68a4fc13ddd1","settled_at":"2026-11-14T14:33:50+00:00","sha256":"9f33877e6228e9aea24f2ec38c4da930e882564bff04de1318be0c81c4908b91","source":"kickoffapi.com"}
+{"goals_away":3,"goals_home":1,"match_key":"775d778acd54","settled_at":"2026-11-14T14:33:50+00:00","sha256":"3c26b07a6061c09f4d09e6cf7ac221a5e79b143ee9538a66b9427d7e46d88b78","source":"kickoffapi.com"}
+{"goals_away":1,"goals_home":2,"match_key":"7a0d92e95651","settled_at":"2026-11-14T14:33:50+00:00","sha256":"9fa31b59034a29fe4588f74daa33a8e40f1152ef03c7b27c0f646ad546250d31","source":"kickoffapi.com"}
+{"goals_away":0,"goals_home":3,"match_key":"e3f9d3cb3c1c","settled_at":"2026-11-14T14:33:50+00:00","sha256":"d95d6840142de16560a0294646c4eb786f18ab8c285a8bb0cf1453b0c41d7bae","source":"kickoffapi.com"}
+{"goals_away":4,"goals_home":0,"match_key":"ba6cc497283b","settled_at":"2026-11-14T14:33:50+00:00","sha256":"4e2ad2953c4950a1a6361a461d0e1eb7998758b8d69faacd09366aaa33b83210","source":"kickoffapi.com"}

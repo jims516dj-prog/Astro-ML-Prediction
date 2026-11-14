@@ -685,6 +685,10 @@
 "date": "1896-08-17",
 "name": "Belgrano Athletic Club"
 },
+"Belize": {
+"date": "1981-09-21",
+"name": "Belize"
+},
 "Benevento": {
 "date": null,
 "name": "Benevento Calcio",
@@ -4454,6 +4458,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Partizan Belgrade": {
+"date": "1945-10-04",
+"name": "FK Partizan"
+},
 "Patacona CF": {
 "date": null,
 "name": "Patacona Club de Futbol",
@@ -5488,6 +5496,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"St. Vincent and the Grenadines": null,
 "Stabaek": {
 "date": null,
 "tried": "2026-11"
