@@ -354,6 +354,11 @@
   "lon": 9.160626,
   "source": "openstreetmap: Limbe Omnisport Stadium, East Parking Road, Wovia, Ngeme village, Limbé II, Communauté urbaine de Limbé, Fako, Southwest, Cameroun"
  },
+ "Canada": {
+  "lat": 43.63333333,
+  "lon": -79.41861111,
+  "source": "wikipedia: BMO Field"
+ },
  "Cape Verde": {
   "lat": 14.93152,
   "lon": -23.51254,
@@ -373,6 +378,11 @@
   "lat": 55.849711,
   "lon": -4.205589,
   "source": "stadium"
+ },
+ "Central African Republic": {
+  "lat": 4.36122,
+  "lon": 18.55496,
+  "source": "thesportsdb: Stade Barthélemy Boganda, Bangui"
  },
  "Cerrito": {
   "lat": -34.90328,
@@ -688,6 +698,11 @@
   "lat": 3.725,
   "lon": 8.76916667,
   "source": "wikipedia: Malabo Stadium"
+ },
+ "Eritrea": {
+  "lat": 30.06263,
+  "lon": 31.24967,
+  "source": "city: Cairo"
  },
  "Estonia": {
   "lat": 59.42138889,
@@ -1279,6 +1294,11 @@
   "lon": -16.92547,
   "source": "manual"
  },
+ "Namibia": {
+  "lat": -24.65666667,
+  "lon": 25.93277778,
+  "source": "wikipedia: Botswana National Stadium"
+ },
  "Neftchi": {
   "lat": 40.3905,
   "lon": 71.7497,
@@ -1724,6 +1744,11 @@
   "lon": -1.973617,
   "source": "stadium"
  },
+ "Somalia": {
+  "lat": 2.03711,
+  "lon": 45.34375,
+  "source": "thesportsdb: Mogadishu, Mogadishu, Somalia"
+ },
  "South Africa": {
   "lat": -26.2317243,
   "lon": 27.9227989,
@@ -1788,6 +1813,11 @@
   "lat": 53.39972222,
   "lon": -2.16638889,
   "source": "wikipedia: Edgeley Park"
+ },
+ "Sudan": {
+  "lat": 15.55177,
+  "lon": 32.53241,
+  "source": "thesportsdb: Khartoum Stadium, Khartoum, Sudan"
  },
  "Sunderland": {
   "lat": 54.9144,
@@ -2033,6 +2063,11 @@
   "lat": -12.975,
   "lon": 28.61138889,
   "source": "wikipedia: Levy Mwanawasa Stadium"
+ },
+ "Zimbabwe": {
+  "lat": -17.82772,
+  "lon": 31.05337,
+  "source": "city: Harare"
  },
  "Zlín": {
   "lat": 49.23138889,
