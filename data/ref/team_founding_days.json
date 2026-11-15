@@ -26,6 +26,7 @@
 "name": "AC Oulu",
 "tried": "2026-11"
 },
+"ADT": null,
 "AEK": {
 "date": "1924-04-13",
 "name": "AEK Athens F.C."
@@ -49,6 +50,7 @@
 "name": "AIK",
 "tried": "2026-11"
 },
+"AS Atlas Paillade": null,
 "ASPTT Dijon": null,
 "AVS": {
 "date": null,
@@ -470,6 +472,7 @@
 "name": "Atl\u00e9tico Bucaramanga"
 },
 "Atl\u00e9tico Goianiense": null,
+"Atl\u00e9tico Grau": null,
 "Atl\u00e9tico Junior": {
 "date": "1924-08-07",
 "name": "Junior de Barranquilla"
@@ -836,6 +839,7 @@
 "name": "US Boulogne",
 "tried": "2026-11"
 },
+"Bourges FC": null,
 "Bournemouth": {
 "date": null,
 "name": "AFC Bournemouth",
@@ -1026,6 +1030,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"CS Sedan": null,
 "CS Turnu Severin": {
 "date": null,
 "name": "CS Turnu Severin",
@@ -1091,6 +1096,10 @@
 "Cangzhou": {
 "date": null,
 "tried": "2026-11"
+},
+"Cannes": {
+"date": "1902-08-04",
+"name": "AS Cannes"
 },
 "Cape Verde": {
 "date": "1990-09-28",
@@ -1593,6 +1602,7 @@
 "name": "Cura\u00e7ao",
 "tried": "2026-11"
 },
+"Cusco FC": null,
 "Cyprus": {
 "date": "1960-08-16",
 "name": "Cyprus"
@@ -1737,6 +1747,7 @@
 "name": "Deportivo Mixco",
 "tried": "2026-11"
 },
+"Deportivo Moquegua": null,
 "Deportivo Mor\u00f3n": {
 "date": "1947-06-20",
 "name": "Club Deportivo Mor\u00f3n"
@@ -2381,6 +2392,10 @@
 "GAIS": {
 "date": "1894-03-11",
 "name": "GAIS"
+},
+"GFA Rumilly Valli\u00e8res": {
+"date": "2016-06-30",
+"name": "GFA Rumilly-Valli\u00e8res"
 },
 "GKS Belchatow": {
 "date": null,
@@ -3116,6 +3131,7 @@
 "name": "S.S. Juve Stabia",
 "tried": "2026-11"
 },
+"Juventud": null,
 "Juventude": {
 "date": "1962-02-26",
 "name": "Juventude",
@@ -3919,6 +3935,10 @@
 "date": null,
 "name": "Montevideo City Torque",
 "tried": "2026-11"
+},
+"Montevideo Wanderers": {
+"date": "1902-08-15",
+"name": "Montevideo Wanderers F\u00fatbol Club"
 },
 "Montpellier": {
 "date": null,

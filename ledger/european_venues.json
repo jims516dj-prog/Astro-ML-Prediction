@@ -4,6 +4,11 @@
   "lon": 16.25527778,
   "source": "wikipedia: Stadion Wiener Neustadt"
  },
+ "AS Atlas Paillade": {
+  "lat": 43.61092,
+  "lon": 3.87723,
+  "source": "thesportsdb: Montpellier, Montpellier, Hérault, Occitania, France"
+ },
  "ASPTT Dijon": {
   "lat": 47.31667,
   "lon": 5.01667,
@@ -329,6 +334,11 @@
   "lon": -4.0887,
   "source": "wikipedia: Estadio Ciudad de Puertollano"
  },
+ "CS Sedan": {
+  "lat": 49.70187,
+  "lon": 4.94028,
+  "source": "thesportsdb: Sedan, Sedan, France"
+ },
  "Caernarfon Town": {
   "lat": 53.14126,
   "lon": -4.27016,
@@ -484,6 +494,16 @@
   "lon": -0.085556,
   "source": "stadium"
  },
+ "Cuba": {
+  "lat": 23.0970914,
+  "lon": -82.4018788,
+  "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
+ },
+ "Cusco FC": {
+  "lat": -13.52264,
+  "lon": -71.96734,
+  "source": "city"
+ },
  "Cyprus": {
   "lat": 34.69333333,
   "lon": 32.93916667,
@@ -567,6 +587,11 @@
  "Deportivo Maldonado": {
   "lat": -34.9,
   "lon": -54.95,
+  "source": "city"
+ },
+ "Deportivo Moquegua": {
+  "lat": -17.19832,
+  "lon": -70.93567,
   "source": "city"
  },
  "Deportivo Morón": {
@@ -664,6 +689,11 @@
   "lon": 8.76916667,
   "source": "wikipedia: Malabo Stadium"
  },
+ "Estonia": {
+  "lat": 59.42138889,
+  "lon": 24.73194444,
+  "source": "wikipedia: Lilleküla Stadium"
+ },
  "Estudiantes L.P.": {
   "lat": -31.4135,
   "lon": -64.18105,
@@ -744,6 +774,11 @@
   "lon": 26.10626,
   "source": "senior team's ground: manual"
  },
+ "Faroe Islands": {
+  "lat": 62.0191132,
+  "lon": -6.7780947,
+  "source": "openstreetmap: Tórsvøllur, Gundadalur, Tórshavn, Tórshavnar kommuna, Streymoyar sýsla, 100, Føroyar"
+ },
  "Ferro Carril Oeste": {
   "lat": -34.6185,
   "lon": -58.4476,
@@ -794,6 +829,11 @@
   "lon": -3.13231,
   "source": "city: Flint"
  },
+ "GFA Rumilly Vallières": {
+  "lat": 45.86116,
+  "lon": 5.94513,
+  "source": "thesportsdb: Stade des Grangettes, Rumilly, Haute-Savoie, France"
+ },
  "Gabon": {
   "lat": -1.63861111,
   "lon": 13.57444444,
@@ -818,6 +858,11 @@
   "lat": 5.55138889,
   "lon": -0.19194444,
   "source": "wikipedia: Accra Sports Stadium"
+ },
+ "Gibraltar": {
+  "lat": 36.11069444,
+  "lon": -5.34675,
+  "source": "wikipedia: Europa Sports Park"
  },
  "Gimnasia y Esgrima (Jujuy)": {
   "lat": -24.19457,
@@ -844,6 +889,16 @@
   "lon": -64.20638889,
   "source": "wikipedia: El Gigante de Alberdi"
  },
+ "Greece": {
+  "lat": 39.3873889,
+  "lon": 22.931244,
+  "source": "openstreetmap: Πανθεσσαλικό Στάδιο, Σταδίου, Νέα Ιωνία, Δήμος Βόλου, Περιφερειακή Ενότητα Μαγνησίας, Περιφέρεια Θεσσαλίας, Αποκεντρωμένη Διοίκηση Θεσσαλίας - Στερεάς Ελλάδος, 384 46, Ελλάς"
+ },
+ "Guadeloupe": {
+  "lat": 16.2101272,
+  "lon": -61.5025226,
+  "source": "openstreetmap: Stade Roger ZAMI, Rue Roger Zami, Montauban, Belle Plaine, Le Gosier, Pointe-à-Pitre, Guadeloupe, 97190, France"
+ },
  "Guatemala": {
   "lat": 14.9717343,
   "lon": -91.7785216,
@@ -858,6 +913,11 @@
   "lat": 51.555,
   "lon": -0.10833333,
   "source": "wikipedia: Emirates Stadium"
+ },
+ "Guyana": {
+  "lat": 6.75776667,
+  "lon": -58.17799167,
+  "source": "wikipedia: Providence Stadium"
  },
  "Haiti": {
   "lat": 25.7924491,
@@ -993,6 +1053,11 @@
   "lat": 48.17822222,
   "lon": 23.27877778,
   "source": "wikipedia: Karpaty Stadium"
+ },
+ "Kazakhstan": {
+  "lat": 51.1083923,
+  "lon": 71.4028672,
+  "source": "openstreetmap: Астана Арена, 48, Тұран даңғылы, Астана орталығы, Нұра ауданы, Астана, 010000, Қазақстан"
  },
  "Kigezi Homeboyz FC": {
   "lat": -1.24857,
@@ -1174,6 +1239,11 @@
   "lon": -56.16666667,
   "source": "wikipedia: Estadio Luis Franzini"
  },
+ "Montevideo Wanderers": {
+  "lat": -34.90328,
+  "lon": -56.18816,
+  "source": "city"
+ },
  "Morocco": {
   "lat": 33.5884,
   "lon": -7.55785,
@@ -1243,6 +1313,11 @@
   "lat": -19.26611111,
   "lon": 146.81666667,
   "source": "wikipedia: North Queensland Stadium"
+ },
+ "North Macedonia": {
+  "lat": 42.00555556,
+  "lon": 21.42555556,
+  "source": "wikipedia: Toše Proeski Arena"
  },
  "Northampton Town": {
   "lat": 52.23527778,
