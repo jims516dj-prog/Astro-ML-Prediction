@@ -48,6 +48,20 @@ Open **http://localhost:8000**. Leave the terminal window open while you use the
 - *Port 8000 already in use*: add `--port 8001` and open http://localhost:8001.
 - *Venue lookup finds nothing*: type the latitude and longitude yourself (any map site shows them).
 
+## Use it on your phone
+
+Start the app with `./start.sh phone` instead of `./start.sh`. It then accepts connections from other devices and prints
+the address to open on your phone, for example `http://192.168.1.23:8000`:
+
+- **At home:** phone on the same Wi-Fi as the computer. If Windows asks about the firewall, allow Python on **Private
+  networks** only.
+- **Anywhere:** install [Tailscale](https://tailscale.com) on the computer and the phone (same account); the script then
+  also prints the Tailscale address, which works over mobile data without exposing the app to the internet.
+
+The computer must stay on and awake. Use phone mode only on your own Wi-Fi or Tailscale, never on public Wi-Fi, and never
+expose the port to the internet (router port-forwarding, public tunnels): the app has no login. The browser's
+**Add to Home Screen** gives it an icon.
+
 ## Team founding charts (auto-filled)
 
 Typing a team name on **Analyze** fills in its founding chart for Rao's Nations' Charts step, from
