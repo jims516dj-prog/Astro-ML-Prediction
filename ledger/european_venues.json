@@ -64,6 +64,11 @@
   "lon": -43.93778,
   "source": "city: Belo Horizonte"
  },
+ "América de Cali": {
+  "lat": 3.42988889,
+  "lon": -76.54108333,
+  "source": "wikipedia: Estadio Olímpico Pascual Guerrero"
+ },
  "Anaitasuna": {
   "lat": 43.17744,
   "lon": -2.31129,
@@ -259,6 +264,11 @@
   "lon": 6.3854094,
   "source": "openstreetmap: ista-Borussia-Park, Dr.-Adalbert-Jordan-Straße, Dorthausen, Rheindahlen-Land, West, Mönchengladbach, Nordrhein-Westfalen, 41179, Deutschland"
  },
+ "Bosnia-Herzegovina": {
+  "lat": 44.2057995,
+  "lon": 17.9071606,
+  "source": "openstreetmap: Stadion Bilino polje, bb, Bulevar Kulina Bana, Nova Zenica, Podbrežje, Zenica, Grad Zenica, Zeničko-dobojski kanton, Federacija Bosne i Hercegovine, 72000, Bosna i Hercegovina / Босна и Херцеговина"
+ },
  "Bradford City": {
   "lat": 53.79444444,
   "lon": -1.75194444,
@@ -298,6 +308,11 @@
   "lat": 52.82194444,
   "lon": -1.62694444,
   "source": "wikipedia: Pirelli Stadium"
+ },
+ "Burundi": {
+  "lat": -3.3833082,
+  "lon": 29.3736832,
+  "source": "openstreetmap: Stade Intwari, Avenue Muyinga, Quartier INSS, Bujumbura, Bujumbura Mairie, Burundi"
  },
  "C.D. Platense": {
   "lat": 13.519658,
@@ -579,6 +594,11 @@
   "lon": -0.73333333,
   "source": "wikipedia: Stadium MK"
  },
+ "Denmark": {
+  "lat": 55.7027043,
+  "lon": 12.5722638,
+  "source": "openstreetmap: Parken, Per Henrik Lings Allé, Lyngbyvejskvarteret, Østerbro, København, Københavns Kommune, Region Hovedstaden, 2100, Danmark"
+ },
  "Denmark U21": {
   "lat": 55.7137241,
   "lon": 9.5561578,
@@ -859,6 +879,11 @@
   "lon": 13.57444444,
   "source": "wikipedia: Franceville Stadium"
  },
+ "Gambia": {
+  "lat": 13.4681538,
+  "lon": -16.6781527,
+  "source": "openstreetmap: Independence Stadium, Stadium Road, Bakau Newtown, Bakau New Town and Fajara, Kanifing, Gambia"
+ },
  "Georgia": {
   "lat": 41.7098044,
   "lon": 44.7462714,
@@ -934,6 +959,11 @@
   "lon": -13.67291667,
   "source": "wikipedia: 28 September Stadium"
  },
+ "Guinea-Bissau": {
+  "lat": 11.85,
+  "lon": -15.56666667,
+  "source": "city: Bissau"
+ },
  "Gunners FC": {
   "lat": 51.555,
   "lon": -0.10833333,
@@ -974,6 +1004,11 @@
   "lon": 10.13489,
   "source": "city"
  },
+ "Hungary": {
+  "lat": 47.503109,
+  "lon": 19.0980509,
+  "source": "openstreetmap: Puskás Aréna, 3-5, Istvánmezei út, Istvánmező, XIV. kerület, Budapest, 1146, Magyarország"
+ },
  "IC Croix": {
   "lat": 50.67846,
   "lon": 3.1493,
@@ -1013,6 +1048,11 @@
   "lat": 14.3320903,
   "lon": -89.448998,
   "source": "openstreetmap: Estadio Jorge «Calero» Suárez, 1a Calle Poniente, Barrio San Pedro, Metapán, Santa Ana Norte, Santa Ana, El Salvador"
+ },
+ "Israel": {
+  "lat": 47.5539912,
+  "lon": 21.6329084,
+  "source": "openstreetmap: Nagyerdei Stadion, Ady Endre út, Nagyerdőpark, Debrecen, Debreceni járás, Hajdú-Bihar megye, Alföld és Észak, 4032, Magyarország"
  },
  "Italy": {
   "lat": 45.4782003,
@@ -1084,6 +1124,11 @@
   "lon": 71.4028672,
   "source": "openstreetmap: Астана Арена, 48, Тұран даңғылы, Астана орталығы, Нұра ауданы, Астана, 010000, Қазақстан"
  },
+ "Kenya": {
+  "lat": -1.30419444,
+  "lon": 36.82447222,
+  "source": "wikipedia: Nyayo National Stadium"
+ },
  "Kigezi Homeboyz FC": {
   "lat": -1.24857,
   "lon": 29.98993,
@@ -1144,6 +1189,11 @@
   "lon": -103.32805556,
   "source": "wikipedia: Estadio Jalisco"
  },
+ "Lesotho": {
+  "lat": -23.924689,
+  "lon": 29.468765,
+  "source": "wikipedia: Peter Mokaba Stadium"
+ },
  "Leverkusen": {
   "lat": 51.038256,
   "lon": 7.002206,
@@ -1174,6 +1224,11 @@
   "lon": -51.16278,
   "source": "city"
  },
+ "Luton Town": {
+  "lat": 51.88416667,
+  "lon": -0.43166667,
+  "source": "wikipedia: Kenilworth Road"
+ },
  "Luxembourg": {
   "lat": 49.57722222,
   "lon": 6.11472222,
@@ -1193,6 +1248,11 @@
   "lat": -12.0855522,
   "lon": -77.0958285,
   "source": "openstreetmap: Estadio Adolfo Magallanes, Avenida Costanera, Miramar, San Miguel, Lima, Lima Metropolitana, Lima, 15087, Perú"
+ },
+ "Malawi": {
+  "lat": -13.9438,
+  "lon": 33.7531,
+  "source": "wikipedia: Bingu National Stadium"
  },
  "Mali": {
   "lat": 12.6043766,
@@ -1589,6 +1649,11 @@
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
  },
+ "Republic of Ireland": {
+  "lat": 53.3352254,
+  "lon": -6.2281851,
+  "source": "openstreetmap: Aviva Stadium, Lansdowne Road, Pembroke West A ED, Dublin, County Dublin, Leinster, Éire / Ireland"
+ },
  "Roda JC Kerkrade": {
   "lat": 50.86583,
   "lon": 6.0625,
@@ -1899,6 +1964,11 @@
   "lon": 31.00192,
   "source": "city: Tanta"
  },
+ "Tanzania": {
+  "lat": -6.166003,
+  "lon": 39.223862,
+  "source": "wikipedia: Amaan Stadium"
+ },
  "Temperley": {
   "lat": -34.78222222,
   "lon": -58.39944444,
@@ -1973,6 +2043,11 @@
   "lat": 1.43555556,
   "lon": 31.39388889,
   "source": "wikipedia: Hoima City Stadium"
+ },
+ "Ukraine": {
+  "lat": 48.71395,
+  "lon": 21.25808,
+  "source": "city: Kosice"
  },
  "Ulaanbaatar": {
   "lat": 47.90213889,
@@ -2058,6 +2133,11 @@
   "lat": 44.45605556,
   "lon": 26.05688889,
   "source": "senior team's ground: wikipedia: Rapid-Giulești Stadium"
+ },
+ "Wales": {
+  "lat": 51.4728209,
+  "lon": -3.2029602,
+  "source": "openstreetmap: Cardiff City Stadium, Leckwith Road, Canton, Cardiff, Cymru / Wales, CF11 8AZ, United Kingdom"
  },
  "Wellington Phoenix II": {
   "lat": -41.18466667,
