@@ -239,6 +239,11 @@
   "lon": 4.3341279,
   "source": "openstreetmap: Stade Roi Baudouin - Koning Boudewijnstadion, Rampe des Hollandais - Hollandseoprit, Verregat, Laeken - Laken, Mutsaard, Bruxelles - Brussel, Brussel-Hoofdstad - Bruxelles-Capitale, Région de Bruxelles-Capitale - Brussels Hoofdstedelijk Gewest, 1020, België / Belgique / Belgien"
  },
+ "Belize": {
+  "lat": 17.25,
+  "lon": -88.76667,
+  "source": "thesportsdb: FFB Field, Belmopan, Belize"
+ },
  "Benfica": {
   "lat": 38.75087,
   "lon": -9.20282,
@@ -428,6 +433,11 @@
   "lat": 55.15402,
   "lon": 61.42915,
   "source": "city: Chelyabinsk"
+ },
+ "Chile": {
+  "lat": -33.46444444,
+  "lon": -70.61055556,
+  "source": "wikipedia: Julio Martínez Prádanos National Stadium"
  },
  "Chile U20": {
   "lat": -32.78416667,
@@ -668,6 +678,11 @@
   "lat": 33.953,
   "lon": -118.339,
   "source": "wikipedia: SoFi Stadium"
+ },
+ "Dominica": {
+  "lat": 15.30194444,
+  "lon": -61.38416667,
+  "source": "wikipedia: Windsor Park (Dominica)"
  },
  "Don Bosco": {
   "lat": 33.953,
@@ -1075,14 +1090,19 @@
   "source": "openstreetmap: Trelawny Stadium, Stadium Road, Rock, Florence Hall, Trelawny, Cornwall County, Jamaica"
  },
  "Japan": {
-  "lat": 1.28967,
-  "lon": 103.85007,
-  "source": "city: Singapore"
+  "lat": 1.3044,
+  "lon": 103.8743,
+  "source": "wikipedia: National Stadium, Singapore"
  },
  "Jezero": {
   "lat": 42.59694,
   "lon": 19.94556,
   "source": "city: Plav"
+ },
+ "Jordan": {
+  "lat": 25.317155,
+  "lon": 51.512366,
+  "source": "wikipedia: Suheim bin Hamad Stadium"
  },
  "Juan Pablo II": {
   "lat": -6.6084116,
@@ -1163,6 +1183,11 @@
   "lat": 29.36972,
   "lon": 47.97833,
   "source": "national team: Kuwait City (largest city)"
+ },
+ "Kyrgyz Republic": {
+  "lat": 42.87,
+  "lon": 74.59,
+  "source": "thesportsdb: Stadion im. Dolena Omurzakova, Bishkek, Kyrgyzstan"
  },
  "Larne": {
   "lat": 54.85,
@@ -1278,6 +1303,11 @@
   "lat": 45.81371,
   "lon": 23.4074,
   "source": "thesportsdb: Arena Cugir, Cugir, Alba, Romania"
+ },
+ "Mexico": {
+  "lat": 25.66916667,
+  "lon": -100.24444444,
+  "source": "wikipedia: Estadio BBVA"
  },
  "Milan": {
   "lat": 45.46427,
@@ -1874,6 +1904,11 @@
   "lon": 5.18647,
   "source": "manual"
  },
+ "St. Lucia": {
+  "lat": 13.71667,
+  "lon": -60.95,
+  "source": "thesportsdb: Vieux Fort, Vieux Fort, St Lucia"
+ },
  "St. Vincent and the Grenadines": {
   "lat": 13.14186111,
   "lon": -61.21180556,
@@ -2063,6 +2098,16 @@
   "lat": 25.0657,
   "lon": 55.17128,
   "source": "national team: Dubai (largest city)"
+ },
+ "United States": {
+  "lat": 39.11138889,
+  "lon": -84.52222222,
+  "source": "wikipedia: TQL Stadium"
+ },
+ "Uruguay": {
+  "lat": -34.9,
+  "lon": -54.95,
+  "source": "city: Maldonado"
  },
  "Uzbekistan": {
   "lat": 39.7410223,
