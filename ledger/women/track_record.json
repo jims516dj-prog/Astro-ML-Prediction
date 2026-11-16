@@ -1,13 +1,13 @@
 {
- "generated_at": "2026-11-16T13:46:23+00:00",
+ "generated_at": "2026-11-16T22:56:45+00:00",
  "integrity": {
   "records": 79,
   "hash_ok": 79,
   "late": 0
  },
- "pending": 4,
+ "pending": 3,
  "settled": 69,
- "void": 6,
+ "void": 7,
  "engines": {
   "market": {
    "n": 69,
