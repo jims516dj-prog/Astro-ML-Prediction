@@ -152,6 +152,13 @@ def level_ok(r: dict, want: str) -> bool:
     return r.get("cat") == want
 
 
+def show_day(r: dict) -> str:
+    """The date a match is listed under: the one its row shows (the venue's date of ESPN's latest scheduled start),
+    so the Day filter and the dates on screen always agree."""
+    w = r.get("when") or {}
+    return w.get("day") or r["start_utc"][:10]
+
+
 def when_of(r: dict, latest=None) -> dict:
     """The start to show: ESPN's latest scheduled time (the order of play moves), at the venue and in GMT; or
     'time not set' while ESPN only has the date."""
@@ -359,11 +366,11 @@ def tennis_home(request: Request, day: str = "", tour: str = "", status: str = "
     from .app import _day_label  # noqa: F401
     recs = records()
     tr_all = tlive.track_record(recs)
-    days = sorted({r["start_utc"][:10] for r in recs}, reverse=True)
+    days = sorted({show_day(r) for r in recs}, reverse=True)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     if day not in days and day != "all":
         day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else "all")
-    rows = [r for r in recs if (day == "all" or r["start_utc"][:10] == day) and (not tour or r["tour"] == tour)
+    rows = [r for r in recs if (day == "all" or show_day(r) == day) and (not tour or r["tour"] == tour)
             and (not status or r["status"] == status)]
     for r in rows:
         r["dayv"] = day_of(r)
@@ -856,12 +863,12 @@ def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: s
                 and (not astro or (astro == "yes") == k["astro"]) and (not num or (num == "yes") == k["num"])
                 and (not odds or bool(r.get("odds"))))
 
-    days = sorted({r["start_utc"][:10] for r in recs}, reverse=True)
+    days = sorted({show_day(r) for r in recs}, reverse=True)
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     if day not in days and day != "all":
         day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else "all")
     pool = [r for r in recs if keep(r)]
-    rows = sorted((r for r in pool if day == "all" or r["start_utc"][:10] == day), key=lambda r: -r["pick"]["p"])
+    rows = sorted((r for r in pool if day == "all" or show_day(r) == day), key=lambda r: -r["pick"]["p"])
 
     def tally(rs):
         done = [r for r in rs if r["pick"]["hit"] is not None and r["pre_kickoff"]]
@@ -955,7 +962,7 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
     t = player.lower().strip()
     rows = []
     for r in sorted(recs, key=lambda r: r["start_utc"], reverse=True):
-        d = r["start_utc"][:10]
+        d = show_day(r)
         if (date_from and d < date_from) or (date_to and d > date_to) or (status and r["status"] != status) \
                 or (tour and r["tour"] != tour) or (surface and r["surface"] != surface) or (odds and not r.get("odds")) \
                 or (t and t not in r["p1"].lower() and t not in r["p2"].lower()) \

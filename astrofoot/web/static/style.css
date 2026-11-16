@@ -172,3 +172,24 @@ nav.sport a.on { background: var(--e4); color: #fff; }
 .pp { white-space: nowrap; }
 .cols2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 @media (max-width: 720px) { .cols2 { grid-template-columns: 1fr; } }
+/* Phones: every data table becomes a list of cards, each value under its column's name (labels set by base.html) */
+@media (max-width: 640px) {
+  main { padding-left: 10px; padding-right: 10px; }
+  .scroll { overflow-x: visible; }
+  table.data, table.data tbody { display: block; width: 100%; background: transparent; }
+  table.data thead { display: none; }
+  table.data tr { display: block; background: var(--surface); border: 1px solid var(--line); border-radius: 10px;
+    margin: 0 0 10px; padding: 6px 10px; }
+  table.data td { display: block; position: relative; padding: 5px 0 5px 34%; min-height: 1.4em;
+    border-bottom: 1px solid var(--line); text-align: left !important; overflow-wrap: anywhere;
+    white-space: normal !important; }
+  table.data td:last-child { border-bottom: 0; }
+  table.data td::before { content: attr(data-label); position: absolute; left: 0; top: 7px; width: 31%;
+    font: 600 .66rem/1.25 var(--sans); text-transform: uppercase; letter-spacing: .03em; color: var(--ink-2); }
+  table.data td[data-label=""], table.data td[colspan] { padding-left: 0; }
+  table.data td[data-label=""]::before, table.data td[colspan]::before { display: none; }
+  .filters { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .seg { display: flex; flex-wrap: wrap; }
+  .seg a { padding: 6px 10px; }
+  .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; }
+}
