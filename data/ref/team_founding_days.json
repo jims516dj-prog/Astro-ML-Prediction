@@ -202,6 +202,10 @@
 "date": "1962-07-05",
 "name": "Algeria"
 },
+"Alianza Atl\u00e9tico": {
+"date": "1920-01-18",
+"name": "Sports Association Club Alianza Atl\u00e9tico de Sullana"
+},
 "Alianza FC": {
 "date": null,
 "name": "Alianza F.C.",
@@ -3829,6 +3833,7 @@
 "name": "Meizhou Hakka F.C.",
 "tried": "2026-11"
 },
+"Melgar": null,
 "Mervue": {
 "date": null,
 "tried": "2026-11"
