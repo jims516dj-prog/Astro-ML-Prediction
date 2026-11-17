@@ -44,6 +44,11 @@
   "lon": 139.05916667,
   "source": "wikipedia: Denka Big Swan Stadium"
  },
+ "Alcoyano": {
+  "lat": 39.5179524,
+  "lon": -0.5210044,
+  "source": "openstreetmap: Club de Tenis El Collao, Carretera Manises - Riba-roja, Urbanització El Terreno, Riba-roja de Túria, el Camp de Túria, València / Valencia, Comunitat Valenciana, 46190, España"
+ },
  "Algeria": {
   "lat": 36.729,
   "lon": 4.01313889,
@@ -193,6 +198,11 @@
   "lat": 46.94809,
   "lon": 7.44744,
   "source": "thesportsdb: Wankdorf Stadium, Bern, Switzerland"
+ },
+ "Badajoz": {
+  "lat": 38.85892222,
+  "lon": -7.00588611,
+  "source": "wikipedia: Estadio Nuevo Vivero"
  },
  "Bahrain": {
   "lat": 23.14055556,
@@ -344,6 +354,11 @@
   "lon": -92.0601464,
   "source": "openstreetmap: Estadio Municipal Santa Lucía, 2a Calle, Malacatan, Casco Urbano., San Sebastián, Malacatán, San Marcos, 12015, Guatemala"
  },
+ "CD Minera": {
+  "lat": 37.98662,
+  "lon": -1.14146,
+  "source": "city: Murcia"
+ },
  "CD Pamplona": {
   "lat": 42.7905115,
   "lon": -1.6222418,
@@ -469,6 +484,11 @@
   "lon": -101.23362222,
   "source": "wikipedia: Estadio Morelos"
  },
+ "Club Portugalete": {
+  "lat": 43.32099,
+  "lon": -3.02064,
+  "source": "thesportsdb: Estadio La Florida, Portugalete, Basque Country, Spain"
+ },
  "Cobreloa": {
   "lat": -22.4605187,
   "lon": -68.9205829,
@@ -568,6 +588,11 @@
   "lat": 50.0997126,
   "lon": 14.4158918,
   "source": "senior team's ground: openstreetmap: epet ARENA, 1066/98, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
+ },
+ "Czechia U21": {
+  "lat": 50.2063291,
+  "lon": 15.8453622,
+  "source": "openstreetmap: Malšovická aréna, Malšovická, U Orlice, Střed města, Malšovice, Hradec Králové, okres Hradec Králové, Královéhradecký kraj, 500 12, Česko"
  },
  "Céleste": {
   "lat": 19.303,
@@ -868,6 +893,11 @@
   "lat": 48.9244726,
   "lon": 2.3601325,
   "source": "openstreetmap: Stade de France, Avenue du Stade de France, Franc-Moisin - Bel-Air - Stade de France, Saint-Denis, Seine-Saint-Denis, Île-de-France, France métropolitaine, 93200, France"
+ },
+ "French Guiana": {
+  "lat": 4.93861111,
+  "lon": -52.335,
+  "source": "thesportsdb: Cayenne, Cayenne, French Guiana"
  },
  "Fuerte San Francisco": {
   "lat": 13.68935,
@@ -1419,6 +1449,11 @@
   "lon": 4.88969,
   "source": "city: Amsterdam"
  },
+ "Netherlands U21": {
+  "lat": 52.3944,
+  "lon": 5.2405,
+  "source": "wikipedia: Yanmar Stadion"
+ },
  "New Mexico United": {
   "lat": 35.0699329,
   "lon": -106.6289798,
@@ -1624,6 +1659,11 @@
   "lon": -8.5837492,
   "source": "senior team's ground: openstreetmap: Estádio do Dragão, Via Futebol Clube do Porto, Monte Aventino, Campanhã, Porto, 4350-415, Portugal"
  },
+ "Portugalete": {
+  "lat": 43.32099,
+  "lon": -3.02064,
+  "source": "city: Portugalete"
+ },
  "Preston Lions": {
   "lat": -37.705,
   "lon": 144.98055556,
@@ -1693,6 +1733,16 @@
   "lat": 53.3352254,
   "lon": -6.2281851,
   "source": "openstreetmap: Aviva Stadium, Lansdowne Road, Pembroke West A ED, Dublin, County Dublin, Leinster, Éire / Ireland"
+ },
+ "Republic of Ireland U21": {
+  "lat": 51.89797,
+  "lon": -8.47061,
+  "source": "city: Cork"
+ },
+ "Reus FC Reddis": {
+  "lat": 41.1563611,
+  "lon": 1.0857964,
+  "source": "openstreetmap: Estadi Camp Nou Municipal, Carrer de Nelson Mandela, Sol-i-vista, Reus, Baix Camp, Tarragona, Catalunya, 43206, España"
  },
  "Roda JC Kerkrade": {
   "lat": 50.86583,
@@ -1914,6 +1964,11 @@
   "lon": 5.18647,
   "source": "manual"
  },
+ "St. Kitts and Nevis": {
+  "lat": 23.0970914,
+  "lon": -82.4018788,
+  "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
+ },
  "St. Lucia": {
   "lat": 13.71667,
   "lon": -60.95,
@@ -2118,6 +2173,11 @@
   "lat": -34.9,
   "lon": -54.95,
   "source": "city: Maldonado"
+ },
+ "Utebo": {
+  "lat": 41.70826,
+  "lon": -0.99916,
+  "source": "city: Utebo"
  },
  "Uzbekistan": {
   "lat": 39.7410223,

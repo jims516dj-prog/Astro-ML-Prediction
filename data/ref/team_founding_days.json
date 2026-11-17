@@ -184,6 +184,10 @@
 "name": "AD Alcorc\u00f3n",
 "tried": "2026-11"
 },
+"Alcoyano": {
+"date": "1928-09-13",
+"name": "CD Alcoyano"
+},
 "Aldershot": {
 "date": null,
 "name": "Aldershot Town F.C.",
@@ -569,6 +573,7 @@
 "name": "F.C. Blau-Wei\u00df Linz",
 "source": "wikipedia:en (Q696525)"
 },
+"Badajoz": null,
 "Bahia": {
 "date": null,
 "tried": "2026-11"
@@ -605,6 +610,7 @@
 "name": "Bangor City F.C.",
 "tried": "2026-11"
 },
+"Barakaldo": null,
 "Barbados": {
 "date": null,
 "name": "Barbados",
@@ -1006,6 +1012,7 @@
 "name": "C.D. FAS"
 },
 "CD Malacateco": null,
+"CD Minera": null,
 "CD Municipal Lime\u00f1o": {
 "date": "1949-09-11",
 "name": "C.D. Municipal Lime\u00f1o"
@@ -2096,6 +2103,10 @@
 "name": "FC Bra\u0219ov",
 "tried": "2026-11"
 },
+"FC Cartagena": {
+"date": "1995-07-25",
+"name": "FC Cartagena"
+},
 "FC Cincinnati": {
 "date": "2015-08-12",
 "name": "FC Cincinnati"
@@ -2365,6 +2376,10 @@
 "Freiburg": {
 "date": "1904-05-30",
 "name": "SC Freiburg"
+},
+"French Guiana": {
+"date": "1946-03-21",
+"name": "French Guiana"
 },
 "Frosinone": {
 "date": "1928-09-19",
@@ -4683,6 +4698,7 @@
 "date": "1179-05-30",
 "name": "Portugal"
 },
+"Portugalete": null,
 "Portuguesa": {
 "date": null,
 "name": "Associa\u00e7\u00e3o Portuguesa de Desportos",
@@ -4847,6 +4863,7 @@
 "date": "1909-09-07",
 "name": "Real Sociedad"
 },
+"Real Uni\u00f3n Irun": null,
 "Reboceros La Piedad": null,
 "Recoleta": null,
 "Red Bull Bragantino SP": {
@@ -4895,6 +4912,7 @@
 "name": "Ireland",
 "source": "wikidata (Q27)"
 },
+"Reus FC Reddis": null,
 "Ried": {
 "date": "1912-05-05",
 "name": "SV Ried"
@@ -6056,6 +6074,7 @@
 "date": "1825-08-25",
 "name": "Uruguay"
 },
+"Utebo": null,
 "Utrecht": {
 "date": "1970-07-01",
 "name": "FC Utrecht"
