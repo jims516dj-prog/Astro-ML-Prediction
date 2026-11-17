@@ -1049,6 +1049,11 @@
   "lon": -89.72361111,
   "source": "wikipedia: Estadio Anna Mercedes Campos"
  },
+ "India": {
+  "lat": 23.7841798,
+  "lon": 89.9285983,
+  "source": "city: Dhaka"
+ },
  "Internacional de Bogotá": {
   "lat": 4.6234294,
   "lon": -74.1354175,
