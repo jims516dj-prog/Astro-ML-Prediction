@@ -104,6 +104,11 @@
   "lon": -0.01277778,
   "source": "wikipedia: Brisbane Road"
  },
+ "Generali-Arena | Wien": {
+  "lat": 48.1624078,
+  "lon": 16.3883392,
+  "source": "openstreetmap: Generali Arena, 1, Horrplatz, Viola Park, Katastralgemeinde Oberlaa Stadt, Favoriten, Wien, 1100, Österreich"
+ },
  "Icahn Stadium | New York City, New York": {
   "lat": 40.7933017,
   "lon": -73.9252817,
@@ -133,6 +138,11 @@
   "lat": -35.28346,
   "lon": 149.12807,
   "source": "city: Canberra"
+ },
+ "Meadow Park | Borehamwood": {
+  "lat": 51.6620315,
+  "lon": -0.2724395,
+  "source": "openstreetmap: Meadow Park, Broughinge Road, Elstree and Borehamwood, Borehamwood, Hertsmere, Hertfordshire, England, WD6 5AL, United Kingdom"
  },
  "Melbourne City Football Academy | Melbourne": {
   "lat": -37.814,
@@ -178,6 +188,11 @@
   "lat": 48.622162,
   "lon": 2.393018,
   "source": "wikipedia: Essonne Stadium"
+ },
+ "Stade Sébastien Charléty | Paris": {
+  "lat": 48.81861111,
+  "lon": 2.34666667,
+  "source": "wikipedia: Stade Sébastien Charléty"
  },
  "Stadio Olimpico Grande Torino | Torino": {
   "lat": 45.04166667,
