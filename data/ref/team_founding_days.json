@@ -26,6 +26,10 @@
 "name": "AC Oulu",
 "tried": "2026-11"
 },
+"AD San Carlos": {
+"date": "1965-05-09",
+"name": "Asociaci\u00f3n Deportiva San Carlos"
+},
 "ADT": null,
 "AEK": {
 "date": "1924-04-13",
@@ -104,6 +108,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Adelaide United FC": {
+"date": "2003-09-12",
+"name": "Adelaide United Football Club"
+},
 "Admira": {
 "date": null,
 "tried": "2026-11"
@@ -132,6 +140,7 @@
 "name": "FC Akron Tolyatti",
 "source": "wikidata (Q65124755)"
 },
+"Al Ahli": null,
 "Al Aqaba": {
 "date": null,
 "name": "Al-Aqaba SC",
@@ -145,6 +154,10 @@
 "Al Nasr Cairo": {
 "date": null,
 "tried": "2026-11"
+},
+"Al Nassr": {
+"date": "1955-10-24",
+"name": "Al-Nassr"
 },
 "Al Yarmouk": {
 "date": null,
@@ -500,6 +513,11 @@
 "Auckland City": {
 "date": "2004-02-03",
 "name": "Auckland City FC"
+},
+"Auckland FC": null,
+"Audax Italiano": {
+"date": "1910-11-30",
+"name": "Audax Italiano"
 },
 "Augsburg": {
 "date": "1907-08-08",
@@ -1400,6 +1418,10 @@
 "date": "1977-01-07",
 "name": "Cobreloa"
 },
+"Cobresal": {
+"date": "1979-05-05",
+"name": "Cobresal"
+},
 "Cob\u00e1n Imperial": {
 "date": "1924-08-01",
 "name": "Cob\u00e1n Imperial"
@@ -1772,6 +1794,10 @@
 "date": "1944-02-12",
 "name": "Deportivo Pereira"
 },
+"Deportivo Recoleta": {
+"date": "1931-02-12",
+"name": "Deportivo Recoleta"
+},
 "Deportivo San Pedro": null,
 "Derby": {
 "date": "1884-02-05",
@@ -1895,6 +1921,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"East Bengal FC": null,
 "East Fife": {
 "date": null,
 "name": "East Fife F.C.",
@@ -2018,6 +2045,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Escorpiones Bel\u00e9n": null,
 "Espanol": {
 "date": null,
 "tried": "2026-11"
@@ -2676,6 +2704,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Guaran\u00ed": null,
 "Guatemala": {
 "date": null,
 "name": "Guatemala",
@@ -3134,6 +3163,16 @@
 "date": "1976-01-29",
 "name": "Joinville Esporte Clube"
 },
+"Jong AZ": null,
+"Jong Ajax": {
+"date": "1900-03-18",
+"name": "Jong Ajax"
+},
+"Jong FC Utrecht": {
+"date": "1970-07-01",
+"name": "Jong FC Utrecht"
+},
+"Jong PSV": null,
 "Jonkopings": {
 "date": null,
 "name": "J\u00f6nk\u00f6pings BK",
@@ -3848,6 +3887,10 @@
 "name": "Meizhou Hakka F.C.",
 "tried": "2026-11"
 },
+"Melbourne Victory": {
+"date": "2004-11-01",
+"name": "Melbourne Victory FC"
+},
 "Melgar": null,
 "Mervue": {
 "date": null,
@@ -4451,6 +4494,10 @@
 "Palestine": {
 "date": "1988-11-15",
 "name": "Palestine"
+},
+"Palestino": {
+"date": "1920-08-08",
+"name": "C.D. Palestino"
 },
 "Palmeiras": {
 "date": null,
@@ -5495,11 +5542,19 @@
 "date": "1905-05-13",
 "name": "Sport Club do Recife"
 },
+"Sporting Club Delhi": {
+"date": "2019-08-27",
+"name": "SC Delhi"
+},
 "Sporting Kansas City": {
 "date": "1995-06-06",
 "name": "Sporting Kansas City"
 },
 "Sporting San Miguelito": null,
+"Sportivo Ameliano": {
+"date": "1936-01-06",
+"name": "Sportivo Ameliano"
+},
 "Sportivo Luque\u00f1o": {
 "date": null,
 "name": "Sportivo Luque\u00f1o",
@@ -6061,6 +6116,7 @@
 "name": "CS Universitatea Craiova",
 "tried": "2026-11"
 },
+"Uni\u00f3n La Calera": null,
 "Ural": {
 "date": null,
 "tried": "2026-11"
@@ -6413,6 +6469,10 @@
 "Westerlo": {
 "date": "1933-09-05",
 "name": "K.V.C. Westerlo"
+},
+"Western Sydney Wanderers FC": {
+"date": "2012-04-04",
+"name": "Western Sydney Wanderers FC"
 },
 "Wexford": {
 "date": null,

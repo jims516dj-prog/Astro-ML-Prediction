@@ -19,6 +19,11 @@
   "lon": 23.4861,
   "source": "thesportsdb: Stadionul Comunal Recea, Recea, Maramureș, Romania"
  },
+ "Al Ahli": {
+  "lat": 21.76262694,
+  "lon": 39.16509611,
+  "source": "wikipedia: King Abdullah Sports City Stadium"
+ },
  "Al Aqaba": {
   "lat": 29.5426089,
   "lon": 35.0044278,
@@ -168,6 +173,11 @@
   "lat": 6.25184,
   "lon": -75.56359,
   "source": "city: Medellin"
+ },
+ "Auckland FC": {
+  "lat": -36.91833333,
+  "lon": 174.8125,
+  "source": "wikipedia: Mount Smart Stadium"
  },
  "Aurora": {
   "lat": -17.3793,
@@ -494,6 +504,11 @@
   "lon": -68.9205829,
   "source": "openstreetmap: Estadio Zorros del Desierto, Bilbao, Calama, Provincia de El Loa, Región de Antofagasta, 1390726, Chile"
  },
+ "Cobresal": {
+  "lat": -26.25194444,
+  "lon": -69.62861111,
+  "source": "wikipedia: Estadio El Cobre de El Salvador"
+ },
  "Coleraine FC": {
   "lat": 55.13277778,
   "lon": -6.66027778,
@@ -684,6 +699,11 @@
   "lon": -75.72222,
   "source": "city"
  },
+ "Deportivo Recoleta": {
+  "lat": -25.27583333,
+  "lon": -57.55166667,
+  "source": "wikipedia: Estadio Ricardo Gregor"
+ },
  "Deportivo San Pedro": {
   "lat": 14.96807,
   "lon": -91.76172,
@@ -739,6 +759,11 @@
   "lon": 13.73832,
   "source": "thesportsdb: Rudolf-Harbig-Stadion, Dresden, Germany"
  },
+ "East Bengal FC": {
+  "lat": 22.5690604,
+  "lon": 88.4090201,
+  "source": "openstreetmap: Vivekananda Yuba Bharati Krirangan, Broadway Road, JC Block, Sector IV, Bidhannagar, Greater Kolkata, Rajarhat, North 24 Parganas, West Bengal, 700098, India"
+ },
  "Ecuador": {
   "lat": -0.1775141,
   "lon": -78.4766126,
@@ -774,6 +799,11 @@
   "lon": 31.24967,
   "source": "city: Cairo"
  },
+ "Escorpiones Belén": {
+  "lat": 9.996071,
+  "lon": -84.2437143,
+  "source": "openstreetmap: Estadio Rafael Bolaños, Calle Lagunilla, Pacto del Jocote, San Antonio, Alajuela, 20102, Costa Rica"
+ },
  "Estonia": {
   "lat": 59.42138889,
   "lon": 24.73194444,
@@ -803,6 +833,11 @@
   "lat": 49.32637,
   "lon": 7.33867,
   "source": "thesportsdb: Waldstadion Homburg, Homburg"
+ },
+ "FC Den Bosch": {
+  "lat": 51.7016546,
+  "lon": 5.3298203,
+  "source": "openstreetmap: Stadion De Vliert, Victorialaan, Graafsewijk-Noord, 's-Hertogenbosch, Noord-Brabant, Nederland, 5213 JE, Nederland"
  },
  "FC Dordrecht": {
   "lat": 51.81,
@@ -843,6 +878,11 @@
   "lat": 49.75,
   "lon": 13.38555556,
   "source": "wikipedia: Doosan Arena"
+ },
+ "FC Volendam": {
+  "lat": 52.495,
+  "lon": 5.07083,
+  "source": "city"
  },
  "FC Zurich": {
   "lat": 47.36667,
@@ -1044,6 +1084,16 @@
   "lon": 29.91582,
   "source": "city: Alexandria"
  },
+ "Helmond Sport": {
+  "lat": 51.4874227,
+  "lon": 5.67924,
+  "source": "openstreetmap: MySteel Stadion, Rembrandtlaan, Bloemvelden, Helmond-Noord, Kruisschot, Helmond, Noord-Brabant, Nederland, 5702 BT, Nederland"
+ },
+ "Heracles Almelo": {
+  "lat": 52.35667,
+  "lon": 6.6625,
+  "source": "city"
+ },
  "Hetten FC": {
   "lat": 16.84027778,
   "lon": 42.59611111,
@@ -1078,6 +1128,11 @@
   "lat": 13.72805556,
   "lon": -89.72361111,
   "source": "wikipedia: Estadio Anna Mercedes Campos"
+ },
+ "Independiente Medellín": {
+  "lat": 6.25184,
+  "lon": -75.56359,
+  "source": "city"
  },
  "India": {
   "lat": 23.7841798,
@@ -1138,6 +1193,11 @@
   "lat": 42.59694,
   "lon": 19.94556,
   "source": "city: Plav"
+ },
+ "Jong FC Utrecht": {
+  "lat": 52.09083,
+  "lon": 5.12222,
+  "source": "city"
  },
  "Jordan": {
   "lat": 25.317155,
@@ -1569,6 +1629,11 @@
   "lon": 34.3046543,
   "source": "national team: Bani Suheila (largest city)"
  },
+ "Palestino": {
+  "lat": -33.521,
+  "lon": -70.673,
+  "source": "wikipedia: Estadio Municipal de La Cisterna"
+ },
  "Panama": {
   "lat": 8.9936,
   "lon": -79.51973,
@@ -1949,6 +2014,11 @@
   "lon": -79.53416667,
   "source": "wikipedia: Estadio Javier Cruz"
  },
+ "Sportivo Ameliano": {
+  "lat": -25.5045192,
+  "lon": -57.5693789,
+  "source": "city: Villeta"
+ },
  "Sportivo Luqueño": {
   "lat": -25.27222222,
   "lon": -57.49305556,
@@ -2038,6 +2108,11 @@
   "lat": 46.76667,
   "lon": 23.6,
   "source": "thesportsdb: Stadionul Clujana, Cluj-Napoca, Romania"
+ },
+ "TOP Oss": {
+  "lat": 51.765,
+  "lon": 5.51806,
+  "source": "city"
  },
  "TSC Backa Topola": {
   "lat": 45.815881,
@@ -2234,6 +2309,11 @@
   "lon": 13.38555556,
   "source": "senior team's ground: wikipedia: Doosan Arena"
  },
+ "Vitesse": {
+  "lat": 51.98,
+  "lon": 5.91111,
+  "source": "manual"
+ },
  "Vitré": {
   "lat": 48.11776,
   "lon": -1.20577,
@@ -2258,6 +2338,11 @@
   "lat": -41.18466667,
   "lon": 174.94904167,
   "source": "wikipedia: Fraser Park"
+ },
+ "Western Sydney Wanderers FC": {
+  "lat": -33.86785,
+  "lon": 151.20732,
+  "source": "city"
  },
  "Young Boys": {
   "lat": 46.96277778,
