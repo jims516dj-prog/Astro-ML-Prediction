@@ -1354,6 +1354,11 @@
   "lon": 25.25777778,
   "source": "wikipedia: Lithuania National Stadium"
  },
+ "Liverpool": {
+  "lat": 53.430819,
+  "lon": -2.960828,
+  "source": "stadium"
+ },
  "Llaneros FC": {
   "lat": 4.1399078,
   "lon": -73.6202459,
@@ -2158,6 +2163,11 @@
   "lat": 47.2810655,
   "lon": 15.977851,
   "source": "openstreetmap: Profertil Arena Hartberg, Stefan Seedoch-Allee, Katastralgemeinde Ungarvorstadt, Ring, Hartberg, Bezirk Hartberg-Fürstenfeld, Steiermark, 8230, Österreich"
+ },
+ "TSV Havelse": {
+  "lat": 52.40833333,
+  "lon": 9.60222222,
+  "source": "wikipedia: Wilhelm-Langrehr-Stadion"
  },
  "Tanta SC": {
   "lat": 30.78847,
