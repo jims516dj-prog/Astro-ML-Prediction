@@ -3,6 +3,7 @@
   "afc.saff.championship": "SAFF Championship",
   "arg.1": "Argentine Liga Profesional de Fútbol",
   "arg.2": "Argentine Nacional B",
+  "arg.3": "Argentine Primera B",
   "arg.copa": "Copa Argentina",
   "aus.1": "Australian A-League Men",
   "aut.1": "Austrian Bundesliga",
@@ -50,6 +51,7 @@
   "nor.1": "Norwegian Eliteserien",
   "par.1": "Paraguayan Primera División",
   "per.1": "Peruvian Liga 1",
+  "por.taca.portugal": "Taca de Portugal",
   "sco.1": "Scottish Premiership",
   "sco.2": "Scottish Championship",
   "slv.1": "Salvadoran Primera Division",
@@ -59,7 +61,8 @@
   "uefa.nations": "UEFA Nations League",
   "uru.1": "Liga AUF Uruguaya",
   "usa.1": "MLS",
-  "usa.usl.1": "USL Championship"
+  "usa.usl.1": "USL Championship",
+  "ven.1": "Venezuelan Primera División"
  },
- "generated_at": "2026-11-18T23:25:23+00:00"
+ "generated_at": "2026-11-19T23:36:43+00:00"
 }

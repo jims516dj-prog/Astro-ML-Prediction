@@ -1204,6 +1204,11 @@
   "lon": 103.8743,
   "source": "wikipedia: National Stadium, Singapore"
  },
+ "Jeonbuk Hyundai Motors": {
+  "lat": 35.82194,
+  "lon": 127.14889,
+  "source": "thesportsdb: Jeonju World Cup Stadium, Jeonju"
+ },
  "Jezero": {
   "lat": 42.59694,
   "lon": 19.94556,
@@ -1724,6 +1729,11 @@
   "lon": 14.51865806,
   "source": "wikipedia: Florian Krygier Municipal Stadium"
  },
+ "Pohang Steelers": {
+  "lat": 36.02917,
+  "lon": 129.36481,
+  "source": "thesportsdb: Pohang Steel Yard, Pohang, Nam-gu, South Korea"
+ },
  "Poland": {
   "lat": 52.22977,
   "lon": 21.01178,
@@ -1737,6 +1747,11 @@
  "Ponte Preta": {
   "lat": -27.67688,
   "lon": -52.51736,
+  "source": "city"
+ },
+ "Porto": {
+  "lat": 41.14961,
+  "lon": -8.61099,
   "source": "city"
  },
  "Portugal": {

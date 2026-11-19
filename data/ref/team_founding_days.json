@@ -2120,6 +2120,10 @@
 "name": "Ey\u00fcpspor",
 "tried": "2026-11"
 },
+"FC Anyang": {
+"date": "2013-02-02",
+"name": "FC Anyang"
+},
 "FC Ararat-Armenia": {
 "date": null,
 "name": "FC Ararat-Armenia",
@@ -2220,6 +2224,10 @@
 "tried": "2026-11"
 },
 "FC Santiago": null,
+"FC Seoul": {
+"date": "1983-12-22",
+"name": "FC Seoul"
+},
 "FC Slutsk": null,
 "FC Stade Lausanne-Ouchy": {
 "date": "2000-07-01",
@@ -3159,6 +3167,10 @@
 },
 "Javor": null,
 "Jedinstvo Ub": null,
+"Jeonbuk Hyundai Motors": {
+"date": "1994-12-12",
+"name": "Jeonbuk Hyundai Motors FC"
+},
 "Jerv": {
 "date": "1921-08-21",
 "name": "FK Jerv"
@@ -4555,6 +4567,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Paredes": null,
 "Pari NN": {
 "date": null,
 "tried": "2026-11"
@@ -4698,6 +4711,10 @@
 "Pogon Szczecin": {
 "date": "1948-04-21",
 "name": "Pogo\u0144 Szczecin"
+},
+"Pohang Steelers": {
+"date": "1973-04-01",
+"name": "FC Pohang Steelers"
 },
 "Poland": {
 "date": "1947-07-22",
