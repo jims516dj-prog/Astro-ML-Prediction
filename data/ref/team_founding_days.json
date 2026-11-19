@@ -729,6 +729,10 @@
 "date": "1904-02-28",
 "name": "S.L. Benfica"
 },
+"Bengaluru FC": {
+"date": "2013-07-20",
+"name": "Bengaluru FC"
+},
 "Benin": {
 "date": "1960-08-01",
 "name": "Benin"
@@ -3030,6 +3034,10 @@
 "date": "1941-02-28",
 "name": "Independiente Santa Fe"
 },
+"Independiente del Valle": {
+"date": "1958-03-01",
+"name": "Independiente del Valle"
+},
 "India": {
 "date": "1947-08-15",
 "name": "India"
@@ -3742,6 +3750,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Macar\u00e1": null,
 "Macclesfield": {
 "date": "2020-10-13",
 "name": "Macclesfield F.C."
@@ -4070,6 +4079,10 @@
 "Mudhar": {
 "date": null,
 "tried": "2026-11"
+},
+"Mumbai City FC": {
+"date": "2014-08-30",
+"name": "Mumbai City FC"
 },
 "Municipal": null,
 "Mushuc Runa": {

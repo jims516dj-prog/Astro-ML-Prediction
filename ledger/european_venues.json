@@ -274,6 +274,11 @@
   "lon": -9.20282,
   "source": "city"
  },
+ "Bengaluru FC": {
+  "lat": 12.9697,
+  "lon": 77.5934,
+  "source": "wikipedia: Sree Kanteerava Stadium"
+ },
  "Black Man Warrior": {
   "lat": 6.30054,
   "lon": -10.7969,
@@ -1139,6 +1144,11 @@
   "lon": -75.56359,
   "source": "city"
  },
+ "Independiente del Valle": {
+  "lat": -0.34916667,
+  "lon": -78.47055556,
+  "source": "wikipedia: Estadio Banco Guayaquil"
+ },
  "India": {
   "lat": 23.7841798,
   "lon": 89.9285983,
@@ -1673,6 +1683,11 @@
   "lat": 52.56472222,
   "lon": -0.24027778,
   "source": "senior team's ground: wikipedia: London Road Stadium"
+ },
+ "Peñarol": {
+  "lat": -34.82519444,
+  "lon": -56.19916667,
+  "source": "city"
  },
  "Piratas": {
   "lat": 19.16416667,
