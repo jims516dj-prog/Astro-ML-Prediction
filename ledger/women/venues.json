@@ -39,6 +39,11 @@
   "lon": 6.8375,
   "source": "wikipedia: De Grolsch Veste"
  },
+ "Dolphin Stadium | Queensland": {
+  "lat": 25.95805556,
+  "lon": -80.23888889,
+  "source": "wikipedia: Hard Rock Stadium"
+ },
  "Emirates Stadium | London": {
   "lat": 51.5550404,
   "lon": -0.1083997,
@@ -179,6 +184,11 @@
   "lon": 2.15899,
   "source": "city: Barcelona"
  },
+ "St Helens Stadium | St Helens": {
+  "lat": 53.4475,
+  "lon": -2.7275,
+  "source": "wikipedia: BrewDog Stadium"
+ },
  "Stade Bernard Gasset No. 7 | Montpellier": {
   "lat": 43.61092,
   "lon": 3.87723,
@@ -208,6 +218,11 @@
   "lat": 51.4816869,
   "lon": -0.1910336,
   "source": "openstreetmap: Stamford Bridge, Britannia Gate, Walham Green, Fulham, London Borough of Hammersmith and Fulham, Greater London, England, SW6 1HD, United Kingdom"
+ },
+ "Sydney Olympic Park Athletic Centre | Sydney": {
+  "lat": -33.85027778,
+  "lon": 151.06416667,
+  "source": "wikipedia: Sydney Olympic Park Athletic Centre"
  },
  "The Cherry Red Records Stadium | London": {
   "lat": 51.4051256,

@@ -638,6 +638,10 @@
 "date": "1899-11-29",
 "name": "FC Barcelona"
 },
+"Barcelona SC": {
+"date": "1899-11-29",
+"name": "FC Barcelona"
+},
 "Bari": {
 "date": "1908-01-15",
 "name": "SSC Bari"
@@ -955,6 +959,7 @@
 "date": "1901-06-24",
 "name": "Brighton & Hove Albion F.C."
 },
+"Brisbane Roar FC": null,
 "Bristol City": {
 "date": null,
 "name": "Bristol City F.C.",
@@ -1087,6 +1092,7 @@
 "name": "Cabinteely F.C.",
 "tried": "2026-11"
 },
+"Cacahuatique": null,
 "Cadiz": {
 "date": "1910-09-10",
 "name": "C\u00e1diz Club de F\u00fatbol"
@@ -1141,6 +1147,10 @@
 "Cape Verde": {
 "date": "1990-09-28",
 "name": "Cape Verde"
+},
+"Caracas FC": {
+"date": "1967-12-12",
+"name": "Caracas F\u00fatbol Club"
 },
 "Cardiff": {
 "date": null,
@@ -1218,6 +1228,10 @@
 "date": null,
 "name": "Central African Republic",
 "tried": "2026-11"
+},
+"Central Coast Mariners FC": {
+"date": "2004-11-01",
+"name": "Central Coast Mariners FC"
 },
 "Central Cordoba": {
 "date": null,
@@ -1307,6 +1321,10 @@
 "Chengdu Rongcheng": {
 "date": "2018-03-07",
 "name": "Chengdu Rongcheng F.C."
+},
+"Chennaiyin FC": {
+"date": "2014-08-28",
+"name": "Chennaiyin FC"
 },
 "Chesterfield": {
 "date": "1866-10-19",
@@ -1498,6 +1516,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Coquimbo Unido": null,
 "Cordoba": {
 "date": null,
 "name": "C\u00f3rdoba CF",
@@ -1773,6 +1792,10 @@
 "date": "1912-11-23",
 "name": "Deportivo Cali"
 },
+"Deportivo Cuenca": {
+"date": "1971-03-04",
+"name": "C.D. Cuenca"
+},
 "Deportivo Garcilaso": null,
 "Deportivo Madryn": null,
 "Deportivo Maip\u00fa": {
@@ -1807,6 +1830,10 @@
 "name": "Deportivo Recoleta"
 },
 "Deportivo San Pedro": null,
+"Deportivo T\u00e1chira": {
+"date": "1974-01-11",
+"name": "Deportivo T\u00e1chira"
+},
 "Derby": {
 "date": "1884-02-05",
 "name": "Derby County F.C."
@@ -2101,6 +2128,7 @@
 "name": "Everton F.C.",
 "tried": "2026-11"
 },
+"Everton CD": null,
 "Excelsior": {
 "date": null,
 "name": "AS Excelsior",
@@ -2143,6 +2171,7 @@
 "name": "FC Bra\u0219ov",
 "tried": "2026-11"
 },
+"FC Cajamarca": null,
 "FC Cartagena": {
 "date": "1995-07-25",
 "name": "FC Cartagena"
@@ -2177,6 +2206,10 @@
 "name": "FC Emmen"
 },
 "FC Energetik-Bgu Minsk": null,
+"FC GOA": {
+"date": "2014-08-26",
+"name": "FC Goa"
+},
 "FC Gifu": null,
 "FC Hermannstadt": {
 "date": null,
@@ -2910,6 +2943,7 @@
 "date": "1903-05-03",
 "name": "Heracles Almelo"
 },
+"Herediano": null,
 "Hertha": {
 "date": "1892-07-25",
 "name": "Hertha BSC"
@@ -3763,6 +3797,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Macarthur FC": {
+"date": "2018-12-13",
+"name": "Macarthur FC"
+},
 "Macar\u00e1": null,
 "Macclesfield": {
 "date": "2020-10-13",
@@ -4259,6 +4297,7 @@
 "name": "North Macedonia",
 "tried": "2026-11"
 },
+"NorthEast United FC": null,
 "Northampton": {
 "date": null,
 "name": "Northampton Town F.C.",
@@ -4319,6 +4358,7 @@
 "date": "1901-04-07",
 "name": "Clube N\u00e1utico Capibaribe"
 },
+"O'Higgins": null,
 "OFI Crete": {
 "date": "1925-11-25",
 "name": "OFI Crete F.C."
@@ -4615,6 +4655,10 @@
 "name": "Pendikspor",
 "tried": "2026-11"
 },
+"Perth Glory FC": {
+"date": "1995-12-01",
+"name": "Perth Glory FC"
+},
 "Peru": {
 "date": null,
 "name": "Peru",
@@ -4819,6 +4863,11 @@
 "date": null,
 "name": "Puerto Rico",
 "tried": "2026-11"
+},
+"Punjab FC": null,
+"Puntarenas FC": {
+"date": "2004-06-30",
+"name": "Puntarenas F.C."
 },
 "Puszcza": {
 "date": null,
@@ -5729,6 +5778,10 @@
 "date": "1893-09-09",
 "name": "VfB Stuttgart"
 },
+"Suchitepequez": {
+"date": "1960-11-24",
+"name": "C.D. Suchitep\u00e9quez"
+},
 "Sudan": {
 "date": "1956-01-01",
 "name": "Sudan"
@@ -6142,6 +6195,15 @@
 "date": null,
 "tried": "2026-11"
 },
+"Universidad Cat\u00f3lica (Quito)": null,
+"Universidad de Chile": {
+"date": "1927-05-24",
+"name": "Club Universidad de Chile"
+},
+"Universidad de Concepci\u00f3n": {
+"date": "1994-08-08",
+"name": "C.D. Universidad de Concepci\u00f3n"
+},
 "Universitario de Vinto": {
 "date": null,
 "tried": "2026-11"
@@ -6487,6 +6549,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Wellington Phoenix": {
+"date": "2007-03-19",
+"name": "Wellington Phoenix FC"
+},
 "Wellington Phoenix II": null,
 "Werder Bremen": {
 "date": "1899-02-04",
@@ -6609,6 +6675,7 @@
 "date": "1967-06-04",
 "name": "Xanthi F.C."
 },
+"Xelaj\u00fa MC": null,
 "Yamaga": {
 "date": null,
 "tried": "2026-11"
@@ -6726,5 +6793,6 @@
 "\u00c1guilas Doradas": {
 "date": "2008-07-16",
 "name": "Gold Eagles"
-}
+},
+"\u00d1ublense": null
 }

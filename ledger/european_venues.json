@@ -129,6 +129,11 @@
   "lon": 44.5255451,
   "source": "openstreetmap: Վազգեն Սարգսյանի մարզադաշտ, Չարենցի փողոց, Կենտրոն, Երևան, 0070, Հայաստան"
  },
+ "Arsenal Sarandi": {
+  "lat": -34.67833333,
+  "lon": -58.34027778,
+  "source": "wikipedia: Estadio Julio Humberto Grondona"
+ },
  "Aruba": {
   "lat": 12.4973297,
   "lon": -69.9784629,
@@ -153,6 +158,11 @@
   "lat": -34.90328,
   "lon": -56.18816,
   "source": "city: Montevideo"
+ },
+ "Atletico-MG": {
+  "lat": 10.9269548,
+  "lon": -74.8005111,
+  "source": "openstreetmap: Estadio Metropolitano Roberto Meléndez, Vía Estadio, Ciudadela 20 de Julio, Localidad Metropolitana, Perímetro Urbano Barranquilla, Barranquilla, Atlántico, RAP Caribe, 083001, Colombia"
  },
  "Atlético Bucaramanga": {
   "lat": 7.12539,
@@ -324,6 +334,11 @@
   "lon": -43.2303,
   "source": "senior team's ground: wikipedia: Maracanã Stadium"
  },
+ "Brisbane Roar FC": {
+  "lat": 25.95805556,
+  "lon": -80.23888889,
+  "source": "wikipedia: Hard Rock Stadium"
+ },
  "Bristol Rovers": {
   "lat": 51.45523,
   "lon": -2.59665,
@@ -369,6 +384,11 @@
   "lon": -3.84055556,
   "source": "wikipedia: Estadio Municipal de Santo Domingo"
  },
+ "CD FAS": {
+  "lat": 13.9764817,
+  "lon": -89.5692802,
+  "source": "openstreetmap: Estadio Óscar Quiteño, 14a Avenida Sur, Colonia El Palmar, Finca El Rosario, Santa Ana, Santa Ana Centro, Santa Ana, 2201, El Salvador"
+ },
  "CD Malacateco": {
   "lat": 14.9117513,
   "lon": -92.0601464,
@@ -378,6 +398,11 @@
   "lat": 37.98662,
   "lon": -1.14146,
   "source": "city: Murcia"
+ },
+ "CD Municipal Limeño": {
+  "lat": 13.62472,
+  "lon": -87.89361,
+  "source": "city: Santa Rosa de Lima"
  },
  "CD Pamplona": {
   "lat": 42.7905115,
@@ -449,6 +474,16 @@
   "lon": 18.55496,
   "source": "thesportsdb: Stade Barthélemy Boganda, Bangui"
  },
+ "Central Coast Mariners": {
+  "lat": -33.3133394,
+  "lon": 151.4243298,
+  "source": "openstreetmap: Central Coast Mariners Centre of Excellence, Wyong Road, Tuggerah, Gosford, New South Wales, 2259, Australia"
+ },
+ "Central Coast Mariners FC": {
+  "lat": -33.42833333,
+  "lon": 151.33805556,
+  "source": "wikipedia: Central Coast Stadium"
+ },
  "Cerrito": {
   "lat": -34.90328,
   "lon": -56.18816,
@@ -474,6 +509,11 @@
   "lon": 61.42915,
   "source": "city: Chelyabinsk"
  },
+ "Chennaiyin FC": {
+  "lat": 13.08555556,
+  "lon": 80.27166667,
+  "source": "wikipedia: Jawaharlal Nehru Stadium (Chennai)"
+ },
  "Chile": {
   "lat": -33.46444444,
   "lon": -70.61055556,
@@ -493,6 +533,11 @@
   "lat": 24.1469,
   "lon": 120.6839,
   "source": "national team: Taichung (largest city)"
+ },
+ "Ciudad de Bolívar": {
+  "lat": -34.58333333,
+  "lon": -60.95,
+  "source": "city: Junin"
  },
  "Club Atlético La Paz": {
   "lat": 19.36055556,
@@ -558,6 +603,11 @@
   "lat": -4.33041667,
   "lon": 15.31,
   "source": "senior team's ground: wikipedia: Martyrs Stadium"
+ },
+ "Coquimbo Unido": {
+  "lat": -29.96527778,
+  "lon": -71.33833333,
+  "source": "wikipedia: Estadio Municipal Francisco Sánchez Rumoroso"
  },
  "Crewe Alexandra": {
   "lat": 53.0875,
@@ -689,6 +739,11 @@
   "lon": -54.95,
   "source": "city"
  },
+ "Deportivo Mixco": {
+  "lat": 14.63077,
+  "lon": -90.60711,
+  "source": "city: Mixco"
+ },
  "Deportivo Moquegua": {
   "lat": -17.19832,
   "lon": -70.93567,
@@ -718,6 +773,11 @@
   "lat": 14.96807,
   "lon": -91.76172,
   "source": "city: San Pedro Sacatepéquez"
+ },
+ "Deportivo Táchira": {
+  "lat": 7.7870799,
+  "lon": -72.1978863,
+  "source": "openstreetmap: Polideportivo de Pueblo Nuevo, Avenida Monumental, Pueblo Nuevo, Parroquia San Juan Bautista, Municipio San Cristóbal, Táchira, 5001, Venezuela"
  },
  "Deren": {
   "lat": 47.90213889,
@@ -852,6 +912,11 @@
  "FC Dordrecht": {
   "lat": 51.81,
   "lon": 4.67361,
+  "source": "city"
+ },
+ "FC Eindhoven": {
+  "lat": 51.44083,
+  "lon": 5.47778,
   "source": "city"
  },
  "FC Gifu": {
@@ -1569,6 +1634,11 @@
   "lon": 21.42555556,
   "source": "wikipedia: Toše Proeski Arena"
  },
+ "NorthEast United FC": {
+  "lat": 26.1844,
+  "lon": 91.7458,
+  "source": "city: Guwahati"
+ },
  "Northampton Town": {
   "lat": 52.23527778,
   "lon": -0.93333333,
@@ -1583,6 +1653,11 @@
   "lat": 59.91273,
   "lon": 10.74609,
   "source": "national team: Oslo (largest city)"
+ },
+ "O'Higgins": {
+  "lat": -48.46666667,
+  "lon": -72.56666667,
+  "source": "city"
  },
  "OFK Vršac": {
   "lat": 45.1184781,
@@ -1789,6 +1864,11 @@
   "lon": -67.1546605,
   "source": "openstreetmap: Estadio Isidoro García, Avenida William C. Dunscombe, Residencial Rafael Hernández, Sábalos, Mayagüez, Puerto Rico, 00682, United States"
  },
+ "Puntarenas FC": {
+  "lat": 9.976422,
+  "lon": -84.838781,
+  "source": "wikipedia: Estadio Lito Pérez"
+ },
  "Qatar": {
   "lat": 25.29194,
   "lon": 51.42444,
@@ -1888,6 +1968,11 @@
   "lat": 47.44388889,
   "lon": 15.30055556,
   "source": "wikipedia: Franz Fekete Stadium"
+ },
+ "Sacramento Republic FC": {
+  "lat": 38.5913512,
+  "lon": -121.4380099,
+  "source": "openstreetmap: Heart Health Park, Levee Path, Elvas, Sacramento, Sacramento County, California, 95815, United States"
  },
  "Saint Martin": {
   "lat": 18.0731,
@@ -2294,6 +2379,16 @@
   "lon": -84.52222222,
   "source": "wikipedia: TQL Stadium"
  },
+ "Universidad Católica (Quito)": {
+  "lat": -0.22985,
+  "lon": -78.52495,
+  "source": "city"
+ },
+ "Universidad de Concepción": {
+  "lat": -36.82699,
+  "lon": -73.04977,
+  "source": "city"
+ },
  "Uruguay": {
   "lat": -34.9,
   "lon": -54.95,
@@ -2384,6 +2479,11 @@
   "lon": -3.2029602,
   "source": "openstreetmap: Cardiff City Stadium, Leckwith Road, Canton, Cardiff, Cymru / Wales, CF11 8AZ, United Kingdom"
  },
+ "Wellington Phoenix": {
+  "lat": -41.27305556,
+  "lon": 174.78583333,
+  "source": "wikipedia: Wellington Regional Stadium"
+ },
  "Wellington Phoenix II": {
   "lat": -41.18466667,
   "lon": 174.94904167,
@@ -2393,6 +2493,11 @@
   "lat": -33.86785,
   "lon": 151.20732,
   "source": "city"
+ },
+ "Xelajú MC": {
+  "lat": 14.84194444,
+  "lon": -91.51722222,
+  "source": "wikipedia: Mario Camposeco Stadium"
  },
  "Young Boys": {
   "lat": 46.96277778,
