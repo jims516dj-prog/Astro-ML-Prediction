@@ -14,6 +14,11 @@
   "lon": 5.01667,
   "source": "thesportsdb: L'Astragale Terrain 1998, Dijon, Bourgogne-Franche-Comté, France"
  },
+ "AVS": {
+  "lat": 41.366932,
+  "lon": -8.411789,
+  "source": "wikipedia: Estádio do CD Aves"
+ },
  "Academica Recea": {
   "lat": 47.63108,
   "lon": 23.4861,
@@ -53,6 +58,11 @@
   "lat": 39.5179524,
   "lon": -0.5210044,
   "source": "openstreetmap: Club de Tenis El Collao, Carretera Manises - Riba-roja, Urbanització El Terreno, Riba-roja de Túria, el Camp de Túria, València / Valencia, Comunitat Valenciana, 46190, España"
+ },
+ "Alemannia Aachen": {
+  "lat": 50.77664,
+  "lon": 6.08342,
+  "source": "city"
  },
  "Algeria": {
   "lat": 36.729,
@@ -453,6 +463,11 @@
   "lat": 14.93152,
   "lon": -23.51254,
   "source": "city: Praia"
+ },
+ "Carabobo": {
+  "lat": 10.22340278,
+  "lon": -68.0115,
+  "source": "wikipedia: Estadio Misael Delgado"
  },
  "Cayman Islands": {
   "lat": 19.283493,
@@ -879,6 +894,11 @@
   "lon": 24.73194444,
   "source": "wikipedia: Lilleküla Stadium"
  },
+ "Estoril": {
+  "lat": 38.7095707,
+  "lon": -9.3901368,
+  "source": "city"
+ },
  "Estudiantes L.P.": {
   "lat": -31.4135,
   "lon": -64.18105,
@@ -1002,6 +1022,11 @@
  "Fortaleza": {
   "lat": -3.71722,
   "lon": -38.54306,
+  "source": "city"
+ },
+ "Fortuna Düsseldorf": {
+  "lat": 51.22172,
+  "lon": 6.77616,
   "source": "city"
  },
  "France": {
@@ -1259,6 +1284,11 @@
   "lon": -2.21833333,
   "source": "wikipedia: 20 August 1955 Stadium (Béchar)"
  },
+ "Jahn Regensburg": {
+  "lat": 49.01513,
+  "lon": 12.10161,
+  "source": "city"
+ },
  "Jamaica": {
   "lat": 18.4740782,
   "lon": -77.6332168,
@@ -1459,6 +1489,11 @@
   "lon": 35.73405,
   "source": "thesportsdb: Ma'an, Ma'an, Jordan"
  },
+ "Mafra": {
+  "lat": 38.9408004,
+  "lon": -9.341598,
+  "source": "openstreetmap: Estádio Municipal de Mafra, Praceta do Parque, Quinta de Santa Bárbara, Mafra, Lisboa, 2640-486, Portugal"
+ },
  "Magallanes": {
   "lat": -12.0855522,
   "lon": -77.0958285,
@@ -1483,6 +1518,11 @@
   "lat": 53.13805556,
   "lon": -1.20055556,
   "source": "wikipedia: Field Mill"
+ },
+ "Maritimo": {
+  "lat": 32.66568,
+  "lon": -16.92547,
+  "source": "manual"
  },
  "Mega Sport": {
   "lat": 32.10180556,
@@ -1954,6 +1994,16 @@
   "lon": 27.05,
   "source": "thesportsdb: Stadionul Municipal Râmnicu Sărat, Râmnicu Sărat, Buzău, Romania"
  },
+ "SC Fortuna Köln": {
+  "lat": 50.93333,
+  "lon": 6.95,
+  "source": "city"
+ },
+ "SC Verl": {
+  "lat": 51.88333,
+  "lon": 8.51667,
+  "source": "city"
+ },
  "SK Sigma Olomouc": {
   "lat": 49.6,
   "lon": 17.24833333,
@@ -2249,6 +2299,16 @@
   "lon": 19.627569,
   "source": "wikipedia: TSC Arena"
  },
+ "TSG Hoffenheim": {
+  "lat": 49.2380604,
+  "lon": 8.8876414,
+  "source": "openstreetmap: SNP Arena, 1, Dietmar-Hopp-Straße, Sinsheim, VVG der Stadt Sinsheim, Rhein-Neckar-Kreis, Baden-Württemberg, 74889, Deutschland"
+ },
+ "TSG Hoffenheim II": {
+  "lat": 49.2380604,
+  "lon": 8.8876414,
+  "source": "senior team's ground: openstreetmap: SNP Arena, 1, Dietmar-Hopp-Straße, Sinsheim, VVG der Stadt Sinsheim, Rhein-Neckar-Kreis, Baden-Württemberg, 74889, Deutschland"
+ },
  "TSV 1860 Munich": {
   "lat": 48.13743,
   "lon": 11.57549,
@@ -2463,6 +2523,11 @@
   "lat": 48.11776,
   "lon": -1.20577,
   "source": "thesportsdb: Stade Municipal de Vitré, Vitré, Ille-et-Vilaine, France"
+ },
+ "Vitória de Guimaraes": {
+  "lat": 41.44583333,
+  "lon": -8.30111111,
+  "source": "wikipedia: Estádio D. Afonso Henriques"
  },
  "Voluntari": {
   "lat": 44.45605556,

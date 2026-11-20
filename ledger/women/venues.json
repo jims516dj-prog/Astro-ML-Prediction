@@ -124,6 +124,11 @@
   "lon": -73.9252817,
   "source": "openstreetmap: Icahn Stadium, Randalls Island Greenway, Manhattan Community Board 11, Manhattan, New York County, New York, 10035, United States"
  },
+ "Ipurua | Eibar": {
+  "lat": 43.1817231,
+  "lon": -2.4758836,
+  "source": "openstreetmap: Ipurua Futbol Zelaia, 2, Indalezio Ojanguren kalea, Egigurentarren, Ipurua, Otaola-Kiñarra, Eibar, Gipuzkoa, Euskadi, 20600, España"
+ },
  "King Power at Den Dreef Stadion | Leuven": {
   "lat": 50.8684105,
   "lon": 4.6942994,
@@ -158,6 +163,11 @@
   "lat": -37.814,
   "lon": 144.96332,
   "source": "city: Melbourne"
+ },
+ "Nou Municipal de Palamós | Girona": {
+  "lat": 41.98311,
+  "lon": 2.82493,
+  "source": "city: Girona"
  },
  "Parc des Princes | Paris": {
   "lat": 48.8413634,

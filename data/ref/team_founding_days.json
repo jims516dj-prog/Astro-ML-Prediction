@@ -210,6 +210,10 @@
 "date": "1913-03-29",
 "name": "Club Atl\u00e9tico Aldosivi"
 },
+"Alemannia Aachen": {
+"date": "1900-12-16",
+"name": "Alemannia Aachen"
+},
 "Alessandria": {
 "date": null,
 "name": "US Alessandria Calcio 1912",
@@ -1147,6 +1151,10 @@
 "Cape Verde": {
 "date": "1990-09-28",
 "name": "Cape Verde"
+},
+"Carabobo": {
+"date": "1997-02-26",
+"name": "Carabobo F.C."
 },
 "Caracas FC": {
 "date": "1967-12-12",
@@ -2291,6 +2299,10 @@
 "name": "FC Voluntari",
 "tried": "2026-11"
 },
+"FC W\u00fcrzburger Kickers": {
+"date": "1907-11-04",
+"name": "W\u00fcrzburger Kickers"
+},
 "FC Zbrojovka Brno B": {
 "date": null,
 "name": "FC Zbrojovka Brno B",
@@ -2358,6 +2370,7 @@
 "date": "1920-11-12",
 "name": "SSC Farul Constan\u021ba"
 },
+"Felgueiras 1932": null,
 "Fenerbahce": {
 "date": "1907-05-03",
 "name": "Fenerbah\u00e7e Istanbul"
@@ -2442,6 +2455,10 @@
 "date": "1895-05-05",
 "name": "Fortuna D\u00fcsseldorf"
 },
+"Fortuna D\u00fcsseldorf": {
+"date": "1895-05-05",
+"name": "Fortuna D\u00fcsseldorf"
+},
 "France": {
 "date": null,
 "name": "France",
@@ -2490,6 +2507,10 @@
 "GAIS": {
 "date": "1894-03-11",
 "name": "GAIS"
+},
+"GD Chaves": {
+"date": "1949-09-27",
+"name": "G.D. Chaves"
 },
 "GFA Rumilly Valli\u00e8res": {
 "date": "2016-06-30",
@@ -3190,6 +3211,7 @@
 "date": "2012-12-05",
 "name": "Jaguares de C\u00f3rdoba"
 },
+"Jahn Regensburg": null,
 "Jamaica": null,
 "Japan": {
 "date": "1890-11-29",
@@ -3814,6 +3836,10 @@
 "date": null,
 "name": "Madagascar",
 "tried": "2026-11"
+},
+"Mafra": {
+"date": "1965-05-24",
+"name": "C.D. Mafra"
 },
 "Magallanes": null,
 "Magdeburg": {
@@ -5104,6 +5130,10 @@
 "name": "Ross County F.C.",
 "tried": "2026-11"
 },
+"Rot-Weiss Essen": {
+"date": "1907-02-01",
+"name": "Rot-Weiss Essen"
+},
 "Rotherham": {
 "date": "1925-05-27",
 "name": "Rotherham United F.C."
@@ -5144,9 +5174,22 @@
 "date": null,
 "tried": "2026-11"
 },
+"SC Fortuna K\u00f6ln": null,
+"SC Preu\u00dfen M\u00fcnster": {
+"date": "1906-04-30",
+"name": "SC Preu\u00dfen M\u00fcnster"
+},
+"SC Verl": {
+"date": "1924-09-06",
+"name": "SC Verl"
+},
 "SC Wieselburg": {
 "date": null,
 "tried": "2026-11"
+},
+"SG Sonnenhof Gro\u00dfaspach": {
+"date": "1994-08-25",
+"name": "SG Sonnenhof Gro\u00dfaspach"
 },
 "SJK": {
 "date": "2007-11-05",
@@ -5174,6 +5217,10 @@
 "tried": "2026-11"
 },
 "SV Kapfenberg": null,
+"SV Meppen": {
+"date": "1912-11-29",
+"name": "SV Meppen"
+},
 "Sabadell": {
 "date": "1903-12-11",
 "name": "Centre d'Esports Sabadell Futbol Club"
@@ -5867,6 +5914,10 @@
 "date": "1913-02-10",
 "name": "FK TSC"
 },
+"TSG Hoffenheim II": {
+"date": "1899-07-01",
+"name": "TSG 1899 Hoffenheim"
+},
 "TSV 1860 Munich II": {
 "date": null,
 "tried": "2026-11"
@@ -6428,6 +6479,10 @@
 "tried": "2026-11"
 },
 "Vitr\u00e9": null,
+"Vit\u00f3ria de Guimaraes": {
+"date": "1922-09-22",
+"name": "Vit\u00f3ria S.C."
+},
 "Vizela": {
 "date": "1939-01-01",
 "name": "F.C. Vizela"
@@ -6516,6 +6571,10 @@
 "date": null,
 "name": "FC Wacker Innsbruck",
 "tried": "2026-11"
+},
+"Waldhof Mannheim": {
+"date": "1907-04-11",
+"name": "SV Waldhof Mannheim"
 },
 "Wales": null,
 "Walsall": {
