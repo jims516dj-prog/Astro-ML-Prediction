@@ -95,7 +95,7 @@ def records() -> list[dict]:
             r["round"] = short_round(r.get("round") or "")
         r["level_name"] = {"wta125": "WTA 125", "challenger": "ATP Challenger", "itf_w": "ITF women", "itf_m": "ITF men",
                            "team": "team event"}.get(r["cat"], r["tour"].upper())
-    return sorted(recs, key=lambda r: r["start_utc"])
+    return sorted(recs, key=start_key)
 
 
 LEVELS = [("", "all levels"), ("women", "all women's"), ("men", "all men's"), ("tour", "ATP / WTA tour"),
@@ -152,6 +152,19 @@ def level_ok(r: dict, want: str) -> bool:
     return r.get("cat") == want
 
 
+def start_key(r: dict) -> tuple:
+    """Order of play: the day the row shows, then the start time shown (ESPN's latest); a match whose time is not
+    set yet comes after the timed matches of its day."""
+    w = r.get("when") or {}
+    return (show_day(r), 0 if w.get("known", True) else 1, w.get("ts") or r["start_utc"], r["p1"])
+
+
+def by_start_newest_day_first(rows: list[dict]) -> list[dict]:
+    """Record pages: the latest day first, each day's matches in start-time order."""
+    rows = sorted(rows, key=start_key)
+    return sorted(rows, key=show_day, reverse=True)          # stable: keeps the time order within a day
+
+
 def show_day(r: dict) -> str:
     """The date a match is listed under: the one its row shows (the venue's date of ESPN's latest scheduled start),
     so the Day filter and the dates on screen always agree."""
@@ -172,6 +185,7 @@ def when_of(r: dict, latest=None) -> dict:
     local, _ = venue.local_time(r.get("venue") or "", w)
     known = local is not None
     return {"day": day, "local": local, "tz": tz, "gmt": w.strftime("%H:%M") if known else None, "known": known,
+            "ts": w.isoformat(),
             "moved": bool(latest is not None and known and r.get("time_known", True)
                           and abs((w - pd.Timestamp(r["start_utc"])).total_seconds()) >= 600),
             "label": (f"{pd.Timestamp(day).strftime('%a %d %b')} · {local}" + (" local" if tz else " GMT")
@@ -839,7 +853,8 @@ def _agree_ok(r: dict, want: str) -> bool:
 
 @router.get("/tennis/top", response_class=HTMLResponse)
 def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: str = "", min_p: str = "", astro: str = "",
-               num: str = "", odds: str = "", level: str = "", role: str = "", agree: str = "", status: str = ""):
+               num: str = "", odds: str = "", level: str = "", role: str = "", agree: str = "", status: str = "",
+               sort: str = "time"):
     market = market if market in dict(TOP_MARKETS) else "win_set"
     agree = agree if agree in dict(TOP_AGREE) else ""
     status = status if status in dict(TOP_STATUS) else ""
@@ -868,7 +883,9 @@ def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: s
     if day not in days and day != "all":
         day = today if today in days else next((d for d in sorted(days) if d >= today), days[0] if days else "all")
     pool = [r for r in recs if keep(r)]
-    rows = sorted((r for r in pool if day == "all" or show_day(r) == day), key=lambda r: -r["pick"]["p"])
+    sort = sort if sort in ("time", "chance") else "time"
+    rows = [r for r in pool if day == "all" or show_day(r) == day]
+    rows = sorted(rows, key=lambda r: -r["pick"]["p"]) if sort == "chance" else sorted(rows, key=start_key)
 
     def tally(rs):
         done = [r for r in rs if r["pick"]["hit"] is not None and r["pre_kickoff"]]
@@ -885,11 +902,11 @@ def tennis_top(request: Request, market: str = "win_set", day: str = "", tour: s
     return _T().TemplateResponse(request, "tennis_top.html", {
         "rows": rows, "market": market, "markets": TOP_MARKETS, "day": day, "days": days, "tour": tour, "tours": TOUR,
         "min_p": min_p, "astro": astro, "num": num, "odds": odds, "agree": AGREE, "level": level, "levels": LEVELS,
-        "role": role, "agree_both": agree, "agree_choices": TOP_AGREE, "status": status, "statuses": TOP_STATUS,
+        "role": role, "sort": sort, "agree_both": agree, "agree_choices": TOP_AGREE, "status": status, "statuses": TOP_STATUS,
         "score_all": tally(pool), "score_day": tally(rows), "by_view": by_view, "verdicts": rep.get("verdicts"),
         "qs": urllib.parse.urlencode({k: v for k, v in {"day": day, "tour": tour, "min_p": min_p, "astro": astro, "num": num,
                                                          "odds": odds, "level": level, "role": role, "agree": agree,
-                                                         "status": status}.items() if v}),
+                                                         "status": status, "sort": sort if sort != "time" else ""}.items() if v}),
         "page": "tennis_top"})
 
 
@@ -961,7 +978,7 @@ def tennis_live(request: Request, date_from: str = "", date_to: str = "", status
         mp = 0.0
     t = player.lower().strip()
     rows = []
-    for r in sorted(recs, key=lambda r: r["start_utc"], reverse=True):
+    for r in by_start_newest_day_first(recs):
         d = show_day(r)
         if (date_from and d < date_from) or (date_to and d > date_to) or (status and r["status"] != status) \
                 or (tour and r["tour"] != tour) or (surface and r["surface"] != surface) or (odds and not r.get("odds")) \

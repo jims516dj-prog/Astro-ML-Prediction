@@ -728,6 +728,8 @@ def live_page(request: Request, date_from: str = "", date_to: str = "", status: 
         for r in rows:
             r["td"] = _teamday(r)
         rows = [r for r in rows if _soc_day_ok(r["td"], dayfav)]
+    rows = sorted(rows, key=lambda r: (r["kickoff_utc"], r["home"]))
+    rows = sorted(rows, key=lambda r: r["kickoff_utc"][:10], reverse=True)   # latest day first, kickoff order within
     subset = live.score_picks([r for r in rows if r["pre_kickoff"]])
     per = 50
     pages = max(1, math.ceil(len(rows) / per))
@@ -996,7 +998,7 @@ TOP_MARKETS = [("summary", "Summary"), ("result", "Match result"), ("dc", "Doubl
 @app.get("/top", response_class=HTMLResponse)
 def top_page(request: Request, day: str = "", market: str = "summary", agree: str = "", min_p: str = "", dayfav: str = "",
              m: list[str] = Query(default=[]), role: str = "", xg: str = "", xg_for: str = "either",
-             section: str = "men"):
+             section: str = "men", sort: str = "time"):
     section = section if section in SECTIONS else "men"
     if market == "form":
         return _form_page(request, day, agree, role, xg, section)
@@ -1027,6 +1029,9 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
     keep = lambda ps: [p for p in ps if ok_agree(p.get(agree_key) or 0) and p[p_key] >= mp      # noqa: E731
                        and _xg_pass(p, xg_min, xg_for) and _dayfav_ok(p, market, dayfav)]
     picks = keep(tp.get(day, []))
+    sort = sort if sort in ("time", "chance") else "time"
+    if sort == "time":                                # in kickoff order (the ranking is one click away)
+        picks = sorted(picks, key=lambda p: (p["kickoff_utc"], p["home"]))
     all_picks = keep([p for ps in tp.values() for p in ps])
     by_agree = {k: live.score_picks([p for p in all_picks if (p.get(agree_key) or 0) == k], market) for k in range(4)}
     edges = (0.5, 0.6, 0.7, 0.8, 0.9, 1.0001)
@@ -1037,7 +1042,7 @@ def top_page(request: Request, day: str = "", market: str = "summary", agree: st
     research = {"goals": overunder.load(), "score": tg, "btts": tg.get("btts"), "o15": tg.get("over15"),
                 "dc": doublechance.load()}.get(market)
     return T.TemplateResponse(request, "top.html", {
-        "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p,
+        "day": day, "days": days, "picks": picks, "market": market, "agree": agree, "min_p": min_p, "sort": sort,
         "xg": xg, "xg_for": xg_for, "xg_for_names": XG_FOR, "xg_steps": [t for t in form.XG_STEPS if t > 0],
         "keep": _xg_keep(xg, xg_for, "", section), "skeep": _xg_keep("", "", "", section), "dayfav": dayfav,
         "section": section, "sections": SECTIONS,

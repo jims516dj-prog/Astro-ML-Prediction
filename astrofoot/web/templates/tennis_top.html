@@ -28,6 +28,9 @@ bookmaker odds where The Odds API prices the match.</p>
 
 <form method="get" class="filters">
   <input type="hidden" name="market" value="{{ market }}">
+  <label>Sort<select name="sort" onchange="this.form.submit()">
+    <option value="time" {{ "selected" if sort == "time" }}>start time</option>
+    <option value="chance" {{ "selected" if sort == "chance" }}>chance (highest first)</option></select></label>
   <label>Day<select name="day" onchange="this.form.submit()"><option value="all" {{ "selected" if day == "all" }}>All days</option>
     {% for d in days %}<option value="{{ d }}" {{ "selected" if d == day }} title="{{ d }}">{{ day_label(d) }}</option>{% endfor %}</select></label>
   <label>Tour<select name="tour" onchange="this.form.submit()"><option value="">Both</option>
