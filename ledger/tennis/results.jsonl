@@ -1490,3 +1490,4 @@
 {"match_id": "lta:221916", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-20T21:04:30+00:00", "source": "", "void": true, "void_reason": "result not fetched: the free daily quota went on newer matches", "winner": null}
 {"match_id": "186801", "retired": false, "score": "6-4 6-3", "set_winners": "11", "settled_at": "2026-11-20T21:04:30+00:00", "source": "espn.com", "start_final": "2026-11-20T15:00:00+00:00", "void": false, "void_reason": null, "winner": 1}
 {"match_id": "186800", "retired": false, "score": "6-4 6-2", "set_winners": "11", "settled_at": "2026-11-20T21:04:30+00:00", "source": "espn.com", "start_final": "2026-11-20T17:25:00+00:00", "void": false, "void_reason": null, "winner": 1}
+{"match_id": "187513", "retired": false, "score": "6-3 6-4", "set_winners": "11", "settled_at": "2026-11-20T23:10:51+00:00", "source": "espn.com", "start_final": "2026-11-20T19:40:00+00:00", "void": false, "void_reason": null, "winner": 1}
