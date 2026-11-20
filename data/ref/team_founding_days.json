@@ -3078,6 +3078,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Incheon United": {
+"date": "2004-03-01",
+"name": "Incheon United FC"
+},
 "Ind. Rivadavia": {
 "date": null,
 "tried": "2026-11"
@@ -4187,6 +4191,10 @@
 "name": "Club Nacional de Football",
 "source": "wikidata (Q499616)"
 },
+"Nacional Potos\u00ed": {
+"date": "1942-03-24",
+"name": "Nacional Potos\u00ed"
+},
 "Naftagas": null,
 "Nagoya Grampus": {
 "date": null,
@@ -5019,6 +5027,10 @@
 "Real Sociedad": {
 "date": "1909-09-07",
 "name": "Real Sociedad"
+},
+"Real Tomayapo": {
+"date": "1999-02-02",
+"name": "Club Real Tomayapo"
 },
 "Real Uni\u00f3n Irun": null,
 "Reboceros La Piedad": null,
@@ -6208,6 +6220,10 @@
 "date": null,
 "name": "SSV Ulm 1846",
 "tried": "2026-11"
+},
+"Ulsan Hyundai FC": {
+"date": "1983-12-06",
+"name": "Ulsan HD FC"
 },
 "Umraniyespor": {
 "date": null,

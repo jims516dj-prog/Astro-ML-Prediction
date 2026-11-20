@@ -1229,6 +1229,11 @@
   "lon": -89.72361111,
   "source": "wikipedia: Estadio Anna Mercedes Campos"
  },
+ "Incheon United": {
+  "lat": 37.45646,
+  "lon": 126.70515,
+  "source": "city"
+ },
  "Independiente Medellín": {
   "lat": 6.25184,
   "lon": -75.56359,
@@ -1943,6 +1948,11 @@
   "lat": -19.57861111,
   "lon": -65.76111111,
   "source": "wikipedia: Estadio Víctor Agustín Ugarte"
+ },
+ "Real Tomayapo": {
+  "lat": -21.53222222,
+  "lon": -64.72444444,
+  "source": "wikipedia: Estadio IV Centenario"
  },
  "Recoleta": {
   "lat": -25.2950175,

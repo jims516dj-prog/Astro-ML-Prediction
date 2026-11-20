@@ -239,6 +239,11 @@
   "lon": -0.2819645,
   "source": "openstreetmap: Kingsmeadow, Jack Goodchild Way, Norbiton, Kingston upon Thames, Greater London, England, KT1 3PB, United Kingdom"
  },
+ "Training Center Paris Saint Germain Terrain 5 | Poissy": {
+  "lat": 48.92902,
+  "lon": 2.04952,
+  "source": "city: Poissy"
+ },
  "U-Power Stadium | Monza": {
   "lat": 45.58277778,
   "lon": 9.30805556,
