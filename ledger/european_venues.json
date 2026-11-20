@@ -2533,5 +2533,10 @@
   "lat": 6.2704989,
   "lon": -75.5671231,
   "source": "openstreetmap: Estadio Cincuentenario, Avenida del Ferrocarril, Sevilla, Comuna 4 - Aranjuez, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050006, Colombia"
+ },
+ "Östersunds FK": {
+  "lat": 63.1792,
+  "lon": 14.63566,
+  "source": "thesportsdb: Jämtkraft Arena, Östersund, Sweden"
  }
 }
