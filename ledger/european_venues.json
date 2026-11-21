@@ -1,8 +1,18 @@
 {
+ "1. FC Saarbrücken": {
+  "lat": 49.23262,
+  "lon": 7.00982,
+  "source": "city"
+ },
  "1. Wiener Neustadter SC": {
   "lat": 47.82277778,
   "lon": 16.25527778,
   "source": "wikipedia: Stadion Wiener Neustadt"
+ },
+ "ABB": {
+  "lat": -16.472623,
+  "lon": -68.2014454,
+  "source": "openstreetmap: Estadio Municipal de El Alto, Avenida Alto de la Alianza, Nueva Asunción Unidad Vecinal 2, Villa Ingenio, Distrito 5, El Alto, Provincia Pedro Domingo Murillo, La Paz, Bolivia"
  },
  "AS Atlas Paillade": {
   "lat": 43.61092,
@@ -1534,6 +1544,11 @@
   "lon": 6.11472222,
   "source": "wikipedia: Stade de Luxembourg"
  },
+ "MSV Duisburg": {
+  "lat": 51.43247,
+  "lon": 6.76516,
+  "source": "city"
+ },
  "MVV Maastricht": {
   "lat": 50.84833,
   "lon": 5.68889,
@@ -1803,6 +1818,11 @@
   "lat": 5.06889,
   "lon": -75.51738,
   "source": "city: Manizales"
+ },
+ "Oriente Petrolero": {
+  "lat": -17.7960273,
+  "lon": -63.183838,
+  "source": "openstreetmap: Estadio Ramón “Tahuichi” Aguilera Costas, Avenida Ejército Nacional, Barrio Militar, Centro, Municipio Santa Cruz de la Sierra, Provincia Andrés Ibáñez, Santa Cruz, Bolivia"
  },
  "Orsha": {
   "lat": 54.5081,
@@ -2573,6 +2593,11 @@
   "lat": 48.9126,
   "lon": 2.0815,
   "source": "wikipedia: Stade Georges Lefèvre"
+ },
+ "VfB Stuttgart II": {
+  "lat": 48.78232,
+  "lon": 9.17702,
+  "source": "city"
  },
  "VfL Bochum": {
   "lat": 51.4912464,

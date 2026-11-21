@@ -1,4 +1,8 @@
 {
+"1. FC Saarbr\u00fccken": {
+"date": "1903-04-18",
+"name": "1. FC Saarbr\u00fccken"
+},
 "1. FC Union Berlin": {
 "date": "1966-01-20",
 "name": "1. FC Union Berlin"
@@ -21,6 +25,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"ABB": null,
 "AC Oulu": {
 "date": null,
 "name": "AC Oulu",
@@ -2247,6 +2252,10 @@
 "date": "1999-08-20",
 "name": "FC Iberia 1999"
 },
+"FC Ingolstadt 04": {
+"date": "2004-02-05",
+"name": "FC Ingolstadt 04"
+},
 "FC Kairat": {
 "date": null,
 "name": "FC Kairat",
@@ -3121,6 +3130,10 @@
 "date": "1913-11-14",
 "name": "Deportivo Independiente Medell\u00edn"
 },
+"Independiente Petrolero": {
+"date": "1932-04-04",
+"name": "Club Independiente Petrolero"
+},
 "Independiente Santa Fe": {
 "date": "1941-02-28",
 "name": "Independiente Santa Fe"
@@ -3846,6 +3859,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"MSV Duisburg": {
+"date": "1902-06-02",
+"name": "MSV Duisburg"
+},
 "MVV Maastricht": {
 "date": "1902-04-02",
 "name": "MVV Maastricht"
@@ -4512,6 +4529,10 @@
 "date": null,
 "name": "FC Orenburg",
 "tried": "2026-11"
+},
+"Oriente Petrolero": {
+"date": "1955-11-05",
+"name": "Oriente Petrolero"
 },
 "Orlando City": {
 "date": null,
@@ -6474,6 +6495,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"VfB Stuttgart II": null,
 "VfL Bochum": {
 "date": "1938-04-14",
 "name": "VfL Bochum"
@@ -6673,6 +6695,10 @@
 "Wehen": {
 "date": null,
 "tried": "2026-11"
+},
+"Wehen Wiesbaden": {
+"date": "1926-01-01",
+"name": "SV Wehen Wiesbaden"
 },
 "Wellington Phoenix": {
 "date": "2007-03-19",
