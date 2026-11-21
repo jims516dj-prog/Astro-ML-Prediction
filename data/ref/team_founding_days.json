@@ -514,6 +514,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Aucas": {
+"date": "1845-02-06",
+"name": "Sociedad Deportiva Aucas"
+},
 "Auckland City": {
 "date": "2004-02-03",
 "name": "Auckland City FC"
@@ -1387,6 +1391,7 @@
 "name": "Chorley F.C.",
 "tried": "2026-11"
 },
+"Churchill Brothers": null,
 "Cittadella": {
 "date": null,
 "name": "Associazione Sportiva Cittadella",
@@ -1429,6 +1434,7 @@
 "date": "1944-08-20",
 "name": "Club Le\u00f3n"
 },
+"Club Olimpia": null,
 "Club Olimpo": {
 "date": null,
 "tried": "2026-11"
@@ -1471,6 +1477,7 @@
 "name": "Coleraine F.C.",
 "tried": "2026-11"
 },
+"Colo Colo": null,
 "Colombia": {
 "date": null,
 "name": "Colombia",
@@ -1784,6 +1791,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Deportes Concepcion": {
+"date": "1966-02-24",
+"name": "Club Social y de Deportes Concepci\u00f3n"
+},
 "Deportes Copiapo": {
 "date": "1999-03-09",
 "name": "Deportes Copiap\u00f3"
@@ -1791,6 +1802,10 @@
 "Deportes Iquique": {
 "date": "1978-05-21",
 "name": "Deportes Iquique"
+},
+"Deportes Limache": {
+"date": "2012-11-08",
+"name": "Club de Deportes Limache"
 },
 "Deportes Tolima": {
 "date": "1954-12-18",
@@ -1805,6 +1820,10 @@
 "name": "C.D. Cuenca"
 },
 "Deportivo Garcilaso": null,
+"Deportivo La Guaira": {
+"date": "2008-07-21",
+"name": "Deportivo La Guaira F.C."
+},
 "Deportivo Madryn": null,
 "Deportivo Maip\u00fa": {
 "date": "1927-12-16",
@@ -3028,6 +3047,10 @@
 "date": "2005-12-15",
 "name": "Houston Dynamo FC"
 },
+"Huachipato": {
+"date": "1947-06-07",
+"name": "Club Deportivo Huachipato"
+},
 "Huddersfield": {
 "date": "1908-08-15",
 "name": "Huddersfield Town A.F.C."
@@ -3136,6 +3159,7 @@
 "name": "FC Inter Turku",
 "tried": "2026-11"
 },
+"Inter de San Carlos": null,
 "Internacional": {
 "date": "1909-04-04",
 "name": "S.C. Internacional"
@@ -3500,6 +3524,7 @@
 "tried": "2026-11"
 },
 "La Saint-Pierre Milizac": null,
+"La Serena": null,
 "Lahti": {
 "date": null,
 "name": "FC Lahti",
@@ -3657,6 +3682,7 @@
 "date": "1822-01-07",
 "name": "Liberia"
 },
+"Libertad": null,
 "Libya": {
 "date": "1977-03-02",
 "name": "Libya"
@@ -3665,6 +3691,10 @@
 "Liechtenstein": {
 "date": "1806-07-12",
 "name": "Liechtenstein"
+},
+"Liga de Quito": {
+"date": "1930-01-11",
+"name": "Liga Deportiva Universitaria de Quito"
 },
 "Lille": {
 "date": "1944-09-23",
@@ -3774,6 +3804,7 @@
 "date": "1953-07-08",
 "name": "Club Deportivo Lugo"
 },
+"Lunds BK": null,
 "Luton": {
 "date": "1885-04-11",
 "name": "Luton Town F.C."
@@ -3991,6 +4022,7 @@
 "tried": "2026-11"
 },
 "Metalac GM": null,
+"Metropolitanos": null,
 "Metz": {
 "date": null,
 "name": "FC Metz",
@@ -4060,6 +4092,7 @@
 "date": "1912-04-05",
 "name": "Modena F.C."
 },
+"Mohun Bagan Super Giant": null,
 "Molde": {
 "date": "1911-06-19",
 "name": "Molde FK"
@@ -4320,6 +4353,10 @@
 "date": null,
 "name": "FC Nordsj\u00e6lland",
 "tried": "2026-11"
+},
+"Norrby IF": {
+"date": "1927-04-27",
+"name": "Norrby IF"
 },
 "Norrkoping": {
 "date": null,
@@ -5681,6 +5718,7 @@
 "name": "Sport Club do Recife"
 },
 "Sport Boys": null,
+"Sport Huancayo": null,
 "Sport Recife": {
 "date": "1905-05-13",
 "name": "Sport Club do Recife"
@@ -5689,10 +5727,15 @@
 "date": "2019-08-27",
 "name": "SC Delhi"
 },
+"Sporting Cristal": {
+"date": "1955-12-13",
+"name": "Club Sporting Cristal"
+},
 "Sporting Kansas City": {
 "date": "1995-06-06",
 "name": "Sporting Kansas City"
 },
+"Sporting San Jos\u00e9": null,
 "Sporting San Miguelito": null,
 "Sportivo Ameliano": {
 "date": "1936-01-06",
@@ -5706,6 +5749,10 @@
 "Sportivo San Lorenzo": {
 "date": "1930-04-16",
 "name": "Club Sportivo San Lorenzo"
+},
+"Sportivo Trinidense": {
+"date": "1935-08-11",
+"name": "Sportivo Trinidense"
 },
 "St Etienne": {
 "date": null,
@@ -6262,6 +6309,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Universidad Cat\u00f3lica": null,
 "Universidad Cat\u00f3lica (Quito)": null,
 "Universidad de Chile": {
 "date": "1927-05-24",
@@ -6271,6 +6319,7 @@
 "date": "1994-08-08",
 "name": "C.D. Universidad de Concepci\u00f3n"
 },
+"Universitario": null,
 "Universitario de Vinto": {
 "date": null,
 "tried": "2026-11"

@@ -119,6 +119,11 @@
   "lon": 16.3883392,
   "source": "openstreetmap: Generali Arena, 1, Horrplatz, Viola Park, Katastralgemeinde Oberlaa Stadt, Favoriten, Wien, 1100, Österreich"
  },
+ "Goodison Park | Liverpool": {
+  "lat": 53.4389,
+  "lon": -2.9664,
+  "source": "wikipedia: Goodison Park"
+ },
  "Icahn Stadium | New York City, New York": {
   "lat": 40.7933017,
   "lon": -73.9252817,
@@ -128,6 +133,11 @@
   "lat": 43.1817231,
   "lon": -2.4758836,
   "source": "openstreetmap: Ipurua Futbol Zelaia, 2, Indalezio Ojanguren kalea, Egigurentarren, Ipurua, Otaola-Kiñarra, Eibar, Gipuzkoa, Euskadi, 20600, España"
+ },
+ "Joie Stadium | Manchester": {
+  "lat": 53.48111111,
+  "lon": -2.19277778,
+  "source": "wikipedia: Academy Stadium"
  },
  "King Power at Den Dreef Stadion | Leuven": {
   "lat": 50.8684105,
@@ -199,6 +209,11 @@
   "lon": -2.7275,
   "source": "wikipedia: BrewDog Stadium"
  },
+ "St. Andrew's Stadium | Birmingham": {
+  "lat": 52.47583333,
+  "lon": -1.86805556,
+  "source": "wikipedia: St Andrew's (stadium)"
+ },
  "Stade Bernard Gasset No. 7 | Montpellier": {
   "lat": 43.61092,
   "lon": 3.87723,
@@ -238,6 +253,11 @@
   "lat": 51.4051256,
   "lon": -0.2819645,
   "source": "openstreetmap: Kingsmeadow, Jack Goodchild Way, Norbiton, Kingston upon Thames, Greater London, England, KT1 3PB, United Kingdom"
+ },
+ "The Valley | London": {
+  "lat": 51.4863915,
+  "lon": 0.0361585,
+  "source": "openstreetmap: The Valley, Floyd Road, Charlton, Royal Borough of Greenwich, Greater London, England, SE7 8BL, United Kingdom"
  },
  "Training Center Paris Saint Germain Terrain 5 | Poissy": {
   "lat": 48.92902,

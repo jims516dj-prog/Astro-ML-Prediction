@@ -549,6 +549,11 @@
   "lon": 120.6839,
   "source": "national team: Taichung (largest city)"
  },
+ "Churchill Brothers": {
+  "lat": 15.2897621,
+  "lon": 73.9623533,
+  "source": "openstreetmap: Pandit Jawaharlal Nehru Stadium, State Highway 18 - to Ponda, Ambaji, Fatorda, Margao, Salcete, South Goa, Goa, 403602, India"
+ },
  "Ciudad de Bolívar": {
   "lat": -34.58333333,
   "lon": -60.95,
@@ -563,6 +568,11 @@
   "lat": 19.71874167,
   "lon": -101.23362222,
   "source": "wikipedia: Estadio Morelos"
+ },
+ "Club Olimpia": {
+  "lat": -25.29207222,
+  "lon": -57.65738056,
+  "source": "wikipedia: Estadio Defensores del Chaco"
  },
  "Club Portugalete": {
   "lat": 43.32099,
@@ -579,10 +589,20 @@
   "lon": -69.62861111,
   "source": "wikipedia: Estadio El Cobre de El Salvador"
  },
+ "Cobán Imperial": {
+  "lat": 15.47083,
+  "lon": -90.37083,
+  "source": "city: Cobán"
+ },
  "Coleraine FC": {
   "lat": 55.13277778,
   "lon": -6.66027778,
   "source": "wikipedia: The Showgrounds (Coleraine)"
+ },
+ "Colo Colo": {
+  "lat": -33.50666667,
+  "lon": -70.60583333,
+  "source": "wikipedia: Estadio Monumental David Arellano"
  },
  "Colombia": {
   "lat": 3.41033,
@@ -733,6 +753,11 @@
   "lat": 55.7137241,
   "lon": 9.5561578,
   "source": "openstreetmap: Vejle Stadion, Roms Hule, Lille Grundet, Vejle, Vejle Kommune, Region Syddanmark, 7100, Danmark"
+ },
+ "Deportes Limache": {
+  "lat": -33.01667,
+  "lon": -71.26667,
+  "source": "city"
  },
  "Deportivo Cali": {
   "lat": 3.41033,
@@ -1104,6 +1129,11 @@
   "lon": -65.29712,
   "source": "city: San Salvador de Jujuy"
  },
+ "Gimnasia y Tiro (Salta)": {
+  "lat": -24.7859,
+  "lon": -65.41166,
+  "source": "city: Salta"
+ },
  "Gimnastic": {
   "lat": 41.11667,
   "lon": 1.25,
@@ -1204,6 +1234,11 @@
   "lon": 10.13489,
   "source": "city"
  },
+ "Huachipato": {
+  "lat": -36.75555556,
+  "lon": -73.10722222,
+  "source": "wikipedia: Estadio Huachipato-CAP Acero"
+ },
  "Hungary": {
   "lat": 47.503109,
   "lon": 19.0980509,
@@ -1248,6 +1283,11 @@
   "lat": 23.7841798,
   "lon": 89.9285983,
   "source": "city: Dhaka"
+ },
+ "Inter de San Carlos": {
+  "lat": 10.324119,
+  "lon": -84.423867,
+  "source": "wikipedia: Estadio Carlos Ugalde Álvarez"
  },
  "Internacional de Bogotá": {
   "lat": 4.6234294,
@@ -1449,6 +1489,11 @@
   "lon": 9.51027778,
   "source": "wikipedia: Rheinpark Stadion"
  },
+ "Liga de Quito": {
+  "lat": -0.22985,
+  "lon": -78.52495,
+  "source": "city"
+ },
  "Limavady United FC": {
   "lat": 55.04923889,
   "lon": -6.936775,
@@ -1473,6 +1518,11 @@
   "lat": -23.31028,
   "lon": -51.16278,
   "source": "city"
+ },
+ "Lunds BK": {
+  "lat": 56.017598,
+  "lon": 14.139435,
+  "source": "wikipedia: Kristianstads Fotbollsarena"
  },
  "Luton Town": {
   "lat": 51.88416667,
@@ -1524,10 +1574,20 @@
   "lon": -1.20055556,
   "source": "wikipedia: Field Mill"
  },
+ "Manta F.C.": {
+  "lat": -0.96212,
+  "lon": -80.71271,
+  "source": "city"
+ },
  "Maritimo": {
   "lat": 32.66568,
   "lon": -16.92547,
   "source": "manual"
+ },
+ "Marquense": {
+  "lat": 14.9669933,
+  "lon": -91.79175,
+  "source": "openstreetmap: Estadio Marquesa de la Ensenada, 5a Avenida B, San Rafael Soche, San Marcos, 12001, Guatemala"
  },
  "Mega Sport": {
   "lat": 32.10180556,
@@ -1538,6 +1598,11 @@
   "lat": 45.81371,
   "lon": 23.4074,
   "source": "thesportsdb: Arena Cugir, Cugir, Alba, Romania"
+ },
+ "Metropolitanos": {
+  "lat": 10.4913036,
+  "lon": -66.8856141,
+  "source": "openstreetmap: Estadio Olímpico de la UCV, Avenida Carlos Raúl Villanueva, Los Chaguaramos, Ciudad Universitaria, Caracas, Parroquia San Pedro, Municipio Libertador, Distrito Metropolitano de Caracas, Distrito Capital, 1053, Venezuela"
  },
  "Mexico": {
   "lat": 25.66916667,
@@ -1999,6 +2064,11 @@
   "lon": -60.63932,
   "source": "manual"
  },
+ "Rubio Ñú": {
+  "lat": -25.257544,
+  "lon": -57.575113,
+  "source": "wikipedia: Estadio La Arboleda"
+ },
  "Râmnicu Sărat": {
   "lat": 45.38333,
   "lon": 27.05,
@@ -2198,6 +2268,16 @@
   "lat": -8.06277778,
   "lon": -34.90277778,
   "source": "wikipedia: Estádio Ilha do Retiro"
+ },
+ "Sport Huancayo": {
+  "lat": -12.06513,
+  "lon": -75.20486,
+  "source": "city"
+ },
+ "Sporting Cristal": {
+  "lat": -12.038,
+  "lon": -77.045,
+  "source": "wikipedia: Estadio Alberto Gallardo"
  },
  "Sporting San Miguelito": {
   "lat": 8.98777778,

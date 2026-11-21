@@ -1386,3 +1386,10 @@
 {"goals_away":0,"goals_home":0,"match_key":"a1de66babd84","settled_at":"2026-11-20T23:07:49+00:00","sha256":"87338932650cf4fb882b9bbfca1f3c429547f0b7dbc8ed25af8e3fff90e1da78","source":"espn.com"}
 {"goals_away":1,"goals_home":0,"match_key":"7150bb62d24f","settled_at":"2026-11-20T23:07:49+00:00","sha256":"31127ac7a2a5791738dde02c50429aa9a49c4b62db2ee363aa6174cfb55900c7","source":"football-data.org"}
 {"goals_away":0,"goals_home":2,"match_key":"0b27cbdc09da","settled_at":"2026-11-20T23:07:49+00:00","sha256":"04780bd5e29a1f3eec71d0b7d693ee55d5b71282502bcbf68be1d178013697e3","source":"espn.com"}
+{"match_key":"2002c79a0148","reason":"no result from football-data.org or ESPN within 3 days: postponed, abandoned or not covered","settled_at":"2026-11-21T03:49:43+00:00","sha256":"fb082a42c9f76e189b288d660545af6e02d3e51ceeabaff9e3feaee42c7268d3","source":"none","void":true}
+{"goals_away":1,"goals_home":0,"match_key":"8f487f2f46de","settled_at":"2026-11-21T03:49:43+00:00","sha256":"4effbeae4e85428a8f84d3aedf641fe1e05f2a379738183f646371399fcf2dec","source":"espn.com"}
+{"goals_away":0,"goals_home":1,"match_key":"37a1c7958e1e","settled_at":"2026-11-21T03:49:43+00:00","sha256":"258ba1fa4acda06f31651a27c0ba5e59bc42f0c52c73c75de16e0144b738c016","source":"espn.com"}
+{"goals_away":2,"goals_home":2,"match_key":"0695e1b975ea","settled_at":"2026-11-21T03:49:43+00:00","sha256":"5dc64fa4ec28c1811f20416437e0a7b6d7fa3a9971b8b3c9474c02d16dc23991","source":"espn.com"}
+{"goals_away":0,"goals_home":0,"match_key":"9d9e978defd5","settled_at":"2026-11-21T03:49:43+00:00","sha256":"584c77cdea3861e87b3c5c8ddb0ae06fa7b1a3fb9a96e58c4cf417cf80aaf5cf","source":"espn.com"}
+{"goals_away":1,"goals_home":1,"match_key":"2abf6cf35dd6","settled_at":"2026-11-21T03:49:43+00:00","sha256":"a8ab6b12ca23fc00f5629fb22d4d742fc16435ba8b2db7149795b700b7962a44","source":"espn.com"}
+{"goals_away":2,"goals_home":2,"match_key":"457e5131146f","settled_at":"2026-11-21T03:49:43+00:00","sha256":"e6a8433ac89bd90bb286f0a6ceb950c36bbfc23ed5d0d0771ae9f9cb58afcb6e","source":"espn.com"}
