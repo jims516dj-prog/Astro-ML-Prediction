@@ -1,6 +1,6 @@
 {
  "bought": {
-  "tennis_atp_finals": "2026-11-20T23:10:51+00:00",
+  "tennis_atp_finals": "2026-11-21T21:47:13+00:00",
   "tennis_wta_finals": "2026-11-15T08:59:28+00:00"
  },
  "events": {
@@ -19,6 +19,14 @@
    "home": "Alexander Zverev",
    "home_odds": 1.5400000000000003,
    "source": "the-odds-api.com, average of 15 bookmakers"
+  },
+  "61fd3eff03d345615f08909e038728e7": {
+   "at": "2026-11-21T21:47:13+00:00",
+   "away": "Carlos Alcaraz",
+   "away_odds": 1.3969230769230767,
+   "home": "Alexander Zverev",
+   "home_odds": 2.833846153846154,
+   "source": "the-odds-api.com, average of 13 bookmakers"
   },
   "7ac3bf138012785e65835d1481524d5c": {
    "at": "2026-11-15T08:59:28+00:00",

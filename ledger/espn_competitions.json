@@ -39,6 +39,7 @@
   "ger.2": "German 2. Bundesliga",
   "gre.1": "Greek Super League",
   "gua.1": "Guatemalan Liga Nacional",
+  "hon.1": "Honduran Liga Nacional",
   "ind.1": "Indian Super League",
   "ita.1": "Italian Serie A",
   "ita.2": "Italian Serie B",
@@ -57,6 +58,7 @@
   "slv.1": "Salvadoran Primera Division",
   "swe.1": "Swedish Allsvenskan",
   "tur.1": "Turkish Super Lig",
+  "uefa.champions": "UEFA Champions League",
   "uefa.euro_u21_qual": "UEFA European Under-21 Championship Qualifying",
   "uefa.nations": "UEFA Nations League",
   "uru.1": "Liga AUF Uruguaya",
@@ -64,5 +66,5 @@
   "usa.usl.1": "USL Championship",
   "ven.1": "Venezuelan Primera División"
  },
- "generated_at": "2026-11-20T20:59:51+00:00"
+ "generated_at": "2026-11-21T21:41:45+00:00"
 }

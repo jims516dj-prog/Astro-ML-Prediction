@@ -184,6 +184,11 @@
   "lon": 2.82493,
   "source": "city: Girona"
  },
+ "PSV Campus De Herdgang | Eindhoven": {
+  "lat": 51.44083,
+  "lon": 5.47778,
+  "source": "city: Eindhoven"
+ },
  "Parc des Princes | Paris": {
   "lat": 48.8413634,
   "lon": 2.2530693,
@@ -203,6 +208,16 @@
   "lat": 51.9225,
   "lon": 4.47917,
   "source": "city: Rotterdam"
+ },
+ "Sportpark Skoatterwald | Heerenveen": {
+  "lat": 52.955916,
+  "lon": 5.9439566,
+  "source": "openstreetmap: Sportpark Skoatterwâld, Jiskelanpaed, Skoatterwâld, Heerenveen, Fryslân, Nederland, 8448 MA, Nederland"
+ },
+ "Sportpark Zoudenbalch (07) veld 1-FCU | Utrecht": {
+  "lat": 52.09083,
+  "lon": 5.12222,
+  "source": "city: Utrecht"
  },
  "Spotify Camp Nou | Barcelona": {
   "lat": 41.38879,

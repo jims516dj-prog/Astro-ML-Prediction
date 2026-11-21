@@ -5193,7 +5193,7 @@
 "id": "19373",
 "name": "Samantha Alvarez",
 "full_name": "Samantha Alvarez",
-"dob": null,
+"dob": NaN,
 "birthplace": "",
 "hand": "R",
 "height_in": null,
@@ -20948,5 +20948,35 @@
 "hand": "R",
 "height_in": null,
 "country": ""
+},
+{
+"id": "17328",
+"name": "Abigail Rencheli",
+"full_name": "Abigail Rencheli",
+"dob": "2002-04-05",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": "USA"
+},
+{
+"id": "19456",
+"name": "Guadalupe Rondinoni",
+"full_name": "Guadalupe Rondinoni",
+"dob": "2011-08-31",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": "Argentina"
+},
+{
+"id": "19457",
+"name": "Camila Markus",
+"full_name": "Camila Markus",
+"dob": "2008-12-09",
+"birthplace": "",
+"hand": "R",
+"height_in": null,
+"country": "Argentina"
 }
 ]

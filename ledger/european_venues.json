@@ -404,10 +404,20 @@
   "lon": -3.84055556,
   "source": "wikipedia: Estadio Municipal de Santo Domingo"
  },
+ "CD Estrella Roja": {
+  "lat": 14.03333333,
+  "lon": -86.57444444,
+  "source": "wikipedia: Estadio Marcelo Tinoco"
+ },
  "CD FAS": {
   "lat": 13.9764817,
   "lon": -89.5692802,
   "source": "openstreetmap: Estadio Óscar Quiteño, 14a Avenida Sur, Colonia El Palmar, Finca El Rosario, Santa Ana, Santa Ana Centro, Santa Ana, 2201, El Salvador"
+ },
+ "CD Guastatoya": {
+  "lat": 14.8600515,
+  "lon": -90.0720291,
+  "source": "openstreetmap: Estadio Municipal David Cordón Hichos, Calle del Estadio, Ojo de Agua, Chillar, Santa Lucía, Guastatoya, El Progreso, Guatemala"
  },
  "CD Malacateco": {
   "lat": 14.9117513,
@@ -934,6 +944,11 @@
   "lon": -9.3901368,
   "source": "city"
  },
+ "Estrela": {
+  "lat": 38.75382,
+  "lon": -9.23083,
+  "source": "manual"
+ },
  "Estudiantes L.P.": {
   "lat": -31.4135,
   "lon": -64.18105,
@@ -1134,6 +1149,11 @@
   "lon": -5.34675,
   "source": "wikipedia: Europa Sports Park"
  },
+ "Gil Vicente": {
+  "lat": 41.53174,
+  "lon": -8.61843,
+  "source": "manual"
+ },
  "Gimnasia y Esgrima (Jujuy)": {
   "lat": -24.19457,
   "lon": -65.29712,
@@ -1203,6 +1223,11 @@
   "lat": 6.75776667,
   "lon": -58.17799167,
   "source": "wikipedia: Providence Stadium"
+ },
+ "Gwangju FC": {
+  "lat": 35.15472,
+  "lon": 126.91556,
+  "source": "city"
  },
  "Haiti": {
   "lat": 25.7924491,
@@ -2024,6 +2049,11 @@
   "lon": 16.26527778,
   "source": "senior team's ground: wikipedia: Allianz Stadion"
  },
+ "Real España": {
+  "lat": 15.5075,
+  "lon": -88.03333333,
+  "source": "wikipedia: Estadio General Francisco Morazán"
+ },
  "Real Madrid": {
   "lat": 40.45306,
   "lon": -3.68835,
@@ -2094,6 +2124,11 @@
   "lon": 27.05,
   "source": "thesportsdb: Stadionul Municipal Râmnicu Sărat, Râmnicu Sărat, Buzău, Romania"
  },
+ "SC Farense": {
+  "lat": 37.02286111,
+  "lon": -7.92844444,
+  "source": "wikipedia: Estádio de São Luís"
+ },
  "SC Fortuna Köln": {
   "lat": 50.93333,
   "lon": 6.95,
@@ -2148,6 +2183,16 @@
   "lat": 43.97138889,
   "lon": 12.47694444,
   "source": "wikipedia: San Marino Stadium"
+ },
+ "Sangju Sangmu FC": {
+  "lat": 36.4323667,
+  "lon": 128.1616545,
+  "source": "wikipedia: Sangju Civic Stadium"
+ },
+ "Sanjoanense": {
+  "lat": 40.89823889,
+  "lon": -8.49907222,
+  "source": "wikipedia: Estádio Conde Dias Garcia"
  },
  "Santiago Wanderers": {
   "lat": -33.036,
@@ -2459,6 +2504,11 @@
   "lon": -3.05497,
   "source": "city: Oswestry"
  },
+ "Torreense": {
+  "lat": 38.7088,
+  "lon": -9.2608,
+  "source": "wikipedia: Estádio Nacional"
+ },
  "Tourcoing": {
   "lat": 50.72391,
   "lon": 3.16117,
@@ -2534,6 +2584,11 @@
   "lon": 106.91625,
   "source": "wikipedia: National Sports Stadium (Mongolia)"
  },
+ "Uniao Leiria": {
+  "lat": 39.7488299,
+  "lon": -8.812928,
+  "source": "openstreetmap: Estádio de Leiria, Rua Fonte Cabeço d`El Rei, Quinta do Cabeço, São Romão, Leiria, Pousos, Barreira e Cortes, Leiria, 2400-265, Portugal"
+ },
  "Union San Felipe": {
   "lat": -32.7468764,
   "lon": -70.7300816,
@@ -2608,6 +2663,11 @@
   "lat": 52.4346,
   "lon": 10.807,
   "source": "wikipedia: AOK Stadion"
+ },
+ "Vianense": {
+  "lat": 41.6968086,
+  "lon": -8.8385593,
+  "source": "openstreetmap: Estádio Doutor José de Matos, Rua de São José, Viana do Castelo (Santa Maria Maior e Monserrate) e Meadela, Viana do Castelo, 4900-314, Portugal"
  },
  "Victoria Hamburg": {
   "lat": 53.57532,

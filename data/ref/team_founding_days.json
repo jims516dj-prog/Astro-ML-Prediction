@@ -99,6 +99,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Acad\u00e9mica de Coimbra": null,
 "Accrington": {
 "date": null,
 "name": "Accrington Stanley F.C.",
@@ -847,6 +848,10 @@
 "name": "Bolton Wanderers F.C.",
 "tried": "2026-11"
 },
+"Bol\u00edvar": {
+"date": "1925-04-12",
+"name": "Club Bol\u00edvar"
+},
 "Bonaire": {
 "date": null,
 "tried": "2026-11"
@@ -1001,6 +1006,10 @@
 "date": "1964-12-03",
 "name": "Br\u00f8ndby IF"
 },
+"Bucheon FC 1995": {
+"date": "2007-12-01",
+"name": "Bucheon FC 1995"
+},
 "Buducnost Podgorica": {
 "date": "1925-06-12",
 "name": "FK Budu\u0107nost Podgorica"
@@ -1051,10 +1060,12 @@
 "date": null,
 "tried": "2026-11"
 },
+"CD Estrella Roja": null,
 "CD FAS": {
 "date": "1947-02-16",
 "name": "C.D. FAS"
 },
+"CD Guastatoya": null,
 "CD Malacateco": null,
 "CD Minera": null,
 "CD Municipal Lime\u00f1o": {
@@ -1434,6 +1445,10 @@
 "Club Brugge": {
 "date": "1891-11-13",
 "name": "Club Brugge K.V."
+},
+"Club Deportivo Marath\u00f3n": {
+"date": "1925-11-25",
+"name": "C.D. Marath\u00f3n"
 },
 "Club Leon": {
 "date": "1944-08-20",
@@ -2398,6 +2413,10 @@
 "date": "1920-11-12",
 "name": "SSC Farul Constan\u021ba"
 },
+"Fatima": {
+"date": "1966-01-24",
+"name": "C.D. F\u00e1tima"
+},
 "Felgueiras 1932": null,
 "Fenerbahce": {
 "date": "1907-05-03",
@@ -2841,6 +2860,10 @@
 "name": "Guyana",
 "tried": "2026-11"
 },
+"Gwangju FC": {
+"date": "2010-12-16",
+"name": "Gwangju FC"
+},
 "HB K\u00f8ge": {
 "date": "2009-07-01",
 "name": "HB K\u00f8ge",
@@ -3264,6 +3287,10 @@
 },
 "Javor": null,
 "Jedinstvo Ub": null,
+"Jeju United FC": {
+"date": "1982-12-17",
+"name": "Jeju SK FC"
+},
 "Jeonbuk Hyundai Motors": {
 "date": "1994-12-12",
 "name": "Jeonbuk Hyundai Motors FC"
@@ -3598,6 +3625,7 @@
 "date": "1943-11-22",
 "name": "Lebanon"
 },
+"Leca": null,
 "Lecce": {
 "date": "1908-03-17",
 "name": "US Lecce"
@@ -4488,6 +4516,10 @@
 "date": "1895-07-04",
 "name": "Oldham Athletic A.F.C."
 },
+"Olhanense": {
+"date": "1912-04-27",
+"name": "S.C. Olhanense"
+},
 "Olimpo Bahia Blanca": {
 "date": null,
 "tried": "2026-11"
@@ -5073,9 +5105,14 @@
 "date": "1871-12-25",
 "name": "Reading F.C."
 },
+"Real Espa\u00f1a": null,
 "Real Madrid": {
 "date": "1902-03-06",
 "name": "Real Madrid Club de F\u00fatbol"
+},
+"Real Potos\u00ed": {
+"date": "1988-04-01",
+"name": "Club Real Potos\u00ed"
 },
 "Real Salt Lake": {
 "date": null,
@@ -5244,6 +5281,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"SC Farense": {
+"date": "1910-04-01",
+"name": "S.C. Farense"
+},
 "SC Fortuna K\u00f6ln": null,
 "SC Preu\u00dfen M\u00fcnster": {
 "date": "1906-04-30",
@@ -5386,6 +5427,11 @@
 "name": "Sanfrecce Hiroshima",
 "tried": "2026-11"
 },
+"Sangju Sangmu FC": {
+"date": "2011-02-26",
+"name": "Gimcheon Sangmu FC"
+},
+"Sanjoanense": null,
 "Santa Clara": {
 "date": "1927-05-12",
 "name": "C.D. Santa Clara"
@@ -6256,6 +6302,7 @@
 "tried": "2026-11"
 },
 "UMECIT": null,
+"UPNFM": null,
 "US Castanet": {
 "date": "1937-01-06",
 "name": "U.S. Castanet"
@@ -6298,6 +6345,7 @@
 "name": "\u00dcmraniyespor",
 "tried": "2026-11"
 },
+"Uniao Leiria": null,
 "Union Berlin": {
 "date": "1966-01-20",
 "name": "1. FC Union Berlin"
@@ -6504,6 +6552,7 @@
 "date": "1945-09-12",
 "name": "VfL Wolfsburg"
 },
+"Vianense": null,
 "Viborg": {
 "date": null,
 "name": "FK Viborg",
