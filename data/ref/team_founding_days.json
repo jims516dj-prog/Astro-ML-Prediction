@@ -147,11 +147,14 @@
 "source": "wikidata (Q65124755)"
 },
 "Al Ahli": null,
+"Al Ain": null,
 "Al Aqaba": {
 "date": null,
 "name": "Al-Aqaba SC",
 "tried": "2026-11"
 },
+"Al Hilal": null,
+"Al Ittihad": null,
 "Al Nasr": {
 "date": null,
 "name": "Alshariqa",
@@ -165,10 +168,24 @@
 "date": "1955-10-24",
 "name": "Al-Nassr"
 },
+"Al Wasl": null,
 "Al Yarmouk": {
 "date": null,
 "name": "Al Yarmouk Kuwait",
 "tried": "2026-11"
+},
+"Al-Gharafa": {
+"date": "1979-06-06",
+"name": "Al-Gharafa SC"
+},
+"Al-Quwa Al-Jawiya": {
+"date": "1931-07-04",
+"name": "Al-Quwa Al-Jawiya"
+},
+"Al-Shamal": null,
+"Alajuelense": {
+"date": "1919-06-18",
+"name": "Liga Deportiva Alajuelense"
 },
 "Alanyaspor": {
 "date": null,
@@ -274,6 +291,10 @@
 "Alverca": {
 "date": "1939-09-01",
 "name": "F.C. Alverca"
+},
+"Always Ready": {
+"date": "1933-04-13",
+"name": "Club Always Ready"
 },
 "Amedspor": {
 "date": null,
@@ -809,6 +830,10 @@
 "date": "1887-07-26",
 "name": "Blackpool F.C."
 },
+"Blooming": {
+"date": "1946-05-01",
+"name": "Club Blooming"
+},
 "Boavista": {
 "date": "1903-08-01",
 "name": "Boavista F.C."
@@ -1204,6 +1229,7 @@
 "date": "1995-07-25",
 "name": "FC Cartagena"
 },
+"Cartagin\u00e9s": null,
 "Casa Pia": {
 "date": "1920-07-03",
 "name": "Casa Pia A.C."
@@ -1277,6 +1303,10 @@
 "Cerro Largo": {
 "date": "2002-11-19",
 "name": "Cerro Largo FC"
+},
+"Cerro Porte\u00f1o": {
+"date": "1912-10-01",
+"name": "Cerro Porte\u00f1o"
 },
 "Cesena": {
 "date": null,
@@ -2131,6 +2161,10 @@
 "Espanol": {
 "date": null,
 "tried": "2026-11"
+},
+"Esteghlal FC": {
+"date": "1945-09-26",
+"name": "Esteghlal F.C."
 },
 "Estonia": {
 "date": "1918-02-24",
@@ -4269,6 +4303,7 @@
 "name": "Club Nacional de Football",
 "source": "wikidata (Q499616)"
 },
+"Nacional Asunci\u00f3n": null,
 "Nacional Potos\u00ed": {
 "date": "1942-03-24",
 "name": "Nacional Potos\u00ed"
@@ -4321,6 +4356,7 @@
 "name": "Club Necaxa"
 },
 "Neftchi": null,
+"Neftchi Fergana": null,
 "Netherlands": {
 "date": "1954-12-29",
 "name": "Netherlands"
@@ -4677,6 +4713,7 @@
 "date": "2014-06-10",
 "name": "Pafos FC"
 },
+"Pakhtakor": null,
 "Pakistan": {
 "date": "1947-08-14",
 "name": "Pakistan"
@@ -5373,6 +5410,7 @@
 "date": "1965-06-30",
 "name": "Samsunspor FC"
 },
+"San Antonio Bulo Bulo": null,
 "San Diego FC": {
 "date": "2023-05-18",
 "name": "San Diego FC"
@@ -6110,6 +6148,10 @@
 "tried": "2026-11"
 },
 "Thaon": null,
+"The Strongest": {
+"date": "1908-04-08",
+"name": "The Strongest"
+},
 "Thespakusatsu Gunma": null,
 "Thisted FC": {
 "date": "1989-01-01",
@@ -6202,6 +6244,7 @@
 "date": "1967-08-02",
 "name": "Trabzonspor"
 },
+"Tractor": null,
 "Tranmere": {
 "date": null,
 "name": "Tranmere Rovers F.C.",

@@ -4,14 +4,6 @@
   "tennis_wta_finals": "2026-11-15T08:59:28+00:00"
  },
  "events": {
-  "2e7a66dfb5caacad9c224d3eaf230dee": {
-   "at": "2026-11-15T08:59:28+00:00",
-   "away": "Arthur Fils",
-   "away_odds": 2.4750000000000005,
-   "home": "Ben Shelton",
-   "home_odds": 1.5394999999999999,
-   "source": "the-odds-api.com, average of 20 bookmakers"
-  },
   "32e23a0b745bed6c0a23f60fab451adb": {
    "at": "2026-11-20T23:10:51+00:00",
    "away": "Daniil Medvedev",
@@ -28,14 +20,6 @@
    "home_odds": 2.833846153846154,
    "source": "the-odds-api.com, average of 13 bookmakers"
   },
-  "7ac3bf138012785e65835d1481524d5c": {
-   "at": "2026-11-15T08:59:28+00:00",
-   "away": "Flavio Cobolli",
-   "away_odds": 3.6757142857142857,
-   "home": "Daniil Medvedev",
-   "home_odds": 1.2771428571428571,
-   "source": "the-odds-api.com, average of 21 bookmakers"
-  },
   "81c3faeaadd3d42734cd831b32b32597": {
    "at": "2026-11-20T23:10:51+00:00",
    "away": "Ben Shelton",
@@ -43,30 +27,6 @@
    "home": "Carlos Alcaraz",
    "home_odds": 1.2618749999999999,
    "source": "the-odds-api.com, average of 16 bookmakers"
-  },
-  "a09dfd51fadc5c32dd0adb4f799b8628": {
-   "at": "2026-11-15T08:59:28+00:00",
-   "away": "Rafael Jodar",
-   "away_odds": 3.034,
-   "home": "Alexander Zverev",
-   "home_odds": 1.3764999999999998,
-   "source": "the-odds-api.com, average of 20 bookmakers"
-  },
-  "c81851847baf5e3a479993ec167a8e2a": {
-   "at": "2026-11-15T08:59:28+00:00",
-   "away": "Frances Tiafoe",
-   "away_odds": 6.785714285714286,
-   "home": "Carlos Alcaraz",
-   "home_odds": 1.1004761904761904,
-   "source": "the-odds-api.com, average of 21 bookmakers"
-  },
-  "db0cf55e0c26bfbf59d91c22de428d25": {
-   "at": "2026-11-15T08:59:28+00:00",
-   "away": "Mirra Andreeva",
-   "away_odds": 1.3509999999999998,
-   "home": "Elina Svitolina",
-   "home_odds": 3.1889999999999996,
-   "source": "the-odds-api.com, average of 20 bookmakers"
   }
  }
 }

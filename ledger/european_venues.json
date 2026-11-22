@@ -9,6 +9,11 @@
   "lon": 16.25527778,
   "source": "wikipedia: Stadion Wiener Neustadt"
  },
+ "2 de Mayo": {
+  "lat": -22.5392088,
+  "lon": -55.7458382,
+  "source": "openstreetmap: Estadio Río Parapití, Cristóbal Colón, Bernardino Caballero, Pedro Juan Caballero, Amambay, Región Oriental, 130106, Paraguay / Paraguái"
+ },
  "ABB": {
   "lat": -16.472623,
   "lon": -68.2014454,
@@ -39,10 +44,20 @@
   "lon": 39.16509611,
   "source": "wikipedia: King Abdullah Sports City Stadium"
  },
+ "Al Ain": {
+  "lat": 24.24559444,
+  "lon": 55.71658333,
+  "source": "wikipedia: Hazza bin Zayed Stadium"
+ },
  "Al Aqaba": {
   "lat": 29.5426089,
   "lon": 35.0044278,
   "source": "openstreetmap: Aqaba Stadium, Omar Al Mokhtar Street, العقبة, قضاء العقبة, لواء قصبة العقبة, العقبة, 77100, الأردن"
+ },
+ "Al Ittihad": {
+  "lat": 21.7632215,
+  "lon": 39.1643374,
+  "source": "openstreetmap: مدينة الملك عبدالله الرياضية, Prince Khalid Bin Abdullah Road, محافظة جدة, منطقة مكة المكرمة, 23733, السعودية"
  },
  "Al Nasr Cairo": {
   "lat": 30.06916667,
@@ -54,10 +69,30 @@
   "lon": 55.71658333,
   "source": "wikipedia: Hazza bin Zayed Stadium"
  },
+ "Al-Quwa Al-Jawiya": {
+  "lat": 30.4399273,
+  "lon": 47.7798634,
+  "source": "openstreetmap: إستاد البصرة الدولي, طريق الزبير, البصرة, ناحية مرکز قضاء البصرة, قضاء البصرة, محافظة البصرة, 60001, العراق"
+ },
+ "Al-Shamal": {
+  "lat": 25.65222222,
+  "lon": 51.48777778,
+  "source": "wikipedia: Al Bayt Stadium"
+ },
+ "Alajuelense": {
+  "lat": 10.01625,
+  "lon": -84.21163,
+  "source": "city: Alajuela"
+ },
  "Albania": {
   "lat": 41.3183889,
   "lon": 19.8245757,
   "source": "openstreetmap: Air Albania Stadium, Rruga Dervish Hima, Qyteti Studenti, Njësia Bashkiake Nr. 2, Tiranë, Bashkia Tiranë, Qarku i Tiranës, 2391, Shqipëria"
+ },
+ "Albion FC": {
+  "lat": -34.91666667,
+  "lon": -56.16666667,
+  "source": "wikipedia: Estadio Luis Franzini"
  },
  "Albirex Niigata": {
   "lat": 37.8825,
@@ -1389,10 +1424,20 @@
   "lon": 19.94556,
   "source": "city: Plav"
  },
+ "Jong Ajax": {
+  "lat": 52.31333333,
+  "lon": 4.92888889,
+  "source": "wikipedia: Sportpark De Toekomst"
+ },
  "Jong FC Utrecht": {
   "lat": 52.09083,
   "lon": 5.12222,
   "source": "city"
+ },
+ "Jong PSV": {
+  "lat": 51.44083,
+  "lon": 5.47778,
+  "source": "city: Eindhoven"
  },
  "Jordan": {
   "lat": 25.317155,
@@ -1408,6 +1453,11 @@
   "lat": -6.6084116,
   "lon": -79.4054531,
   "source": "openstreetmap: Complejo Deportivo Juan Pablo II, LA-738, Mirador, Las Colmenas, Chongoyape, Chiclayo, Lambayeque, Perú"
+ },
+ "Juventud": {
+  "lat": -34.7302,
+  "lon": -56.21915,
+  "source": "city: Las Piedras"
  },
  "Juventude": {
   "lat": -29.16806,
@@ -1734,12 +1784,22 @@
   "lon": -16.92547,
   "source": "manual"
  },
+ "Nacional Asunción": {
+  "lat": -25.31694444,
+  "lon": -57.58055556,
+  "source": "wikipedia: Estadio Arsenio Erico"
+ },
  "Namibia": {
   "lat": -24.65666667,
   "lon": 25.93277778,
   "source": "wikipedia: Botswana National Stadium"
  },
  "Neftchi": {
+  "lat": 40.3905,
+  "lon": 71.7497,
+  "source": "wikipedia: Istiqlol Stadium"
+ },
+ "Neftchi Fergana": {
   "lat": 40.3905,
   "lon": 71.7497,
   "source": "wikipedia: Istiqlol Stadium"
@@ -2174,6 +2234,11 @@
   "lon": -1.53388,
   "source": "city: Ouagadougou"
  },
+ "San Antonio Bulo Bulo": {
+  "lat": -17.3792957,
+  "lon": -66.1617009,
+  "source": "openstreetmap: Estadio Sudamericano Félix Capriles, Avenida Libertador Simón Bolívar, Portales, Adela Zamudio, Cochabamba, Cercado, Cochabamba, Bolivia"
+ },
  "San Marcos de Arica": {
   "lat": -18.4874603,
   "lon": -70.2991206,
@@ -2504,6 +2569,11 @@
   "lon": -3.05497,
   "source": "city: Oswestry"
  },
+ "The Strongest": {
+  "lat": -16.4994503,
+  "lon": -68.1228532,
+  "source": "openstreetmap: Estadio Hernando Siles, Calle Capitán Hugo Estrada, Miraflores, Centro, Municipio Nuestra Señora de La Paz, Provincia Pedro Domingo Murillo, La Paz, Bolivia"
+ },
  "Torreense": {
   "lat": 38.7088,
   "lon": -9.2608,
@@ -2518,6 +2588,11 @@
   "lat": 41.0,
   "lon": 39.72,
   "source": "manual"
+ },
+ "Tractor": {
+  "lat": 23.5729764,
+  "lon": 58.3995278,
+  "source": "openstreetmap: مجمع السلطان قابوس الرياضي, شارع 23 يوليو, بوشر, ولاية بوشر, محافظة مسقط, 101, عمان"
  },
  "Transit Camp FC": {
   "lat": 32.78444444,
