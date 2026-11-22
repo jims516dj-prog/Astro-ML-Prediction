@@ -1454,6 +1454,11 @@
   "lon": -79.4054531,
   "source": "openstreetmap: Complejo Deportivo Juan Pablo II, LA-738, Mirador, Las Colmenas, Chongoyape, Chiclayo, Lambayeque, Perú"
  },
+ "Juticalpa FC": {
+  "lat": 14.65857,
+  "lon": -86.2163,
+  "source": "wikipedia: Estadio Juan Ramón Brevé Vargas"
+ },
  "Juventud": {
   "lat": -34.7302,
   "lon": -56.21915,
@@ -2118,6 +2123,11 @@
   "lat": 40.45306,
   "lon": -3.68835,
   "source": "stadium"
+ },
+ "Real Oruro": {
+  "lat": -17.94611111,
+  "lon": -67.11166667,
+  "source": "wikipedia: Estadio Jesús Bermúdez"
  },
  "Real Potosí": {
   "lat": -19.57861111,

@@ -1,5 +1,6 @@
 {
  "competitions": {
+  "afc.champions": "AFC Champions League Elite",
   "afc.saff.championship": "SAFF Championship",
   "arg.1": "Argentine Liga Profesional de Fútbol",
   "arg.2": "Argentine Nacional B",
@@ -66,5 +67,5 @@
   "usa.usl.1": "USL Championship",
   "ven.1": "Venezuelan Primera División"
  },
- "generated_at": "2026-11-21T21:41:45+00:00"
+ "generated_at": "2026-11-22T22:29:51+00:00"
 }

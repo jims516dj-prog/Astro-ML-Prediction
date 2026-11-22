@@ -2830,6 +2830,10 @@
 "date": "1971-06-16",
 "name": "FC Groningen"
 },
+"Guabir\u00e1": {
+"date": "1962-04-14",
+"name": "Guabir\u00e1"
+},
 "Guadalajara Chivas": {
 "date": null,
 "tried": "2026-11"
@@ -3369,6 +3373,7 @@
 "name": "FC Ju\u00e1rez",
 "tried": "2026-11"
 },
+"Juticalpa FC": null,
 "Juve Stabia": {
 "date": null,
 "name": "S.S. Juve Stabia",
@@ -4544,6 +4549,7 @@
 "name": "Fagiano Okayama",
 "tried": "2026-11"
 },
+"Olancho FC": null,
 "Oldham": {
 "date": "1895-07-04",
 "name": "Oldham Athletic A.F.C."
@@ -5147,6 +5153,7 @@
 "date": "1902-03-06",
 "name": "Real Madrid Club de F\u00fatbol"
 },
+"Real Oruro": null,
 "Real Potos\u00ed": {
 "date": "1988-04-01",
 "name": "Club Real Potos\u00ed"
