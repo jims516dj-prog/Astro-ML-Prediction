@@ -64,6 +64,11 @@
   "lon": 31.31222222,
   "source": "wikipedia: Cairo International Stadium"
  },
+ "Al Nassr": {
+  "lat": 24.72916667,
+  "lon": 46.62388889,
+  "source": "wikipedia: King Saud University Stadium"
+ },
  "Al-Ain": {
   "lat": 24.24559444,
   "lon": 55.71658333,
@@ -183,6 +188,11 @@
   "lat": 40.1720153,
   "lon": 44.5255451,
   "source": "openstreetmap: Վազգեն Սարգսյանի մարզադաշտ, Չարենցի փողոց, Կենտրոն, Երևան, 0070, Հայաստան"
+ },
+ "Arsenal": {
+  "lat": 51.555,
+  "lon": -0.108611,
+  "source": "stadium"
  },
  "Arsenal Sarandi": {
   "lat": -34.67833333,
@@ -353,6 +363,11 @@
   "lat": -34.6,
   "lon": -58.38,
   "source": "manual"
+ },
+ "Bodo/Glimt": {
+  "lat": 67.27666667,
+  "lon": 14.38444444,
+  "source": "wikipedia: Aspmyra Stadion"
  },
  "Borussia Hildesheim": {
   "lat": 52.15077,
@@ -674,6 +689,11 @@
   "lon": -78.8146315,
   "source": "openstreetmap: Estadio Municipal Juan Maldonado Gamarra, Avenida Salomón Vilchez Murga, Cutervo, Cajamarca, Perú"
  },
+ "Como": {
+  "lat": 45.80819,
+  "lon": 9.0832,
+  "source": "city"
+ },
  "Comoros": {
   "lat": -11.70216,
   "lon": 43.25506,
@@ -683,6 +703,11 @@
   "lat": 14.64072,
   "lon": -90.51327,
   "source": "thesportsdb: Estadio Cementos Progreso, Guatemala City, Guatemala"
+ },
+ "Cong An Ha Noi": {
+  "lat": 21.0298698,
+  "lon": 105.8329431,
+  "source": "openstreetmap: Sân vận động Hàng Đẫy, 9, Phố Trịnh Hoài Đức, Tổ dân phố 1, Phường Ô Chợ Dừa, Thành phố Hà Nội, 11511, Việt Nam"
  },
  "Congo DR": {
   "lat": -4.33041667,
@@ -768,6 +793,11 @@
   "lat": 7.89391,
   "lon": -72.50782,
   "source": "city"
+ },
+ "Daejeon Hana Citizen FC": {
+  "lat": 36.36513889,
+  "lon": 127.32516667,
+  "source": "wikipedia: Daejeon World Cup Stadium"
  },
  "Danubio": {
   "lat": -34.83871944,
@@ -1089,6 +1119,11 @@
   "lon": -58.4476,
   "source": "wikipedia: Estadio Arquitecto Ricardo Etcheverri"
  },
+ "Feyenoord Rotterdam": {
+  "lat": 51.89388889,
+  "lon": 4.52305556,
+  "source": "wikipedia: De Kuip"
+ },
  "Finland": {
   "lat": 60.16952,
   "lon": 24.93545,
@@ -1098,6 +1133,11 @@
   "lat": 61.5003,
   "lon": 23.7853,
   "source": "wikipedia: Tammelan Stadion"
+ },
+ "Fleetwood Town": {
+  "lat": 53.92527,
+  "lon": -3.01085,
+  "source": "city"
  },
  "Fontenay Foot": {
   "lat": 46.4625456,
@@ -1153,6 +1193,11 @@
   "lat": -1.63861111,
   "lon": 13.57444444,
   "source": "wikipedia: Franceville Stadium"
+ },
+ "Galatasaray": {
+  "lat": 41.0053702,
+  "lon": 28.6825162,
+  "source": "manual"
  },
  "Gambia": {
   "lat": 13.4681538,
@@ -1534,6 +1579,11 @@
   "lon": 47.97833,
   "source": "national team: Kuwait City (largest city)"
  },
+ "Kyoto Sanga": {
+  "lat": 35.01694444,
+  "lon": 135.58472222,
+  "source": "wikipedia: Sanga Stadium by Kyocera"
+ },
  "Kyrgyz Republic": {
   "lat": 42.87,
   "lon": 74.59,
@@ -1663,6 +1713,11 @@
   "lat": 35.895,
   "lon": 14.41527778,
   "source": "wikipedia: National Stadium, Ta' Qali"
+ },
+ "Man City": {
+  "lat": 53.482989,
+  "lon": -2.200292,
+  "source": "stadium"
  },
  "Mansfield Town": {
   "lat": 53.13805556,
@@ -1828,6 +1883,11 @@
   "lat": -36.91833333,
   "lon": 174.8125,
   "source": "wikipedia: Mount Smart Stadium"
+ },
+ "Newcastle Jets": {
+  "lat": -33.42833333,
+  "lon": 151.33805556,
+  "source": "wikipedia: Central Coast Stadium"
  },
  "Newry City AFC": {
   "lat": 54.17841,
@@ -2094,6 +2154,11 @@
   "lon": 51.42444,
   "source": "city: Ar-Rayyan"
  },
+ "RB Leipzig": {
+  "lat": 51.33962,
+  "lon": 12.37129,
+  "source": "city"
+ },
  "RKC Waalwijk": {
   "lat": 51.6825,
   "lon": 5.07083,
@@ -2113,6 +2178,11 @@
   "lat": 48.19777778,
   "lon": 16.26527778,
   "source": "senior team's ground: wikipedia: Allianz Stadion"
+ },
+ "Ratchaburi FC": {
+  "lat": 13.521677,
+  "lon": 99.769588,
+  "source": "wikipedia: Ratchaburi Stadium"
  },
  "Real España": {
   "lat": 15.5075,
@@ -2239,6 +2309,11 @@
   "lon": -5.665,
   "source": "wikipedia: Helmántico Stadium"
  },
+ "Salford City": {
+  "lat": 53.48771,
+  "lon": -2.29042,
+  "source": "city: Salford"
+ },
  "Salitas": {
   "lat": 12.36566,
   "lon": -1.53388,
@@ -2309,6 +2384,11 @@
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
  },
+ "Shanghai Port FC": {
+  "lat": 31.2406744,
+  "lon": 121.6070649,
+  "source": "openstreetmap: 上汽浦东竞技场, 金葵路, 三桥, 陆行, 金桥镇, 浦东新区, 上海市, 201206, 中国"
+ },
  "Sheffield Wednesday": {
   "lat": 53.411379,
   "lon": -1.5006311,
@@ -2358,6 +2438,11 @@
   "lat": 48.37333333,
   "lon": 17.59166667,
   "source": "wikipedia: Anton Malatinský Stadium"
+ },
+ "Slovan Bratislava": {
+  "lat": 48.1634912,
+  "lon": 17.1367945,
+  "source": "openstreetmap: Národný futbalový štadión, 4, Viktora Tegelhoffa, Tehelné pole, Bratislava, okres Bratislava III, Bratislava, Bratislavský kraj, 832 32, Slovensko"
  },
  "Slovenia": {
   "lat": 46.56222222,
@@ -2603,6 +2688,11 @@
   "lat": 23.5729764,
   "lon": 58.3995278,
   "source": "openstreetmap: مجمع السلطان قابوس الرياضي, شارع 23 يوليو, بوشر, ولاية بوشر, محافظة مسقط, 101, عمان"
+ },
+ "Tranmere Rovers": {
+  "lat": 53.3736791,
+  "lon": -3.032617,
+  "source": "openstreetmap: Prenton Park, Mallory Road, Egerton Park, Birkenhead, Wirral, Liverpool City Region, England, CH42 6QT, United Kingdom"
  },
  "Transit Camp FC": {
   "lat": 32.78444444,

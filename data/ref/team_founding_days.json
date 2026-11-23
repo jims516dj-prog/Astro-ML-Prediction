@@ -40,6 +40,10 @@
 "date": "1924-04-13",
 "name": "AEK Athens F.C."
 },
+"AEK Athens": {
+"date": "1924-04-13",
+"name": "AEK Athens F.C."
+},
 "AFC Eskilstuna": {
 "date": null,
 "name": "AFC Eskilstuna",
@@ -167,6 +171,10 @@
 "Al Nassr": {
 "date": "1955-10-24",
 "name": "Al-Nassr"
+},
+"Al Sadd": {
+"date": "1969-10-21",
+"name": "Al Sadd Sports Club"
 },
 "Al Wasl": null,
 "Al Yarmouk": {
@@ -894,6 +902,10 @@
 "name": "Boreham Wood F.C.",
 "source": "wikipedia:de (Q4094837)"
 },
+"Borussia Dortmund": {
+"date": "1909-12-19",
+"name": "Borussia Dortmund"
+},
 "Borussia Monchengladbach": {
 "date": "1900-08-01",
 "name": "Borussia M\u00f6nchengladbach"
@@ -1049,6 +1061,7 @@
 "name": "Burgos CF",
 "source": "wikipedia:en (Q852079)"
 },
+"Buriram United": null,
 "Burkina Faso": {
 "date": null,
 "name": "Burkina Faso",
@@ -1569,6 +1582,7 @@
 "name": "FC Concordia",
 "tried": "2026-11"
 },
+"Cong An Ha Noi": null,
 "Congo": {
 "date": null,
 "tried": "2026-11"
@@ -1757,6 +1771,10 @@
 "date": null,
 "name": "Daco-Getica",
 "tried": "2026-11"
+},
+"Daejeon Hana Citizen FC": {
+"date": "1997-03-12",
+"name": "Daejeon Hana Citizen FC"
 },
 "Dag and Red": {
 "date": null,
@@ -2210,6 +2228,7 @@
 "tried": "2026-11"
 },
 "Everton CD": null,
+"Everton U21": null,
 "Excelsior": {
 "date": null,
 "name": "AS Excelsior",
@@ -2474,6 +2493,10 @@
 "tried": "2026-11"
 },
 "Feyenoord": {
+"date": "1908-07-19",
+"name": "Feyenoord Rotterdam"
+},
+"Feyenoord Rotterdam": {
 "date": "1908-07-19",
 "name": "Feyenoord Rotterdam"
 },
@@ -3346,6 +3369,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Johor Darul Ta'zim": null,
 "Joinville": {
 "date": "1976-01-29",
 "name": "Joinville Esporte Clube"
@@ -3588,9 +3612,14 @@
 "date": null,
 "tried": "2026-11"
 },
+"Kyoto Sanga": null,
 "Kyrgyz Republic": null,
 "Kyrgyzstan": null,
 "LASK": {
+"date": "1899-08-07",
+"name": "LASK Linz"
+},
+"LASK Linz": {
 "date": "1899-08-07",
 "name": "LASK Linz"
 },
@@ -3695,6 +3724,7 @@
 "date": "1919-10-17",
 "name": "Leeds United F.C."
 },
+"Leeds United U21": null,
 "Leganes": {
 "date": "1928-06-23",
 "name": "CD Legan\u00e9s"
@@ -4401,6 +4431,7 @@
 "date": "1892-12-09",
 "name": "Newcastle United F.C."
 },
+"Newcastle Jets": null,
 "Newells Old Boys": {
 "date": "1903-11-03",
 "name": "Newell's Old Boys"
@@ -5144,6 +5175,7 @@
 "name": "Ranheim IL",
 "tried": "2026-11"
 },
+"Ratchaburi FC": null,
 "Reading": {
 "date": "1871-12-25",
 "name": "Reading F.C."
@@ -5403,6 +5435,7 @@
 "name": "Salford City F.C.",
 "tried": "2026-11"
 },
+"Salford City": null,
 "Salzburg": {
 "date": null,
 "name": "FC Red Bull Salzburg",
@@ -5602,6 +5635,10 @@
 "date": "2005-12-25",
 "name": "Shanghai Port F.C."
 },
+"Shanghai Port FC": {
+"date": "2005-12-25",
+"name": "Shanghai Port F.C."
+},
 "Shanghai SIPG": {
 "date": "2005-12-25",
 "name": "Shanghai Port F.C."
@@ -5711,6 +5748,10 @@
 "Slovakia": {
 "date": "1939-03-14",
 "name": "Slovakia"
+},
+"Slovan Bratislava": {
+"date": "1919-05-03",
+"name": "\u0160K Slovan Bratislava"
 },
 "Slovenia": {
 "date": null,
@@ -6014,6 +6055,7 @@
 "name": "Sunderland A.F.C.",
 "tried": "2026-11"
 },
+"Sunderland U21": null,
 "Sundsvall": {
 "date": null,
 "tried": "2026-11"
@@ -6242,6 +6284,7 @@
 "date": "1882-09-05",
 "name": "Tottenham Hotspur F.C."
 },
+"Tottenham Hotspur U21": null,
 "Toulouse": {
 "date": "1970-05-25",
 "name": "Toulouse FC"
