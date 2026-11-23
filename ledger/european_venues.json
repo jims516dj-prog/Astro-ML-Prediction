@@ -949,6 +949,11 @@
   "lon": 2.377,
   "source": "city"
  },
+ "Durban City": {
+  "lat": -29.910398,
+  "lon": 30.877311,
+  "source": "wikipedia: Chatsworth Stadium"
+ },
  "Dynamo Dresden": {
   "lat": 51.05089,
   "lon": 13.73832,
@@ -1973,6 +1978,11 @@
   "lat": -17.7960273,
   "lon": -63.183838,
   "source": "openstreetmap: Estadio Ramón “Tahuichi” Aguilera Costas, Avenida Ejército Nacional, Barrio Militar, Centro, Municipio Santa Cruz de la Sierra, Provincia Andrés Ibáñez, Santa Cruz, Bolivia"
+ },
+ "Orlando Pirates": {
+  "lat": -26.23189444,
+  "lon": 27.92289167,
+  "source": "wikipedia: Orlando Stadium"
  },
  "Orsha": {
   "lat": 54.5081,

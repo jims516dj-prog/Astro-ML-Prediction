@@ -1,8 +1,4 @@
 kickoff_utc,division,home,away,goals_home,goals_away
-2025-05-20T23:30:00+00:00,ARG,River Plate,Platense,1,1
-2025-05-21T10:00:00+00:00,JAP,Kawasaki Frontale,Urawa Reds,2,2
-2025-05-21T10:00:00+00:00,JAP,Yokohama F. Marinos,Vissel Kobe,1,2
-2025-05-21T15:00:00+00:00,FIN,Ilves,KuPS,3,0
 2025-05-22T17:00:00+00:00,SWE,Hammarby,Mjallby,1,2
 2025-05-22T17:00:00+00:00,SWE,Malmo FF,AIK,0,0
 2025-05-22T18:30:00+00:00,SUI,Grasshoppers,St. Gallen,2,0
@@ -16910,3 +16906,183 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-19T22:30:00+00:00,BRA,Vasco,Internacional,2,1
 2026-11-19T22:30:00+00:00,BRA,Vitoria,Bragantino,2,1
 2026-11-20T00:30:00+00:00,BRA,Sao Paulo,Fluminense,0,1
+2026-11-20T17:30:00+00:00,D2,Bielefeld,Magdeburg,1,2
+2026-11-20T17:30:00+00:00,D2,Darmstadt,Heidenheim,3,1
+2026-11-20T19:00:00+00:00,F2,Annecy,Clermont,4,2
+2026-11-20T19:00:00+00:00,F2,Guingamp,Rodez,1,3
+2026-11-20T19:00:00+00:00,F2,Metz,Boulogne,2,1
+2026-11-20T19:00:00+00:00,F2,Nancy,Dijon,1,0
+2026-11-20T19:00:00+00:00,F2,Red Star,Pau FC,2,1
+2026-11-20T19:30:00+00:00,SP2,Andorra,Leganes,1,3
+2026-11-20T19:30:00+00:00,D1,Bayern Munich,FC Koln,1,1
+2026-11-20T19:30:00+00:00,SC1,Inverness C,Ayr,0,0
+2026-11-20T19:30:00+00:00,I2,Verona,Cesena,0,2
+2026-11-20T19:45:00+00:00,B1,Cercle Brugge,Westerlo,1,0
+2026-11-20T19:45:00+00:00,EC,Southend,Boreham Wood,2,3
+2026-11-20T19:45:00+00:00,F1,Troyes,Le Havre,3,1
+2026-11-20T20:00:00+00:00,SP1,Ath Bilbao,Espanol,0,1
+2026-11-20T20:00:00+00:00,E2,Barnsley,Sheffield Weds,1,2
+2026-11-21T10:30:00+00:00,T1,Genclerbirligi,Gaziantep,1,0
+2026-11-21T12:00:00+00:00,D2,Hannover,Greuther Furth,2,1
+2026-11-21T12:00:00+00:00,D2,Nurnberg,Braunschweig,1,2
+2026-11-21T12:00:00+00:00,D2,Wolfsburg,Holstein Kiel,3,0
+2026-11-21T12:30:00+00:00,E2,Blackpool,Wigan,1,2
+2026-11-21T12:30:00+00:00,E3,Gillingham,Crewe,3,3
+2026-11-21T12:30:00+00:00,E0,Man City,Fulham,1,1
+2026-11-21T12:30:00+00:00,E1,Millwall,QPR,0,1
+2026-11-21T12:30:00+00:00,E3,Newport County,Swindon,2,0
+2026-11-21T12:30:00+00:00,E1,Norwich,Cardiff,2,1
+2026-11-21T12:30:00+00:00,E2,Reading,Bromley,0,1
+2026-11-21T12:30:00+00:00,EC,Solihull,Altrincham,2,1
+2026-11-21T12:30:00+00:00,E1,Southampton,Derby,2,0
+2026-11-21T12:30:00+00:00,EC,Tamworth,Eastleigh,1,3
+2026-11-21T13:00:00+00:00,SP1,Alaves,La Coruna,3,1
+2026-11-21T13:00:00+00:00,T1,Amedspor,Rizespor,0,2
+2026-11-21T13:00:00+00:00,T1,Galatasaray,Samsunspor,2,1
+2026-11-21T13:00:00+00:00,F2,Laval,Montpellier,1,0
+2026-11-21T13:00:00+00:00,SP2,Sabadell,Granada,1,1
+2026-11-21T14:00:00+00:00,I2,Ascoli,Vicenza,2,2
+2026-11-21T14:00:00+00:00,I2,Carrarese,Virtus Entella,1,0
+2026-11-21T14:00:00+00:00,I1,Como,Cagliari,2,0
+2026-11-21T14:00:00+00:00,I1,Lazio,Lecce,3,0
+2026-11-21T14:00:00+00:00,I2,Modena,Juve Stabia,2,0
+2026-11-21T14:00:00+00:00,I2,Sampdoria,Benevento,3,1
+2026-11-21T14:00:00+00:00,I2,Sudtirol,Cremonese,1,0
+2026-11-21T14:30:00+00:00,D1,Ein Frankfurt,Hoffenheim,1,0
+2026-11-21T14:30:00+00:00,D1,Elversberg,Freiburg,0,1
+2026-11-21T14:30:00+00:00,D1,Leverkusen,Paderborn,4,0
+2026-11-21T14:30:00+00:00,D1,M'gladbach,Dortmund,0,1
+2026-11-21T14:30:00+00:00,D1,Union Berlin,RB Leipzig,1,5
+2026-11-21T15:00:00+00:00,E3,Accrington,Salford,1,1
+2026-11-21T15:00:00+00:00,EC,Aldershot,Scunthorpe,2,0
+2026-11-21T15:00:00+00:00,SC3,Annan Athletic,Forfar,1,1
+2026-11-21T15:00:00+00:00,SC1,Arbroath,Stenhousemuir,2,1
+2026-11-21T15:00:00+00:00,E0,Aston Villa,Sunderland,0,0
+2026-11-21T15:00:00+00:00,E3,Barnet,Port Vale,2,1
+2026-11-21T15:00:00+00:00,EC,Barrow,Carlisle,0,2
+2026-11-21T15:00:00+00:00,E1,Bolton,Portsmouth,1,1
+2026-11-21T15:00:00+00:00,E0,Bournemouth,Nott'm Forest,2,0
+2026-11-21T15:00:00+00:00,E2,Bradford,Doncaster,2,2
+2026-11-21T15:00:00+00:00,E2,Burton,Luton,1,2
+2026-11-21T15:00:00+00:00,E2,Cambridge,Stockport,0,3
+2026-11-21T15:00:00+00:00,SC0,Celtic,St Mirren,4,1
+2026-11-21T15:00:00+00:00,B1,Charleroi,St Truiden,2,2
+2026-11-21T15:00:00+00:00,E0,Chelsea,Leeds,1,4
+2026-11-21T15:00:00+00:00,E3,Cheltenham,Bristol Rvs,0,3
+2026-11-21T15:00:00+00:00,E3,Chesterfield,Shrewsbury,4,1
+2026-11-21T15:00:00+00:00,SC3,Clyde,Stirling,4,3
+2026-11-21T15:00:00+00:00,E0,Coventry,Crystal Palace,3,2
+2026-11-21T15:00:00+00:00,E3,Crawley Town,Fleetwood Town,2,1
+2026-11-21T15:00:00+00:00,SC2,East Fife,Airdrie Utd,0,2
+2026-11-21T15:00:00+00:00,SC3,Edinburgh City,Kelty Hearts,0,1
+2026-11-21T15:00:00+00:00,SC0,Falkirk,St Johnstone,2,1
+2026-11-21T15:00:00+00:00,EC,Gateshead,Hartlepool,1,2
+2026-11-21T15:00:00+00:00,E3,Grimsby,Rotherham,0,0
+2026-11-21T15:00:00+00:00,EC,Halifax,Woking,5,0
+2026-11-21T15:00:00+00:00,SC0,Hibernian,Dundee United,0,4
+2026-11-21T15:00:00+00:00,E2,Huddersfield,Leicester,0,1
+2026-11-21T15:00:00+00:00,EC,Kidderminster,Fylde,2,2
+2026-11-21T15:00:00+00:00,SC0,Kilmarnock,Aberdeen,2,4
+2026-11-21T15:00:00+00:00,E2,Leyton Orient,AFC Wimbledon,4,1
+2026-11-21T15:00:00+00:00,E1,Lincoln,Wrexham,0,1
+2026-11-21T15:00:00+00:00,E2,Mansfield,Milton Keynes Dons,1,1
+2026-11-21T15:00:00+00:00,E1,Middlesbrough,Bristol City,2,0
+2026-11-21T15:00:00+00:00,E3,Northampton,Rochdale,3,2
+2026-11-21T15:00:00+00:00,E2,Notts County,Stevenage,0,1
+2026-11-21T15:00:00+00:00,E3,Oldham,Exeter,1,1
+2026-11-21T15:00:00+00:00,E2,Oxford,Wycombe,4,3
+2026-11-21T15:00:00+00:00,SC2,Peterhead,East Kilbride,1,0
+2026-11-21T15:00:00+00:00,E2,Plymouth,Peterboro,0,2
+2026-11-21T15:00:00+00:00,SC2,Queen of Sth,Hamilton,1,3
+2026-11-21T15:00:00+00:00,SC1,Queens Park,Livingston,1,4
+2026-11-21T15:00:00+00:00,SC1,Raith Rvs,Partick,0,2
+2026-11-21T15:00:00+00:00,SC2,Ross County,Cove Rangers,5,1
+2026-11-21T15:00:00+00:00,E1,Sheffield United,Watford,4,0
+2026-11-21T15:00:00+00:00,E1,Stoke,Birmingham,1,0
+2026-11-21T15:00:00+00:00,SC3,Stranraer,Elgin,3,0
+2026-11-21T15:00:00+00:00,EC,Sutton,Boston Utd,1,0
+2026-11-21T15:00:00+00:00,E1,Swansea,West Brom,2,2
+2026-11-21T15:00:00+00:00,E0,Tottenham,Ipswich,2,0
+2026-11-21T15:00:00+00:00,E3,Tranmere,Colchester,2,1
+2026-11-21T15:00:00+00:00,EC,Wealdstone,Hornchurch,4,0
+2026-11-21T15:00:00+00:00,E1,West Ham,Preston,1,1
+2026-11-21T15:00:00+00:00,E1,Wolves,Charlton,2,1
+2026-11-21T15:00:00+00:00,EC,Worthing,Harrogate,2,1
+2026-11-21T15:00:00+00:00,E3,York,Walsall,0,0
+2026-11-21T15:15:00+00:00,SP2,Sociedad B,Cadiz,0,3
+2026-11-21T15:15:00+00:00,SP1,Vallecano,Valencia,0,1
+2026-11-21T15:30:00+00:00,N1,Nijmegen,PSV Eindhoven,1,4
+2026-11-21T16:00:00+00:00,T1,Kocaelispor,Fenerbahce,2,2
+2026-11-21T16:15:00+00:00,I2,Catanzaro,Palermo,3,1
+2026-11-21T16:15:00+00:00,F1,Nice,Paris SG,2,3
+2026-11-21T17:00:00+00:00,I1,Parma,Roma,1,5
+2026-11-21T17:15:00+00:00,B1,Genk,RAAL La Louviere,3,0
+2026-11-21T17:30:00+00:00,SP2,Castellon,Eldense,2,0
+2026-11-21T17:30:00+00:00,G1,Kalamata,AEK,0,1
+2026-11-21T17:30:00+00:00,SC2,Montrose,Alloa,1,1
+2026-11-21T17:30:00+00:00,E0,Newcastle,Arsenal,2,2
+2026-11-21T17:30:00+00:00,D1,Schalke 04,Stuttgart,0,0
+2026-11-21T17:30:00+00:00,SP1,Sevilla,Betis,1,1
+2026-11-21T17:30:00+00:00,EC,Yeovil,Forest Green,3,2
+2026-11-21T17:45:00+00:00,SC0,Dundee,Hearts,0,8
+2026-11-21T17:45:00+00:00,N1,Feyenoord,Excelsior,2,3
+2026-11-21T17:45:00+00:00,N1,Utrecht,Cambuur,2,3
+2026-11-21T18:30:00+00:00,I2,Empoli,Pisa,0,1
+2026-11-21T19:00:00+00:00,F2,Reims,St Etienne,0,1
+2026-11-21T19:30:00+00:00,D2,St Pauli,Bochum,2,0
+2026-11-21T19:45:00+00:00,F1,Lens,Toulouse,1,1
+2026-11-21T19:45:00+00:00,F1,Lille,Lyon,0,1
+2026-11-21T19:45:00+00:00,B1,Mechelen,Club Brugge,1,5
+2026-11-21T19:45:00+00:00,F1,Monaco,Auxerre,1,1
+2026-11-21T19:45:00+00:00,I1,Napoli,Torino,1,0
+2026-11-21T19:45:00+00:00,F1,Strasbourg,Brest,0,1
+2026-11-21T19:45:00+00:00,B1,Waregem,Antwerp,2,2
+2026-11-21T20:00:00+00:00,N1,Groningen,Heerenveen,1,3
+2026-11-21T20:00:00+00:00,SC0,Motherwell,Rangers,1,2
+2026-11-21T20:00:00+00:00,SP1,Real Madrid,Celta,2,1
+2026-11-21T20:00:00+00:00,N1,Telstar,Zwolle,1,3
+2026-11-21T20:00:00+00:00,SP2,Tenerife,Mallorca,0,0
+2026-11-22T10:30:00+00:00,T1,Erzurumspor,Goztep,0,1
+2026-11-22T11:15:00+00:00,N1,Twente,Willem II,2,1
+2026-11-22T11:30:00+00:00,I1,Juventus,Venezia,4,0
+2026-11-22T12:00:00+00:00,E1,Burnley,Blackburn,2,2
+2026-11-22T12:30:00+00:00,B1,Beveren,Gent,1,0
+2026-11-22T12:30:00+00:00,D2,Cottbus,Hertha,0,4
+2026-11-22T12:30:00+00:00,D2,Kaiserslautern,Dresden,2,2
+2026-11-22T12:30:00+00:00,D2,Karlsruhe,Osnabruck,0,0
+2026-11-22T13:00:00+00:00,SP1,Barcelona,Villarreal,3,2
+2026-11-22T13:00:00+00:00,SP2,Cordoba,Oviedo,3,0
+2026-11-22T13:00:00+00:00,T1,Kasimpasa,Alanyaspor,2,1
+2026-11-22T13:00:00+00:00,T1,Konyaspor,Besiktas,2,4
+2026-11-22T13:30:00+00:00,N1,Ajax,Den Haag,3,0
+2026-11-22T13:30:00+00:00,N1,Sparta Rotterdam,AZ Alkmaar,1,5
+2026-11-22T14:00:00+00:00,I2,Avellino,Mantova,4,1
+2026-11-22T14:00:00+00:00,I1,Bologna,Udinese,1,1
+2026-11-22T14:00:00+00:00,E0,Hull,Brighton,2,0
+2026-11-22T14:00:00+00:00,G1,Levadeiakos,Atromitos,1,1
+2026-11-22T14:00:00+00:00,F1,Paris FC,Angers,4,0
+2026-11-22T14:00:00+00:00,I1,Sassuolo,Genoa,0,2
+2026-11-22T14:30:00+00:00,D1,Augsburg,Mainz,3,1
+2026-11-22T15:00:00+00:00,B1,Kortrijk,St. Gilloise,0,1
+2026-11-22T15:00:00+00:00,G1,Panetolikos,Volos NFC,1,0
+2026-11-22T15:15:00+00:00,SP1,Santander,Sociedad,3,2
+2026-11-22T15:15:00+00:00,SP2,Sp Gijon,Las Palmas,0,2
+2026-11-22T15:30:00+00:00,G1,Panathinaikos,OFI Crete,2,0
+2026-11-22T15:45:00+00:00,N1,Go Ahead Eagles,For Sittard,0,1
+2026-11-22T16:00:00+00:00,T1,Trabzonspor,Eyupspor,1,0
+2026-11-22T16:15:00+00:00,I2,Arezzo,Padova,1,1
+2026-11-22T16:15:00+00:00,F1,Lorient,Rennes,1,1
+2026-11-22T16:30:00+00:00,E0,Liverpool,Man United,4,0
+2026-11-22T16:30:00+00:00,D1,Werder Bremen,Hamburg,4,0
+2026-11-22T17:00:00+00:00,I1,Milan,Frosinone,5,1
+2026-11-22T17:00:00+00:00,G1,Olympiakos,Iraklis,6,2
+2026-11-22T17:30:00+00:00,B1,Anderlecht,Oud-Heverlee Leuven,1,0
+2026-11-22T17:30:00+00:00,SP2,Celta B,Valladolid,1,1
+2026-11-22T17:30:00+00:00,SP2,Girona,Eibar,2,1
+2026-11-22T17:30:00+00:00,SP1,Osasuna,Malaga,1,0
+2026-11-22T17:30:00+00:00,G1,PAOK,Kifisia,4,0
+2026-11-22T18:15:00+00:00,B1,Lommel SK,Standard,1,2
+2026-11-22T19:45:00+00:00,I1,Atalanta,Inter,4,4
+2026-11-22T19:45:00+00:00,F1,Marseille,Le Mans,2,3
+2026-11-22T20:00:00+00:00,SP2,Burgos,Albacete,1,0
+2026-11-22T20:00:00+00:00,SP1,Getafe,Ath Madrid,0,3
