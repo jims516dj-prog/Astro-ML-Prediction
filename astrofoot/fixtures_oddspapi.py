@@ -83,6 +83,15 @@ def ground(f: dict, team: str, div: str, venue_of):
 AGE = re.compile(r"(?i)\b(?:U-?|Under[- ]?|Sub-?)(\d{2})\b")
 
 
+# Major youth tournaments: when the free quota cannot price everything, these are priced first
+PRIORITY = re.compile(r"(u-?1[79]|u-?20|under[- ]?(1[79]|20)).*(world cup|euro|championship)|"
+                      r"(world cup|euro|championship).*(u-?1[79]|u-?20|under[- ]?(1[79]|20))|youth league", re.I)
+
+
+def priority(competition: str | None) -> bool:
+    return bool(PRIORITY.search(str(competition or "")))
+
+
 def with_age(team: str, f: dict) -> str:
     """OddsPapi names youth sides like the senior ones ("England" in its "U21 Friendly Games"): add the age group,
     so that the game is never taken for (or forecast with the data of) the senior teams."""
@@ -260,8 +269,9 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             skipped.append(f"{h} v {a} ({tn[tid]}): home ground not found")
             continue
         cands.setdefault(tid, []).append((f, key, div, ko, h, a, loc))
-    # the tournaments with the most new games first, BATCH per request, while the quota allows
-    order = sorted(cands, key=lambda t: -len(cands[t]))
+    # major youth tournaments first, then the tournaments with the most new games, BATCH per request, while the
+    # quota allows
+    order = sorted(cands, key=lambda t: (not priority(tn.get(t)), -len(cands[t])))
     odds: dict[str, dict] = {}
     asked = []
     batch = BATCH

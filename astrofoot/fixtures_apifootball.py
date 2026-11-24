@@ -211,6 +211,11 @@ def day_odds(c: Client, day: str, pages: int, log=print) -> dict[int, dict]:
     return out
 
 
+def league_name_of(f: dict) -> str:
+    lg = f.get("league") or {}
+    return f"{lg.get('country') or ''}: {lg.get('name') or ''}"
+
+
 def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, match_key, local_date, ledger_preds: list[dict],
                    venue_of, c: Client | None = None, log=print, women: bool = False, same_game=None) -> list[dict]:
     """Games with odds no other source lists, in the form of live.parse_fixtures (today and tomorrow, UTC)."""
@@ -262,8 +267,10 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
             continue
         cands.append((f, key, div, ko, h, a, lid))
         have.add(key)
-    # odds for the games the day's pages did not price: one request each, soonest first, within this cycle's share
-    cands.sort(key=lambda x: x[3])
+    # odds for the games the day's pages did not price: one request each, major youth tournaments first (U17 / U20
+    # World Cups, U19 Euros, UEFA Youth League), then soonest first, within this cycle's share
+    from .fixtures_oddspapi import priority
+    cands.sort(key=lambda x: (not priority(league_name_of(x[0])), x[3]))
     for f, key, div, ko, h, a, lid in cands:
         fid = (f.get("fixture") or {}).get("id")
         if fid not in odds and c.calls - start < share:

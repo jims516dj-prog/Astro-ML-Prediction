@@ -111,3 +111,10 @@ def test_oddspapi_quota_spread_and_429(tmp_path, monkeypatch):
     assert op.extra_fixtures([], NOW, 2, live.match_key, lambda k: k[:10], [], None, client=Busy(), log=logs.append) == []
     assert op.usage("2026-11-13")["blocked"] and op.allowance(op.usage("2026-11-13"), "2026-11-13") == 0
     assert op.usage("2026-12-01").get("blocked") is None          # a new month starts afresh
+
+
+def test_major_youth_tournaments_are_priced_first():
+    from astrofoot.fixtures_oddspapi import priority
+    assert priority("World: FIFA World Cup U17") and priority("International Youth: UEFA Youth League")
+    assert priority("World: UEFA U19 Championship Women") and priority("World: FIFA U-20 World Cup")
+    assert not priority("International Youth: U21 Friendly Games") and not priority("England: Premier League")
