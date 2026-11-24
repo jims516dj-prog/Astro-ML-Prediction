@@ -2153,3 +2153,49 @@
 {"match_id": "186813", "retired": false, "score": "6-1 6-2", "set_winners": "11", "settled_at": "2026-11-23T22:50:14+00:00", "source": "espn.com", "start_final": "2026-11-23T16:40:00+00:00", "void": false, "void_reason": null, "winner": 1}
 {"match_id": "186823", "retired": false, "score": "6-3 6-2", "set_winners": "11", "settled_at": "2026-11-23T22:50:14+00:00", "source": "espn.com", "start_final": "2026-11-23T17:05:00+00:00", "void": false, "void_reason": null, "winner": 1}
 {"match_id": "186815", "retired": false, "score": "2-6 5-7", "set_winners": "22", "settled_at": "2026-11-23T22:50:14+00:00", "source": "espn.com", "start_final": "2026-11-23T19:05:00+00:00", "void": false, "void_reason": null, "winner": 2}
+{"match_id": "lta:223718", "retired": false, "score": "7-6 4-6 3-6", "set_winners": "122", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223717", "retired": false, "score": "6-2 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223719", "retired": false, "score": "6-2 6-2", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223722", "retired": false, "score": "6-2 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223721", "retired": false, "score": "6-0 7-6", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223720", "retired": false, "score": "6-3 6-1", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223725", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": true, "void_reason": "cancelled", "winner": null}
+{"match_id": "lta:223723", "retired": false, "score": "6-3 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223724", "retired": false, "score": "6-4 6-2", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223727", "retired": false, "score": "6-3 6-2", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223728", "retired": false, "score": "4-6 3-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223726", "retired": false, "score": "4-6 0-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224054", "retired": false, "score": "3-6 6-3 0-6", "set_winners": "212", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224097", "retired": false, "score": "4-6 2-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223775", "retired": false, "score": "0-6 1-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224093", "retired": false, "score": "3-6 4-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223546", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": true, "void_reason": "cancelled", "winner": null}
+{"match_id": "lta:224092", "retired": false, "score": "6-4 7-5", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:224105", "retired": false, "score": "6-7 6-4 3-6", "set_winners": "212", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224080", "retired": false, "score": "4-6 7-5 4-6", "set_winners": "212", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224094", "retired": false, "score": "6-3 0-6 6-4", "set_winners": "121", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:224095", "retired": false, "score": "4-6 5-7", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224096", "retired": false, "score": "6-4 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:224107", "retired": false, "score": "6-2 3-6 6-3", "set_winners": "121", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:224106", "retired": false, "score": "4-6 4-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223517", "retired": false, "score": "6-7 6-3 3-6", "set_winners": "212", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223516", "retired": false, "score": "6-3 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223518", "retired": false, "score": "6-4 6-1", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223547", "retired": false, "score": "6-1 6-2", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223520", "retired": false, "score": "1-6 6-3 6-4", "set_winners": "211", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223554", "retired": false, "score": "6-1 4-6 6-4", "set_winners": "121", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223553", "retired": false, "score": "4-6 6-3 6-3", "set_winners": "211", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223513", "retired": false, "score": "6-3 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223552", "retired": false, "score": "6-0 6-4", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223550", "retired": false, "score": "1-6 3-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224116", "retired": false, "score": "2-6 3-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223619", "retired": false, "score": "4-6 3-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223657", "retired": false, "score": "6-0 4-6 6-3", "set_winners": "121", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:224101", "retired": false, "score": "6-4 6-7 5-7", "set_winners": "122", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223625", "retired": false, "score": "6-2 6-1", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:223664", "retired": false, "score": "6-2 7-6", "set_winners": "11", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 1}
+{"match_id": "lta:224104", "retired": false, "score": "4-6 1-6", "set_winners": "22", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:223656", "retired": false, "score": "3-6 7-6 3-6", "set_winners": "212", "settled_at": "2026-11-24T03:23:51+00:00", "source": "livetennisapi.com", "void": false, "winner": 2}
+{"match_id": "lta:224168", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-24T03:23:51+00:00", "source": "", "void": true, "void_reason": "the same match is forecast from ESPN", "winner": null}
+{"match_id": "lta:224798", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-24T03:23:51+00:00", "source": "", "void": true, "void_reason": "withdrawn: another player's record (ratings, form, birthday) was used, from a name-matching error since fixed", "winner": null}
+{"match_id": "lta:224627", "retired": false, "score": "", "set_winners": "", "settled_at": "2026-11-24T03:23:51+00:00", "source": "", "void": true, "void_reason": "withdrawn: another player's record (ratings, form, birthday) was used, from a name-matching error since fixed", "winner": null}

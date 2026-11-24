@@ -5417,6 +5417,7 @@
 "date": "1903-12-11",
 "name": "Centre d'Esports Sabadell Futbol Club"
 },
+"Sabah FK": null,
 "Sacramento Republic FC": {
 "date": "2012-12-03",
 "name": "Sacramento Republic FC"
@@ -5621,6 +5622,10 @@
 "date": "1890-01-25",
 "name": "Sevilla FC"
 },
+"Shakhtar Donetsk": {
+"date": "1936-05-24",
+"name": "FC Shakhtar Donetsk"
+},
 "Shakhter Soligorsk": null,
 "Shamrock Rovers": {
 "date": null,
@@ -5743,6 +5748,10 @@
 "Slask Wroclaw": {
 "date": null,
 "tried": "2026-11"
+},
+"Slavia Prague": {
+"date": "1892-11-02",
+"name": "SK Slavia Prague"
 },
 "Sligo Rovers": {
 "date": null,
@@ -5880,6 +5889,10 @@
 "Sport Recife": {
 "date": "1905-05-13",
 "name": "Sport Club do Recife"
+},
+"Sporting CP": {
+"date": "1906-07-01",
+"name": "Sporting CP"
 },
 "Sporting Club Delhi": {
 "date": "2019-08-27",

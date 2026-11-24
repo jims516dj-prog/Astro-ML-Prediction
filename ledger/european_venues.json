@@ -209,6 +209,11 @@
   "lon": 9.66721,
   "source": "manual"
  },
+ "Ath Madrid": {
+  "lat": 40.401719,
+  "lon": -3.720606,
+  "source": "stadium"
+ },
  "Atlanta": {
   "lat": 33.75555556,
   "lon": -84.4,
@@ -308,6 +313,11 @@
   "lat": -34.74563,
   "lon": -58.39365,
   "source": "city"
+ },
+ "Barcelona SC": {
+  "lat": -0.349283,
+  "lon": -78.4705853,
+  "source": "openstreetmap: Estadio Banco Guayaquil, Manuel Rodríguez de Quiroga, Chillo Jijón, Amaguaña, Quito, Pichincha, 170807, Ecuador"
  },
  "Barnet": {
   "lat": 51.6026,
@@ -638,6 +648,11 @@
   "lat": 19.71874167,
   "lon": -101.23362222,
   "source": "wikipedia: Estadio Morelos"
+ },
+ "Club Brugge": {
+  "lat": 51.20892,
+  "lon": 3.22424,
+  "source": "city"
  },
  "Club Olimpia": {
   "lat": -25.29207222,
@@ -1204,6 +1219,11 @@
   "lon": 28.6825162,
   "source": "manual"
  },
+ "Gamba Osaka": {
+  "lat": 34.69374,
+  "lon": 135.50218,
+  "source": "city"
+ },
  "Gambia": {
   "lat": 13.4681538,
   "lon": -16.6781527,
@@ -1394,6 +1414,11 @@
   "lon": -75.56359,
   "source": "city"
  },
+ "Independiente Santa Fe": {
+  "lat": 4.6459495,
+  "lon": -74.0776054,
+  "source": "openstreetmap: Estadio Nemesio Camacho El Campín, Avenida Carrera 30, Galerías, UPZs de Bogotá, Localidad Teusaquillo, Bogotá ciudad, Bogotá, Distrito Capital, RAP (Especial) Central, 111311, Colombia"
+ },
  "Independiente del Valle": {
   "lat": -0.34916667,
   "lon": -78.47055556,
@@ -1539,6 +1564,11 @@
   "lon": 23.27877778,
   "source": "wikipedia: Karpaty Stadium"
  },
+ "Kashima Antlers": {
+  "lat": 33.10611,
+  "lon": 130.09056,
+  "source": "manual"
+ },
  "Kazakhstan": {
   "lat": 51.1083923,
   "lon": 71.4028672,
@@ -1629,6 +1659,11 @@
   "lon": 7.002206,
   "source": "stadium"
  },
+ "Libertad": {
+  "lat": 22.13861111,
+  "lon": -100.95083333,
+  "source": "wikipedia: Estadio Libertad Financiera"
+ },
  "Liechtenstein": {
   "lat": 47.14027778,
   "lon": 9.51027778,
@@ -1638,6 +1673,11 @@
   "lat": -0.22985,
   "lon": -78.52495,
   "source": "city"
+ },
+ "Lille": {
+  "lat": 50.611883,
+  "lon": 3.130428,
+  "source": "stadium"
  },
  "Limavady United FC": {
   "lat": 55.04923889,
@@ -2304,6 +2344,11 @@
   "lon": 15.30055556,
   "source": "wikipedia: Franz Fekete Stadium"
  },
+ "Sabah FK": {
+  "lat": 40.4298,
+  "lon": 49.9198,
+  "source": "wikipedia: Baku Olympic Stadium"
+ },
  "Sacramento Republic FC": {
   "lat": 38.5913512,
   "lon": -121.4380099,
@@ -2394,6 +2439,11 @@
   "lon": 20.46472222,
   "source": "wikipedia: Red Star Stadium"
  },
+ "Shakhtar Donetsk": {
+  "lat": 51.4816869,
+  "lon": -0.1910336,
+  "source": "openstreetmap: Stamford Bridge, Britannia Gate, Walham Green, Fulham, London Borough of Hammersmith and Fulham, Greater London, England, SW6 1HD, United Kingdom"
+ },
  "Shanghai Port FC": {
   "lat": 31.2406744,
   "lon": 121.6070649,
@@ -2438,6 +2488,11 @@
   "lat": 56.56813889,
   "lon": 9.03772222,
   "source": "wikipedia: Skive Stadium"
+ },
+ "Slavia Prague": {
+  "lat": 50.0675,
+  "lon": 14.47166667,
+  "source": "wikipedia: Fortuna Arena"
  },
  "Slonim": {
   "lat": 53.0869,
@@ -2509,6 +2564,11 @@
   "lon": -75.20486,
   "source": "city"
  },
+ "Sporting CP": {
+  "lat": 38.7612024,
+  "lon": -9.1607832,
+  "source": "openstreetmap: Estádio José Alvalade, Rua Professor Fernando da Fonseca, Lumiar, Lisboa, 1501-806, Portugal"
+ },
  "Sporting Cristal": {
   "lat": -12.038,
   "lon": -77.045,
@@ -2533,6 +2593,11 @@
   "lat": -25.33968,
   "lon": -57.50879,
   "source": "city"
+ },
+ "Sportivo Trinidense": {
+  "lat": -25.25972222,
+  "lon": -57.58388889,
+  "source": "wikipedia: Estadio Martín Torres"
  },
  "St Truiden": {
   "lat": 50.81679,
