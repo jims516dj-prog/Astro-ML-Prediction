@@ -59,6 +59,11 @@
   "lon": 39.1643374,
   "source": "openstreetmap: مدينة الملك عبدالله الرياضية, Prince Khalid Bin Abdullah Road, محافظة جدة, منطقة مكة المكرمة, 23733, السعودية"
  },
+ "Al Jazira Club": {
+  "lat": 24.4527223,
+  "lon": 54.3921496,
+  "source": "openstreetmap: ستاد محمد بن زايد, شارع النَّوْرَس, الاتحاد, أبو ظبي, أبوظبي, أبو ظبي, الإمارات العربية المتحدة"
+ },
  "Al Nasr Cairo": {
   "lat": 30.06916667,
   "lon": 31.31222222,
@@ -69,10 +74,25 @@
   "lon": 46.62388889,
   "source": "wikipedia: King Saud University Stadium"
  },
+ "Al Taawoun": {
+  "lat": 26.3789,
+  "lon": 43.9478,
+  "source": "wikipedia: King Abdullah Sports City Stadium Buraydah"
+ },
  "Al-Ain": {
   "lat": 24.24559444,
   "lon": 55.71658333,
   "source": "wikipedia: Hazza bin Zayed Stadium"
+ },
+ "Al-Faisaly SC": {
+  "lat": 31.98510278,
+  "lon": 35.90284722,
+  "source": "wikipedia: Amman International Stadium"
+ },
+ "Al-Muharraq SC": {
+  "lat": 26.15361111,
+  "lon": 50.54361111,
+  "source": "wikipedia: Bahrain National Stadium"
  },
  "Al-Quwa Al-Jawiya": {
   "lat": 30.4399273,
@@ -1084,6 +1104,11 @@
   "lon": 31.24967,
   "source": "thesportsdb: Cairo, Cairo, Egypt"
  },
+ "FC Nasaf": {
+  "lat": 38.83833333,
+  "lon": 65.81361111,
+  "source": "wikipedia: Markaziy Stadium (Qarshi)"
+ },
  "FC Roskilde": {
   "lat": 55.64152,
   "lon": 12.08035,
@@ -1789,6 +1814,11 @@
   "lon": 20.07241667,
   "source": "wikipedia: Benghazi International Stadium"
  },
+ "Melbourne Victory": {
+  "lat": -38.15805556,
+  "lon": 144.35472222,
+  "source": "wikipedia: Kardinia Park (stadium)"
+ },
  "Metalurgistul Cugir": {
   "lat": 45.81371,
   "lon": 23.4074,
@@ -2083,6 +2113,11 @@
   "lat": 51.50583,
   "lon": -3.57722,
   "source": "city: Bridgend"
+ },
+ "Persib Bandung": {
+  "lat": -6.95752778,
+  "lon": 107.71208333,
+  "source": "wikipedia: Gelora Bandung Lautan Api Stadium"
  },
  "Peru": {
   "lat": -12.0685041,

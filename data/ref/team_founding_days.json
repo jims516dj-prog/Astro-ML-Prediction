@@ -159,6 +159,7 @@
 },
 "Al Hilal": null,
 "Al Ittihad": null,
+"Al Jazira Club": null,
 "Al Nasr": {
 "date": null,
 "name": "Alshariqa",
@@ -176,21 +177,27 @@
 "date": "1969-10-21",
 "name": "Al Sadd Sports Club"
 },
+"Al Taawoun": null,
 "Al Wasl": null,
 "Al Yarmouk": {
 "date": null,
 "name": "Al Yarmouk Kuwait",
 "tried": "2026-11"
 },
+"Al-Faisaly SC": null,
 "Al-Gharafa": {
 "date": "1979-06-06",
 "name": "Al-Gharafa SC"
 },
 "Al-Hussein SC": null,
+"Al-Khaldiya SC": null,
+"Al-Muharraq SC": null,
+"Al-Nahda Club": null,
 "Al-Quwa Al-Jawiya": {
 "date": "1931-07-04",
 "name": "Al-Quwa Al-Jawiya"
 },
+"Al-Rayyan SC": null,
 "Al-Shamal": null,
 "Alajuelense": {
 "date": "1919-06-18",
@@ -418,6 +425,7 @@
 "name": "Arka Gdynia",
 "tried": "2026-11"
 },
+"Arkadag FK": null,
 "Armenia": {
 "date": "1991-09-23",
 "name": "Armenia"
@@ -2348,6 +2356,7 @@
 "date": "1999-07-01",
 "name": "FC Midtjylland"
 },
+"FC Nasaf": null,
 "FC Nordsjaelland": {
 "date": null,
 "name": "FC Nordsj\u00e6lland",
@@ -2780,6 +2789,7 @@
 "source": "wikidata (Q816779)"
 },
 "Goi\u00e1s": null,
+"Gol Gohar Sirjan FC": null,
 "Golden Arrows": null,
 "Gornik Z.": {
 "date": null,
@@ -4858,6 +4868,10 @@
 "name": "Pendikspor",
 "tried": "2026-11"
 },
+"Persib Bandung": {
+"date": "1919-01-05",
+"name": "Persib Bandung"
+},
 "Perth Glory FC": {
 "date": "1995-12-01",
 "name": "Perth Glory FC"
@@ -6216,6 +6230,7 @@
 "tried": "2026-11"
 },
 "Thaon": null,
+"The Cong-Viettel FC": null,
 "The Strongest": {
 "date": "1908-04-08",
 "name": "The Strongest"
