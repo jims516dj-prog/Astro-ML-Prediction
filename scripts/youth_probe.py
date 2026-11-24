@@ -35,6 +35,24 @@ try:
                 names.add(((e.get("season") or {}).get("slug")) or "")
                 priced += any(c.get("odds") for c in e.get("competitions", []))
         print(f"  {s}: {n} games in the next 4 days, {priced} with odds")
+        reasons = {}
+        for k in range(4):
+            for e in fe.fetch(s, now + timedelta(days=k)):
+                if fe.parse_event(e) is not None:
+                    reasons["accepted by parse_event"] = reasons.get("accepted by parse_event", 0) + 1
+                    continue
+                comp = (e.get("competitions") or [{}])[0]
+                o = next((x for x in (comp.get("odds") or []) if isinstance(x, dict)), None)
+                state = ((e.get("status") or {}).get("type") or {}).get("state")
+                if state != "pre":
+                    why = f"state {state}"
+                elif not o:
+                    why = "no odds"
+                else:
+                    ml = o.get("moneyline") or {}
+                    why = ("moneyline keys " + ",".join(sorted(ml)) + " | odds keys " + ",".join(sorted(o)))[:160]
+                reasons[why] = reasons.get(why, 0) + 1
+        print("    parse_event:", reasons)
 except Exception as e:  # noqa: BLE001
     print("ESPN unavailable:", type(e).__name__, e)
 

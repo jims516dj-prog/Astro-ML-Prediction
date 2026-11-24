@@ -52,6 +52,10 @@ WOMEN_FILE = ROOT / "ledger" / "women" / "espn_competitions.json"
 WOMEN_RE = re.compile(r"^[a-z]+\.w[a-z]|(^|\.)w(\.|$)|women|wom[ae]n|wsl|frauen|f[eé]min|femenil|damallsvenskan|"
                       r"\bliga f\b|ladies|nwsl", re.I)
 YOUTH_COLLEGE = re.compile(r"youth|junior|olympic|ncaa|college|girls|\bu-?\d{2}\b|(^|\.)u\d+(\.|$)", re.I)
+# The women's section leaves out college and Olympic football only: national youth competitions (the U19 and U17
+# Euros, the U17 / U20 World Cups) are included, their sides under their own names ("Spain U19"), never matched to
+# the senior team's name or history (as for the men)
+WOMEN_NOT = re.compile(r"olympic|ncaa|college|high.?school", re.I)
 WOMEN_SEEDS = {"uefa.wchampions": "UEFA Women's Champions League", "eng.w.1": "English Women's Super League",
                "esp.w.1": "Spanish Liga F", "fra.w.1": "French Première Ligue", "ger.w.1": "German Frauen-Bundesliga",
                "ita.w.1": "Italian Serie A Women", "usa.nwsl": "NWSL", "mex.w.1": "Liga MX Femenil",
@@ -65,6 +69,7 @@ NOT_MEN = re.compile(r"(^|\.)w(\.|$)|^[a-z]+\.w[a-z]|women|wom[ae]n|wsl|frauen|f
 # the senior team's name or history
 YOUTH_NAME = re.compile(r"\bU-?(1[5-9]|2[0-3])\b|\bunder[- ]?(1[5-9]|2[0-3])\b|\bsub-?(1[5-9]|2[0-3])\b", re.I)
 MEN_SKIP = re.compile(r"women|femenin|féminin|frauen|ladies|\(w\)", re.I)
+WOMEN_SKIP = re.compile(r"(?!x)x")              # nothing: a women's competition's sides are all taken
 SOURCE = "espn.com"
 DAYS_AHEAD = 2                 # today and tomorrow (the cycle runs three times a day)
 
@@ -95,7 +100,7 @@ def _women_comps(mtime: float) -> dict[str, str]:
 def women_names() -> dict[str, str]:
     """slug -> name of the women's competitions (discovered with odds, plus the seeds)."""
     mtime = WOMEN_FILE.stat().st_mtime if WOMEN_FILE.exists() else 0.0
-    return {k: v for k, v in {**WOMEN_SEEDS, **_women_comps(mtime)}.items() if not YOUTH_COLLEGE.search(k + " " + v)}
+    return {k: v for k, v in {**WOMEN_SEEDS, **_women_comps(mtime)}.items() if not WOMEN_NOT.search(k + " " + v)}
 
 
 def women_slugs() -> list[tuple[str, str]]:
@@ -129,8 +134,8 @@ def discover(now: datetime, path=COMP_FILE, get=None, log=print, force: bool = F
         log(f"espn.com discovery: league list unavailable ({type(e).__name__})")
         return 0
     slugs = sorted({m.group(1) for it in items for m in [_re.search(r"/leagues/([^/?]+)", it.get("$ref", ""))] if m})
-    if women:      # women's senior competitions only (no youth or college)
-        wanted = lambda slug, name="": bool(WOMEN_RE.search(slug + " " + name)) and not YOUTH_COLLEGE.search(slug + " " + name)  # noqa: E731
+    if women:      # women's competitions, youth included (no college or Olympic football)
+        wanted = lambda slug, name="": bool(WOMEN_RE.search(slug + " " + name)) and not WOMEN_NOT.search(slug + " " + name)  # noqa: E731
     else:          # men's senior football only
         wanted = lambda slug, name="": not (NOT_MEN.search(slug) or NOT_MEN.search(name))  # noqa: E731
     # women's codes are not always marked in the slug: check every competition's name when looking for them
@@ -248,7 +253,7 @@ def extra_fixtures(primary: list[dict], now: datetime, horizon_days: float, matc
     have = {f["match_key"] for f in primary} | {r["match_key"] for r in ledger_preds}
     out, skipped, per, bad = [], [], {}, []
     comps = competitions if competitions is not None else sorted(LEAGUE_SLUG.items()) + discovered_slugs()
-    youth = YOUTH_ONLY if women else MEN_SKIP      # men: youth sides are included (under their own names)
+    youth = WOMEN_SKIP if women else MEN_SKIP      # youth sides are included (under their own names), both sections
     for div, slug in comps:
         known = None
         for k in range(DAYS_AHEAD):
