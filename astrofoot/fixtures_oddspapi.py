@@ -83,9 +83,11 @@ def ground(f: dict, team: str, div: str, venue_of):
 AGE = re.compile(r"(?i)\b(?:U-?|Under[- ]?|Sub-?)(\d{2})\b")
 
 
-# Major youth tournaments: when the free quota cannot price everything, these are priced first
+# Competitions you asked for that ESPN does not price: major youth tournaments, AFC Champions League Two and the
+# Gulf Club Champions League. When the free quota cannot price everything, these are priced first.
 PRIORITY = re.compile(r"(u-?1[79]|u-?20|under[- ]?(1[79]|20)).*(world cup|euro|championship)|"
-                      r"(world cup|euro|championship).*(u-?1[79]|u-?20|under[- ]?(1[79]|20))|youth league", re.I)
+                      r"(world cup|euro|championship).*(u-?1[79]|u-?20|under[- ]?(1[79]|20))|youth league|"
+                      r"champions league (two|2)\b|\bacl ?2\b|afc cup|gulf club|gcc champions|agcff", re.I)
 
 
 def priority(competition: str | None) -> bool:

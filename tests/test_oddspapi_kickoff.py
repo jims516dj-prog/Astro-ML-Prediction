@@ -117,4 +117,6 @@ def test_major_youth_tournaments_are_priced_first():
     from astrofoot.fixtures_oddspapi import priority
     assert priority("World: FIFA World Cup U17") and priority("International Youth: UEFA Youth League")
     assert priority("World: UEFA U19 Championship Women") and priority("World: FIFA U-20 World Cup")
+    assert priority("International Clubs: AFC Champions League Two") and priority("Asia: Gulf Club Champions League")
     assert not priority("International Youth: U21 Friendly Games") and not priority("England: Premier League")
+    assert not priority("International Clubs: UEFA Champions League")
