@@ -14,7 +14,7 @@ from astrofoot import fixtures_apifootball as af  # noqa: E402
 from astrofoot import fixtures_espn as fe  # noqa: E402
 
 now = datetime.now(timezone.utc)
-WANT = re.compile(r"u-?17|u-?19|youth|junior|under.?1[79]", re.I)
+WANT = re.compile(r"u-?17|u-?19|youth|junior|under.?1[79]|afc|gulf|gcc|agcff|arab|asian", re.I)
 
 print("== ESPN")
 try:
