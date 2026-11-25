@@ -1,6 +1,7 @@
 {
  "competitions": {
   "afc.champions": "AFC Champions League Elite",
+  "afc.cup": "AFC Champions League Two",
   "afc.saff.championship": "SAFF Championship",
   "arg.1": "Argentine Liga Profesional de Fútbol",
   "arg.2": "Argentine Nacional B",
@@ -19,6 +20,7 @@
   "col.1": "Colombian Primera A",
   "col.copa": "Copa Colombia",
   "concacaf.nations.league": "Concacaf Nations League",
+  "conmebol.libertadores": "CONMEBOL Libertadores",
   "conmebol.sudamericana": "CONMEBOL Sudamericana",
   "crc.1": "Costa Rican Primera Division",
   "den.1": "Danish Superliga",
@@ -54,6 +56,7 @@
   "nor.1": "Norwegian Eliteserien",
   "par.1": "Paraguayan Primera División",
   "per.1": "Peruvian Liga 1",
+  "por.1": "Portuguese Primeira Liga",
   "por.taca.portugal": "Taca de Portugal",
   "rsa.1": "South African Premiership",
   "sco.1": "Scottish Premiership",
@@ -71,5 +74,5 @@
   "usa.usl.1": "USL Championship",
   "ven.1": "Venezuelan Primera División"
  },
- "generated_at": "2026-11-23T22:44:40+00:00"
+ "generated_at": "2026-11-25T01:27:02+00:00"
 }

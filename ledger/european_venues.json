@@ -34,10 +34,20 @@
   "lon": -8.411789,
   "source": "wikipedia: Estádio do CD Aves"
  },
+ "Abha": {
+  "lat": 18.21639,
+  "lon": 42.50528,
+  "source": "city"
+ },
  "Academica Recea": {
   "lat": 47.63108,
   "lon": 23.4861,
   "source": "thesportsdb: Stadionul Comunal Recea, Recea, Maramureș, Romania"
+ },
+ "Ajax Amsterdam": {
+  "lat": 52.31416667,
+  "lon": 4.94194444,
+  "source": "wikipedia: Johan Cruyff Arena"
  },
  "Al Ahli": {
   "lat": 21.76262694,
@@ -53,6 +63,16 @@
   "lat": 29.5426089,
   "lon": 35.0044278,
   "source": "openstreetmap: Aqaba Stadium, Omar Al Mokhtar Street, العقبة, قضاء العقبة, لواء قصبة العقبة, العقبة, 77100, الأردن"
+ },
+ "Al Faisaly": {
+  "lat": 26.3789,
+  "lon": 43.9478,
+  "source": "wikipedia: King Abdullah Sports City Stadium Buraydah"
+ },
+ "Al Fateh": {
+  "lat": 25.30583333,
+  "lon": 49.61277778,
+  "source": "wikipedia: Prince Abdullah bin Jalawi Stadium"
  },
  "Al Ittihad": {
   "lat": 21.7632215,
@@ -389,6 +409,11 @@
   "lon": 77.5934,
   "source": "wikipedia: Sree Kanteerava Stadium"
  },
+ "Besiktas": {
+  "lat": 41.07122,
+  "lon": 29.02321,
+  "source": "city"
+ },
  "Black Man Warrior": {
   "lat": 6.30054,
   "lon": -10.7969,
@@ -403,6 +428,11 @@
   "lat": 67.27666667,
   "lon": 14.38444444,
   "source": "wikipedia: Aspmyra Stadion"
+ },
+ "Borac Banja Luka": {
+  "lat": 44.7761048,
+  "lon": 17.199612,
+  "source": "openstreetmap: Gradski stadion, 6, Vladike Platona, Pentagon zgrade, Aleja-centar, Banja Luka, Grad Banja Luka, Република Српска / Republika Srpska, 78109, Bosna i Hercegovina / Босна и Херцеговина"
  },
  "Borussia Hildesheim": {
   "lat": 52.15077,
@@ -429,6 +459,11 @@
   "lon": -1.75194444,
   "source": "city: Bradford"
  },
+ "Brann": {
+  "lat": 60.3668333,
+  "lon": 5.3574265,
+  "source": "openstreetmap: Brann Stadion, Idrettsveien, Årstad, Fridalen, Årstad, Bergen, Vestland, 5093, Norge"
+ },
  "Brazil": {
   "lat": -22.9122,
   "lon": -43.2303,
@@ -438,6 +473,11 @@
   "lat": -22.9122,
   "lon": -43.2303,
   "source": "senior team's ground: wikipedia: Maracanã Stadium"
+ },
+ "Brighton & Hove Albion": {
+  "lat": 50.86182222,
+  "lon": -0.08327778,
+  "source": "wikipedia: Falmer Stadium"
  },
  "Brisbane Roar FC": {
   "lat": 25.95805556,
@@ -544,6 +584,11 @@
   "lon": 4.94028,
   "source": "thesportsdb: Sedan, Sedan, France"
  },
+ "CSKA Sofia": {
+  "lat": 42.69751,
+  "lon": 23.32415,
+  "source": "city: Sofia"
+ },
  "Caernarfon Town": {
   "lat": 53.14126,
   "lon": -4.27016,
@@ -583,6 +628,11 @@
   "lat": 42.211842,
   "lon": -8.739711,
   "source": "stadium"
+ },
+ "Celta Vigo": {
+  "lat": 42.2117659,
+  "lon": -8.7396656,
+  "source": "openstreetmap: Abanca-Balaídos, Rúa dos Olímpicos, A Aparicia, Balaídos, Vigo, Pontevedra, Galicia, 36210, España"
  },
  "Celtic": {
   "lat": 55.849711,
@@ -959,6 +1009,11 @@
   "lon": 27.56667,
   "source": "city: Minsk"
  },
+ "Dinamo Zagreb": {
+  "lat": 45.8186879,
+  "lon": 16.0179376,
+  "source": "openstreetmap: Stadion Maksimir, 128, Maksimirska cesta, Mjesni odbor Maksimirska naselja, Gradska četvrt Maksimir, Zagreb, Grad Zagreb, 10000, Hrvatska"
+ },
  "District 17": {
   "lat": 33.953,
   "lon": -118.339,
@@ -1008,6 +1063,11 @@
   "lat": -0.1775141,
   "lon": -78.4766126,
   "source": "openstreetmap: Estadio Olímpico Atahualpa, Manuel María Sánchez, El Batan, Iñaquito, Quito, Pichincha, 170504, Ecuador"
+ },
+ "Egnatia": {
+  "lat": 41.3183889,
+  "lon": 19.8245757,
+  "source": "openstreetmap: Air Albania Stadium, Rruga Dervish Hima, Qyteti Studenti, Njësia Bashkiake Nr. 2, Tiranë, Bashkia Tiranë, Qarku i Tiranës, 2391, Shqipëria"
  },
  "Egypt": {
   "lat": 30.0690313,
@@ -1114,6 +1174,11 @@
   "lon": 65.81361111,
   "source": "wikipedia: Markaziy Stadium (Qarshi)"
  },
+ "FC Nordsjælland": {
+  "lat": 55.8161987,
+  "lon": 12.3530326,
+  "source": "openstreetmap: Right to Dream Park, Ryttergårdsvej, Farum Overdrev, Farum, Furesø Kommune, Region Hovedstaden, 3520, Danmark"
+ },
  "FC Roskilde": {
   "lat": 55.64152,
   "lon": 12.08035,
@@ -1164,6 +1229,11 @@
   "lon": -6.7780947,
   "source": "openstreetmap: Tórsvøllur, Gundadalur, Tórshavn, Tórshavnar kommuna, Streymoyar sýsla, 100, Føroyar"
  },
+ "Ferencvaros": {
+  "lat": 47.4754047,
+  "lon": 19.0952134,
+  "source": "openstreetmap: Groupama Aréna, 129, Népligeti felüljáró, Középső-Ferencváros, IX. kerület, Budapest, 1091, Magyarország"
+ },
  "Ferro Carril Oeste": {
   "lat": -34.6185,
   "lon": -58.4476,
@@ -1208,6 +1278,11 @@
   "lat": 48.9244726,
   "lon": 2.3601325,
   "source": "openstreetmap: Stade de France, Avenue du Stade de France, Franc-Moisin - Bel-Air - Stade de France, Saint-Denis, Seine-Saint-Denis, Île-de-France, France métropolitaine, 93200, France"
+ },
+ "Freiburg": {
+  "lat": 47.988889,
+  "lon": 7.893056,
+  "source": "stadium"
  },
  "French Guiana": {
   "lat": 4.93861111,
@@ -1369,6 +1444,11 @@
   "lon": -80.2602921,
   "source": "openstreetmap: Nu Stadium, 1900, Northwest 37th Avenue, Miami, Miami-Dade County, Florida, 33125, United States"
  },
+ "Hajduk Split": {
+  "lat": 43.5195411,
+  "lon": 16.4319187,
+  "source": "openstreetmap: Gradski stadion u Poljudu, O, Poljud, Gradski kotar Spinut, Split, Grad Split, Splitsko-dalmatinska županija, 21106, Hrvatska"
+ },
  "Hannover 96": {
   "lat": 52.37658889,
   "lon": 9.7729,
@@ -1384,6 +1464,11 @@
   "lon": 29.91582,
   "source": "city: Alexandria"
  },
+ "Heart of Midlothian": {
+  "lat": 55.93916667,
+  "lon": -3.23222222,
+  "source": "wikipedia: Tynecastle Park"
+ },
  "Helmond Sport": {
   "lat": 51.4874227,
   "lon": 5.67924,
@@ -1398,6 +1483,11 @@
   "lat": 16.84027778,
   "lon": 42.59611111,
   "source": "wikipedia: King Faisal Sports City Stadium"
+ },
+ "Hoffenheim": {
+  "lat": 49.239008,
+  "lon": 8.888281,
+  "source": "stadium"
  },
  "Holstein Kiel": {
   "lat": 54.32133,
@@ -1418,6 +1508,11 @@
   "lat": 50.67846,
   "lon": 3.1493,
   "source": "thesportsdb: Stade Henri Seigneur, Croix, Hauts-de-France, France"
+ },
+ "Iberia 1999": {
+  "lat": 41.7098044,
+  "lon": 44.7462714,
+  "source": "openstreetmap: მიხეილ მესხის სახელობის სტადიონი, ილია ჭავჭავაძის გამზირი, ვაკე, ვაკის რაიონი, თბილისი, 1062, საქართველო"
  },
  "Iceland": {
   "lat": 64.13548,
@@ -1458,6 +1553,11 @@
   "lat": 23.7841798,
   "lon": 89.9285983,
   "source": "city: Dhaka"
+ },
+ "Inter D'Escaldes": {
+  "lat": 42.53474,
+  "lon": 1.58014,
+  "source": "city: Encamp"
  },
  "Inter de San Carlos": {
   "lat": 10.324119,
@@ -1503,6 +1603,11 @@
   "lat": 31.60555556,
   "lon": -2.21833333,
   "source": "wikipedia: 20 August 1955 Stadium (Béchar)"
+ },
+ "Jablonec": {
+  "lat": 50.715,
+  "lon": 15.16222222,
+  "source": "wikipedia: Stadion Střelnice"
  },
  "Jahn Regensburg": {
   "lat": 49.01513,
@@ -1579,6 +1684,11 @@
   "lon": 7.68682,
   "source": "manual"
  },
+ "KAA Gent": {
+  "lat": 51.0160755,
+  "lon": 3.7325263,
+  "source": "openstreetmap: Planet Group Arena, 808, Ottergemsesteenweg-Zuid, Gent, Oost-Vlaanderen, Vlaanderen, 9000, België / Belgique / Belgien"
+ },
  "KS Polonia Nysa": {
   "lat": 50.47138889,
   "lon": 17.33388889,
@@ -1589,6 +1699,11 @@
   "lon": 21.41141,
   "source": "thesportsdb: Park Arena, Dębica, Poland"
  },
+ "Kairat Almaty": {
+  "lat": 43.25667,
+  "lon": 76.92861,
+  "source": "city: Almaty"
+ },
  "Karpaty": {
   "lat": 48.17822222,
   "lon": 23.27877778,
@@ -1598,6 +1713,11 @@
   "lat": 33.10611,
   "lon": 130.09056,
   "source": "manual"
+ },
+ "Kauno Zalgiris": {
+  "lat": 54.90272,
+  "lon": 23.90961,
+  "source": "city: Kaunas"
  },
  "Kazakhstan": {
   "lat": 51.1083923,
@@ -1749,6 +1869,11 @@
   "lon": 6.11472222,
   "source": "wikipedia: Stade de Luxembourg"
  },
+ "Lyon": {
+  "lat": 45.723889,
+  "lon": 4.832222,
+  "source": "stadium"
+ },
  "MSV Duisburg": {
   "lat": 51.43247,
   "lon": 6.76516,
@@ -1813,6 +1938,11 @@
   "lat": 14.9669933,
   "lon": -91.79175,
   "source": "openstreetmap: Estadio Marquesa de la Ensenada, 5a Avenida B, San Rafael Soche, San Marcos, 12001, Guatemala"
+ },
+ "Marseille": {
+  "lat": 43.269722,
+  "lon": 5.395833,
+  "source": "stadium"
  },
  "Mega Sport": {
   "lat": 32.10180556,
@@ -2014,6 +2144,11 @@
   "lon": -72.56666667,
   "source": "city"
  },
+ "OFI Crete": {
+  "lat": 35.34,
+  "lon": 25.14,
+  "source": "manual"
+ },
  "OFK Vršac": {
   "lat": 45.1184781,
   "lon": 21.3098223,
@@ -2033,6 +2168,11 @@
   "lat": 33.20055556,
   "lon": 131.6575,
   "source": "wikipedia: Crasus Dome Oita"
+ },
+ "Olympiacos": {
+  "lat": 37.9464689,
+  "lon": 23.6644117,
+  "source": "openstreetmap: Γήπεδο Γεώργιος Καραϊσκάκης, Δαβάκη - Πίνδου, Νέο Φάληρο, 3η Κοινότητα Πειραιά, Πειραιάς, Δήμος Πειραιώς, Περιφερειακή Ενότητα Πειραιώς, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 185 47, Ελλάς"
  },
  "Oman Club": {
   "lat": 23.58413,
@@ -2248,6 +2388,11 @@
   "lat": 51.33962,
   "lon": 12.37129,
   "source": "city"
+ },
+ "RB Salzburg": {
+  "lat": 47.8163956,
+  "lon": 12.9982439,
+  "source": "openstreetmap: Red Bull Arena, 6, Stadionstraße, Kleßheim, Siezenheim, Wals-Siezenheim, Bezirk Salzburg-Umgebung, Salzburg, 5071, Österreich"
  },
  "RKC Waalwijk": {
   "lat": 51.6825,
@@ -2579,6 +2724,11 @@
   "lon": 147.30902,
   "source": "wikipedia: Darcy Street"
  },
+ "Sp Braga": {
+  "lat": 41.55032,
+  "lon": -8.42005,
+  "source": "city"
+ },
  "SpVgg Greuther Fürth": {
   "lat": 49.5007981,
   "lon": 10.9959017,
@@ -2593,6 +2743,11 @@
   "lat": 40.45306,
   "lon": -3.68835,
   "source": "wikipedia: Bernabéu (stadium)"
+ },
+ "Sparta Prague": {
+  "lat": 50.0997126,
+  "lon": 14.4158918,
+  "source": "openstreetmap: epet ARENA, 1066/98, Milady Horákové, Bubeneč, Praha 7, obvod Praha 7, Praha, 116 93, Česko"
  },
  "Sport": {
   "lat": -8.06277778,
@@ -2884,6 +3039,11 @@
   "lon": -70.7300816,
   "source": "openstreetmap: Estadio Municipal San Felipe, Avenida Maipú, San Felipe, Provincia de San Felipe de Aconcagua, Región de Valparaíso, 2171796, Chile"
  },
+ "Union St.-Gilloise": {
+  "lat": 50.8684105,
+  "lon": 4.6942994,
+  "source": "openstreetmap: King Power at Den Dreef, Tervuursevest, Ruelenspark, Heverlee, Leuven, Vlaams-Brabant, Vlaanderen, 3001, België / Belgique / Belgien"
+ },
  "United Arab Emirates": {
   "lat": 25.0657,
   "lon": 55.17128,
@@ -2973,6 +3133,11 @@
   "lat": 20.4358,
   "lon": 106.18,
   "source": "wikipedia: Thiên Trường Stadium"
+ },
+ "Viktoria Plzen": {
+  "lat": 49.7499958,
+  "lon": 13.3851196,
+  "source": "openstreetmap: Doosan Arena, 10, Štruncovy sady, Vnitřní Město, Plzeň 3, Plzeň, okres Plzeň-město, Plzeňský kraj, 301 12, Česko"
  },
  "Viktoria Plzeň": {
   "lat": 49.75,
