@@ -324,6 +324,11 @@
   "lon": 28.49045556,
   "source": "wikipedia: Haradski Stadium"
  },
+ "BG Pathum United": {
+  "lat": 14.000649,
+  "lon": 100.679028,
+  "source": "wikipedia: True BG Stadium"
+ },
  "BK Häcken": {
   "lat": 57.71916667,
   "lon": 11.93055556,
@@ -1334,6 +1339,11 @@
   "lon": -16.6781527,
   "source": "openstreetmap: Independence Stadium, Stadium Road, Bakau Newtown, Bakau New Town and Fajara, Kanifing, Gambia"
  },
+ "Gangwon FC": {
+  "lat": 37.75266,
+  "lon": 128.87239,
+  "source": "city: Gangneung"
+ },
  "Georgia": {
   "lat": 41.7098044,
   "lon": 44.7462714,
@@ -1758,6 +1768,11 @@
   "lat": 62.88463,
   "lon": 27.6718,
   "source": "wikipedia: Kuopio Football Stadium"
+ },
+ "Kuching City": {
+  "lat": 1.590323,
+  "lon": 110.357995,
+  "source": "wikipedia: Taha Ariffin Stadium"
  },
  "Kuwait": {
   "lat": 29.36972,
@@ -2219,6 +2234,11 @@
   "lon": 22.93086,
   "source": "manual"
  },
+ "PKR Svay Rieng": {
+  "lat": 11.68288889,
+  "lon": 104.87627778,
+  "source": "wikipedia: Morodok Techo National Stadium"
+ },
  "Paderborn": {
   "lat": 51.71905,
   "lon": 8.75439,
@@ -2228,6 +2248,11 @@
   "lat": 51.71905,
   "lon": 8.75439,
   "source": "senior team's ground: city"
+ },
+ "Pafos FC": {
+  "lat": 34.7438,
+  "lon": 32.4407,
+  "source": "wikipedia: Geroskipou Municipality Stadium"
  },
  "Palestine": {
   "lat": 31.3421385,
@@ -2913,6 +2938,16 @@
   "lat": 52.40833333,
   "lon": 9.60222222,
   "source": "wikipedia: Wilhelm-Langrehr-Stadion"
+ },
+ "Tai Po FC": {
+  "lat": 22.326,
+  "lon": 114.1728,
+  "source": "wikipedia: Mong Kok Stadium"
+ },
+ "Tampines Rovers FC": {
+  "lat": 1.310016,
+  "lon": 103.860347,
+  "source": "wikipedia: Jalan Besar Stadium"
  },
  "Tanta SC": {
   "lat": 30.78847,

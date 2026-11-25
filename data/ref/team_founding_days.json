@@ -651,6 +651,7 @@
 "tried": "2026-11"
 },
 "BATE II": null,
+"BG Pathum United": null,
 "BK H\u00e4cken": {
 "date": "1940-08-02",
 "name": "BK H\u00e4cken"
@@ -2702,6 +2703,10 @@
 "name": "The Gambia",
 "tried": "2026-11"
 },
+"Gangwon FC": {
+"date": "2008-12-18",
+"name": "Gangwon FC"
+},
 "Gateshead": {
 "date": null,
 "name": "Gateshead F.C.",
@@ -3604,6 +3609,7 @@
 "tried": "2026-11"
 },
 "Kitakyushu": null,
+"Kitchee SC": null,
 "Kocaelispor": {
 "date": "1966-04-24",
 "name": "Kocaelispor"
@@ -3666,6 +3672,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Kuching City": null,
 "Kumamoto": {
 "date": null,
 "tried": "2026-11"
@@ -3902,6 +3909,7 @@
 "name": "Linfield F.C.",
 "tried": "2026-11"
 },
+"Lion City Sailors FC": null,
 "Lithuania": {
 "date": "1918-02-16",
 "name": "Lithuania"
@@ -4049,6 +4057,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Machida Zelvia": null,
 "Madagascar": {
 "date": null,
 "name": "Madagascar",
@@ -4798,6 +4807,7 @@
 "name": "PK-35 Vantaa",
 "tried": "2026-11"
 },
+"PKR Svay Rieng": null,
 "PS Kemi": {
 "date": null,
 "tried": "2026-11"
@@ -4983,6 +4993,7 @@
 "date": "2008-02-28",
 "name": "Philadelphia Union"
 },
+"Phnom Penh Crown FC": null,
 "Piast Gliwice": {
 "date": null,
 "name": "Piast Gliwice",
@@ -5735,6 +5746,10 @@
 "date": "1993-12-10",
 "name": "Shanghai Shenhua F.C."
 },
+"Shanghai Shenhua FC": {
+"date": "1993-12-10",
+"name": "Shanghai Shenhua F.C."
+},
 "Shanghai Shenxin": {
 "date": null,
 "name": "Shanghai Shenxin F.C.",
@@ -6250,6 +6265,7 @@
 "name": "TSV Schwabm\u00fcnchen",
 "tried": "2026-11"
 },
+"Tai Po FC": null,
 "Talleres Cordoba": {
 "date": null,
 "tried": "2026-11"
@@ -6258,6 +6274,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Tampines Rovers FC": null,
 "Tamworth": {
 "date": null,
 "name": "Tamworth F.C.",
