@@ -1,46 +1,4 @@
 kickoff_utc,division,home,away,goals_home,goals_away
-2025-05-24T06:00:00+00:00,JAP,Cerezo Osaka,Avispa Fukuoka,2,0
-2025-05-24T08:30:00+00:00,JAP,Nagoya Grampus,Urawa Reds,2,1
-2025-05-24T12:00:00+00:00,FIN,Jaro,Gnistan,1,1
-2025-05-24T13:00:00+00:00,DEN,Lyngby,Aalborg,3,1
-2025-05-24T13:00:00+00:00,DEN,Silkeborg,Viborg,1,2
-2025-05-24T13:00:00+00:00,SWE,Varnamo,Oster,1,1
-2025-05-24T13:00:00+00:00,DEN,Vejle,Sonderjyske,2,3
-2025-05-24T13:30:00+00:00,RUS,Akron Togliatti,Lokomotiv Moscow,1,4
-2025-05-24T13:30:00+00:00,RUS,CSKA Moscow,Pari NN,2,0
-2025-05-24T13:30:00+00:00,RUS,Dynamo Makhachkala,FK Rostov,1,1
-2025-05-24T13:30:00+00:00,RUS,Fakel Voronezh,Krylya Sovetov,1,1
-2025-05-24T13:30:00+00:00,RUS,Krasnodar,Dynamo Moscow,3,0
-2025-05-24T13:30:00+00:00,RUS,Rubin Kazan,Orenburg,4,2
-2025-05-24T13:30:00+00:00,RUS,Spartak Moscow,Khimki,5,0
-2025-05-24T13:30:00+00:00,RUS,Zenit,Akhmat Grozny,3,0
-2025-05-24T14:00:00+00:00,NOR,Bryne,Fredrikstad,4,3
-2025-05-24T14:00:00+00:00,FIN,Ilves,AC Oulu,0,0
-2025-05-24T15:00:00+00:00,AUT,Austria Vienna,BW Linz,2,2
-2025-05-24T15:00:00+00:00,AUT,Salzburg,SK Rapid,4,2
-2025-05-24T15:00:00+00:00,AUT,Sturm Graz,Wolfsberger AC,1,1
-2025-05-24T15:00:00+00:00,ROM,U. Cluj,FC Rapid Bucuresti,2,2
-2025-05-24T15:30:00+00:00,SWE,GAIS,Sirius,2,1
-2025-05-24T15:30:00+00:00,POL,Gornik Zabrze,Korona Kielce,1,1
-2025-05-24T15:30:00+00:00,POL,Jagiellonia,Pogon Szczecin,1,1
-2025-05-24T15:30:00+00:00,POL,Lech Poznan,Piast Gliwice,1,0
-2025-05-24T15:30:00+00:00,POL,Lechia Gdansk,GKS Katowice,2,3
-2025-05-24T15:30:00+00:00,POL,Legia,Stal Mielec,2,2
-2025-05-24T15:30:00+00:00,POL,Puszcza,Slask Wroclaw,1,1
-2025-05-24T15:30:00+00:00,POL,Radomiak Radom,Motor Lublin,2,3
-2025-05-24T15:30:00+00:00,POL,Rakow,Widzew Lodz,2,1
-2025-05-24T15:30:00+00:00,POL,Zaglebie,Cracovia,1,2
-2025-05-24T16:00:00+00:00,SUI,Basel,Luzern,4,0
-2025-05-24T16:00:00+00:00,NOR,Bodo/Glimt,Rosenborg,4,0
-2025-05-24T16:00:00+00:00,SUI,Lugano,Young Boys,1,1
-2025-05-24T16:00:00+00:00,FIN,Mariehamn,HJK,0,4
-2025-05-24T16:00:00+00:00,SUI,Servette,Lausanne,3,3
-2025-05-24T18:00:00+00:00,ROM,Univ. Craiova,Din. Bucuresti,2,1
-2025-05-24T19:00:00+00:00,USA,Seattle Sounders,FC Dallas,1,0
-2025-05-24T20:45:00+00:00,USA,San Diego FC,Los Angeles Galaxy,2,1
-2025-05-24T21:30:00+00:00,BRA,Fluminense,Vasco,2,1
-2025-05-24T21:30:00+00:00,ARG,Independiente,Huracan,0,0
-2025-05-24T21:30:00+00:00,BRA,Sao Paulo,Mirassol,0,2
 2025-05-24T23:30:00+00:00,USA,CF Montreal,Los Angeles FC,2,2
 2025-05-24T23:30:00+00:00,USA,Charlotte,Columbus Crew,3,2
 2025-05-24T23:30:00+00:00,USA,DC United,New York Red Bulls,0,2
@@ -17173,3 +17131,45 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-23T23:00:00+00:00,BRA,Botafogo RJ,Sao Paulo,1,1
 2026-11-24T00:00:00+00:00,BRA,Santos,Gremio,0,2
 2026-11-24T01:00:00+00:00,USA,St. Louis City,Los Angeles FC,3,2
+2026-11-24T18:00:00+00:00,I2,Juve Stabia,Catanzaro,1,3
+2026-11-24T19:00:00+00:00,I2,Benevento,Empoli,5,0
+2026-11-24T19:00:00+00:00,I2,Cesena,Ascoli,5,1
+2026-11-24T19:00:00+00:00,I2,Palermo,Sudtirol,4,1
+2026-11-24T19:00:00+00:00,I2,Vicenza,Carrarese,0,1
+2026-11-24T19:00:00+00:00,I2,Virtus Entella,Verona,2,1
+2026-11-24T19:45:00+00:00,EC,Altrincham,Wealdstone,3,0
+2026-11-24T19:45:00+00:00,E2,Blackpool,Leicester,1,1
+2026-11-24T19:45:00+00:00,EC,Boston Utd,Barrow,0,1
+2026-11-24T19:45:00+00:00,E2,Bradford,Barnsley,3,0
+2026-11-24T19:45:00+00:00,E1,Bristol City,Wrexham,1,1
+2026-11-24T19:45:00+00:00,E2,Bromley,Wycombe,1,1
+2026-11-24T19:45:00+00:00,E1,Cardiff,Preston,0,4
+2026-11-24T19:45:00+00:00,EC,Carlisle,Tamworth,1,2
+2026-11-24T19:45:00+00:00,E1,Charlton,Lincoln,4,0
+2026-11-24T19:45:00+00:00,E3,Crawley Town,Barnet,0,0
+2026-11-24T19:45:00+00:00,EC,Eastleigh,Yeovil,1,3
+2026-11-24T19:45:00+00:00,EC,Forest Green,Southend,0,2
+2026-11-24T19:45:00+00:00,EC,Fylde,Halifax,0,2
+2026-11-24T19:45:00+00:00,SC0,Hibernian,Dundee,2,1
+2026-11-24T19:45:00+00:00,EC,Hornchurch,Sutton,0,0
+2026-11-24T19:45:00+00:00,E1,Middlesbrough,Swansea,2,1
+2026-11-24T19:45:00+00:00,E1,Norwich,QPR,1,1
+2026-11-24T19:45:00+00:00,E3,Port Vale,Northampton,1,1
+2026-11-24T19:45:00+00:00,E1,Portsmouth,West Ham,1,0
+2026-11-24T19:45:00+00:00,EC,Scunthorpe,Gateshead,1,2
+2026-11-24T19:45:00+00:00,E1,Sheffield United,Southampton,1,1
+2026-11-24T19:45:00+00:00,E2,Stevenage,Sheffield Weds,0,0
+2026-11-24T19:45:00+00:00,EC,Woking,Worthing,4,3
+2026-11-24T20:00:00+00:00,SC0,Rangers,Aberdeen,3,2
+2026-11-24T20:00:00+00:00,E1,Wolves,Derby,3,0
+2026-11-25T18:00:00+00:00,I2,Cremonese,Avellino,0,1
+2026-11-25T19:00:00+00:00,EC,Boreham Wood,Aldershot,4,1
+2026-11-25T19:00:00+00:00,I2,Mantova,Arezzo,3,0
+2026-11-25T19:00:00+00:00,I2,Padova,Sampdoria,1,2
+2026-11-25T19:00:00+00:00,I2,Pisa,Modena,1,1
+2026-11-25T19:45:00+00:00,E1,Bolton,West Brom,1,3
+2026-11-25T19:45:00+00:00,E1,Burnley,Birmingham,0,2
+2026-11-25T19:45:00+00:00,EC,Harrogate,Kidderminster,3,1
+2026-11-25T19:45:00+00:00,EC,Hartlepool,Solihull,2,0
+2026-11-25T19:45:00+00:00,E1,Watford,Blackburn,0,1
+2026-11-25T20:00:00+00:00,E1,Stoke,Millwall,2,1

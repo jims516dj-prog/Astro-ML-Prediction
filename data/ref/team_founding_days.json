@@ -6118,6 +6118,10 @@
 "date": null,
 "tried": "2026-11"
 },
+"Stellenbosch": {
+"date": "2019-08-03",
+"name": "Stellenbosch F.C."
+},
 "Stenhousemuir": {
 "date": null,
 "name": "Stenhousemuir F.C.",
@@ -6255,6 +6259,7 @@
 "name": "TPS Turku",
 "tried": "2026-11"
 },
+"TS Galaxy FC": null,
 "TSC Backa Topola": {
 "date": "1913-02-10",
 "name": "FK TSC"
