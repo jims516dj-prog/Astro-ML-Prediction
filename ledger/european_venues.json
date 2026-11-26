@@ -84,6 +84,11 @@
   "lon": 54.3921496,
   "source": "openstreetmap: ستاد محمد بن زايد, شارع النَّوْرَس, الاتحاد, أبو ظبي, أبوظبي, أبو ظبي, الإمارات العربية المتحدة"
  },
+ "Al Kholood": {
+  "lat": 26.3789,
+  "lon": 43.9478,
+  "source": "wikipedia: King Abdullah Sports City Stadium Buraydah"
+ },
  "Al Nasr Cairo": {
   "lat": 30.06916667,
   "lon": 31.31222222,
@@ -93,6 +98,11 @@
   "lat": 24.72916667,
   "lon": 46.62388889,
   "source": "wikipedia: King Saud University Stadium"
+ },
+ "Al Qadsiah": {
+  "lat": 26.43442,
+  "lon": 50.10326,
+  "source": "city: Dammam"
  },
  "Al Taawoun": {
   "lat": 26.3789,
@@ -1489,6 +1499,11 @@
   "lon": 6.6625,
   "source": "city"
  },
+ "Herediano": {
+  "lat": 10.04083333,
+  "lon": -84.16055556,
+  "source": "wikipedia: Carlos Alvarado Stadium"
+ },
  "Hetten FC": {
   "lat": 16.84027778,
   "lon": 42.59611111,
@@ -1903,6 +1918,11 @@
   "lat": 30.19624,
   "lon": 35.73405,
   "source": "thesportsdb: Ma'an, Ma'an, Jordan"
+ },
+ "Macarthur FC": {
+  "lat": -35.40885,
+  "lon": 149.12696,
+  "source": "city"
  },
  "Mafra": {
   "lat": 38.9408004,
@@ -3009,6 +3029,11 @@
   "lon": 14.35561,
   "source": "city: Kranj"
  },
+ "Tristán Suárez": {
+  "lat": -34.8906956,
+  "lon": -58.5632983,
+  "source": "openstreetmap: Estadio 20 de Octubre, Remedios de Escalada, Tristán Suárez, Partido de Ezeiza, Buenos Aires, 1806, Argentina"
+ },
  "Tunisia": {
   "lat": 34.7329314,
   "lon": 10.7459945,
@@ -3183,6 +3208,11 @@
   "lat": 49.75,
   "lon": 13.38555556,
   "source": "senior team's ground: wikipedia: Doosan Arena"
+ },
+ "Vila Nova": {
+  "lat": -16.67355833,
+  "lon": -49.237725,
+  "source": "wikipedia: Estádio Onésio Brasileiro Alvarenga"
  },
  "Vitesse": {
   "lat": 51.98,

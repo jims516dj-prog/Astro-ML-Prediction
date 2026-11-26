@@ -166,9 +166,15 @@
 "Al Diriyah": null,
 "Al Faisaly": null,
 "Al Fateh": null,
+"Al Fayha": null,
 "Al Hilal": null,
 "Al Ittihad": null,
 "Al Jazira Club": null,
+"Al Khaleej": null,
+"Al Kholood": {
+"date": "1970-03-18",
+"name": "Al-Kholood"
+},
 "Al Nasr": {
 "date": null,
 "name": "Alshariqa",
@@ -181,6 +187,10 @@
 "Al Nassr": {
 "date": "1955-10-24",
 "name": "Al-Nassr"
+},
+"Al Qadsiah": {
+"date": "1967-12-01",
+"name": "Al Qadsiah FC"
 },
 "Al Riyadh": null,
 "Al Sadd": {
@@ -4203,6 +4213,10 @@
 "name": "Meizhou Hakka F.C.",
 "tried": "2026-11"
 },
+"Melbourne City FC": {
+"date": "2009-06-12",
+"name": "Melbourne City FC"
+},
 "Melbourne Victory": {
 "date": "2004-11-01",
 "name": "Melbourne Victory FC"
@@ -4469,6 +4483,7 @@
 },
 "Neftchi": null,
 "Neftchi Fergana": null,
+"Neom SC": null,
 "Netherlands": {
 "date": "1954-12-29",
 "name": "Netherlands"

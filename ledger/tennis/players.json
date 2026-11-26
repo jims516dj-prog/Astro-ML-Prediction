@@ -26048,5 +26048,65 @@
 "hand": "",
 "height_in": null,
 "country": ""
+},
+{
+"id": "13530",
+"name": "Aoi Ito",
+"full_name": "Aoi Ito",
+"dob": "2004-05-21",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "10020",
+"name": "Igor Marcondes",
+"full_name": "Igor Marcondes",
+"dob": "1997-06-16",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:47281",
+"name": "Victor Verduguez",
+"full_name": "Victor Verduguez",
+"dob": "2010-01-06",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:47473",
+"name": "A. Paolini",
+"full_name": "A. Paolini",
+"dob": "2002-11-09",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:47158",
+"name": "Sofia Almeida",
+"full_name": "Sofia Almeida",
+"dob": "2010-06-15",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:23374",
+"name": "Enrique Garcia",
+"full_name": "Enrique Garcia",
+"dob": "2004-02-26",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
 }
 ]
