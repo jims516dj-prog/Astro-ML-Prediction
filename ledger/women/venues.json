@@ -104,6 +104,11 @@
   "lon": -99.19222222,
   "source": "wikipedia: Estadio Olímpico Universitario"
  },
+ "Estadio Ramón Tahuichi | Santa Cruz": {
+  "lat": -17.7960273,
+  "lon": -63.183838,
+  "source": "openstreetmap: Estadio Ramón “Tahuichi” Aguilera Costas, Avenida Ejército Nacional, Barrio Militar, Centro, Municipio Santa Cruz de la Sierra, Provincia Andrés Ibáñez, Santa Cruz, Bolivia"
+ },
  "Estadio Universitario | San Nicolás de los Garza": {
   "lat": 25.7226067,
   "lon": -100.3119863,
@@ -148,6 +153,11 @@
   "lat": 50.8684105,
   "lon": 4.6942994,
   "source": "openstreetmap: King Power at Den Dreef, Tervuursevest, Ruelenspark, Heverlee, Leuven, Vlaams-Brabant, Vlaanderen, 3001, België / Belgique / Belgien"
+ },
+ "La Videnita | Pucallpa": {
+  "lat": -8.37915,
+  "lon": -74.55387,
+  "source": "city: Pucallpa"
  },
  "Lakeside Stadium | Melbourne": {
   "lat": -37.84027778,
