@@ -954,6 +954,11 @@
   "lon": -76.58097,
   "source": "city"
  },
+ "Deportivo Cuenca": {
+  "lat": -2.90055,
+  "lon": -79.00453,
+  "source": "city"
+ },
  "Deportivo Lara": {
   "lat": 9.99354444,
   "lon": -69.21985833,
@@ -1474,6 +1479,11 @@
   "lon": 9.7729,
   "source": "wikipedia: Eilenriedestadion"
  },
+ "Hansa Rostock": {
+  "lat": 54.0887,
+  "lon": 12.14049,
+  "source": "city"
+ },
  "Hapoel Be'er Sheva": {
   "lat": 31.27315,
   "lon": 34.77936111,
@@ -1583,6 +1593,11 @@
   "lat": 42.53474,
   "lon": 1.58014,
   "source": "city: Encamp"
+ },
+ "Inter Kashi": {
+  "lat": 18.574745,
+  "lon": 73.760984,
+  "source": "wikipedia: Shree Shiv Chhatrapati Sports Complex"
  },
  "Inter de San Carlos": {
   "lat": 10.324119,
