@@ -69,6 +69,7 @@
 "date": "1958-09-01",
 "name": "FAR Rabat"
 },
+"ASKO Kara": null,
 "ASPTT Dijon": null,
 "AVS": {
 "date": null,
@@ -4760,6 +4761,7 @@
 "name": "FC Orenburg",
 "tried": "2026-11"
 },
+"Orgryte": null,
 "Oriente Petrolero": {
 "date": "1955-11-05",
 "name": "Oriente Petrolero"
@@ -5292,6 +5294,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Raja Casablanca": null,
 "Rakow": {
 "date": null,
 "tried": "2026-11"
@@ -6565,6 +6568,10 @@
 "date": "1937-01-06",
 "name": "U.S. Castanet"
 },
+"US Feurs": {
+"date": "1945-05-04",
+"name": "US Feurs"
+},
 "US Quevilly": null,
 "UTA Arad": {
 "date": "1945-04-18",
@@ -6731,6 +6738,7 @@
 "name": "Vancouver Whitecaps FC",
 "tried": "2026-11"
 },
+"Vannes OC": null,
 "Varberg": {
 "date": null,
 "tried": "2026-11"

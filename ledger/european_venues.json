@@ -1274,6 +1274,11 @@
   "lon": 5.07083,
   "source": "city"
  },
+ "FC Würzburger Kickers": {
+  "lat": 49.76703611,
+  "lon": 9.93289167,
+  "source": "wikipedia: Akon Arena"
+ },
  "FC Zurich": {
   "lat": 47.36667,
   "lon": 8.55,
@@ -1994,6 +1999,11 @@
   "lon": 149.12696,
   "source": "city"
  },
+ "Macará": {
+  "lat": -1.24472222,
+  "lon": -78.62305556,
+  "source": "wikipedia: Estadio Bellavista"
+ },
  "Mafra": {
   "lat": 38.9408004,
   "lon": -9.341598,
@@ -2213,6 +2223,11 @@
   "lat": 5.0063716,
   "lon": 7.8847312,
   "source": "openstreetmap: Godswill Akpabio International Stadium, Ring Road 3, Uyo, Akwa Ibom, 520103, Nigeria"
+ },
+ "Nimes": {
+  "lat": 43.81083333,
+  "lon": 4.35638889,
+  "source": "wikipedia: Stade des Antonins"
  },
  "Norrby IF": {
   "lat": 57.73783,
@@ -2524,6 +2539,11 @@
   "lon": 5.07083,
   "source": "city"
  },
+ "Raja Casablanca": {
+  "lat": 33.58277778,
+  "lon": -7.64694444,
+  "source": "wikipedia: Stade Mohammed V"
+ },
  "Rapid Vienna": {
   "lat": 48.1984898,
   "lon": 16.2652587,
@@ -2614,6 +2634,11 @@
   "lon": -60.63932,
   "source": "manual"
  },
+ "Rot-Weiss Essen": {
+  "lat": 51.45657,
+  "lon": 7.01228,
+  "source": "city"
+ },
  "Rubio Ñú": {
   "lat": -25.257544,
   "lon": -57.575113,
@@ -2634,10 +2659,20 @@
   "lon": 6.95,
   "source": "city"
  },
+ "SC Preußen Münster": {
+  "lat": 51.96236,
+  "lon": 7.62571,
+  "source": "city"
+ },
  "SC Verl": {
   "lat": 51.88333,
   "lon": 8.51667,
   "source": "city"
+ },
+ "SG Sonnenhof Großaspach": {
+  "lat": 48.980485,
+  "lon": 9.393005,
+  "source": "wikipedia: WIRmachenDRUCK Arena"
  },
  "SK Sigma Olomouc": {
   "lat": 49.6,
@@ -3164,6 +3199,16 @@
   "lon": -79.51973,
   "source": "city: Panama City"
  },
+ "US Castanet": {
+  "lat": 43.51591,
+  "lon": 1.49864,
+  "source": "thesportsdb: Complexe Sportif de Lautard, Castanet-Tolosan, Occitania, France"
+ },
+ "US Feurs": {
+  "lat": 45.752972,
+  "lon": 4.2245343,
+  "source": "openstreetmap: Stade Maurice Rousson, Allée du Château, La Noaille, Feurs, Montbrison, Loire, Auvergne-Rhône-Alpes, France métropolitaine, 42110, France"
+ },
  "Uganda": {
   "lat": 1.43555556,
   "lon": 31.39388889,
@@ -3238,6 +3283,11 @@
   "lat": 51.37,
   "lon": 6.16806,
   "source": "city"
+ },
+ "Vannes OC": {
+  "lat": 47.65194444,
+  "lon": -2.76111111,
+  "source": "wikipedia: Stade de la Rabine"
  },
  "Vasteras SK FK": {
   "lat": 59.64914,
@@ -3328,6 +3378,11 @@
   "lat": 44.45605556,
   "lon": 26.05688889,
   "source": "senior team's ground: wikipedia: Rapid-Giulești Stadium"
+ },
+ "Waldhof Mannheim": {
+  "lat": 49.4891,
+  "lon": 8.46694,
+  "source": "city"
  },
  "Wales": {
   "lat": 51.4728209,

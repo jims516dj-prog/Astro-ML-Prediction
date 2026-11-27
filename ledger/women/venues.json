@@ -119,6 +119,11 @@
   "lon": -9.1847,
   "source": "wikipedia: Estádio da Luz"
  },
+ "GIO Stadium | Canberra": {
+  "lat": -35.25,
+  "lon": 149.10277778,
+  "source": "wikipedia: Canberra Stadium"
+ },
  "Gaughan Group Stadium | London": {
   "lat": 51.56027778,
   "lon": -0.01277778,
@@ -318,5 +323,10 @@
   "lat": 52.5091264,
   "lon": -1.8850354,
   "source": "openstreetmap: Villa Park, Trinity Road, Aston, Birmingham, West Midlands, England, B6 6HE, United Kingdom"
+ },
+ "Yongchuang Sports Center | Chongqing": {
+  "lat": 29.56026,
+  "lon": 106.55771,
+  "source": "city: Chongqing"
  }
 }
