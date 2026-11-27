@@ -1,43 +1,4 @@
 kickoff_utc,division,home,away,goals_home,goals_away
-2025-05-24T23:30:00+00:00,USA,CF Montreal,Los Angeles FC,2,2
-2025-05-24T23:30:00+00:00,USA,Charlotte,Columbus Crew,3,2
-2025-05-24T23:30:00+00:00,USA,DC United,New York Red Bulls,0,2
-2025-05-24T23:30:00+00:00,USA,Orlando City,Portland Timbers,1,0
-2025-05-24T23:30:00+00:00,USA,Philadelphia Union,Inter Miami,3,3
-2025-05-24T23:30:00+00:00,USA,Toronto FC,Nashville SC,1,2
-2025-05-25T00:00:00+00:00,BRA,Atletico-MG,Corinthians,0,0
-2025-05-25T00:30:00+00:00,USA,Minnesota United,Austin FC,1,1
-2025-05-25T00:30:00+00:00,USA,Sporting Kansas City,New England Revolution,3,3
-2025-05-25T01:30:00+00:00,USA,Colorado Rapids,St. Louis City,1,0
-2025-05-25T01:30:00+00:00,USA,Real Salt Lake,Vancouver Whitecaps,2,3
-2025-05-25T02:30:00+00:00,USA,San Jose Earthquakes,Houston Dynamo,3,3
-2025-05-25T04:00:00+00:00,JAP,Okayama,Machida,2,2
-2025-05-25T05:00:00+00:00,JAP,Albirex Niigata,Shonan Bellmare,2,1
-2025-05-25T05:00:00+00:00,JAP,Shimizu S-Pulse,Vissel Kobe,3,2
-2025-05-25T05:00:00+00:00,JAP,Yokohama F. Marinos,Kashima Antlers,3,1
-2025-05-25T05:00:00+00:00,JAP,Yokohama FC,Kashiwa Reysol,1,1
-2025-05-25T06:00:00+00:00,JAP,FC Tokyo,Sanfrecce Hiroshima,0,3
-2025-05-25T06:00:00+00:00,JAP,Verdy,Kyoto,1,0
-2025-05-25T07:00:00+00:00,JAP,Kawasaki Frontale,Gamba Osaka,2,2
-2025-05-25T12:00:00+00:00,SWE,Goteborg,Malmo FF,1,0
-2025-05-25T12:00:00+00:00,SWE,Halmstad,Elfsborg,1,4
-2025-05-25T12:30:00+00:00,NOR,HamKam,Molde,2,1
-2025-05-25T13:00:00+00:00,FIN,KuPS,VPS,0,2
-2025-05-25T14:00:00+00:00,BRA,Gremio,Bahia,1,0
-2025-05-25T14:30:00+00:00,SWE,Brommapojkarna,AIK,0,1
-2025-05-25T14:30:00+00:00,SWE,Djurgarden,Hacken,1,1
-2025-05-25T15:00:00+00:00,DEN,Aarhus,Brondby,2,3
-2025-05-25T15:00:00+00:00,DEN,FC Copenhagen,Nordsjaelland,3,0
-2025-05-25T15:00:00+00:00,NOR,Kristiansund,Viking,0,1
-2025-05-25T15:00:00+00:00,DEN,Midtjylland,Randers FC,3,2
-2025-05-25T15:00:00+00:00,NOR,Sandefjord,Stromsgodset,3,2
-2025-05-25T15:00:00+00:00,NOR,Sarpsborg 08,Tromso,0,1
-2025-05-25T15:30:00+00:00,FIN,SJK,Inter Turku,0,1
-2025-05-25T17:15:00+00:00,NOR,Haugesund,Brann,0,2
-2025-05-25T19:00:00+00:00,USA,New York City,Chicago Fire,3,1
-2025-05-25T19:00:00+00:00,BRA,Palmeiras,Flamengo RJ,0,2
-2025-05-25T19:00:00+00:00,ARG,San Lorenzo,Platense,0,1
-2025-05-25T19:00:00+00:00,BRA,Sport Recife,Internacional,1,1
 2025-05-25T21:30:00+00:00,BRA,Vitoria,Santos,0,1
 2025-05-25T23:00:00+00:00,USA,Atlanta Utd,FC Cincinnati,4,2
 2025-05-25T23:30:00+00:00,BRA,Fortaleza,Cruzeiro,0,2
@@ -12664,7 +12625,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-07-31T18:45:00+00:00,IRL,Dundalk,Sligo Rovers,1,1
 2026-07-31T19:00:00+00:00,NOR,Bodo/Glimt,Lillestrom,4,0
 2026-07-31T19:00:00+00:00,IRL,Drogheda,Shamrock Rovers,0,0
-2026-07-31T19:00:00+00:00,SC0,Dundee United,Rangers,1,1
 2026-07-31T23:30:00+00:00,USA,New York City,Toronto FC,1,1
 2026-08-01T01:00:00+00:00,MEX,Puebla,Guadalajara Chivas,1,1
 2026-08-01T03:00:00+00:00,MEX,Atl. San Luis,Club Tijuana,0,0
@@ -12685,7 +12645,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-01T14:00:00+00:00,SC2,Cove Rangers,Airdrie Utd,0,0
 2026-08-01T14:00:00+00:00,SC2,East Kilbride,Queen of Sth,5,1
 2026-08-01T14:00:00+00:00,SC3,Edinburgh City,Elgin,0,5
-2026-08-01T14:00:00+00:00,SC0,Falkirk,St Mirren,0,2
 2026-08-01T14:00:00+00:00,SC3,Forfar,Kelty Hearts,1,0
 2026-08-01T14:00:00+00:00,NOR,Fredrikstad,Sandefjord,1,0
 2026-08-01T14:00:00+00:00,SC1,Inverness C,Dunfermline,0,0
@@ -12705,7 +12664,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-01T16:00:00+00:00,DEN,Lyngby,Aarhus,2,2
 2026-08-01T16:00:00+00:00,NOR,Start,Viking,0,3
 2026-08-01T16:00:00+00:00,SUI,Zurich,Servette,2,1
-2026-08-01T16:30:00+00:00,SC0,Aberdeen,Hearts,2,1
 2026-08-01T17:30:00+00:00,AUT,Salzburg,Hartberg,1,0
 2026-08-01T17:45:00+00:00,RUS,Baltika,Dynamo Moscow,2,1
 2026-08-01T18:30:00+00:00,ARG,Estudiantes Rio Cuarto,Banfield,0,0
@@ -12744,7 +12702,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-02T12:00:00+00:00,SUI,Vaduz,St. Gallen,2,3
 2026-08-02T12:45:00+00:00,POL,Legia,Zaglebie,3,1
 2026-08-02T13:00:00+00:00,RUS,Orenburg,Zenit,0,3
-2026-08-02T13:00:00+00:00,SC0,St Johnstone,Kilmarnock,4,3
 2026-08-02T14:00:00+00:00,FIN,AC Oulu,Ilves,1,0
 2026-08-02T14:00:00+00:00,DEN,Brondby,Viborg,1,0
 2026-08-02T14:00:00+00:00,IRL,Waterford,Shelbourne,1,0
@@ -12758,7 +12715,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-02T15:00:00+00:00,AUT,Wolfsberger AC,Austria Vienna,3,0
 2026-08-02T15:15:00+00:00,RUS,Krasnodar,Fakel Voronezh,3,2
 2026-08-02T15:30:00+00:00,ROM,Corvinul,Sepsi Sf. Gheorghe,1,1
-2026-08-02T15:30:00+00:00,SC0,Hibernian,Motherwell,1,2
 2026-08-02T15:30:00+00:00,POL,Slask Wroclaw,Rakow,2,1
 2026-08-02T16:00:00+00:00,DEN,Silkeborg,FC Copenhagen,1,3
 2026-08-02T16:00:00+00:00,IRL,St. Patricks,Derry City,1,1
@@ -12781,7 +12737,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-03T17:00:00+00:00,SWE,Djurgarden,Vasteras SK,6,0
 2026-08-03T17:00:00+00:00,SWE,Halmstad,Sirius,0,2
 2026-08-03T17:00:00+00:00,DEN,Odense,Sonderjyske,1,0
-2026-08-03T18:30:00+00:00,SC0,Celtic,Dundee,1,0
 2026-08-03T18:30:00+00:00,ROM,FCSB,Farul Constanta,2,2
 2026-08-03T19:45:00+00:00,ARG,Sarmiento Junin,Ind. Rivadavia,2,1
 2026-08-03T22:00:00+00:00,ARG,Platense,Talleres Cordoba,0,4
@@ -12833,7 +12788,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-08T14:00:00+00:00,EC,Boston Utd,Aldershot,0,1
 2026-08-08T14:00:00+00:00,EC,Carlisle,Worthing,2,3
 2026-08-08T14:00:00+00:00,SC3,Dumbarton,Clyde,1,0
-2026-08-08T14:00:00+00:00,SC0,Dundee,Aberdeen,2,0
 2026-08-08T14:00:00+00:00,SC1,Dunfermline,Ayr,1,1
 2026-08-08T14:00:00+00:00,SC2,East Fife,Cove Rangers,2,0
 2026-08-08T14:00:00+00:00,EC,Eastleigh,Gateshead,2,1
@@ -12850,7 +12804,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-08T14:00:00+00:00,SC2,Ross County,Montrose,2,1
 2026-08-08T14:00:00+00:00,EC,Scunthorpe,Yeovil,1,1
 2026-08-08T14:00:00+00:00,SC3,Spartans,Edinburgh City,2,2
-2026-08-08T14:00:00+00:00,SC0,St Mirren,St Johnstone,1,0
 2026-08-08T14:00:00+00:00,SC1,Stenhousemuir,Morton,2,0
 2026-08-08T14:00:00+00:00,SC3,Stranraer,Annan Athletic,0,1
 2026-08-08T14:00:00+00:00,NOR,Viking,Sarpsborg 08,2,1
@@ -12912,15 +12865,12 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-09T12:00:00+00:00,SWE,Malmo FF,Degerfors,1,2
 2026-08-09T12:00:00+00:00,CHN,Shandong Taishan,Tianjin Jinmen Tiger,2,1
 2026-08-09T12:30:00+00:00,N1,Groningen,Utrecht,2,1
-2026-08-09T12:30:00+00:00,SC0,Kilmarnock,Celtic,1,5
 2026-08-09T12:30:00+00:00,NOR,Lillestrom,Rosenborg,0,2
 2026-08-09T12:30:00+00:00,N1,Zwolle,Ajax,0,2
 2026-08-09T12:45:00+00:00,POL,Slask Wroclaw,Cracovia,0,0
 2026-08-09T14:00:00+00:00,B1,Charleroi,Oud-Heverlee Leuven,3,1
 2026-08-09T14:00:00+00:00,BRA,Cruzeiro,Mirassol,3,1
-2026-08-09T14:00:00+00:00,SC0,Hearts,Dundee United,4,0
 2026-08-09T14:00:00+00:00,FIN,Inter Turku,Lahti,0,0
-2026-08-09T14:00:00+00:00,SC0,Motherwell,Falkirk,0,0
 2026-08-09T14:00:00+00:00,DEN,Randers FC,Lyngby,2,0
 2026-08-09T14:00:00+00:00,B1,Waregem,Genk,2,1
 2026-08-09T14:00:00+00:00,IRL,Waterford,Bohemians,3,1
@@ -12932,7 +12882,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-09T14:45:00+00:00,N1,Heerenveen,Twente,1,0
 2026-08-09T15:00:00+00:00,NOR,HamKam,Aalesund,1,1
 2026-08-09T15:00:00+00:00,FIN,Ilves,Mariehamn,2,0
-2026-08-09T15:00:00+00:00,SC0,Rangers,Hibernian,1,2
 2026-08-09T15:00:00+00:00,AUT,Ried,SK Rapid,1,2
 2026-08-09T15:00:00+00:00,AUT,Wolfsberger AC,Salzburg,1,1
 2026-08-09T15:30:00+00:00,POL,Lech Poznan,Piast Gliwice,3,0
@@ -13357,7 +13306,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-22T16:30:00+00:00,E0,Brentford,Tottenham,3,0
 2026-08-22T16:30:00+00:00,I1,Inter,Monza,4,1
 2026-08-22T16:30:00+00:00,I1,Udinese,Como,1,1
-2026-08-22T16:45:00+00:00,SC0,Dundee United,Dundee,0,2
 2026-08-22T16:45:00+00:00,N1,Sparta Rotterdam,Utrecht,3,3
 2026-08-22T17:00:00+00:00,G1,AEK,Iraklis,4,0
 2026-08-22T17:00:00+00:00,SP2,Albacete,Sociedad B,1,2
@@ -13611,7 +13559,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-29T14:00:00+00:00,E1,Bristol City,Portsmouth,2,1
 2026-08-29T14:00:00+00:00,E2,Cambridge,Huddersfield,1,2
 2026-08-29T14:00:00+00:00,E1,Cardiff,Sheffield United,2,2
-2026-08-29T14:00:00+00:00,SC0,Celtic,Falkirk,2,1
 2026-08-29T14:00:00+00:00,E1,Charlton,Preston,1,0
 2026-08-29T14:00:00+00:00,E3,Colchester,Rochdale,1,0
 2026-08-29T14:00:00+00:00,E0,Coventry,Hull,0,1
@@ -13620,8 +13567,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-29T14:00:00+00:00,E3,Gillingham,Northampton,1,1
 2026-08-29T14:00:00+00:00,E3,Grimsby,Fleetwood Town,2,2
 2026-08-29T14:00:00+00:00,SC2,Hamilton,Cove Rangers,1,0
-2026-08-29T14:00:00+00:00,SC0,Hearts,St Johnstone,2,1
-2026-08-29T14:00:00+00:00,SC0,Kilmarnock,Dundee United,0,4
 2026-08-29T14:00:00+00:00,E2,Leyton Orient,Barnsley,1,3
 2026-08-29T14:00:00+00:00,SC2,Montrose,Queen of Sth,2,1
 2026-08-29T14:00:00+00:00,E3,Newport County,Tranmere,2,2
@@ -13718,7 +13663,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-30T02:30:00+00:00,USA,San Diego FC,Los Angeles Galaxy,3,1
 2026-08-30T03:10:00+00:00,MEX,Santos Laguna,Tigres UANL,0,0
 2026-08-30T10:15:00+00:00,N1,Utrecht,PSV Eindhoven,1,6
-2026-08-30T11:00:00+00:00,SC0,Aberdeen,Rangers,0,1
 2026-08-30T11:30:00+00:00,D2,Darmstadt,Hannover,0,1
 2026-08-30T11:30:00+00:00,B1,Gent,Club Brugge,2,1
 2026-08-30T11:30:00+00:00,D2,Magdeburg,Holstein Kiel,2,0
@@ -13740,10 +13684,8 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-08-30T13:30:00+00:00,D1,Freiburg,Werder Bremen,4,1
 2026-08-30T14:00:00+00:00,B1,Antwerp,St Truiden,1,4
 2026-08-30T14:00:00+00:00,BRA,Athletico-PR,Fluminense,3,3
-2026-08-30T14:00:00+00:00,SC0,Dundee,Hibernian,1,2
 2026-08-30T14:00:00+00:00,E2,Mansfield,Luton,5,2
 2026-08-30T14:00:00+00:00,DEN,Randers FC,Aarhus,2,1
-2026-08-30T14:00:00+00:00,SC0,St Mirren,Motherwell,3,3
 2026-08-30T14:30:00+00:00,SWE,Goteborg,Orgryte,1,0
 2026-08-30T14:30:00+00:00,P1,Nacional,Estrela,2,3
 2026-08-30T14:30:00+00:00,SUI,St. Gallen,Thun,3,4
@@ -13896,17 +13838,12 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-02T18:30:00+00:00,SUI,Thun,Lausanne,0,0
 2026-09-02T18:45:00+00:00,E2,Barnsley,Blackpool,2,1
 2026-09-02T18:45:00+00:00,E2,Burton,AFC Wimbledon,4,1
-2026-09-02T18:45:00+00:00,SC0,Celtic,Aberdeen,3,0
-2026-09-02T18:45:00+00:00,SC0,Dundee,St Johnstone,1,1
-2026-09-02T18:45:00+00:00,SC0,Kilmarnock,St Mirren,0,1
 2026-09-02T18:45:00+00:00,E2,Luton,Stockport,2,0
 2026-09-02T18:45:00+00:00,E1,Millwall,Wrexham,0,3
-2026-09-02T18:45:00+00:00,SC0,Motherwell,Dundee United,3,0
 2026-09-02T18:45:00+00:00,E1,QPR,Cardiff,2,1
 2026-09-02T18:45:00+00:00,E1,West Brom,Charlton,1,1
 2026-09-02T18:45:00+00:00,E2,Wigan,Milton Keynes Dons,3,1
 2026-09-02T19:00:00+00:00,E1,Burnley,Middlesbrough,1,1
-2026-09-02T19:00:00+00:00,SC0,Falkirk,Rangers,1,2
 2026-09-02T19:00:00+00:00,E2,Reading,Mansfield,5,0
 2026-09-02T22:30:00+00:00,BRA,Flamengo RJ,Mirassol,2,0
 2026-09-03T16:00:00+00:00,POL,Rakow,Gornik Zabrze,1,2
@@ -13917,7 +13854,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-03T18:30:00+00:00,B1,Gent,Oud-Heverlee Leuven,1,0
 2026-09-03T18:30:00+00:00,POL,Lech Poznan,Jagiellonia,2,1
 2026-09-03T18:30:00+00:00,SUI,Lugano,Servette,1,0
-2026-09-03T18:45:00+00:00,SC0,Hibernian,Hearts,1,3
 2026-09-03T18:45:00+00:00,F1,Toulouse,Lille,0,1
 2026-09-03T19:00:00+00:00,SP1,Sociedad,Celta,0,0
 2026-09-04T16:30:00+00:00,D2,Bielefeld,St Pauli,2,2
@@ -13984,7 +13920,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-05T13:30:00+00:00,D1,M'gladbach,Elversberg,3,4
 2026-09-05T13:30:00+00:00,D1,Paderborn,Freiburg,0,1
 2026-09-05T13:30:00+00:00,D1,Werder Bremen,RB Leipzig,3,1
-2026-09-05T14:00:00+00:00,SC0,Aberdeen,Kilmarnock,0,0
 2026-09-05T14:00:00+00:00,E3,Accrington,Crawley Town,3,2
 2026-09-05T14:00:00+00:00,SC1,Arbroath,Dunfermline,1,1
 2026-09-05T14:00:00+00:00,E2,Barnsley,Stevenage,1,5
@@ -14003,7 +13938,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-05T14:00:00+00:00,E3,Crewe,York,1,1
 2026-09-05T14:00:00+00:00,E2,Doncaster,Plymouth,2,3
 2026-09-05T14:00:00+00:00,SC3,Dumbarton,Elgin,2,1
-2026-09-05T14:00:00+00:00,SC0,Dundee United,Falkirk,1,1
 2026-09-05T14:00:00+00:00,SC2,East Fife,Ross County,2,2
 2026-09-05T14:00:00+00:00,SC2,East Kilbride,Hamilton,0,1
 2026-09-05T14:00:00+00:00,T1,Erzurumspor,Konyaspor,1,0
@@ -14029,7 +13963,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-05T14:00:00+00:00,E1,QPR,Middlesbrough,0,1
 2026-09-05T14:00:00+00:00,SC2,Queen of Sth,Airdrie Utd,2,1
 2026-09-05T14:00:00+00:00,SC1,Queens Park,Morton,2,1
-2026-09-05T14:00:00+00:00,SC0,Rangers,Motherwell,1,0
 2026-09-05T14:00:00+00:00,E2,Reading,Blackpool,3,1
 2026-09-05T14:00:00+00:00,E3,Rochdale,Gillingham,1,4
 2026-09-05T14:00:00+00:00,NOR,Rosenborg,HamKam,4,0
@@ -14085,7 +14018,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-05T18:45:00+00:00,B1,Standard,Antwerp,1,0
 2026-09-05T19:00:00+00:00,BRA,Bragantino,Bahia,2,3
 2026-09-05T19:00:00+00:00,SP2,Eldense,Mallorca,0,0
-2026-09-05T19:00:00+00:00,SC0,St Mirren,Celtic,1,2
 2026-09-05T19:00:00+00:00,E1,Swansea,Wrexham,0,0
 2026-09-05T19:00:00+00:00,SP1,Villarreal,La Coruna,2,3
 2026-09-05T19:00:00+00:00,N1,Willem II,Excelsior,0,3
@@ -14149,11 +14081,9 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-06T13:30:00+00:00,D1,Hamburg,Mainz,0,5
 2026-09-06T14:00:00+00:00,BRA,Coritiba,Mirassol,1,2
 2026-09-06T14:00:00+00:00,T1,Corum,Eyupspor,3,0
-2026-09-06T14:00:00+00:00,SC0,Hearts,Dundee,2,1
 2026-09-06T14:00:00+00:00,T1,Kasimpasa,Amedspor,2,2
 2026-09-06T14:00:00+00:00,B1,Kortrijk,Waregem,0,2
 2026-09-06T14:00:00+00:00,DEN,Odense,FC Copenhagen,0,5
-2026-09-06T14:00:00+00:00,SC0,St Johnstone,Hibernian,2,1
 2026-09-06T14:15:00+00:00,SP2,Oviedo,Burgos,0,0
 2026-09-06T14:15:00+00:00,SP1,Valencia,Barcelona,0,5
 2026-09-06T14:30:00+00:00,SUI,Basel,Lugano,1,3
@@ -14242,9 +14172,7 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-09T16:45:00+00:00,N1,Twente,Telstar,1,0
 2026-09-09T18:45:00+00:00,E1,Derby,West Brom,0,1
 2026-09-09T18:45:00+00:00,E1,Norwich,Birmingham,2,1
-2026-09-09T18:45:00+00:00,SC0,Rangers,St Mirren,1,0
 2026-09-09T19:00:00+00:00,E1,Charlton,QPR,0,0
-2026-09-09T19:00:00+00:00,SC0,St Johnstone,Celtic,0,1
 2026-09-09T19:45:00+00:00,P1,Moreirense,Benfica,0,4
 2026-09-09T23:30:00+00:00,USA,Atlanta Utd,Orlando City,2,3
 2026-09-09T23:30:00+00:00,USA,CF Montreal,Charlotte,1,2
@@ -14591,11 +14519,8 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-15T18:45:00+00:00,EC,Boston Utd,Woking,1,1
 2026-09-15T18:45:00+00:00,E1,Bristol City,Lincoln,0,1
 2026-09-15T18:45:00+00:00,EC,Carlisle,Forest Green,1,1
-2026-09-15T18:45:00+00:00,SC0,Falkirk,Hearts,2,1
 2026-09-15T18:45:00+00:00,EC,Harrogate,Fylde,1,2
-2026-09-15T18:45:00+00:00,SC0,Hibernian,Kilmarnock,0,1
 2026-09-15T18:45:00+00:00,E1,Middlesbrough,Millwall,2,2
-2026-09-15T18:45:00+00:00,SC0,Motherwell,Aberdeen,0,4
 2026-09-15T18:45:00+00:00,SC2,Ross County,Queen of Sth,8,0
 2026-09-15T18:45:00+00:00,EC,Solihull,Barrow,1,0
 2026-09-15T18:45:00+00:00,EC,Southend,Tamworth,3,1
@@ -14714,7 +14639,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-19T14:00:00+00:00,SC2,Cove Rangers,Ross County,0,2
 2026-09-19T14:00:00+00:00,E3,Crewe,Shrewsbury,1,1
 2026-09-19T14:00:00+00:00,SC3,Dumbarton,Spartans,3,0
-2026-09-19T14:00:00+00:00,SC0,Dundee,Motherwell,2,1
 2026-09-19T14:00:00+00:00,SC2,East Fife,Montrose,1,2
 2026-09-19T14:00:00+00:00,EC,Eastleigh,Carlisle,1,0
 2026-09-19T14:00:00+00:00,SC3,Elgin,Stranraer,1,5
@@ -14728,7 +14652,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-19T14:00:00+00:00,E3,Grimsby,Crawley Town,2,0
 2026-09-19T14:00:00+00:00,EC,Halifax,Sutton,1,1
 2026-09-19T14:00:00+00:00,SC2,Hamilton,Queen of Sth,4,1
-2026-09-19T14:00:00+00:00,SC0,Hibernian,Aberdeen,1,1
 2026-09-19T14:00:00+00:00,SC3,Kelty Hearts,Edinburgh City,1,3
 2026-09-19T14:00:00+00:00,T1,Kocaelispor,Gaziantep,2,0
 2026-09-19T14:00:00+00:00,NOR,Kristiansund,Rosenborg,1,3
@@ -14749,8 +14672,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-19T14:00:00+00:00,E2,Reading,Notts County,2,0
 2026-09-19T14:00:00+00:00,E3,Salford,Swindon,1,0
 2026-09-19T14:00:00+00:00,E2,Sheffield Weds,Stockport,0,0
-2026-09-19T14:00:00+00:00,SC0,St Johnstone,Falkirk,1,1
-2026-09-19T14:00:00+00:00,SC0,St Mirren,Dundee United,0,3
 2026-09-19T14:00:00+00:00,SC1,Stenhousemuir,Arbroath,1,0
 2026-09-19T14:00:00+00:00,SC3,Stirling,Clyde,1,1
 2026-09-19T14:00:00+00:00,FIN,VPS,KuPS,0,2
@@ -14783,7 +14704,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-19T16:30:00+00:00,EC,Hornchurch,Scunthorpe,1,0
 2026-09-19T16:30:00+00:00,E0,Nott'm Forest,Coventry,0,1
 2026-09-19T16:30:00+00:00,D1,Stuttgart,Dortmund,0,1
-2026-09-19T16:45:00+00:00,SC0,Kilmarnock,Hearts,1,1
 2026-09-19T16:45:00+00:00,N1,Sparta Rotterdam,Heerenveen,0,4
 2026-09-19T17:00:00+00:00,P1,Alverca,Rio Ave,1,0
 2026-09-19T17:00:00+00:00,T1,Buyuksehyr,Genclerbirligi,4,0
@@ -14839,7 +14759,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-09-20T10:15:00+00:00,N1,Feyenoord,Utrecht,5,0
 2026-09-20T10:15:00+00:00,POL,Piast Gliwice,Pogon Szczecin,1,2
 2026-09-20T10:30:00+00:00,I1,Fiorentina,Napoli,1,1
-2026-09-20T11:00:00+00:00,SC0,Celtic,Rangers,0,1
 2026-09-20T11:00:00+00:00,ROM,FC Voluntari,U. Cluj,0,2
 2026-09-20T11:00:00+00:00,E1,Wolves,West Brom,1,0
 2026-09-20T11:30:00+00:00,B1,Antwerp,St. Gilloise,0,2
@@ -15192,15 +15111,12 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-10T14:00:00+00:00,E3,Crawley Town,Chesterfield,2,2
 2026-10-10T14:00:00+00:00,E1,Derby,Wrexham,1,1
 2026-10-10T14:00:00+00:00,E2,Doncaster,Burton,1,0
-2026-10-10T14:00:00+00:00,SC0,Dundee United,Hibernian,1,0
 2026-10-10T14:00:00+00:00,SC2,East Kilbride,Airdrie Utd,2,2
 2026-10-10T14:00:00+00:00,SC3,Edinburgh City,Spartans,1,3
-2026-10-10T14:00:00+00:00,SC0,Falkirk,Dundee,1,2
 2026-10-10T14:00:00+00:00,E3,Fleetwood Town,Walsall,1,1
 2026-10-10T14:00:00+00:00,SC3,Forfar,Elgin,1,2
 2026-10-10T14:00:00+00:00,EC,Fylde,Scunthorpe,2,0
 2026-10-10T14:00:00+00:00,EC,Halifax,Gateshead,4,1
-2026-10-10T14:00:00+00:00,SC0,Hearts,St Mirren,5,0
 2026-10-10T14:00:00+00:00,EC,Hornchurch,Eastleigh,2,0
 2026-10-10T14:00:00+00:00,E2,Huddersfield,Sheffield Weds,2,2
 2026-10-10T14:00:00+00:00,SC1,Inverness C,Stenhousemuir,2,0
@@ -15216,7 +15132,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-10T14:00:00+00:00,E3,Port Vale,Grimsby,1,0
 2026-10-10T14:00:00+00:00,E1,Preston,Millwall,0,1
 2026-10-10T14:00:00+00:00,SC1,Raith Rvs,Queens Park,2,0
-2026-10-10T14:00:00+00:00,SC0,Rangers,Kilmarnock,3,1
 2026-10-10T14:00:00+00:00,E3,Rotherham,Gillingham,1,4
 2026-10-10T14:00:00+00:00,E1,Sheffield United,Lincoln,3,0
 2026-10-10T14:00:00+00:00,E3,Shrewsbury,Exeter,0,1
@@ -15311,7 +15226,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-11T10:15:00+00:00,N1,Utrecht,Willem II,3,1
 2026-10-11T10:30:00+00:00,I1,Como,Roma,0,0
 2026-10-11T10:30:00+00:00,T1,Konyaspor,Buyuksehyr,0,0
-2026-10-11T11:00:00+00:00,SC0,Motherwell,Celtic,0,2
 2026-10-11T11:00:00+00:00,E1,Southampton,Portsmouth,1,0
 2026-10-11T11:30:00+00:00,D2,Bochum,Bielefeld,0,1
 2026-10-11T11:30:00+00:00,D2,Hertha,Greuther Furth,2,1
@@ -15332,7 +15246,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-11T12:30:00+00:00,N1,Telstar,Den Haag,2,2
 2026-10-11T12:30:00+00:00,N1,Zwolle,Cambuur,0,1
 2026-10-11T12:45:00+00:00,POL,Piast Gliwice,Widzew Lodz,2,1
-2026-10-11T13:00:00+00:00,SC0,Aberdeen,St Johnstone,0,1
 2026-10-11T13:00:00+00:00,I2,Catanzaro,Mantova,1,3
 2026-10-11T13:00:00+00:00,E0,Crystal Palace,Nott'm Forest,3,1
 2026-10-11T13:00:00+00:00,T1,Gaziantep,Corum,0,3
@@ -15534,7 +15447,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-17T13:30:00+00:00,D1,Schalke 04,Mainz,0,1
 2026-10-17T13:30:00+00:00,D1,Union Berlin,Dortmund,0,0
 2026-10-17T13:30:00+00:00,D1,Werder Bremen,Paderborn,2,2
-2026-10-17T14:00:00+00:00,SC0,Aberdeen,St Mirren,3,1
 2026-10-17T14:00:00+00:00,E3,Accrington,Gillingham,3,1
 2026-10-17T14:00:00+00:00,E2,Barnsley,Cambridge,1,2
 2026-10-17T14:00:00+00:00,E1,Birmingham,QPR,3,0
@@ -15552,10 +15464,8 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-17T14:00:00+00:00,SC3,Elgin,Edinburgh City,0,0
 2026-10-17T14:00:00+00:00,E0,Fulham,Hull,1,0
 2026-10-17T14:00:00+00:00,E3,Grimsby,Northampton,0,2
-2026-10-17T14:00:00+00:00,SC0,Hibernian,Falkirk,1,2
 2026-10-17T14:00:00+00:00,SC1,Inverness C,Arbroath,2,0
 2026-10-17T14:00:00+00:00,SC3,Kelty Hearts,Forfar,2,1
-2026-10-17T14:00:00+00:00,SC0,Kilmarnock,Motherwell,3,2
 2026-10-17T14:00:00+00:00,NOR,Kristiansund,Aalesund,1,4
 2026-10-17T14:00:00+00:00,E2,Leicester,Doncaster,2,1
 2026-10-17T14:00:00+00:00,G1,Levadeiakos,Volos NFC,0,0
@@ -15573,7 +15483,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-17T14:00:00+00:00,E2,Sheffield Weds,AFC Wimbledon,5,0
 2026-10-17T14:00:00+00:00,E1,Southampton,Bolton,0,0
 2026-10-17T14:00:00+00:00,SC3,Spartans,Stranraer,0,2
-2026-10-17T14:00:00+00:00,SC0,St Johnstone,Dundee United,1,1
 2026-10-17T14:00:00+00:00,SC1,Stenhousemuir,Raith Rvs,1,1
 2026-10-17T14:00:00+00:00,E2,Stockport,Bromley,1,0
 2026-10-17T14:00:00+00:00,E1,Swansea,West Ham,0,1
@@ -15614,7 +15523,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-17T18:45:00+00:00,I1,Roma,Genoa,2,0
 2026-10-17T18:45:00+00:00,IRL,Sligo Rovers,Dundalk,1,1
 2026-10-17T18:45:00+00:00,F1,Troyes,Lens,1,3
-2026-10-17T19:00:00+00:00,SC0,Dundee,Rangers,2,2
 2026-10-17T19:00:00+00:00,SP2,Las Palmas,Castellon,0,3
 2026-10-17T19:00:00+00:00,N1,Sparta Rotterdam,Willem II,3,2
 2026-10-17T19:00:00+00:00,SP1,Valencia,Ath Bilbao,0,0
@@ -15677,7 +15585,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-18T13:00:00+00:00,T1,Kocaelispor,Goztep,1,2
 2026-10-18T13:00:00+00:00,E0,Leeds,Man United,1,1
 2026-10-18T13:30:00+00:00,D1,Leverkusen,Freiburg,2,1
-2026-10-18T14:00:00+00:00,SC0,Celtic,Hearts,7,1
 2026-10-18T14:00:00+00:00,DEN,Odense,Brondby,2,1
 2026-10-18T14:00:00+00:00,G1,Panetolikos,Olympiakos,0,2
 2026-10-18T14:15:00+00:00,SP1,Celta,Alaves,2,1
@@ -15898,9 +15805,7 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-24T14:00:00+00:00,E0,Coventry,Fulham,0,1
 2026-10-24T14:00:00+00:00,E3,Crawley Town,Tranmere,1,1
 2026-10-24T14:00:00+00:00,E2,Doncaster,Sheffield Weds,2,0
-2026-10-24T14:00:00+00:00,SC0,Dundee United,Aberdeen,3,2
 2026-10-24T14:00:00+00:00,E3,Exeter,Fleetwood Town,2,1
-2026-10-24T14:00:00+00:00,SC0,Falkirk,Kilmarnock,3,0
 2026-10-24T14:00:00+00:00,E3,Gillingham,Grimsby,1,4
 2026-10-24T14:00:00+00:00,FIN,Gnistan,AC Oulu,3,4
 2026-10-24T14:00:00+00:00,SC2,Hamilton,East Fife,2,1
@@ -15915,7 +15820,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-24T14:00:00+00:00,E1,QPR,Swansea,5,0
 2026-10-24T14:00:00+00:00,SC1,Queens Park,Dunfermline,0,1
 2026-10-24T14:00:00+00:00,SC1,Raith Rvs,Inverness C,0,2
-2026-10-24T14:00:00+00:00,SC0,Rangers,St Johnstone,4,0
 2026-10-24T14:00:00+00:00,E2,Reading,Barnsley,2,1
 2026-10-24T14:00:00+00:00,E3,Rochdale,Accrington,0,5
 2026-10-24T14:00:00+00:00,SC2,Ross County,Airdrie Utd,4,0
@@ -15923,7 +15827,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-24T14:00:00+00:00,EC,Scunthorpe,Woking,2,3
 2026-10-24T14:00:00+00:00,EC,Solihull,Carlisle,1,2
 2026-10-24T14:00:00+00:00,EC,Southend,Halifax,2,2
-2026-10-24T14:00:00+00:00,SC0,St Mirren,Dundee,2,1
 2026-10-24T14:00:00+00:00,E2,Stevenage,Milton Keynes Dons,0,1
 2026-10-24T14:00:00+00:00,E1,Stoke,Bristol City,0,0
 2026-10-24T14:00:00+00:00,E1,West Ham,Southampton,2,3
@@ -16001,7 +15904,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-25T11:15:00+00:00,N1,For Sittard,Excelsior,1,0
 2026-10-25T11:15:00+00:00,POL,Slask Wroclaw,Wieczysta Krakow,2,0
 2026-10-25T11:30:00+00:00,I1,Inter,Fiorentina,2,1
-2026-10-25T12:00:00+00:00,SC0,Hibernian,Celtic,1,2
 2026-10-25T12:00:00+00:00,FIN,Jaro,PK-35,1,0
 2026-10-25T12:30:00+00:00,D2,Braunschweig,Hannover,2,0
 2026-10-25T12:30:00+00:00,B1,Genk,Standard,2,1
@@ -16028,7 +15930,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-25T14:00:00+00:00,E0,Liverpool,Brighton,2,0
 2026-10-25T14:00:00+00:00,E0,Man United,Bournemouth,0,3
 2026-10-25T14:00:00+00:00,F1,Monaco,Lille,1,1
-2026-10-25T14:00:00+00:00,SC0,Motherwell,Hearts,0,2
 2026-10-25T14:00:00+00:00,G1,Olympiakos,Kalamata,5,0
 2026-10-25T14:00:00+00:00,I2,Palermo,Carrarese,2,1
 2026-10-25T14:30:00+00:00,D1,Hoffenheim,Leverkusen,3,0
@@ -16140,17 +16041,11 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-28T18:00:00+00:00,I2,Pisa,Palermo,3,3
 2026-10-28T19:00:00+00:00,I2,Carrarese,Arezzo,2,1
 2026-10-28T19:00:00+00:00,I2,Juve Stabia,Verona,0,1
-2026-10-28T19:45:00+00:00,SC0,Aberdeen,Falkirk,0,1
 2026-10-28T19:45:00+00:00,EC,Carlisle,Harrogate,3,0
-2026-10-28T19:45:00+00:00,SC0,Celtic,Dundee United,2,2
-2026-10-28T19:45:00+00:00,SC0,Dundee,Kilmarnock,3,1
 2026-10-28T19:45:00+00:00,EC,Forest Green,Eastleigh,2,0
 2026-10-28T19:45:00+00:00,I1,Genoa,Juventus,2,0
 2026-10-28T19:45:00+00:00,I1,Monza,Napoli,1,4
-2026-10-28T19:45:00+00:00,SC0,St Johnstone,Motherwell,2,2
-2026-10-28T19:45:00+00:00,SC0,St Mirren,Hibernian,1,1
 2026-10-28T19:45:00+00:00,EC,Sutton,Aldershot,2,0
-2026-10-28T20:00:00+00:00,SC0,Hearts,Rangers,2,2
 2026-10-28T22:30:00+00:00,BRA,Bragantino,Chapecoense-SC,3,0
 2026-10-28T22:30:00+00:00,BRA,Fluminense,Internacional,2,1
 2026-10-28T22:30:00+00:00,BRA,Santos,Palmeiras,0,0
@@ -16281,7 +16176,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-31T15:00:00+00:00,SC2,Hamilton,Montrose,1,1
 2026-10-31T15:00:00+00:00,E0,Hull,Ipswich,2,2
 2026-10-31T15:00:00+00:00,SC3,Kelty Hearts,Elgin,0,1
-2026-10-31T15:00:00+00:00,SC0,Kilmarnock,St Johnstone,2,2
 2026-10-31T15:00:00+00:00,E2,Leicester,Stevenage,2,2
 2026-10-31T15:00:00+00:00,E0,Man City,Brighton,0,1
 2026-10-31T15:00:00+00:00,E2,Mansfield,Notts County,0,2
@@ -16289,7 +16183,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-10-31T15:00:00+00:00,E1,Middlesbrough,Charlton,3,0
 2026-10-31T15:00:00+00:00,E1,Millwall,Derby,4,1
 2026-10-31T15:00:00+00:00,E2,Milton Keynes Dons,Doncaster,6,1
-2026-10-31T15:00:00+00:00,SC0,Motherwell,St Mirren,1,0
 2026-10-31T15:00:00+00:00,E3,Oldham,Crawley Town,0,1
 2026-10-31T15:00:00+00:00,SC1,Partick,Morton,2,3
 2026-10-31T15:00:00+00:00,E2,Peterboro,Luton,0,2
@@ -16382,7 +16275,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-01T13:00:00+00:00,T1,Buyuksehyr,Samsunspor,5,2
 2026-11-01T13:00:00+00:00,SWE,Djurgarden,Degerfors,2,1
 2026-11-01T13:00:00+00:00,SP2,Eldense,Granada,0,2
-2026-11-01T13:00:00+00:00,SC0,Falkirk,Celtic,2,0
 2026-11-01T13:00:00+00:00,SP1,Getafe,Sevilla,3,1
 2026-11-01T13:00:00+00:00,SWE,Malmo FF,Hammarby,1,2
 2026-11-01T13:00:00+00:00,DEN,Odense,Silkeborg,4,1
@@ -16593,7 +16485,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-07T15:00:00+00:00,E1,Charlton,Sheffield United,2,1
 2026-11-07T15:00:00+00:00,SC3,Clyde,Spartans,3,2
 2026-11-07T15:00:00+00:00,SC2,Cove Rangers,Hamilton,4,0
-2026-11-07T15:00:00+00:00,SC0,Dundee United,Motherwell,1,1
 2026-11-07T15:00:00+00:00,SC3,Elgin,Dumbarton,0,2
 2026-11-07T15:00:00+00:00,SC3,Forfar,Edinburgh City,1,1
 2026-11-07T15:00:00+00:00,E0,Fulham,Newcastle,1,1
@@ -16605,7 +16496,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-07T15:00:00+00:00,SC2,Queen of Sth,East Kilbride,1,2
 2026-11-07T15:00:00+00:00,SC1,Queens Park,Partick,0,1
 2026-11-07T15:00:00+00:00,SC2,Ross County,Peterhead,4,1
-2026-11-07T15:00:00+00:00,SC0,St Johnstone,Dundee,2,1
 2026-11-07T15:00:00+00:00,SC3,Stranraer,Stirling,3,0
 2026-11-07T15:00:00+00:00,G1,Volos NFC,Kifisia,1,3
 2026-11-07T15:00:00+00:00,E1,Watford,Middlesbrough,0,0
@@ -16635,7 +16525,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-07T17:30:00+00:00,SP1,Osasuna,Ath Bilbao,1,1
 2026-11-07T17:30:00+00:00,D1,Stuttgart,Werder Bremen,1,0
 2026-11-07T17:30:00+00:00,IRL,UC Dublin,Drogheda,2,1
-2026-11-07T17:45:00+00:00,SC0,Aberdeen,Hibernian,0,4
 2026-11-07T17:45:00+00:00,N1,Den Haag,Sparta Rotterdam,3,1
 2026-11-07T18:00:00+00:00,P1,Alverca,Casa Pia,1,1
 2026-11-07T18:00:00+00:00,F1,Auxerre,Paris FC,0,1
@@ -16653,7 +16542,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-07T19:45:00+00:00,B1,RAAL La Louviere,Cercle Brugge,0,1
 2026-11-07T19:45:00+00:00,I1,Roma,Sassuolo,3,0
 2026-11-07T20:00:00+00:00,N1,Excelsior,Go Ahead Eagles,0,1
-2026-11-07T20:00:00+00:00,SC0,St Mirren,Rangers,0,2
 2026-11-07T20:00:00+00:00,SP1,Valencia,Real Madrid,0,3
 2026-11-07T20:05:00+00:00,F1,Paris SG,Troyes,1,0
 2026-11-07T20:30:00+00:00,ARG,Argentinos Jrs,Huracan,0,2
@@ -16727,7 +16615,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-08T15:00:00+00:00,G1,AEK,Levadeiakos,2,1
 2026-11-08T15:00:00+00:00,G1,Asteras Tripolis,Kalamata,1,1
 2026-11-08T15:00:00+00:00,B1,Gent,Kortrijk,1,0
-2026-11-08T15:00:00+00:00,SC0,Hearts,Falkirk,2,5
 2026-11-08T15:00:00+00:00,DEN,Randers FC,Nordsjaelland,1,6
 2026-11-08T15:15:00+00:00,SP2,Girona,Almeria,0,1
 2026-11-08T15:15:00+00:00,SP1,Sociedad,Vallecano,1,0
@@ -16742,7 +16629,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-08T15:30:00+00:00,SUI,Thun,Basel,3,3
 2026-11-08T15:45:00+00:00,N1,AZ Alkmaar,Groningen,4,3
 2026-11-08T15:45:00+00:00,N1,Cambuur,PSV Eindhoven,2,5
-2026-11-08T16:00:00+00:00,SC0,Celtic,Kilmarnock,1,0
 2026-11-08T16:00:00+00:00,NOR,HamKam,Sarpsborg 08,3,0
 2026-11-08T16:00:00+00:00,NOR,Lillestrom,Aalesund,3,2
 2026-11-08T16:00:00+00:00,NOR,Sandefjord,Molde,5,5
@@ -16934,7 +16820,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-21T15:00:00+00:00,E2,Bradford,Doncaster,2,2
 2026-11-21T15:00:00+00:00,E2,Burton,Luton,1,2
 2026-11-21T15:00:00+00:00,E2,Cambridge,Stockport,0,3
-2026-11-21T15:00:00+00:00,SC0,Celtic,St Mirren,4,1
 2026-11-21T15:00:00+00:00,B1,Charleroi,St Truiden,2,2
 2026-11-21T15:00:00+00:00,E0,Chelsea,Leeds,1,4
 2026-11-21T15:00:00+00:00,E3,Cheltenham,Bristol Rvs,0,3
@@ -16944,15 +16829,12 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-21T15:00:00+00:00,E3,Crawley Town,Fleetwood Town,2,1
 2026-11-21T15:00:00+00:00,SC2,East Fife,Airdrie Utd,0,2
 2026-11-21T15:00:00+00:00,SC3,Edinburgh City,Kelty Hearts,0,1
-2026-11-21T15:00:00+00:00,SC0,Falkirk,St Johnstone,2,1
 2026-11-21T15:00:00+00:00,EC,Gateshead,Hartlepool,1,2
 2026-11-21T15:00:00+00:00,E3,Grimsby,Rotherham,0,0
 2026-11-21T15:00:00+00:00,EC,Halifax,Woking,5,0
 2026-11-21T15:00:00+00:00,NOR,HamKam,Fredrikstad,0,0
-2026-11-21T15:00:00+00:00,SC0,Hibernian,Dundee United,0,4
 2026-11-21T15:00:00+00:00,E2,Huddersfield,Leicester,0,1
 2026-11-21T15:00:00+00:00,EC,Kidderminster,Fylde,2,2
-2026-11-21T15:00:00+00:00,SC0,Kilmarnock,Aberdeen,2,4
 2026-11-21T15:00:00+00:00,E2,Leyton Orient,AFC Wimbledon,4,1
 2026-11-21T15:00:00+00:00,E1,Lincoln,Wrexham,0,1
 2026-11-21T15:00:00+00:00,E2,Mansfield,Milton Keynes Dons,1,1
@@ -17002,7 +16884,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-21T17:30:00+00:00,D1,Schalke 04,Stuttgart,0,0
 2026-11-21T17:30:00+00:00,SP1,Sevilla,Betis,1,1
 2026-11-21T17:30:00+00:00,EC,Yeovil,Forest Green,3,2
-2026-11-21T17:45:00+00:00,SC0,Dundee,Hearts,0,8
 2026-11-21T17:45:00+00:00,N1,Feyenoord,Excelsior,2,3
 2026-11-21T17:45:00+00:00,N1,Utrecht,Cambuur,2,3
 2026-11-21T18:00:00+00:00,ARG,Defensa y Justicia,Barracas Central,0,1
@@ -17024,7 +16905,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-21T19:45:00+00:00,B1,Waregem,Antwerp,2,2
 2026-11-21T20:00:00+00:00,ARG,Argentinos Jrs,Independiente,1,2
 2026-11-21T20:00:00+00:00,N1,Groningen,Heerenveen,1,3
-2026-11-21T20:00:00+00:00,SC0,Motherwell,Rangers,1,2
 2026-11-21T20:00:00+00:00,SP1,Real Madrid,Celta,2,1
 2026-11-21T20:00:00+00:00,N1,Telstar,Zwolle,1,3
 2026-11-21T20:00:00+00:00,SP2,Tenerife,Mallorca,0,0
@@ -17150,7 +17030,6 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-24T19:45:00+00:00,EC,Eastleigh,Yeovil,1,3
 2026-11-24T19:45:00+00:00,EC,Forest Green,Southend,0,2
 2026-11-24T19:45:00+00:00,EC,Fylde,Halifax,0,2
-2026-11-24T19:45:00+00:00,SC0,Hibernian,Dundee,2,1
 2026-11-24T19:45:00+00:00,EC,Hornchurch,Sutton,0,0
 2026-11-24T19:45:00+00:00,E1,Middlesbrough,Swansea,2,1
 2026-11-24T19:45:00+00:00,E1,Norwich,QPR,1,1
@@ -17160,8 +17039,16 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-24T19:45:00+00:00,E1,Sheffield United,Southampton,1,1
 2026-11-24T19:45:00+00:00,E2,Stevenage,Sheffield Weds,0,0
 2026-11-24T19:45:00+00:00,EC,Woking,Worthing,4,3
-2026-11-24T20:00:00+00:00,SC0,Rangers,Aberdeen,3,2
 2026-11-24T20:00:00+00:00,E1,Wolves,Derby,3,0
+2026-11-24T21:00:00+00:00,BRA,Chapecoense-SC,Palmeiras,3,0
+2026-11-25T03:00:00+00:00,USA,San Jose Earthquakes,Houston Dynamo,2,1
+2026-11-25T10:00:00+00:00,JAP,Avispa Fukuoka,Yokohama F. Marinos,1,2
+2026-11-25T10:00:00+00:00,JAP,Chiba,Nagoya Grampus,1,2
+2026-11-25T10:00:00+00:00,JAP,FC Tokyo,Sanfrecce Hiroshima,2,2
+2026-11-25T10:00:00+00:00,JAP,Mito,Verdy,1,0
+2026-11-25T10:00:00+00:00,JAP,Okayama,Shimizu S-Pulse,2,0
+2026-11-25T10:00:00+00:00,JAP,V-Varen Nagasaki,Kawasaki Frontale,1,2
+2026-11-25T10:30:00+00:00,JAP,Urawa Reds,Cerezo Osaka,2,2
 2026-11-25T18:00:00+00:00,I2,Cremonese,Avellino,0,1
 2026-11-25T19:00:00+00:00,EC,Boreham Wood,Aldershot,4,1
 2026-11-25T19:00:00+00:00,I2,Mantova,Arezzo,3,0
@@ -17173,3 +17060,10 @@ kickoff_utc,division,home,away,goals_home,goals_away
 2026-11-25T19:45:00+00:00,EC,Hartlepool,Solihull,2,0
 2026-11-25T19:45:00+00:00,E1,Watford,Blackburn,0,1
 2026-11-25T20:00:00+00:00,E1,Stoke,Millwall,2,1
+2026-11-25T23:00:00+00:00,BRA,Atletico-MG,Corinthians,1,1
+2026-11-26T00:00:00+00:00,ARG,Boca Juniors,Ind. Rivadavia,2,0
+2026-11-26T01:00:00+00:00,MEX,Toluca,Atlas,2,0
+2026-11-26T03:10:00+00:00,MEX,Monterrey,Club America,0,0
+2026-11-26T23:00:00+00:00,BRA,Sao Paulo,Remo,3,1
+2026-11-27T01:00:00+00:00,MEX,Pachuca,Guadalajara Chivas,2,1
+2026-11-27T03:10:00+00:00,MEX,Club Leon,Cruz Azul,0,4

@@ -2959,6 +2959,11 @@
   "lon": -57.58388889,
   "source": "wikipedia: Estadio Martín Torres"
  },
+ "St Etienne": {
+  "lat": 45.460833,
+  "lon": 4.390278,
+  "source": "stadium"
+ },
  "St Truiden": {
   "lat": 50.81679,
   "lon": 5.18647,

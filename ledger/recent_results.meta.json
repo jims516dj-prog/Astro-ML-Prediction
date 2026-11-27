@@ -1,5 +1,7 @@
 {
- "generated_at": "2026-11-26T21:54:30+00:00",
- "games": 17174,
- "unavailable": []
+ "generated_at": "2026-11-27T19:48:47+00:00",
+ "games": 17068,
+ "unavailable": [
+  "2627/SC0.csv (TimeoutError)"
+ ]
 }
