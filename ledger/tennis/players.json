@@ -26108,5 +26108,45 @@
 "hand": "",
 "height_in": null,
 "country": ""
+},
+{
+"id": "lta:2955",
+"name": "Hikaru Sato",
+"full_name": "Hikaru Sato",
+"dob": "1999-04-05",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "19300",
+"name": "Jensi Dipakbhai Kanabar",
+"full_name": "Jensi Dipakbhai Kanabar",
+"dob": "2011-11-30",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:47486",
+"name": "F. Dekkers",
+"full_name": "F. Dekkers",
+"dob": "2004-02-12",
+"birthplace": "",
+"hand": "",
+"height_in": null,
+"country": ""
+},
+{
+"id": "lta:24821",
+"name": "S. Perez Contri",
+"full_name": "S. Perez Contri",
+"dob": "1998-01-20",
+"birthplace": "",
+"hand": "L",
+"height_in": null,
+"country": ""
 }
 ]

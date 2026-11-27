@@ -19,10 +19,20 @@
   "lon": -68.2014454,
   "source": "openstreetmap: Estadio Municipal de El Alto, Avenida Alto de la Alianza, Nueva Asunción Unidad Vecinal 2, Villa Ingenio, Distrito 5, El Alto, Provincia Pedro Domingo Murillo, La Paz, Bolivia"
  },
+ "AD San Carlos": {
+  "lat": 10.324119,
+  "lon": -84.423867,
+  "source": "wikipedia: Estadio Carlos Ugalde Álvarez"
+ },
  "AS Atlas Paillade": {
   "lat": 43.61092,
   "lon": 3.87723,
   "source": "thesportsdb: Montpellier, Montpellier, Hérault, Occitania, France"
+ },
+ "AS FAR": {
+  "lat": 33.95944444,
+  "lon": -6.88861111,
+  "source": "wikipedia: Prince Moulay Abdellah Stadium"
  },
  "ASPTT Dijon": {
   "lat": 47.31667,
@@ -64,6 +74,11 @@
   "lon": 35.0044278,
   "source": "openstreetmap: Aqaba Stadium, Omar Al Mokhtar Street, العقبة, قضاء العقبة, لواء قصبة العقبة, العقبة, 77100, الأردن"
  },
+ "Al Ettifaq": {
+  "lat": 26.43442,
+  "lon": 50.10326,
+  "source": "city: Dammam"
+ },
  "Al Faisaly": {
   "lat": 26.3789,
   "lon": 43.9478,
@@ -73,6 +88,11 @@
   "lat": 25.30583333,
   "lon": 49.61277778,
   "source": "wikipedia: Prince Abdullah bin Jalawi Stadium"
+ },
+ "Al Hazem": {
+  "lat": 26.3789,
+  "lon": 43.9478,
+  "source": "wikipedia: King Abdullah Sports City Stadium Buraydah"
  },
  "Al Ittihad": {
   "lat": 21.7632215,
@@ -188,6 +208,11 @@
   "lat": 52.37,
   "lon": 5.21,
   "source": "manual"
+ },
+ "AmaZulu": {
+  "lat": -29.829,
+  "lon": 31.0303,
+  "source": "wikipedia: Moses Mabhida Stadium"
  },
  "América Mineiro": {
   "lat": -19.92083,
@@ -634,6 +659,11 @@
   "lon": -68.0115,
   "source": "wikipedia: Estadio Misael Delgado"
  },
+ "Cartaginés": {
+  "lat": 9.8584723,
+  "lon": -83.9183463,
+  "source": "openstreetmap: Estadio José Rafael \"Fello\" Meza Ivankovich, Avenida 12A, Cartago, Oriental, Cartago, 30101, Costa Rica"
+ },
  "Cayman Islands": {
   "lat": 19.283493,
   "lon": -81.2457325,
@@ -718,6 +748,11 @@
   "lat": 24.1469,
   "lon": 120.6839,
   "source": "national team: Taichung (largest city)"
+ },
+ "Chippa United": {
+  "lat": -33.93777778,
+  "lon": 25.59888889,
+  "source": "wikipedia: Nelson Mandela Bay Stadium"
  },
  "Churchill Brothers": {
   "lat": 15.2897621,
@@ -1179,6 +1214,11 @@
   "lon": 5.47778,
   "source": "city"
  },
+ "FC Emmen": {
+  "lat": 52.77917,
+  "lon": 6.90694,
+  "source": "city"
+ },
  "FC Gifu": {
   "lat": 35.441337,
   "lon": 136.766052,
@@ -1208,6 +1248,11 @@
   "lat": 47.42391,
   "lon": 9.37477,
   "source": "thesportsdb: Paul-Grüninger-Stadion, St. Gallen, Switzerland"
+ },
+ "FC Seoul": {
+  "lat": 37.566,
+  "lon": 126.9784,
+  "source": "city"
  },
  "FC Slutsk": {
   "lat": 53.0214648,
@@ -1794,6 +1839,11 @@
   "lon": 21.1570827,
   "source": "openstreetmap: Stadiumi Fadil Vokrri, Rinia, Lakrishtë, Prishtinë, Komuna e Prishtinës / Opština Priština, Rajoni i Prishtinës / Prištinski okrug, 10000, Kosova / Kosovo"
  },
+ "Kruger United": {
+  "lat": -25.74486,
+  "lon": 28.18783,
+  "source": "city: Pretoria"
+ },
  "KuPS Kuopio": {
   "lat": 62.88463,
   "lon": 27.6718,
@@ -2298,6 +2348,11 @@
   "lat": -33.521,
   "lon": -70.673,
   "source": "wikipedia: Estadio Municipal de La Cisterna"
+ },
+ "Palmeiras": {
+  "lat": -23.53,
+  "lon": -46.68,
+  "source": "manual"
  },
  "Panama": {
   "lat": 8.9936,
@@ -2828,6 +2883,11 @@
   "lat": -12.038,
   "lon": -77.045,
   "source": "wikipedia: Estadio Alberto Gallardo"
+ },
+ "Sporting San José": {
+  "lat": 10.035021,
+  "lon": -84.3518447,
+  "source": "openstreetmap: Estadio Puente de Piedra, Calle Plaza La Argentina, La Argentina, Puente de Piedra, Grecia, Alajuela, 20307, Costa Rica"
  },
  "Sporting San Miguelito": {
   "lat": 8.98777778,

@@ -65,6 +65,10 @@
 "tried": "2026-11"
 },
 "AS Atlas Paillade": null,
+"AS FAR": {
+"date": "1958-09-01",
+"name": "FAR Rabat"
+},
 "ASPTT Dijon": null,
 "AVS": {
 "date": null,
@@ -164,9 +168,11 @@
 "tried": "2026-11"
 },
 "Al Diriyah": null,
+"Al Ettifaq": null,
 "Al Faisaly": null,
 "Al Fateh": null,
 "Al Fayha": null,
+"Al Hazem": null,
 "Al Hilal": null,
 "Al Ittihad": null,
 "Al Jazira Club": null,
@@ -338,6 +344,7 @@
 "date": "1933-04-13",
 "name": "Club Always Ready"
 },
+"AmaZulu": null,
 "Amedspor": {
 "date": null,
 "tried": "2026-11"
@@ -1482,6 +1489,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Chippa United": null,
 "Chivas USA": {
 "date": null,
 "tried": "2026-11"
@@ -1821,6 +1829,10 @@
 "date": null,
 "name": "Daco-Getica",
 "tried": "2026-11"
+},
+"Daejeon Citizen": {
+"date": "1997-03-12",
+"name": "Daejeon Hana Citizen FC"
 },
 "Daejeon Hana Citizen FC": {
 "date": "1997-03-12",
@@ -2257,6 +2269,10 @@
 "Estudiantes Rio Cuarto": {
 "date": null,
 "tried": "2026-11"
+},
+"Estudiantes de La Plata": {
+"date": "1905-08-04",
+"name": "Estudiantes de La Plata"
 },
 "Eswatini": {
 "date": "1968-09-06",
@@ -3532,6 +3548,10 @@
 "date": "1900-06-02",
 "name": "1. FC Kaiserslautern"
 },
+"Kaizer Chiefs": {
+"date": "1970-01-07",
+"name": "Kaizer Chiefs F.C."
+},
 "Kalamata": {
 "date": null,
 "name": "Kalamata F.C.",
@@ -3666,6 +3686,7 @@
 "date": "1922-02-19",
 "name": "NK Krka"
 },
+"Kruger United": null,
 "Krylya Sovetov": {
 "date": null,
 "name": "FC Krylya Sovetov Moscow",
@@ -4125,6 +4146,7 @@
 "date": "1964-09-21",
 "name": "Malta"
 },
+"Mamelodi Sundowns": null,
 "Man City": {
 "date": "1894-04-16",
 "name": "Manchester City F.C."
@@ -4251,6 +4273,7 @@
 "date": "1899-12-16",
 "name": "AC Milan"
 },
+"Milford FC": null,
 "Millonarios": {
 "date": "1946-06-18",
 "name": "Millonarios"
@@ -5180,6 +5203,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"P\u00e9rez Zeled\u00f3n": null,
 "QPR": {
 "date": null,
 "name": "Queens Park Rangers F.C.",
