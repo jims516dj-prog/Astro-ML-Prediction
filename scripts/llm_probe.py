@@ -18,11 +18,18 @@ for model in ("openai/gpt-4o-mini", "meta/Llama-3.3-70B-Instruct"):
         {"role": "user", "content": 'Match: Arsenal (home) v Burnley, English Premier League. Bookmaker odds home 1.25, '
                                     'draw 6.5, away 12. Give {"home":p,"draw":p,"away":p,"over25":p} with p in 0..1.'}]}
     req = urllib.request.Request(URL, data=json.dumps(body).encode(), method="POST", headers={
-        "Authorization": f"Bearer {token}", "Content-Type": "application/json", "Accept": "application/json"})
+        "Authorization": f"Bearer {token}", "Content-Type": "application/json", "Accept": "application/vnd.github+json",
+        "X-GitHub-Api-Version": "2022-11-28"})
     t0 = time.time()
     try:
         with urllib.request.urlopen(req, timeout=60) as r:
-            data = json.loads(r.read())
+            raw = r.read()
+            print(f"{model}: HTTP {r.status}, {len(raw)} bytes, content-type {r.headers.get('content-type')}, "
+                  f"final URL {r.geturl()}")
+            if not raw.strip():
+                print("  headers:", {k: v for k, v in r.headers.items() if k.lower() not in ("set-cookie",)})
+                continue
+            data = json.loads(raw)
             limits = {k: v for k, v in r.headers.items() if "ratelimit" in k.lower()}
             print(f"{model}: OK in {time.time() - t0:.1f}s")
             print("  answer:", (data.get("choices") or [{}])[0].get("message", {}).get("content", "")[:300])
