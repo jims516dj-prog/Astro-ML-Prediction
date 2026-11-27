@@ -28,5 +28,22 @@
   "n_matches": 107462,
   "n_live": 199,
   "n_active": 0
+ },
+ {
+  "version": "v3",
+  "trained_at": "2026-11-27T09:23:28",
+  "delta_rps": 1.6997970432178097e-05,
+  "ci95": [
+   -3.0863836178977675e-05,
+   6.411519638062127e-05
+  ],
+  "placebo_percentile": null,
+  "gate_open": false,
+  "n_rules": 1,
+  "n_provisional": 0,
+  "lattice_version": "L-2026.2",
+  "n_matches": 108788,
+  "n_live": 1525,
+  "n_active": 1
  }
 ]
