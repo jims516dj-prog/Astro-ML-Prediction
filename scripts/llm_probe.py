@@ -26,6 +26,10 @@ for model in ("openai/gpt-4o-mini", "meta/Llama-3.3-70B-Instruct"):
             raw = r.read()
             print(f"{model}: HTTP {r.status}, {len(raw)} bytes, content-type {r.headers.get('content-type')}, "
                   f"final URL {r.geturl()}")
+            if len(raw) < 50:
+                print("  raw reply:", repr(raw[:50]))
+                print("  headers:", {k: v for k, v in r.headers.items() if k.lower() not in ("set-cookie",)})
+                continue
             if not raw.strip():
                 print("  headers:", {k: v for k, v in r.headers.items() if k.lower() not in ("set-cookie",)})
                 continue
