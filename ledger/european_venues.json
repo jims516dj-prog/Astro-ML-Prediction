@@ -1619,6 +1619,11 @@
   "lon": -75.56359,
   "source": "city"
  },
+ "Independiente Petrolero": {
+  "lat": -17.3895,
+  "lon": -66.1568,
+  "source": "city: Cochabamba"
+ },
  "Independiente Santa Fe": {
   "lat": 4.6459495,
   "lon": -74.0776054,
@@ -2208,6 +2213,11 @@
   "lat": 5.0063716,
   "lon": 7.8847312,
   "source": "openstreetmap: Godswill Akpabio International Stadium, Ring Road 3, Uyo, Akwa Ibom, 520103, Nigeria"
+ },
+ "Norrby IF": {
+  "lat": 57.73783,
+  "lon": 12.94076,
+  "source": "thesportsdb: Borås Arena, Borås, Sweden"
  },
  "North District": {
   "lat": -19.26611111,
@@ -3378,6 +3388,11 @@
   "lat": 6.2704989,
   "lon": -75.5671231,
   "source": "openstreetmap: Estadio Cincuentenario, Avenida del Ferrocarril, Sevilla, Comuna 4 - Aranjuez, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050006, Colombia"
+ },
+ "Örebro SK": {
+  "lat": 59.27412,
+  "lon": 15.2066,
+  "source": "city"
  },
  "Östersunds FK": {
   "lat": 63.1792,
