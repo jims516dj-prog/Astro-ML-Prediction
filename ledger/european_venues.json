@@ -64,6 +64,11 @@
   "lon": 39.16509611,
   "source": "wikipedia: King Abdullah Sports City Stadium"
  },
+ "Al Ahly": {
+  "lat": 30.06916667,
+  "lon": 31.31222222,
+  "source": "wikipedia: Cairo International Stadium"
+ },
  "Al Ain": {
   "lat": 24.24559444,
   "lon": 55.71658333,
@@ -248,6 +253,11 @@
   "lat": -8.9635073,
   "lon": 13.2845113,
   "source": "openstreetmap: Estadio Nacional 11 de Novembro, Rua Vacaria Nova, Município de Viana, Luanda, Angola"
+ },
+ "Annan Athletic": {
+  "lat": 54.98839,
+  "lon": -3.25647,
+  "source": "city"
  },
  "Antigua and Barbuda": {
   "lat": 17.1027029,
@@ -458,6 +468,11 @@
   "lat": 41.07122,
   "lon": 29.02321,
   "source": "city"
+ },
+ "Biesheim": {
+  "lat": 48.04118,
+  "lon": 7.54474,
+  "source": "thesportsdb: Stade Municipal de Biesheim, Biesheim, France"
  },
  "Black Man Warrior": {
   "lat": 6.30054,
@@ -729,6 +744,11 @@
   "lon": 5.92079,
   "source": "thesportsdb: Chambéry, Chambéry, France"
  },
+ "Chambéry": {
+  "lat": 45.5735,
+  "lon": 5.9082,
+  "source": "wikipedia: Chambéry Savoie Stadium"
+ },
  "Charleston Battery": {
   "lat": 32.79407,
   "lon": -79.86259,
@@ -803,6 +823,16 @@
   "lat": 43.32099,
   "lon": -3.02064,
   "source": "thesportsdb: Estadio La Florida, Portugalete, Basque Country, Spain"
+ },
+ "Club Sportif Sfaxien": {
+  "lat": 34.73361111,
+  "lon": 10.74638889,
+  "source": "wikipedia: Taieb Mhiri Stadium"
+ },
+ "Clydebank": {
+  "lat": 55.8925407,
+  "lon": -4.3919463,
+  "source": "openstreetmap: Holm Park, Hamilton Street, Whitecrook, Clydebank, West Dunbartonshire, Alba / Scotland, G81 1JP, United Kingdom"
  },
  "Cobreloa": {
   "lat": -22.4605187,
@@ -908,6 +938,11 @@
   "lat": 23.0970914,
   "lon": -82.4018788,
   "source": "openstreetmap: Estadio de Fútbol La Polar, Carretera a La Polar, Casino Deportivo, Armada, Cerro, La Habana, 11700, Cuba"
+ },
+ "Cumnock": {
+  "lat": 55.4526926,
+  "lon": -4.2587349,
+  "source": "openstreetmap: Townhead Park, Menzies Court, Holmhead, Cumnock, East Ayrshire, Alba / Scotland, KA18 1NS, United Kingdom"
  },
  "Cusco FC": {
   "lat": -13.52264,
@@ -1114,6 +1149,11 @@
   "lon": 21.94611,
   "source": "city: Leskovac"
  },
+ "Dumbarton": {
+  "lat": 55.94433,
+  "lon": -4.57061,
+  "source": "city"
+ },
  "Dunkerque": {
   "lat": 51.03297,
   "lon": 2.377,
@@ -1133,6 +1173,11 @@
   "lat": 22.5690604,
   "lon": 88.4090201,
   "source": "openstreetmap: Vivekananda Yuba Bharati Krirangan, Broadway Road, JC Block, Sector IV, Bidhannagar, Greater Kolkata, Rajarhat, North 24 Parganas, West Bengal, 700098, India"
+ },
+ "East Kilbride": {
+  "lat": 55.76412,
+  "lon": -4.17669,
+  "source": "city"
  },
  "Ecuador": {
   "lat": -0.1775141,
@@ -1158,6 +1203,11 @@
   "lat": 38.26694444,
   "lon": -0.66333333,
   "source": "wikipedia: Estadio Martínez Valero"
+ },
+ "Elgin City": {
+  "lat": 57.65194444,
+  "lon": -3.32083333,
+  "source": "wikipedia: Borough Briggs"
  },
  "England": {
   "lat": 51.5560695,
@@ -1224,6 +1274,11 @@
   "lon": 7.33867,
   "source": "thesportsdb: Waldstadion Homburg, Homburg"
  },
+ "FC Chambly Oise": {
+  "lat": 49.16667,
+  "lon": 2.25,
+  "source": "thesportsdb: Stade Walter Luzi, Chambly, France"
+ },
  "FC Den Bosch": {
   "lat": 51.7016546,
   "lon": 5.3298203,
@@ -1244,10 +1299,25 @@
   "lon": 6.90694,
   "source": "city"
  },
+ "FC GOA": {
+  "lat": 15.2897621,
+  "lon": 73.9623533,
+  "source": "openstreetmap: Pandit Jawaharlal Nehru Stadium, State Highway 18 - to Ponda, Ambaji, Fatorda, Margao, Salcete, South Goa, Goa, 403602, India"
+ },
  "FC Gifu": {
   "lat": 35.441337,
   "lon": 136.766052,
   "source": "wikipedia: Gifu Nagaragawa Stadium"
+ },
+ "FC Ingolstadt 04": {
+  "lat": 48.76508,
+  "lon": 11.42372,
+  "source": "city"
+ },
+ "FC Limonest": {
+  "lat": 45.83702,
+  "lon": 4.77188,
+  "source": "thesportsdb: Stade Courtois-Fillot, Limonest, France"
  },
  "FC Masar": {
   "lat": 30.06263,
@@ -1288,6 +1358,11 @@
   "lat": 48.80359,
   "lon": 2.13424,
   "source": "thesportsdb: Stade Municipal Georges Lefèvre, Versailles, France"
+ },
+ "FC Viktoria Köln 1904": {
+  "lat": 50.9471428,
+  "lon": 7.031246,
+  "source": "openstreetmap: FC Viktoria Köln 1904, Heidenweg, ﻿Kleingärtner-Verein Merheimer Heide e.V., Höhenberg, Kalk, Köln, Nordrhein-Westfalen, 51103, Deutschland"
  },
  "FC Viktoria Plzen B": {
   "lat": 49.75,
@@ -1703,6 +1778,11 @@
   "lat": 45.58277778,
   "lon": 9.30805556,
   "source": "wikipedia: Stadio Brianteo"
+ },
+ "Inverness Caledonian Thistle": {
+  "lat": 57.49472222,
+  "lon": -4.2175,
+  "source": "wikipedia: Caledonian Stadium"
  },
  "Iraq": {
   "lat": 30.4399273,
@@ -2174,6 +2254,11 @@
   "lon": -56.18816,
   "source": "city"
  },
+ "Montrose": {
+  "lat": 56.71683,
+  "lon": -2.46695,
+  "source": "city"
+ },
  "Morocco": {
   "lat": 33.5884,
   "lon": -7.55785,
@@ -2213,6 +2298,11 @@
   "lat": -25.31694444,
   "lon": -57.58055556,
   "source": "wikipedia: Estadio Arsenio Erico"
+ },
+ "Nacional Potosí": {
+  "lat": -19.57861111,
+  "lon": -65.76111111,
+  "source": "wikipedia: Estadio Víctor Agustín Ugarte"
  },
  "Namibia": {
   "lat": -24.65666667,
@@ -2459,6 +2549,11 @@
   "lon": -0.24027778,
   "source": "senior team's ground: wikipedia: London Road Stadium"
  },
+ "Peterhead": {
+  "lat": 57.50584,
+  "lon": -1.79806,
+  "source": "city"
+ },
  "Peñarol": {
   "lat": -34.82519444,
   "lon": -56.19916667,
@@ -2563,6 +2658,16 @@
   "lat": 25.29194,
   "lon": 51.42444,
   "source": "city: Ar-Rayyan"
+ },
+ "Queen of the South": {
+  "lat": 55.07027778,
+  "lon": -3.62472222,
+  "source": "wikipedia: Palmerston Park"
+ },
+ "Queen's Park": {
+  "lat": 55.86515,
+  "lon": -4.25763,
+  "source": "city: Glasgow"
  },
  "RB Leipzig": {
   "lat": 51.33962,
@@ -2673,6 +2778,11 @@
   "lat": -32.94682,
   "lon": -60.63932,
   "source": "manual"
+ },
+ "Ross County": {
+  "lat": 57.595947,
+  "lon": -4.418914,
+  "source": "stadium"
  },
  "Rot-Weiss Essen": {
   "lat": 51.45657,
@@ -3039,10 +3149,25 @@
   "lon": 18.87361111,
   "source": "wikipedia: Danie Craven Stadium"
  },
+ "Stenhousemuir": {
+  "lat": 56.02676,
+  "lon": -3.81462,
+  "source": "city"
+ },
  "Stockport County": {
   "lat": 53.39972222,
   "lon": -2.16638889,
   "source": "wikipedia: Edgeley Park"
+ },
+ "Stranraer": {
+  "lat": 54.90234,
+  "lon": -5.02731,
+  "source": "city"
+ },
+ "Suchitepequez": {
+  "lat": 14.5315488,
+  "lon": -91.5091143,
+  "source": "openstreetmap: Estadio Carlos Salazar Hijo, Calle 30 de Junio, Zona 2, Mazatenango, Suchitepéquez, 10001, Guatemala"
  },
  "Sudan": {
   "lat": 15.55177,
@@ -3209,6 +3334,11 @@
   "lon": -58.5632983,
   "source": "openstreetmap: Estadio 20 de Octubre, Remedios de Escalada, Tristán Suárez, Partido de Ezeiza, Buenos Aires, 1806, Argentina"
  },
+ "Troon": {
+  "lat": 55.5475757,
+  "lon": -4.6574854,
+  "source": "openstreetmap: Portland Park, Dundonald Road, Muirhead, Troon, South Ayrshire, Alba / Scotland, KA10 6NQ, United Kingdom"
+ },
  "Tunisia": {
   "lat": 34.7329314,
   "lon": 10.7459945,
@@ -3258,6 +3388,11 @@
   "lat": 45.752972,
   "lon": 4.2245343,
   "source": "openstreetmap: Stade Maurice Rousson, Allée du Château, La Noaille, Feurs, Montbrison, Loire, Auvergne-Rhône-Alpes, France métropolitaine, 42110, France"
+ },
+ "USM Alger": {
+  "lat": 36.7595143,
+  "lon": 2.9952724,
+  "source": "openstreetmap: Stade du 5-Juillet-1962, 1, Aïn Allah عين الله, Dély Brahim ⴷⴻⵍⵉ ⴱⵔⴰⵀⵉⵎ دالي إبراھيم, Daïra de Chéraga, الجزائر ⴷⵣⴰⵢⴻⵔ, 16000, ⵍⵣⵣⴰⵢⴻⵔ الجزائر"
  },
  "Uganda": {
   "lat": 1.43555556,
@@ -3448,6 +3583,11 @@
   "lat": 51.4728209,
   "lon": -3.2029602,
   "source": "openstreetmap: Cardiff City Stadium, Leckwith Road, Canton, Cardiff, Cymru / Wales, CF11 8AZ, United Kingdom"
+ },
+ "Wehen Wiesbaden": {
+  "lat": 50.08258,
+  "lon": 8.24932,
+  "source": "city"
  },
  "Wellington Phoenix": {
   "lat": -41.27305556,

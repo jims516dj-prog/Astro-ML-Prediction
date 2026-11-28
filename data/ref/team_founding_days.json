@@ -162,6 +162,10 @@
 "source": "wikidata (Q65124755)"
 },
 "Al Ahli": null,
+"Al Ahly": {
+"date": "1907-04-24",
+"name": "Al Ahly SC"
+},
 "Al Ain": null,
 "Al Aqaba": {
 "date": null,
@@ -492,6 +496,7 @@
 "name": "Ascoli Calcio 1898 FC",
 "source": "wikipedia:en (Q6630)"
 },
+"Associa\u00e7\u00e3o Black Bulls": null,
 "Asteras Tripolis": {
 "date": "1931-03-26",
 "name": "Asteras Tripoli F.C."
@@ -658,6 +663,7 @@
 "name": "Avispa Fukuoka",
 "source": "wikipedia:de (Q791164)"
 },
+"Avranches": null,
 "Ayr": {
 "date": null,
 "name": "Ayr United F.C.",
@@ -861,6 +867,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Biesheim": null,
 "Bilje": {
 "date": null,
 "tried": "2026-11"
@@ -1096,6 +1103,7 @@
 "date": "1964-12-03",
 "name": "Br\u00f8ndby IF"
 },
+"Brora Rangers": null,
 "Bucheon FC 1995": {
 "date": "2007-12-01",
 "name": "Bucheon FC 1995"
@@ -1167,6 +1175,10 @@
 "date": "1958-10-31",
 "name": "Club Deportivo Pamplona",
 "source": "wikipedia:es (Q956779)"
+},
+"CD Primeiro de Agosto": {
+"date": "1977-08-01",
+"name": "Clube Desportivo Primeiro de Agosto"
 },
 "CD Tarancon": {
 "date": null,
@@ -1402,6 +1414,7 @@
 "name": "FC Chambly",
 "tried": "2026-11"
 },
+"Chamb\u00e9ry": null,
 "Changchun Yatai": {
 "date": "1996-06-06",
 "name": "Changchun Yatai F.C."
@@ -1516,6 +1529,7 @@
 "tried": "2026-11"
 },
 "Ciudad de Bol\u00edvar": null,
+"Clachnacuddin": null,
 "Clermont": {
 "date": null,
 "tried": "2026-11"
@@ -1561,6 +1575,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Club Sportif Sfaxien": null,
 "Club Tijuana": {
 "date": "2016-12-05",
 "name": "Club Tijuana",
@@ -1571,6 +1586,7 @@
 "name": "Clyde F.C.",
 "tried": "2026-11"
 },
+"Clydebank": null,
 "Cobh Ramblers": {
 "date": null,
 "name": "Cobh Ramblers F.C.",
@@ -1795,6 +1811,7 @@
 "name": "Cultural y Deportiva Leonesa",
 "source": "wikidata (Q582342)"
 },
+"Cumnock": null,
 "Cura\u00e7ao": {
 "date": null,
 "name": "Cura\u00e7ao",
@@ -2101,6 +2118,10 @@
 "date": "1885-06-02",
 "name": "Dunfermline Athletic F.C."
 },
+"Dunfermline Athletic": {
+"date": "1885-06-02",
+"name": "Dunfermline Athletic F.C."
+},
 "Dunkerque": {
 "date": null,
 "tried": "2026-11"
@@ -2201,6 +2222,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Elgin City": null,
 "Elversberg": {
 "date": null,
 "name": "SV Elversberg",
@@ -2350,6 +2372,7 @@
 "date": "1995-07-25",
 "name": "FC Cartagena"
 },
+"FC Chambly Oise": null,
 "FC Cincinnati": {
 "date": "2015-08-12",
 "name": "FC Cincinnati"
@@ -2407,6 +2430,7 @@
 "date": "1948-02-13",
 "name": "1. FC K\u00f6ln"
 },
+"FC Limonest": null,
 "FC Lugano": {
 "date": "1908-07-28",
 "name": "FC Lugano"
@@ -2898,6 +2922,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Greenock Morton": null,
 "Gremio": {
 "date": "1903-09-15",
 "name": "Gr\u00eamio FBPA"
@@ -3066,6 +3091,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Hamilton Academical": null,
 "Hammarby": {
 "date": "1915-08-13",
 "name": "Hammarby Fotboll"
@@ -3113,6 +3139,10 @@
 "Haugesund": {
 "date": "1993-10-28",
 "name": "FK Haugesund"
+},
+"Hauts Lyonnais": {
+"date": "2012-01-16",
+"name": "Hauts Lyonnais"
 },
 "Hay AL Amir Hassan": {
 "date": null,
@@ -3365,6 +3395,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Inverness Caledonian Thistle": null,
 "Ionikos": {
 "date": null,
 "tried": "2026-11"
@@ -3463,6 +3494,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Johnstone Burgh FC": null,
 "Johor Darul Ta'zim": null,
 "Joinville": {
 "date": "1976-01-29",
@@ -3609,6 +3641,10 @@
 "date": null,
 "name": "Kenya",
 "tried": "2026-11"
+},
+"Kerala Blasters FC": {
+"date": "2014-05-27",
+"name": "Kerala Blasters FC"
 },
 "Khimki": {
 "date": "1997-01-30",
@@ -4961,6 +4997,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Partick Thistle": null,
 "Partizan Belgrade": {
 "date": "1945-10-04",
 "name": "FK Partizan"
@@ -5236,6 +5273,8 @@
 "date": null,
 "tried": "2026-11"
 },
+"Queen of the South": null,
+"Queen's Park": null,
 "Queens Park": {
 "date": null,
 "name": "FC Queens Park",
@@ -5280,6 +5319,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Racing Besan\u00e7on": null,
 "Racing Club": {
 "date": null,
 "name": "RC Strasbourg Alsace",
@@ -5291,6 +5331,7 @@
 "name": "Radomiak Radom",
 "tried": "2026-11"
 },
+"Raith Rovers": null,
 "Raith Rvs": {
 "date": null,
 "tried": "2026-11"
@@ -5493,6 +5534,7 @@
 "tried": "2026-11"
 },
 "R\u00e2mnicu S\u0103rat": null,
+"R\u00e9al Bamako": null,
 "SC Corinthians SP": {
 "date": null,
 "tried": "2026-11"
@@ -6510,6 +6552,7 @@
 "date": null,
 "tried": "2026-11"
 },
+"Troon": null,
 "Troyes": {
 "date": "1986-06-28",
 "name": "ES Troyes AC"
@@ -6577,6 +6620,10 @@
 "name": "US Feurs"
 },
 "US Quevilly": null,
+"USM Alger": {
+"date": "1937-07-05",
+"name": "USM Alger"
+},
 "UTA Arad": {
 "date": "1945-04-18",
 "name": "FC UTA Arad"

@@ -44,6 +44,11 @@
   "lon": -80.23888889,
   "source": "wikipedia: Hard Rock Stadium"
  },
+ "Edion Peace Wing Hiroshima | Hiroshima": {
+  "lat": 34.4017,
+  "lon": 132.4538,
+  "source": "wikipedia: Edion Peace Wing Hiroshima"
+ },
  "Emirates Stadium | London": {
   "lat": 51.5550404,
   "lon": -0.1083997,
@@ -113,6 +118,11 @@
   "lat": 25.7226067,
   "lon": -100.3119863,
   "source": "openstreetmap: Estadio Universitario, Pedro de Alba, San Nicolás de los Garza, Nuevo León, 66455, México"
+ },
+ "Estadio Único Diego Armando Maradona | La Plata": {
+  "lat": -34.91375,
+  "lon": -57.98902778,
+  "source": "wikipedia: Estadio Único Diego Armando Maradona"
  },
  "Estádio da Luz | Lisbon": {
   "lat": 38.7527,
@@ -248,6 +258,11 @@
   "lat": 52.47583333,
   "lon": -1.86805556,
   "source": "wikipedia: St Andrew's (stadium)"
+ },
+ "St. George's Park National Football Centre | Burton-upon-Trent, Staffordshire": {
+  "lat": 52.80728,
+  "lon": -1.64263,
+  "source": "city: Burton-upon-Trent, Staffordshire"
  },
  "Stade Bernard Gasset No. 7 | Montpellier": {
   "lat": 43.61092,
