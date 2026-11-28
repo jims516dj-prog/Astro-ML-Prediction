@@ -339,6 +339,11 @@
   "lon": 174.8125,
   "source": "wikipedia: Mount Smart Stadium"
  },
+ "Audax Italiano": {
+  "lat": -33.54083333,
+  "lon": -70.57833333,
+  "source": "wikipedia: Estadio Bicentenario de La Florida"
+ },
  "Aurora": {
   "lat": -17.3793,
   "lon": -66.1618,
@@ -529,6 +534,11 @@
   "lon": -2.59665,
   "source": "city: Bristol"
  },
+ "Bucheon FC 1995": {
+  "lat": 37.50256,
+  "lon": 126.799135,
+  "source": "wikipedia: Bucheon Stadium"
+ },
  "Bulgaria": {
   "lat": 42.14,
   "lon": 24.76444444,
@@ -708,6 +718,11 @@
   "lat": -32.35970833,
   "lon": -54.16932778,
   "source": "wikipedia: Estadio Arquitecto Antonio Eleuterio Ubilla"
+ },
+ "Cerro Porteño": {
+  "lat": -25.2999926,
+  "lon": -57.6376558,
+  "source": "openstreetmap: Estadio General Pablo Rojas, Avenida Cerro León (9ª Proy.), Obrero, Asunción, Distrito Capital, Región Oriental, 001106, Paraguay / Paraguái"
  },
  "Chambery SF": {
   "lat": 45.56628,
@@ -979,6 +994,11 @@
   "lon": 9.5561578,
   "source": "openstreetmap: Vejle Stadion, Roms Hule, Lille Grundet, Vejle, Vejle Kommune, Region Syddanmark, 7100, Danmark"
  },
+ "Deportes Concepcion": {
+  "lat": -36.82699,
+  "lon": -73.04977,
+  "source": "city"
+ },
  "Deportes Limache": {
   "lat": -33.01667,
   "lon": -71.26667,
@@ -1194,6 +1214,11 @@
   "lon": 28.84281,
   "source": "thesportsdb: Stade de la Concorde, Bukavu, DR Congo"
  },
+ "Everton CD": {
+  "lat": -33.01444444,
+  "lon": -71.535,
+  "source": "wikipedia: Sausalito Stadium"
+ },
  "FC 08 Homburg": {
   "lat": 49.32637,
   "lon": 7.33867,
@@ -1384,6 +1409,11 @@
   "lon": 5.94513,
   "source": "thesportsdb: Stade des Grangettes, Rumilly, Haute-Savoie, France"
  },
+ "GV San José": {
+  "lat": -17.94611111,
+  "lon": -67.11166667,
+  "source": "wikipedia: Estadio Jesús Bermúdez"
+ },
  "Gabon": {
   "lat": -1.63861111,
   "lon": 13.57444444,
@@ -1478,6 +1508,11 @@
   "lat": 37.9871895,
   "lon": 23.7541388,
   "source": "openstreetmap: Γήπεδο Λεωφόρου Αλεξάνδρας \"Απόστολος Νικολαΐδης\", Αναστάσιου Τσόχα, Κουντουριώτικα, Λυκαβηττός, Αμπελόκηποι, 7η Κοινότητα Αθηνών, Αθήνα, Δήμος Αθηναίων, Περιφερειακή Ενότητα Κεντρικού Τομέα Αθηνών, Περιφέρεια Αττικής, Αποκεντρωμένη Διοίκηση Αττικής, 114 75, Ελλάς"
+ },
+ "Guabirá": {
+  "lat": -17.3429,
+  "lon": -63.2614,
+  "source": "wikipedia: Estadio Gilberto Parada"
  },
  "Guadeloupe": {
   "lat": 16.2101272,
@@ -2058,6 +2093,11 @@
   "lat": 43.269722,
   "lon": 5.395833,
   "source": "stadium"
+ },
+ "Marumo Gallants": {
+  "lat": -25.5786,
+  "lon": 27.1607,
+  "source": "wikipedia: Royal Bafokeng Stadium"
  },
  "Mega Sport": {
   "lat": 32.10180556,
@@ -2774,6 +2814,11 @@
   "lon": -4.25194444,
   "source": "wikipedia: Hampden Park"
  },
+ "Sekhukhune United FC": {
+  "lat": -23.924689,
+  "lon": 29.468765,
+  "source": "wikipedia: Peter Mokaba Stadium"
+ },
  "Senegal": {
   "lat": 14.7467717,
   "lon": -17.451914,
@@ -3254,6 +3299,11 @@
   "lon": -84.52222222,
   "source": "wikipedia: TQL Stadium"
  },
+ "Universidad Católica": {
+  "lat": -33.39583333,
+  "lon": -70.50055556,
+  "source": "wikipedia: Claro Arena"
+ },
  "Universidad Católica (Quito)": {
   "lat": -0.22985,
   "lon": -78.52495,
@@ -3268,6 +3318,11 @@
   "lat": -17.3793,
   "lon": -66.1618,
   "source": "wikipedia: Estadio Félix Capriles"
+ },
+ "Unión La Calera": {
+  "lat": -32.78416667,
+  "lon": -71.19944444,
+  "source": "wikipedia: Nicolás Chahuán Nazar Municipal Stadium"
  },
  "Uruguay": {
   "lat": -34.9,
@@ -3448,6 +3503,11 @@
   "lat": 6.2704989,
   "lon": -75.5671231,
   "source": "openstreetmap: Estadio Cincuentenario, Avenida del Ferrocarril, Sevilla, Comuna 4 - Aranjuez, Perímetro Urbano Medellín, Medellín, Valle de Aburrá, Antioquia, RAP del Agua y la Montaña, 050006, Colombia"
+ },
+ "Ñublense": {
+  "lat": -36.60664,
+  "lon": -72.10344,
+  "source": "city: Chillán"
  },
  "Örebro SK": {
   "lat": 59.27412,

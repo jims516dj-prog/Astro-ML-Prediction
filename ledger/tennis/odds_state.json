@@ -4,14 +4,6 @@
   "tennis_wta_finals": "2026-11-15T08:59:28+00:00"
  },
  "events": {
-  "32e23a0b745bed6c0a23f60fab451adb": {
-   "at": "2026-11-20T23:10:51+00:00",
-   "away": "Daniil Medvedev",
-   "away_odds": 2.4286666666666665,
-   "home": "Alexander Zverev",
-   "home_odds": 1.5400000000000003,
-   "source": "the-odds-api.com, average of 15 bookmakers"
-  },
   "61fd3eff03d345615f08909e038728e7": {
    "at": "2026-11-21T21:47:13+00:00",
    "away": "Carlos Alcaraz",
@@ -19,14 +11,6 @@
    "home": "Alexander Zverev",
    "home_odds": 2.833846153846154,
    "source": "the-odds-api.com, average of 13 bookmakers"
-  },
-  "81c3faeaadd3d42734cd831b32b32597": {
-   "at": "2026-11-20T23:10:51+00:00",
-   "away": "Ben Shelton",
-   "away_odds": 3.7874999999999996,
-   "home": "Carlos Alcaraz",
-   "home_odds": 1.2618749999999999,
-   "source": "the-odds-api.com, average of 16 bookmakers"
   }
  }
 }
